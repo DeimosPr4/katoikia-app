@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ClientsModule, Transport } from "@nestjs/microservices";
-import { AppService } from './app.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -15,9 +15,9 @@ import { AppService } from './app.service';
         }
       }
     ]),
-    
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    MongooseModule.forRoot(`mongodb+srv://proyecto_4:proyecto_4@proyecto4.yv4fb.mongodb.net/servicio_usuarios?retryWrites=true&w=majority`),
+    UsersModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

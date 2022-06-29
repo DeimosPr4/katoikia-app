@@ -27,8 +27,8 @@ export class BooksService {
     return this.bookModel.findOne({ _id: id }).exec();
   }
 
-  async update(id: string, updateBookDto: UpdateBookDto) {
-    return this.bookModel.findOneAndUpdate({ _id: id }, updateBookDto, {
+  async update(id: string, book: BookDocument) {
+    return this.bookModel.findOneAndUpdate({ _id: id }, book, {
       new: true,
     });
   }

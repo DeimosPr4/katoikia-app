@@ -17,19 +17,16 @@ export class UsersController {
     return this.userService.findAll();
   }
 
-  @MessagePattern('findOneUser')
-  findOne(@Payload() id: string) {
-    return this.userService.findOne(id);
+  @MessagePattern({ cmd: 'findUserDNI' })
+  findOne(@Payload() dni: string) {
+    return this.userService.findOneByDNI(dni);
   }
-
-  @MessagePattern('updateUser')
+  @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
     return this.userService.update(user.id, user);
-
-    
   }
 
-  @MessagePattern('removeUser')
+  @MessagePattern({ cmd: 'removeUser' })
   remove(@Payload() id: string) {
     return this.userService.remove(id);
   }

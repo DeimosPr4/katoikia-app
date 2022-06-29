@@ -15,7 +15,16 @@ import { AppService } from './app.service';
         }
       }
     ]),
-    
+    ClientsModule.register([
+      {
+        name: "SERVICIO_COMUNIDADES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3002
+        }
+      }
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

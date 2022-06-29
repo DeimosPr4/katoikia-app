@@ -20,8 +20,14 @@ export class UsersService {
       .setOptions({ sanitizeFilter: true }) 
       .exec();
   }
+
+  
   async findOne(id: string): Promise<User> {
     return this.userModel.findOne({ _id: id }).exec();
+  }
+
+  async findOneByDNI(dni: string): Promise<User> {
+    return this.userModel.findOne({ dni: dni }).exec();
   }
 
   async update(id: string, user: UserDocument) {

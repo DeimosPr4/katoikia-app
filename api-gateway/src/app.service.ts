@@ -7,6 +7,7 @@ import { map } from "rxjs/operators";
 export class AppService {
   constructor(
     @Inject('SERVICIO_USUARIOS') private readonly clientUserApp: ClientProxy,
+    @Inject('SERVICIO_COMUNIDADES') private readonly clientCommunityApp: ClientProxy,
   ) {}
   
   //POST parameter from API
@@ -32,4 +33,52 @@ export class AppService {
       );
   }
   
+
+   //GET parameter from API
+   findUser(paramUserDNI: string){
+    const pattern = { cmd: 'find' };
+    const payload = {dni: paramUserDNI};
+    return this.clientUserApp
+    .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message})),
+      );    
+  }
+
+
+  //POST parameter from API
+  createCommunity(name: string, province: string, canton: string, district: string
+    , num_houses: number , phone: number, quote: number, status: string, date_entry: Date){
+    const pattern = { cmd: 'createCommunity' };
+    const payload = {name: name, province: province, canton: canton, district: district, num_houses: num_houses,
+      phone: phone, quote: quote, status: status, date_entry: date_entry};
+    return this.clientCommunityApp
+    .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message})),
+      );
+  }
+
+  allCommunities(){
+    const pattern = { cmd: 'findAllCommunities' };
+    const payload = {};
+    return this.clientCommunityApp
+    .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message})),
+      );
+  }
+  
+
+   //GET parameter from API
+   findCommunity(paramCommunityId: string){
+    const pattern = { cmd: 'findOneCommunity' };
+    const payload = {id: paramCommunityId};
+    return this.clientCommunityApp
+    .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message})),
+      );    
+  }
+
 }

@@ -8,6 +8,7 @@ export class AppService {
   constructor(
     @Inject('SERVICIO_USUARIOS') private readonly clientUserApp: ClientProxy,
     @Inject('SERVICIO_COMUNIDADES') private readonly clientCommunityApp: ClientProxy,
+    @Inject('SERVICIO_AREAS_COMUNES') private readonly clientCommonAreaApp: ClientProxy,
   ) { }
 
   // ====================== USERS =============================== 
@@ -18,7 +19,7 @@ export class AppService {
     const pattern = { cmd: 'createUser' };
     const payload = {
       dni: dni, name: name, last_name: last_name, email: email, phone: phone,
-      password: password, user_type: user_type, status: status, date_entry: date_entry, 
+      password: password, user_type: user_type, status: status, date_entry: date_entry,
       community_id: community_id
     };
     return this.clientUserApp
@@ -81,8 +82,6 @@ export class AppService {
       );
   }
 
-  
-
   allCommunities() {
     const pattern = { cmd: 'findAllCommunities' };
     const payload = {};
@@ -103,4 +102,44 @@ export class AppService {
         map((message: string) => ({ message })),
       );
   }
+
+
+
+  // ====================== COMMON AREAS =============================== 
+  //POST parameter from API
+  createCommonArea(name: string, hourMin: string, hourMax: string,
+    bookable: number, community_id: string) {
+    const pattern = { cmd: 'createCommonArea' };
+    const payload = {
+      name: name, hourMin: hourMin, hourMax: hourMax, bookable: bookable,
+      community_id: community_id
+    };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  allCommonAreas() {
+    const pattern = { cmd: 'findAllCommonAreas' };
+    const payload = {};
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  //GET parameter from API
+  findCommonArea(paramCommonAreaId: string) {
+    const pattern = { cmd: 'findOneCommonArea' };
+    const payload = { id: paramCommonAreaId };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
 }

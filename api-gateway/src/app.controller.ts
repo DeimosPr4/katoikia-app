@@ -22,7 +22,7 @@ export class AppController {
       user_type, status, date_entry);
   }
 
-  @Post('user/create')
+  @Post('user/createUser')
   createUser(
     @Body('dni') dni: string,
     @Body('name') name: string,
@@ -39,23 +39,20 @@ export class AppController {
       user_type, status, date_entry, community_id);
   }
 
-
-
-  @Get('user/all')
+  @Get('user/allUsers')
   allUsers() {
     return this.appService.allUsers();
   }
 
-
   @Get('user/find/:dni')
   findUser(
     @Param('dni') paramUserDNI: string
-  ){
+  ) {
     return this.appService.findUser(paramUserDNI);
   }
 
 
-// #==== API Communities
+  // #==== API Communities
   //#API orderService - create order
   @Post('community/createCommunity')
   createCommunity(
@@ -71,25 +68,50 @@ export class AppController {
     @Body('houses') houses: [{}],
 
   ) {
-
-
-
-    return this.appService.createCommunity(name, province, canton, 
+    return this.appService.createCommunity(name, province, canton,
       district, num_houses, phone,
       quote, status, date_entry, houses);
   }
-
 
   @Get('community/allCommunities')
   allcommunities() {
     return this.appService.allCommunities();
   }
 
-
   @Get('community/findCommunity/:id')
   findCommunity(
-    @Param('dni') paramCommunityId: string
-  ){
+    @Param('id') paramCommunityId: string
+  ) {
     return this.appService.findCommunity(paramCommunityId);
+  }
+
+
+  // #==== API Common Areas
+  //#API orderService - create order
+  @Post('commonArea/createCommonArea')
+  createCommonArea(
+    @Body('name') name: string,
+    @Body('hourMin') hourMin: string,
+    @Body('hourMax') hourMax: string,
+    @Body('bookable') bookable: number,
+    @Body('community_id') community_id: string,
+  ) {
+
+    return this.appService.createCommonArea(name, hourMin, hourMax,
+      bookable, community_id);
+  }
+
+
+  @Get('commonArea/allCommonAreas')
+  allCommonAreas() {
+    return this.appService.allCommonAreas();
+  }
+
+
+  @Get('commonArea/findCommonArea/:id')
+  findCommonArea(
+    @Param('id') paramCommonAreaId: string
+  ) {
+    return this.appService.findCommonArea(paramCommonAreaId);
   }
 }

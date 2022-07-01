@@ -67,7 +67,7 @@ import { AppService } from './app.service';
     ]),
     ClientsModule.register([
       {
-        name: "SERVICIO_COMUNICADOS",
+        name: "SERVICIO_POSTS",
         transport: Transport.TCP,
         options: {
           host: "127.0.0.1",

@@ -19,7 +19,6 @@ export class UsersService {
       .setOptions({ sanitizeFilter: true }) 
       .exec();
   }
-
   
   async findOne(id: string): Promise<User> {
     return this.userModel.findOne({ _id: id }).exec();
@@ -34,7 +33,6 @@ export class UsersService {
       new: true,
     });
   }
-
 
   async remove(id: string) {
     return this.userModel.findByIdAndRemove({ _id: id }).exec();

@@ -12,6 +12,7 @@ export class AppService {
     @Inject('SERVICIO_INVITADOS') private readonly clientGuestApp: ClientProxy,
     @Inject('SERVICIO_PAGOS') private readonly clientPaymentApp: ClientProxy,
     @Inject('SERVICIO_RESERVACIONES') private readonly clientReservationApp: ClientProxy,
+    @Inject('SERVICIO_POSTS') private readonly clientPostApp: ClientProxy,
 
     @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
   ) { }
@@ -265,5 +266,42 @@ export class AppService {
   }
 
 
+  // ====================== POSTS =============================== 
+
+  //POST parameter from API
+  createPost(post: string,  date_entry: Date, user_id: string, 
+    community_id: string) {
+    const pattern = { cmd: 'createPost' };
+    const payload = {
+      post: post, date_entry: date_entry, user_id: user_id, 
+      community_id: community_id
+    };
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  allPosts() {
+    const pattern = { cmd: 'findAllPosts' };
+    const payload = {};
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  //GET parameter from API
+  findPost(paramPostId: string) {
+    const pattern = { cmd: 'findOnePost' };
+    const payload = { id: paramPostId };
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
 
 }

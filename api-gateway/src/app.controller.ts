@@ -5,7 +5,7 @@ import { AppService } from "./app.service";
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  //#API userService - create user
+  // #==== API Users
   @Post('user/createAdminSystem')
   createAdminSystem(
     @Body('dni') dni: string,
@@ -53,7 +53,6 @@ export class AppController {
 
 
   // #==== API Communities
-  //#API orderService - create order
   @Post('community/createCommunity')
   createCommunity(
     @Body('name') name: string,
@@ -87,7 +86,6 @@ export class AppController {
 
 
   // #==== API Common Areas
-  //#API orderService - create order
   @Post('commonArea/createCommonArea')
   createCommonArea(
     @Body('name') name: string,
@@ -144,7 +142,7 @@ export class AppController {
 
   
   // #==== API Payment
-  //#API userService - create user
+
   @Post('payment/createPayment')
   createPayment(
     @Body('date_payment') date_payment: Date,
@@ -171,8 +169,8 @@ export class AppController {
     return this.appService.findPayment(paramPaymentDNI);
   }
 
-  // #==== API Payment
-  //#API userService - create user
+  // #==== API Reservation
+
   @Post('reservation/createReservation')
   createReservation(
     @Body('start_time') start_time: string,
@@ -196,5 +194,30 @@ export class AppController {
     @Param('id') paramReservation: string
   ) {
     return this.appService.findReservation(paramReservation);
+  }
+
+  
+  // #==== API Post
+
+  @Post('post/createPost')
+  createPost(
+    @Body('post') post: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('user_id') user_id: string,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.createPost(post, date_entry, user_id, community_id);
+  }
+
+  @Get('post/allPosts')
+  allPosts() {
+    return this.appService.allPosts();
+  }
+
+  @Get('post/find/:id')
+  findPost(
+    @Param('id') paramPost: string
+  ) {
+    return this.appService.findPost(paramPost);
   }
 }

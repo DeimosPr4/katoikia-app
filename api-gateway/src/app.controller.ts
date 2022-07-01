@@ -114,4 +114,31 @@ export class AppController {
   ) {
     return this.appService.findCommonArea(paramCommonAreaId);
   }
+
+
+  //#API userService - create user
+  @Post('guest/createGuest')
+  createAGuest(
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('dni') dni: string,
+    @Body('number_plate') number_plate: string,
+    @Body('phone') phone: number,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+  ) {
+    return this.appService.createGuest(name, last_name, dni, number_plate, phone,  status, date_entry);
+  }
+
+  @Get('guest/allGuests')
+  allGuests() {
+    return this.appService.allGuests();
+  }
+
+  @Get('guest/find/:dni')
+  findGuest(
+    @Param('dni') paramGuestDNI: string
+  ) {
+    return this.appService.findGuest(paramGuestDNI);
+  }
 }

@@ -9,6 +9,7 @@ export class AppService {
     @Inject('SERVICIO_USUARIOS') private readonly clientUserApp: ClientProxy,
     @Inject('SERVICIO_COMUNIDADES') private readonly clientCommunityApp: ClientProxy,
     @Inject('SERVICIO_AREAS_COMUNES') private readonly clientCommonAreaApp: ClientProxy,
+    @Inject('SERVICIO_INVITADOS') private readonly clientGuestApp: ClientProxy,
   ) { }
 
   // ====================== USERS =============================== 
@@ -136,6 +137,46 @@ export class AppService {
     const pattern = { cmd: 'findOneCommonArea' };
     const payload = { id: paramCommonAreaId };
     return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+
+  // ====================== GUESTS =============================== 
+
+
+  //POST parameter from API
+  createGuest(name: string, last_name: string, dni: string, number_plate: string, phone: number
+    , status: string, date_entry: Date) {
+    const pattern = { cmd: 'createGuest' };
+    const payload = {
+     name: name, last_name: last_name,  dni: dni, number_plate: number_plate, phone: phone,
+      status: status, date_entry: date_entry
+    };
+    return this.clientGuestApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  allGuests() {
+    const pattern = { cmd: 'findAllGuests' };
+    const payload = {};
+    return this.clientGuestApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  //GET parameter from API
+  findGuest(paramGuestDNI: string) {
+    const pattern = { cmd: 'findGuestDNI' };
+    const payload = { dni: paramGuestDNI };
+    return this.clientGuestApp
       .send<string>(pattern, payload)
       .pipe(
         map((message: string) => ({ message })),

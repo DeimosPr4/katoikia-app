@@ -23,7 +23,8 @@ export class UsersController {
   }
 
   @MessagePattern({ cmd: 'findUserDNI' })
-  findOne(@Payload() dni: string) {
+  findOne(@Payload() id: string) {
+    let dni = id['dni'];
     return this.userService.findOneByDNI(dni);
   }
   
@@ -34,6 +35,7 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'removeUser' })
   remove(@Payload() id: string) {
-    return this.userService.remove(id);
+    let dni = id['dni'];
+    return this.userService.remove(dni);
   }
 }

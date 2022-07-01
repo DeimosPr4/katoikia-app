@@ -32,6 +32,10 @@ export class CommunitiesService {
     });
   }
 
+
+  
+
+
   async remove(id: string) {
     return this.communityModel.findByIdAndRemove({ _id: id }).exec();
   }

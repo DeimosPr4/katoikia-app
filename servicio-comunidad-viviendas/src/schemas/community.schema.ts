@@ -1,9 +1,9 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { House, HouseSchema } from './house.schema';
 
 
 export type CommunityDocument = Community & Document;
-
 
 @Schema({ collection: 'communities' })
 export class Community {
@@ -34,8 +34,10 @@ export class Community {
 
     @Prop()
     date_entry: Date;
-}
 
+    @Prop({ type: HouseSchema })
+    houses: House
+}
 
 
 export const CommunitySchema = SchemaFactory.createForClass(Community); 

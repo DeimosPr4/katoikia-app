@@ -5,7 +5,23 @@ import { AppService } from "./app.service";
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  //#API orderService - create order
+  //#API userService - create user
+  @Post('user/createAdminSystem')
+  createAdminSystem(
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('password') password: string,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+  ) {
+    return this.appService.createAdminSystem(dni, name, last_name, email, phone, password,
+      user_type, status, date_entry);
+  }
+
   @Post('user/create')
   createUser(
     @Body('dni') dni: string,
@@ -17,10 +33,12 @@ export class AppController {
     @Body('user_type') user_type: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id: string,
   ) {
     return this.appService.createUser(dni, name, last_name, email, phone, password,
-      user_type, status, date_entry);
+      user_type, status, date_entry, community_id);
   }
+
 
 
   @Get('user/all')
@@ -50,10 +68,16 @@ export class AppController {
     @Body('quote') quote: number,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
+    @Body('houses') houses: {},
+
   ) {
+    console.log(houses);
+
+
+
     return this.appService.createCommunity(name, province, canton, 
       district, num_houses, phone,
-      quote, status, date_entry);
+      quote, status, date_entry, houses);
   }
 
 

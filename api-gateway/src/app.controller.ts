@@ -245,4 +245,30 @@ export class AppController {
   ) {
     return this.appService.findComment(paramComment);
   }
+
+
+  
+  // #==== API Report
+
+  @Post('report/createReport')
+  createReport(
+    @Body('action') action: string,
+    @Body('description') description: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('user_id') user_id: string,
+  ) {
+    return this.appService.createReport(action, description, date_entry, user_id);
+  }
+
+  @Get('report/allReports')
+  allReports() {
+    return this.appService.allReports();
+  }
+
+  @Get('report/find/:id')
+  findReport(
+    @Param('id') paramReport: string
+  ) {
+    return this.appService.findReport(paramReport);
+  }
 }

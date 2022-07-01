@@ -13,7 +13,7 @@ export class AppService {
     @Inject('SERVICIO_PAGOS') private readonly clientPaymentApp: ClientProxy,
     @Inject('SERVICIO_RESERVACIONES') private readonly clientReservationApp: ClientProxy,
     @Inject('SERVICIO_POSTS') private readonly clientPostApp: ClientProxy,
-
+    @Inject('SERVICIO_REPORTES') private readonly clientReportApp: ClientProxy,
     @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
   ) { }
 
@@ -336,6 +336,44 @@ export class AppService {
     const pattern = { cmd: 'findOneComment' };
     const payload = { id: paramCommentId };
     return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  // ====================== REPORTS =============================== 
+
+  //Report parameter from API
+  createReport(action: string, description: string,  date_entry: Date, 
+    user_id: string) {
+    const pattern = { cmd: 'createReport' };
+    const payload = {
+      action: action, description: description, date_entry: date_entry, 
+      user_id: user_id
+    };
+    return this.clientReportApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  allReports() {
+    const pattern = { cmd: 'findAllReports' };
+    const payload = {};
+    return this.clientReportApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  //GET parameter from API
+  findReport(paramReportId: string) {
+    const pattern = { cmd: 'findOneReport' };
+    const payload = { id: paramReportId };
+    return this.clientReportApp
       .send<string>(pattern, payload)
       .pipe(
         map((message: string) => ({ message })),

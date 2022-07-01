@@ -17,16 +17,6 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
         }
       }
     ]),
-    ClientsModule.register([
-      {
-        name: "SERVICIO_PAGOS",
-        transport: Transport.TCP,
-        options: {
-          host: "127.0.0.1",
-          port: 3005
-        }
-      }
-    ]),
     MongooseModule.forRoot(`mongodb+srv://proyecto_4:proyecto_4@proyecto4.yv4fb.mongodb.net/servicio_reportes?retryWrites=true&w=majority`),
     ReportsModule],
   controllers: [],

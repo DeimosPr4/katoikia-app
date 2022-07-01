@@ -55,7 +55,36 @@ import { AppService } from './app.service';
         }
       }
     ]),
-    
+    ClientsModule.register([
+      {
+        name: "SERVICIO_RESERVACIONES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3006
+        }
+      }
+    ]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_COMUNICADOS",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3007
+        }
+      }
+    ]),
+      ClientsModule.register([
+      {
+        name: "SERVICIO_REPORTES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3008
+        }
+      }
+    ]),
     ClientsModule.register([
       {
         name: "SERVICIO_NOTIFICACIONES",

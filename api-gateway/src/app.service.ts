@@ -11,6 +11,7 @@ export class AppService {
     @Inject('SERVICIO_AREAS_COMUNES') private readonly clientCommonAreaApp: ClientProxy,
     @Inject('SERVICIO_INVITADOS') private readonly clientGuestApp: ClientProxy,
     @Inject('SERVICIO_PAGOS') private readonly clientPaymentApp: ClientProxy,
+    @Inject('SERVICIO_RESERVACIONES') private readonly clientReservationApp: ClientProxy,
 
     @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
   ) { }

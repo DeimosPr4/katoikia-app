@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Request } from 'express'; 
 
 @Injectable()
 export class UsersService {

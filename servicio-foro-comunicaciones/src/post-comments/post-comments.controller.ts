@@ -1,35 +1,37 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PostCommentsService } from './post-comments.service';
-import { CreatePostCommentDto } from './dto/create-post-comment.dto';
-import { UpdatePostCommentDto } from './dto/update-post-comment.dto';
+import { Comment, CommentDocument } from '../schemas/post-comment.schema';
+
 
 @Controller()
 export class PostCommentsController {
   constructor(private readonly postCommentsService: PostCommentsService) {}
 
-  @MessagePattern('createPostComment')
-  create(@Payload() createPostCommentDto: CreatePostCommentDto) {
-    return this.postCommentsService.create(createPostCommentDto);
+  @MessagePattern({ cmd: 'createComment' })
+  create(@Payload() comment: CommentDocument) {
+    return this.postCommentsService.create(comment);
   }
 
-  @MessagePattern('findAllPostComments')
+  @MessagePattern({ cmd: 'findAllComments' })
   findAll() {
     return this.postCommentsService.findAll();
   }
 
-  @MessagePattern('findOnePostComment')
-  findOne(@Payload() id: number) {
-    return this.postCommentsService.findOne(id);
+  @MessagePattern({cmd: 'findOneComment'})
+  findOne(@Payload() id: string) {
+    let _id = id['id'];
+    return this.postCommentsService.findOne(_id);
   }
 
-  @MessagePattern('updatePostComment')
-  update(@Payload() updatePostCommentDto: UpdatePostCommentDto) {
-    return this.postCommentsService.update(updatePostCommentDto.id, updatePostCommentDto);
+  @MessagePattern({ cmd: 'updateComment' })
+  update(@Payload() comment: CommentDocument) {
+    return this.postCommentsService.update(comment.id, comment);
   }
 
-  @MessagePattern('removePostComment')
-  remove(@Payload() id: number) {
-    return this.postCommentsService.remove(id);
+  @MessagePattern({ cmd: 'removeComment' })
+  remove(@Payload() id: string) {
+    let _id = id['id'];
+    return this.postCommentsService.remove(_id);
   }
 }

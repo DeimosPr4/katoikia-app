@@ -220,4 +220,29 @@ export class AppController {
   ) {
     return this.appService.findPost(paramPost);
   }
+
+
+  // #==== API Comment
+
+  @Post('post/createComment')
+  createComment(
+    @Body('comment') comment: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('user_id') user_id: string,
+    @Body('post_id') post_id: string,
+  ) {
+    return this.appService.createComment(comment, date_entry, user_id, post_id);
+  }
+
+  @Get('post/allComments')
+  allComments() {
+    return this.appService.allComments();
+  }
+
+  @Get('post/findComment/:id')
+  findComment(
+    @Param('id') paramComment: string
+  ) {
+    return this.appService.findComment(paramComment);
+  }
 }

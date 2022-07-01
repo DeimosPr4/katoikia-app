@@ -304,4 +304,41 @@ export class AppService {
       );
   }
 
+  // ====================== COMMNENT POSTS =============================== 
+
+  //Comment parameter from API
+  createComment(comment: string,  date_entry: Date, user_id: string, 
+    post_id: string) {
+    const pattern = { cmd: 'createComment' };
+    const payload = {
+      comment: comment, date_entry: date_entry, user_id: user_id, 
+      post_id: post_id
+    };
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  allComments() {
+    const pattern = { cmd: 'findAllComments' };
+    const payload = {};
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  //GET parameter from API
+  findComment(paramCommentId: string) {
+    const pattern = { cmd: 'findOneComment' };
+    const payload = { id: paramCommentId };
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
 }

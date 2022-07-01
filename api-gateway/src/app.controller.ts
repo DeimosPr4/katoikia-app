@@ -115,10 +115,10 @@ export class AppController {
     return this.appService.findCommonArea(paramCommonAreaId);
   }
 
-
+  // #==== API GUEST
   //#API userService - create user
   @Post('guest/createGuest')
-  createAGuest(
+  createGuest(
     @Body('name') name: string,
     @Body('last_name') last_name: string,
     @Body('dni') dni: string,
@@ -140,5 +140,34 @@ export class AppController {
     @Param('dni') paramGuestDNI: string
   ) {
     return this.appService.findGuest(paramGuestDNI);
+  }
+
+  
+  // #==== API Payment
+  //#API userService - create user
+  @Post('payment/createPayment')
+  createPayment(
+    @Body('date_payment') date_payment: Date,
+    @Body('mount') mount: number,
+    @Body('description') description: string,
+    @Body('period') period: string,
+    @Body('status') status: string,
+    @Body('user_id') user_id: string,
+    @Body('communty_id') communty_id: string,
+  ) {
+    return this.appService.createPayment(date_payment, mount, description, 
+      period, status,  user_id, communty_id);
+  }
+
+  @Get('payment/allPayments')
+  allPayments() {
+    return this.appService.allPayments();
+  }
+
+  @Get('payment/find/:dni')
+  findPayment(
+    @Param('dni') paramPaymentDNI: string
+  ) {
+    return this.appService.findPayment(paramPaymentDNI);
   }
 }

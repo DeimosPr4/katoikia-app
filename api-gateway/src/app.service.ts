@@ -10,6 +10,7 @@ export class AppService {
     @Inject('SERVICIO_COMUNIDADES') private readonly clientCommunityApp: ClientProxy,
     @Inject('SERVICIO_AREAS_COMUNES') private readonly clientCommonAreaApp: ClientProxy,
     @Inject('SERVICIO_INVITADOS') private readonly clientGuestApp: ClientProxy,
+    @Inject('SERVICIO_PAGOS') private readonly clientPaymentApp: ClientProxy,
   ) { }
 
   // ====================== USERS =============================== 
@@ -182,5 +183,44 @@ export class AppService {
         map((message: string) => ({ message })),
       );
   }
+
+   // ====================== PAYMENTS =============================== 
+
+  //POST parameter from API
+  createPayment(date_payment: Date, mount: number, description: string, period: string
+    , status: string, user_id: string, communty_id: string) {
+    const pattern = { cmd: 'createPayment' };
+    const payload = {
+      date_payment: date_payment, mount: mount, description: description, 
+      period: period, status: status,  user_id: user_id, communty_id: communty_id
+    };
+    return this.clientPaymentApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  allPayments() {
+    const pattern = { cmd: 'findAllPayments' };
+    const payload = {};
+    return this.clientPaymentApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  //GET parameter from API
+  findPayment(paramPaymentId: string) {
+    const pattern = { cmd: 'findOnePayment' };
+    const payload = { id: paramPaymentId };
+    return this.clientPaymentApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
 
 }

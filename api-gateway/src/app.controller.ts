@@ -170,4 +170,31 @@ export class AppController {
   ) {
     return this.appService.findPayment(paramPaymentDNI);
   }
+
+  // #==== API Payment
+  //#API userService - create user
+  @Post('reservation/createReservation')
+  createReservation(
+    @Body('start_time') start_time: string,
+    @Body('finish_time') finish_time: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('user_id') user_id: string,
+    @Body('common_area_id') common_area_id: string,
+  ) {
+    return this.appService.createReservation(start_time, finish_time, status, 
+      date_entry, user_id, common_area_id);
+  }
+
+  @Get('reservation/allReservations')
+  allReservations() {
+    return this.appService.allReservations();
+  }
+
+  @Get('reservation/find/:id')
+  findReservation(
+    @Param('id') paramReservation: string
+  ) {
+    return this.appService.findReservation(paramReservation);
+  }
 }

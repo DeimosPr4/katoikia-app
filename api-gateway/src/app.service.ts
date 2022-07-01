@@ -226,4 +226,44 @@ export class AppService {
   }
 
 
+  // ====================== RESERVATIONS =============================== 
+
+  //POST parameter from API
+  createReservation(start_time: string, finish_time: string, status: string, 
+    date_entry: Date, user_id: string, common_area_id: string) {
+    const pattern = { cmd: 'createReservation' };
+    const payload = {
+      start_time: start_time, finish_time: finish_time, status: status, 
+      date_entry: date_entry, user_id: user_id,  common_area_id: common_area_id
+    };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  allReservations() {
+    const pattern = { cmd: 'findAllReservations' };
+    const payload = {};
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  //GET parameter from API
+  findReservation(paramReservationId: string) {
+    const pattern = { cmd: 'findOneReservation' };
+    const payload = { id: paramReservationId };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+
+
 }

@@ -1,25 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { Reservation, ReservationDocument} from '../schemas/reservation.schema';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ReservationsService {
-  create(Reservation: ReservationDocument) {
-    return 'This action adds a new reservation';
+  constructor(
+    @InjectModel(Reservation.name) private readonly reservationModel: Model<ReservationDocument>,
+  ) {}
+
+  create(reservation: ReservationDocument) {
+    console.log(reservation);
+
+    return this.reservationModel.create(reservation);
   }
 
-  findAll() {
-    return `This action returns all reservations`;
+  async findAll(): Promise<Reservation[]> { 
+    return this.reservationModel
+      .find() 
+      .setOptions({ sanitizeFilter: true }) 
+      .exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reservation`;
+  async findOne(id: string): Promise<Reservation> {
+    return this.reservationModel.findOne({ _id: id }).exec();
   }
 
-  update(id: number, Reservation: ReservationDocument) {
-    return `This action updates a #${id} reservation`;
+  async findOneByDNI(dni: string): Promise<Reservation> {
+    return this.reservationModel.findOne({ dni: dni }).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reservation`;
+  async update(id: string, reservation: ReservationDocument) {
+    return this.reservationModel.findOneAndUpdate({ _id: id }, reservation, {
+      new: true,
+    });
+  }
+
+  async remove(id: string) {
+    return this.reservationModel.findByIdAndRemove({ _id: id }).exec();
   }
 }

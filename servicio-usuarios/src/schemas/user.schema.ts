@@ -33,9 +33,12 @@ export class User {
     @Prop()
     status: string;
 
-
     @Prop()
     date_entry: Date;
+
+
+    @Prop()
+    community_id?: string;
 }
 
 

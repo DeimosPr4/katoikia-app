@@ -12,6 +12,11 @@ export class UsersController {
     return this.userService.create(user);
   }
 
+  @MessagePattern({ cmd: 'createAdminSystem' })
+  createUserAdmin(@Payload() user: UserDocument) {
+    return this.userService.create(user);
+  }
+
   @MessagePattern({ cmd: 'findAllUsers' })
   findAll() {
     return this.userService.findAll();
@@ -21,6 +26,7 @@ export class UsersController {
   findOne(@Payload() dni: string) {
     return this.userService.findOneByDNI(dni);
   }
+  
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
     return this.userService.update(user.id, user);

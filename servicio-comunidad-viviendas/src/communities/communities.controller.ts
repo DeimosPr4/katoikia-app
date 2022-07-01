@@ -19,7 +19,8 @@ export class CommunitiesController {
 
   @MessagePattern({cmd: 'findOneCommunity'})
   findOne(@Payload() id: string) {
-    return this.communitiesService.findOne(id);
+    let _id = id['_id'];
+    return this.communitiesService.findOne(_id);
   }
 
   @MessagePattern({cmd: 'updateCommunity'})
@@ -29,6 +30,7 @@ export class CommunitiesController {
 
   @MessagePattern({cmd: 'removeCommunity'})
   remove(@Payload() id: string) {
-    return this.communitiesService.remove(id);
+    let _id = id['_id'];
+    return this.communitiesService.remove(_id);
   }
 }

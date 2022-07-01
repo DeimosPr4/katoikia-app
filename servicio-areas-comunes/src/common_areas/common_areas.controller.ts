@@ -19,7 +19,8 @@ export class CommonAreasController {
 
   @MessagePattern({cmd: 'findOneCommonArea'})
   findOne(@Payload() id: string) {
-    return this.commonAreasService.findOne(id);
+    let _id = id['_id'];
+    return this.commonAreasService.findOne(_id);
   }
 
   @MessagePattern({cmd: 'updateCommonArea'})
@@ -29,6 +30,7 @@ export class CommonAreasController {
 
   @MessagePattern({cmd: 'removeCommonArea'})
   remove(@Payload() id: string) {
-    return this.commonAreasService.remove(id);
+    let _id = id['_id'];
+    return this.commonAreasService.remove(_id);
   }
 }

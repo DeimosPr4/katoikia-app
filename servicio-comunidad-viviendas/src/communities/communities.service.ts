@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Community, CommunityDocument } from 'src/schemas/community.schema'; 
 import { InjectModel } from '@nestjs/mongoose';
-import { Request } from 'express'; 
 
 @Injectable()
 export class CommunitiesService {
@@ -31,10 +30,6 @@ export class CommunitiesService {
       new: true,
     });
   }
-
-
-  
-
 
   async remove(id: string) {
     return this.communityModel.findByIdAndRemove({ _id: id }).exec();

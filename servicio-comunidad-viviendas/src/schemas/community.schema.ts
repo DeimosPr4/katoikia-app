@@ -35,8 +35,8 @@ export class Community {
     @Prop()
     date_entry: Date;
 
-    @Prop({ type: HouseSchema })
-    houses: House
+    @Prop({ type: [HouseSchema] })
+    houses: Array<House>;
 }
 
 

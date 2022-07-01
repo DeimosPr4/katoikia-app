@@ -68,10 +68,9 @@ export class AppController {
     @Body('quote') quote: number,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
-    @Body('houses') houses: {},
+    @Body('houses') houses: [{}],
 
   ) {
-    console.log(houses);
 
 
 

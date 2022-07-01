@@ -68,7 +68,7 @@ export class AppService {
 
   //POST parameter from API
   createCommunity(name: string, province: string, canton: string, district: string
-    , num_houses: number, phone: number, quote: number, status: string, date_entry: Date, houses: {}) {
+    , num_houses: number, phone: number, quote: number, status: string, date_entry: Date, houses: [{}]) {
     const pattern = { cmd: 'createCommunity' };
     const payload = {
       name: name, province: province, canton: canton, district: district, num_houses: num_houses,
@@ -80,6 +80,8 @@ export class AppService {
         map((message: string) => ({ message })),
       );
   }
+
+  
 
   allCommunities() {
     const pattern = { cmd: 'findAllCommunities' };

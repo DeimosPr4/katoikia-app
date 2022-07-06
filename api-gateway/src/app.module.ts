@@ -7,14 +7,94 @@ import { AppService } from './app.service';
   imports: [
     ClientsModule.register([
       {
-        name: "MICROSERVICE_A",
+        name: "SERVICIO_USUARIOS",
         transport: Transport.TCP,
         options: {
           host: "127.0.0.1",
-          port: 8888
+          port: 3001
         }
       }
-    ])
+    ]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_COMUNIDADES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3002
+        }
+      }
+    ]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_AREAS_COMUNES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3003
+        }
+      }
+    ]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_INVITADOS",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3004
+        }
+      }
+    ]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_PAGOS",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3005
+        }
+      }
+    ]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_RESERVACIONES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3006
+        }
+      }
+    ]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_POSTS",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3007
+        }
+      }
+    ]),
+      ClientsModule.register([
+      {
+        name: "SERVICIO_REPORTES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3008
+        }
+      }
+    ]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_NOTIFICACIONES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3009
+        }
+      }
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

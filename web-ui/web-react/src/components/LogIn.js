@@ -4,10 +4,10 @@ const LogIn = () => {
 
     return(
         <div> 
-              <span className="p-float-label">
+              {/* <span className="p-float-label">
                         <InputText id="username" type="text" value={floatValue} onChange={(e) => setFloatValue(e.target.value)} />
                         <label htmlFor="username">Username</label>
-                    </span>
+                    </span> */}
         </div>
     )
 }

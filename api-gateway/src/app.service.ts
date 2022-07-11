@@ -71,6 +71,16 @@ export class AppService {
       );
   }
 
+  inicioSesion(pEmail: string, pPassword: string) {
+    const pattern = { cmd: 'loginUser' };
+    const payload = { email: pEmail, password: pPassword};
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
   // ====================== COMMUNITIES =============================== 
 
   //POST parameter from API

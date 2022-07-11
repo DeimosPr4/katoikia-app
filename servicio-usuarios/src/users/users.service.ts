@@ -37,4 +37,9 @@ export class UsersService {
   async remove(id: string) {
     return this.userModel.findByIdAndRemove({ _id: id }).exec();
   }
+
+  //inicio de sesion
+  async findLogin(email: string): Promise<User> {
+    return this.userModel.findOne({ email:email}).exec();
+  }
 }

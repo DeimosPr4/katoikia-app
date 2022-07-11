@@ -38,4 +38,11 @@ export class UsersController {
     let dni = id['dni'];
     return this.userService.remove(dni);
   }
+
+  //inicio de sesion
+  @MessagePattern({ cmd: 'loginUser' })
+  findLogin(@Payload() body:string) {
+    let pemail= body['email'];
+    return this.userService.findLogin(pemail);
+  }
 }

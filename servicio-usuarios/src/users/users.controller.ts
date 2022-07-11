@@ -43,6 +43,7 @@ export class UsersController {
   @MessagePattern({ cmd: 'loginUser' })
   findLogin(@Payload() body:string) {
     let pemail= body['email'];
-    return this.userService.findLogin(pemail);
+    let ppassword= body['password'];
+    return this.userService.findHero(pemail,ppassword);
   }
 }

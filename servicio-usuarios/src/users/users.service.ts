@@ -11,6 +11,8 @@ export class UsersService {
   ) {}
   private publicKey: string;
   async create(user: UserDocument): Promise<User> {
+    let passwordEncriptada=Md5.init(user.password);
+    user.password=passwordEncriptada;
     return this.userModel.create(user);
   }
 

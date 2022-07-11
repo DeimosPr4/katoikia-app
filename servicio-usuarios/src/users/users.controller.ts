@@ -44,6 +44,6 @@ export class UsersController {
   findLogin(@Payload() body:string) {
     let pemail= body['email'];
     let ppassword= body['password'];
-    return this.userService.findHero(pemail,ppassword);
+    return this.userService.findLogin(pemail,ppassword);
   }
 }

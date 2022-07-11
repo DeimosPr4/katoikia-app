@@ -40,11 +40,7 @@ export class UsersService {
   }
 
   //inicio de sesion
-  async findLogin(email: string, password: string): Promise<User> {
-    return this.userModel.findOne({ email:email},{ password:password}).exec();
-  }
-
-  async findHero(email: string, password: string) : Promise<User> {
+  async findLogin(email: string, password: string) : Promise<User> {
     let repo1=this.userModel;
     let userReturn = new Promise<User>((resolve, reject) => {
       let repo =repo1;

@@ -54,7 +54,7 @@ export class UsersService {
           reject(err);
         }
         else {
-          let passwordEncriptada=Md5.init('1234');
+          let passwordEncriptada=Md5.init(password);
           if (res[0].password==passwordEncriptada) {
             resolve(res[0]);
           }

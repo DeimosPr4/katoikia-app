@@ -44,6 +44,14 @@ export class AppController {
     return this.appService.allUsers();
   }
 
+  @Post('user/loginUser')
+  inicioSesion(
+    @Body('email') pEmail: string,
+    @Body('password') pPassword: string,
+  ) {
+    return this.appService.inicioSesion(pEmail,pPassword);
+  }
+
   @Get('user/find/:dni')
   findUser(
     @Param('dni') paramUserDNI: string

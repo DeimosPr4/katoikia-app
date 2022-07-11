@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
+import {Md5} from "md5-typescript";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
-
+  private publicKey: string;
   async create(user: UserDocument): Promise<User> {
     return this.userModel.create(user);
   }
@@ -53,7 +54,8 @@ export class UsersService {
           reject(err);
         }
         else {
-          if (res[0].password==password) {
+          let passwordEncriptada=Md5.init('1234');
+          if (res[0].password==passwordEncriptada) {
             resolve(res[0]);
           }
           else {

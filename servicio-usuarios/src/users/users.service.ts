@@ -46,7 +46,7 @@ export class UsersService {
 
   async findHero(email: string, password: string) : Promise<User> {
     let repo1=this.userModel;
-    let p = new Promise<User>((resolve, reject) => {
+    let userReturn = new Promise<User>((resolve, reject) => {
       let repo =repo1;
 
       repo.find({ email : email }).exec((err, res) => {
@@ -65,6 +65,6 @@ export class UsersService {
       });
     });
     
-    return p;    
+    return userReturn;    
   }
 }

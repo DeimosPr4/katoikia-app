@@ -28,6 +28,7 @@ import TreeDemo from './components/TreeDemo';
 import InvalidStateDemo from './components/InvalidStateDemo';
 import BlocksDemo from './components/BlocksDemo';
 import IconsDemo from './components/IconsDemo';
+import FormAdminSistema from './components/FormAdminSistema';
 
 import Crud from './pages/Crud';
 import EmptyPage from './pages/EmptyPage';
@@ -159,9 +160,10 @@ const App = () => {
     const menu = [
         {
             label: 'Home',
-            items: [{
-                label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
-            }]
+            items: [
+                {label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'},
+                {label: 'Registro admin sistema', icon: 'pi pi-fw pi-id-card', to: '/formAdminSistema'}
+            ]
         },
         {
             label: 'UI Components', icon: 'pi pi-fw pi-sitemap',
@@ -320,6 +322,7 @@ const App = () => {
                     <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
                     <Route path="/documentation" component={Documentation} />
+                    <Route path="/formAdminSistema" component={FormAdminSistema} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />

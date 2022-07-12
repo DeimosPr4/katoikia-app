@@ -1,13 +1,45 @@
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
 
 const FormAdminSistema = () => {
 
-    const registrarAdmin = () => {
-        console.log('holis');
+    function registrarAdmin() {
+        var data = {
+            dni: "12687",
+            name: "hola",
+            last_name: "buuu",
+            email: "tmora4c@ucenfotec.ac.cr",
+            phone: 84664515,
+            password: "1203",
+            user_type: "1",
+            status: "2"
+        };
+        console.log(data);
+         fetch('http://localhost:4000/user/createAdminSystem/', {
+            cache: 'no-cache',
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(
+            function (response) {
+                if (response.status != 200)
+                    console.log('Ocurrió un error con el servicio: ' + response.status);
+                else
+                    return response.json();
+            }
+        )
+        .then(
+            function (response) {
+                console.log(response);
+            }
+        )
+        .catch(
+            err => console.log('Ocurrió un error con el fetch', err)
+        );
     }
 
     return (
@@ -44,8 +76,4 @@ const FormAdminSistema = () => {
     )
 }
 
-const comparisonFn = function (prevProps, nextProps) {
-    return prevProps.location.pathname === nextProps.location.pathname;
-};
-
-export default React.memo(FormAdminSistema, comparisonFn);
+export default React.memo(FormAdminSistema);

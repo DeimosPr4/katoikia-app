@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
 const FormAdminSistema = () => {
-
-    async function fetchP(){
-        var data = {
-            dni: "12687",
-            name: "hola",
-            last_name: "buuu",
-            email: "tmora4c@ucenfotec.ac.cr",
-            phone: 84664515,
-            password: "1203",
-            user_type: "1",
-            status: "2"
-        };
-        console.log(data);
-        let result=await fetch('https://pokeapi.co/api/v2/pokemon?limit=10&offset=0', {method:'GET'});
-    }
-    
     function registrarAdmin() {
+        var data2 = {
+            dni: document.getElementById('identificacion').value,
+            name: document.getElementById('nombre').value,
+            last_name: document.getElementById('apellidos').value,
+            email: document.getElementById('correo_electronico').value,
+            phone: document.getElementById('telefono').value,
+            password: document.getElementById('correo_electronico').value,
+            user_type: "1",
+            status: "2"
+        };
+        console.log(data2);
         var data = {
             dni: "12687",
             name: "hola",
@@ -30,18 +25,17 @@ const FormAdminSistema = () => {
             user_type: "1",
             status: "2"
         };
-        console.log(data);
          fetch('http://localhost:4000/user/createAdminSystem/', {
             cache: 'no-cache',
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(data2),
             headers: {
                 'Content-Type': 'application/json'
             }
         })
         .then(
             function (response) {
-                if (response.status != 200)
+                if (response.status != 201)
                     console.log('Ocurrió un error con el servicio: ' + response.status);
                 else
                     return response.json();
@@ -49,7 +43,7 @@ const FormAdminSistema = () => {
         )
         .then(
             function (response) {
-                console.log(response);
+                console.log(response.message);
             }
         )
         .catch(
@@ -81,7 +75,7 @@ const FormAdminSistema = () => {
                         </div>
                         <div className="field col-12">
                             <label htmlFor="telefono">Teléfono</label>
-                            <InputText id="telefono" type="text" rows="4" />
+                            <InputText id="telefono" type="number" rows="4" />
                         </div>
                         <Button label="Registrar" onClick={registrarAdmin}></Button>
                     </div>

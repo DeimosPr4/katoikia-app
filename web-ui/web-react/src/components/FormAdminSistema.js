@@ -4,6 +4,21 @@ import { Button } from 'primereact/button';
 
 const FormAdminSistema = () => {
 
+    async function fetchP(){
+        var data = {
+            dni: "12687",
+            name: "hola",
+            last_name: "buuu",
+            email: "tmora4c@ucenfotec.ac.cr",
+            phone: 84664515,
+            password: "1203",
+            user_type: "1",
+            status: "2"
+        };
+        console.log(data);
+        let result=await fetch('https://pokeapi.co/api/v2/pokemon?limit=10&offset=0', {method:'GET'});
+    }
+    
     function registrarAdmin() {
         var data = {
             dni: "12687",

@@ -32,8 +32,8 @@ const FormAdminSistema = () => {
             email: document.getElementById('correo_electronico').value,
             phone: document.getElementById('telefono').value,
             password: document.getElementById('correo_electronico').value,
-            user_type: "1",
-            status: "2"
+            user_type: "1", //1 es admin
+            status: "1"
         };
        // console.log(data);
 

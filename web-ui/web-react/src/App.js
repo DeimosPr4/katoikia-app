@@ -162,7 +162,7 @@ const App = () => {
             label: 'Home',
             items: [
                 {label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'},
-                {label: 'Registro admin sistema', icon: 'pi pi-fw pi-id-card', to: '/formAdminSistema'}
+                {label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/formAdminSistema'}
             ]
         },
         {

@@ -1,10 +1,31 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { CustomerService } from '../service/CustomerService';
 
 const FormAdminSistema = () => {
+
+    const [pokemones,setPokemones]=useState([]);
+    const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/allUsers');
+    async function fetchP(){
+    let nombres=await fetch(urlFetch, {method:'GET'});
+    let pokemonesRes= await nombres.json();
+    setPokemones(pokemonesRes.message);
+    console.log(pokemones);
+   }
+    useEffect(()=>{
+      fetchP();
+    },[])
+
+
+
+
+
+
     function registrarAdmin() {
-        var data2 = {
+        var data = {
             dni: document.getElementById('identificacion').value,
             name: document.getElementById('nombre').value,
             last_name: document.getElementById('apellidos').value,
@@ -14,21 +35,12 @@ const FormAdminSistema = () => {
             user_type: "1",
             status: "2"
         };
-        console.log(data2);
-        var data = {
-            dni: "12687",
-            name: "hola",
-            last_name: "buuu",
-            email: "tmora4c@ucenfotec.ac.cr",
-            phone: 84664515,
-            password: "1203",
-            user_type: "1",
-            status: "2"
-        };
+       // console.log(data);
+
          fetch('http://localhost:4000/user/createAdminSystem/', {
             cache: 'no-cache',
             method: 'POST',
-            body: JSON.stringify(data2),
+            body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -43,7 +55,7 @@ const FormAdminSistema = () => {
         )
         .then(
             function (response) {
-                console.log(response.message);
+                fetchP();
             }
         )
         .catch(
@@ -53,6 +65,18 @@ const FormAdminSistema = () => {
 
     return (
         <div className="grid">
+            <div className="col-12">
+                <div className="card">
+                    <h5>Administradores del sistema</h5>
+                    <DataTable value={pokemones}  scrollable scrollHeight="400px" scrollDirection="both" className="mt-3">
+                        <Column field="name" header="Nombre" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="last_name" header="Apellidos" style={{ flexGrow: 1, flexBasis: '160px' }} alignFrozen="left"></Column>
+                        <Column field="dni" header="Identificación" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="email" header="Correo electrónico" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="phone" header="Telefóno" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                    </DataTable>
+                </div>
+            </div>
             <div className="col-12">
                 <div className="card">
                     <h5>Registro de un administrador del sistema</h5>
@@ -82,6 +106,8 @@ const FormAdminSistema = () => {
                 </div>
             </div>
         </div>
+
+        
     )
 }
 

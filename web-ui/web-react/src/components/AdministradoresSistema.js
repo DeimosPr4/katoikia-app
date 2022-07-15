@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
-const FormAdminSistema = () => {
+const AdministradoresSistema = () => {
 
     const [pokemones,setPokemones]=useState([]);
     const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/findAdminSistema/');
@@ -110,4 +110,4 @@ const FormAdminSistema = () => {
     )
 }
 
-export default React.memo(FormAdminSistema);
+export default React.memo(AdministradoresSistema);

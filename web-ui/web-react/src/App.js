@@ -28,7 +28,7 @@ import TreeDemo from './templates/TreeDemo';
 import InvalidStateDemo from './templates/InvalidStateDemo';
 import BlocksDemo from './templates/BlocksDemo';
 import IconsDemo from './templates/IconsDemo';
-import FormAdminSistema from './components/FormAdminSistema';
+import AdministradoresSistema from './components/AdministradoresSistema';
 
 import Crud from './pages/Crud';
 import EmptyPage from './pages/EmptyPage';
@@ -162,7 +162,8 @@ const App = () => {
             label: 'Home',
             items: [
                 {label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'},
-                {label: 'Registro admin sistema', icon: 'pi pi-fw pi-id-card', to: '/formAdminSistema'}, 
+                {label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema'}, 
+                {label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema'}, 
                 {label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn'}
             ]
         },
@@ -316,7 +317,7 @@ const App = () => {
                     <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
                     <Route path="/documentation" component={Documentation} />
-                    <Route path="/formAdminSistema" component={FormAdminSistema} />
+                    <Route path="/administradoresSistema" component={AdministradoresSistema} />
                     <Route path="/logIn" component={LogIn} />
                 </div>
 

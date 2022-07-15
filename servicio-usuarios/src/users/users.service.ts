@@ -22,7 +22,6 @@ export class UsersService {
       .setOptions({ sanitizeFilter: true }) 
       .exec();
   }
-  
   async findOne(id: string): Promise<User> {
     return this.userModel.findOne({ _id: id }).exec();
   }
@@ -65,4 +64,16 @@ export class UsersService {
     
     return userReturn;    
   }
+
+  //find admin del sistema
+  async allUsersAdminSistema(): Promise<User[]> { 
+    return this.userModel.find({ user_type: 1 }).exec();
+  }
+
+    //find admin de comunidad
+    async allUsersAdminComunidad(): Promise<User[]> { 
+      return this.userModel.find({ user_type: 2 }).exec();   
+    }
+
+    
 }

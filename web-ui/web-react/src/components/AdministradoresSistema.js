@@ -18,11 +18,6 @@ const AdministradoresSistema = () => {
       fetchP();
     },[])
 
-
-
-
-
-
     function registrarAdmin() {
         var data = {
             dni: document.getElementById('identificacion').value,

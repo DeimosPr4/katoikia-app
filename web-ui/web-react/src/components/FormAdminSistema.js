@@ -7,7 +7,7 @@ import { Column } from 'primereact/column';
 const FormAdminSistema = () => {
 
     const [pokemones,setPokemones]=useState([]);
-    const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/allUsers');
+    const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/findAdminSistema/');
     async function fetchP(){
     let nombres=await fetch(urlFetch, {method:'GET'});
     let pokemonesRes= await nombres.json();

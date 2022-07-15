@@ -60,6 +60,16 @@ export class AppService {
       );
   }
 
+  allUsersAdminSistema() {
+    const pattern = { cmd: 'findAdminSistema' };
+    const payload = {};
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
   //GET parameter from API
   findUser(paramUserDNI: string) {
     const pattern = { cmd: 'findUserDNI' };

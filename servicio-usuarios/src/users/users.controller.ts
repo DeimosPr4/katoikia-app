@@ -46,4 +46,10 @@ export class UsersController {
     let ppassword= body['password'];
     return this.userService.findLogin(pemail,ppassword);
   }
+
+  //buscar solo admins del sistema
+  @MessagePattern({ cmd: 'findAdminSistema' })
+  allUsersAdminSistema() {
+    return this.userService.allUsersAdminSistema();
+  }
 }

@@ -52,6 +52,11 @@ export class AppController {
     return this.appService.inicioSesion(pEmail,pPassword);
   }
 
+  @Get('user/findAdminSistema')
+  allUsersAdminSistema() {
+    return this.appService.allUsersAdminSistema();
+  }
+
   @Get('user/find/:dni')
   findUser(
     @Param('dni') paramUserDNI: string

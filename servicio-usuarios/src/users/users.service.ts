@@ -69,4 +69,11 @@ export class UsersService {
   async allUsersAdminSistema(): Promise<User[]> { 
     return this.userModel.find({ user_type: 1 }).exec();
   }
+
+    //find admin de comunidad
+    async allUsersAdminComunidad(): Promise<User[]> { 
+      return this.userModel.find({ user_type: 2 }).exec();   
+    }
+
+    
 }

@@ -52,4 +52,10 @@ export class UsersController {
   allUsersAdminSistema() {
     return this.userService.allUsersAdminSistema();
   }
+
+    //buscar solo admins de comunidad
+    @MessagePattern({ cmd: 'findAdminComunidad' })
+    allUsersAdminComunidad() {
+      return this.userService.allUsersAdminComunidad();
+    }
 }

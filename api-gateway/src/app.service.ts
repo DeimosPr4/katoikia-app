@@ -419,4 +419,25 @@ export class AppService {
         map((message: string) => ({ message })),
       );
   }
+
+
+  sendMail(email: string) {
+    const pattern = { cmd: 'sendMail' };
+    const payload = { email: email};
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  html(email: string, name: string) {
+    const pattern = { cmd: 'html' };
+    const payload = { email: email, name: name};
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
 }

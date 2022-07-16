@@ -296,4 +296,21 @@ export class AppController {
   ) {
     return this.appService.findReport(paramReport);
   }
+
+
+  @Post('email/sendMail')
+  senMail(
+    @Body('email') email: string,
+  ) {
+
+    return this.appService.sendMail(email);
+  }
+  @Post('email/html')
+  html(
+    @Body('email') email: string,
+    @Body('name') name: string,
+  ) {
+
+    return this.appService.html(email, name);
+  }
 }

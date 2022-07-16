@@ -7,7 +7,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     ClientsModule.register([
       {
-        name: "SERVICIO_USUARIOS",
+        name: "SERVICIO_NOTIFICACIONES",
         transport: Transport.TCP,
         options: {
           host: "127.0.0.1",

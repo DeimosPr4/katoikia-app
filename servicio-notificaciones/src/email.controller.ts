@@ -23,15 +23,23 @@ export class EmailController {
     @MessagePattern({ cmd: 'html' })
     async postHTMLEmail(@Payload() user: any) {
         const url =  "http://localhost:3000/";
+        const image =  "images/email.ong";
         var response = await this.mailService.sendMail({
             to: user["email"],
             from: "mbonilla.guti@gmail.com",
             subject: 'HTML Dynamic Template',
-            template: 'confirmation',
+            template: 'templateEmail',
             context: {
                 name: user["name"],
-                url,
+                url
             },
+            attachments: [
+                {
+                    filename: 'email.png',
+                    path: __dirname +'/mails/images/email.png',
+                    cid: 'logo' //my mistake was putting "cid:logo@cid" here! 
+               }
+            ]
         });
         return response;
     }

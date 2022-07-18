@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { classNames } from 'primereact/utils';
-import { CodeHighlight } from './components/CodeHighlight';
+import { CodeHighlight } from './templates/CodeHighlight';
 
 const BlockViewer = (props) => {
 

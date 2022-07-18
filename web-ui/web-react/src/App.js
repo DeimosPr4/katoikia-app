@@ -8,26 +8,28 @@ import { AppFooter } from './AppFooter';
 import { AppMenu } from './AppMenu';
 import { AppConfig } from './AppConfig';
 
-import Dashboard from './components/Dashboard';
-import ButtonDemo from './components/ButtonDemo';
-import ChartDemo from './components/ChartDemo';
-import Documentation from './components/Documentation';
-import FileDemo from './components/FileDemo';
-import FloatLabelDemo from './components/FloatLabelDemo';
-import FormLayoutDemo from './components/FormLayoutDemo';
-import InputDemo from './components/InputDemo';
-import ListDemo from './components/ListDemo';
-import MenuDemo from './components/MenuDemo';
-import MessagesDemo from './components/MessagesDemo';
-import MiscDemo from './components/MiscDemo';
-import OverlayDemo from './components/OverlayDemo';
-import MediaDemo from './components/MediaDemo';
-import PanelDemo from './components/PanelDemo';
-import TableDemo from './components/TableDemo';
-import TreeDemo from './components/TreeDemo';
-import InvalidStateDemo from './components/InvalidStateDemo';
-import BlocksDemo from './components/BlocksDemo';
-import IconsDemo from './components/IconsDemo';
+import Dashboard from './templates/Dashboard';
+import ButtonDemo from './templates/ButtonDemo';
+import ChartDemo from './templates/ChartDemo';
+import Documentation from './templates/Documentation';
+import FileDemo from './templates/FileDemo';
+import FloatLabelDemo from './templates/FloatLabelDemo';
+import FormLayoutDemo from './templates/FormLayoutDemo';
+import InputDemo from './templates/InputDemo';
+import ListDemo from './templates/ListDemo';
+import MenuDemo from './templates/MenuDemo';
+import MessagesDemo from './templates/MessagesDemo';
+import MiscDemo from './templates/MiscDemo';
+import OverlayDemo from './templates/OverlayDemo';
+import MediaDemo from './templates/MediaDemo';
+import PanelDemo from './templates/PanelDemo';
+import TableDemo from './templates/TableDemo';
+import TreeDemo from './templates/TreeDemo';
+import InvalidStateDemo from './templates/InvalidStateDemo';
+import BlocksDemo from './templates/BlocksDemo';
+import IconsDemo from './templates/IconsDemo';
+import AdministradoresSistema from './components/AdministradoresSistema';
+import AdministradoresComunidad from './components/AdministradoresComunidad';
 
 import Crud from './pages/Crud';
 import EmptyPage from './pages/EmptyPage';
@@ -159,9 +161,12 @@ const App = () => {
     const menu = [
         {
             label: 'Home',
-            items: [{
-                label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
-            }]
+            items: [
+                {label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'},
+                {label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema'}, 
+                {label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresComunidad'}, 
+                {label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn'}
+            ]
         },
         {
             label: 'UI Components', icon: 'pi pi-fw pi-sitemap',
@@ -249,13 +254,6 @@ const App = () => {
                     ]
                 }
             ]
-        },
-        {
-            label: 'Get Started',
-            items: [
-                { label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => { window.location = "#/documentation" } },
-                { label: 'View Source', icon: 'pi pi-fw pi-search', command: () => { window.location = "https://github.com/primefaces/sakai-react" } }
-            ]
         }
     ];
 
@@ -320,6 +318,9 @@ const App = () => {
                     <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
                     <Route path="/documentation" component={Documentation} />
+                    <Route path="/administradoresSistema" component={AdministradoresSistema} />
+                    <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
+                    <Route path="/logIn" component={LogIn} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
@@ -332,7 +333,7 @@ const App = () => {
                 <div className="layout-mask p-component-overlay"></div>
             </CSSTransition>
 
-<LogIn/>
+
         </div>
     );
 

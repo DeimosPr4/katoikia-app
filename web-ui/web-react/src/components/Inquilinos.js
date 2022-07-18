@@ -29,3 +29,5 @@ const Inquilinos = () => {
     </div>
   )
 }
+
+export default React.memo(Inquilinos)

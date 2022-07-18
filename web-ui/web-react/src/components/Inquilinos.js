@@ -6,7 +6,7 @@ const Inquilinos = () => {
   function registrarInquilino() {
     let data = {
       email: document.getElementById('correo_electronico').value,
-      user_type: '1', //1 es admin
+      user_type: '1', //1 es admin TODO: cambiar a otro valor
       status: '1',
     }
   }

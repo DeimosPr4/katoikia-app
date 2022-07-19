@@ -16,7 +16,7 @@ export class UsersService {
     @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
 
   ) { }
-  private publicKey: string;
+  private publicKey: string; 
   async create(user: UserDocument): Promise<User> {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
@@ -97,6 +97,12 @@ export class UsersService {
       .pipe(
         map((message: string) => ({ message })),
       );
+  }
+
+
+
+  async findCommunityUser(community_id: string, user_type: number): Promise<User> {
+    return this.userModel.findOne({ community_id: community_id, user_type: user_type }).exec();
   }
 
 }

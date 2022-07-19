@@ -110,6 +110,14 @@ export class AppController {
   }
 
 
+  
+  @Post('community/findCommunityAdmin')
+  findCommunityAdmin(
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.findCommunityAdmin(community_id);
+  }
+
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(

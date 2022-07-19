@@ -7,6 +7,11 @@ export type CommunityDocument = Community & Document;
 
 @Schema({ collection: 'communities' })
 export class Community {
+    @Prop()
+    id_admin: string;
+
+    @Prop({ default: "Sin Administrador" })
+    name_admin: string ;
 
     @Prop()
     name: string;
@@ -37,6 +42,7 @@ export class Community {
 
     @Prop({ type: [HouseSchema] })
     houses: Array<House>;
+
 }
 
 

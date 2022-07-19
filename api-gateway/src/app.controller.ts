@@ -22,6 +22,23 @@ export class AppController {
       user_type, status, date_entry);
   }
 
+  @Post('user/createGuard')
+  createGuard(
+    //Nombre, Apellidos, Correo electrónico, Cédula, Teléfono, Contraseña
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('password') password: string,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+  ) {
+    return this.appService.createGuard(dni, name, last_name, email, phone, password,
+      user_type, status, date_entry);
+  }
+
   @Post('user/createUser')
   createUser(
     @Body('dni') dni: string,

@@ -17,6 +17,11 @@ export class UsersController {
     return this.userService.create(user);
   }
 
+  @MessagePattern({ cmd: 'createGuard' })
+  createGuard(@Payload() user: UserDocument) {
+    return this.userService.create(user);
+  }
+
   @MessagePattern({ cmd: 'findAllUsers' })
   findAll() {
     return this.userService.findAll();

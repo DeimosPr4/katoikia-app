@@ -50,6 +50,20 @@ export class AppService {
       );
   }
 
+  testSendMail(dni: string, name: string, last_name: string, email: string, phone: number
+    , password: string, user_type: string, status: string, date_entry: Date) {
+    const pattern = { cmd: 'testSendMail' };
+    const payload = {
+      dni: dni, name: name, last_name: last_name, email: email, phone: phone,
+      password: password, user_type: user_type, status: status, date_entry: date_entry
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
   allUsers() {
     const pattern = { cmd: 'findAllUsers' };
     const payload = {};
@@ -414,6 +428,27 @@ export class AppService {
     const pattern = { cmd: 'findOneReport' };
     const payload = { id: paramReportId };
     return this.clientReportApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+
+  sendMail(email: string) {
+    const pattern = { cmd: 'sendMail' };
+    const payload = { email: email};
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  html(email: string, name: string) {
+    const pattern = { cmd: 'html' };
+    const payload = { email: email, name: name};
+    return this.clientNotificationtApp
       .send<string>(pattern, payload)
       .pipe(
         map((message: string) => ({ message })),

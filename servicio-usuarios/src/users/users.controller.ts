@@ -5,7 +5,7 @@ import { UsersService } from './users.service';
 
 @Controller()
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly userService: UsersService) { }
 
   @MessagePattern({ cmd: 'createUser' })
   create(@Payload() user: UserDocument) {
@@ -17,6 +17,8 @@ export class UsersController {
     return this.userService.create(user);
   }
 
+
+
   @MessagePattern({ cmd: 'findAllUsers' })
   findAll() {
     return this.userService.findAll();
@@ -27,7 +29,7 @@ export class UsersController {
     let dni = id['dni'];
     return this.userService.findOneByDNI(dni);
   }
-  
+
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
     return this.userService.update(user.id, user);
@@ -41,10 +43,10 @@ export class UsersController {
 
   //inicio de sesion
   @MessagePattern({ cmd: 'loginUser' })
-  findLogin(@Payload() body:string) {
-    let pemail= body['email'];
-    let ppassword= body['password'];
-    return this.userService.findLogin(pemail,ppassword);
+  findLogin(@Payload() body: string) {
+    let pemail = body['email'];
+    let ppassword = body['password'];
+    return this.userService.findLogin(pemail, ppassword);
   }
 
   //buscar solo admins del sistema
@@ -53,9 +55,15 @@ export class UsersController {
     return this.userService.allUsersAdminSistema();
   }
 
-    //buscar solo admins de comunidad
-    @MessagePattern({ cmd: 'findAdminComunidad' })
-    allUsersAdminComunidad() {
-      return this.userService.allUsersAdminComunidad();
-    }
+  //buscar solo admins de comunidad
+  @MessagePattern({ cmd: 'findAdminComunidad' })
+  allUsersAdminComunidad() {
+    return this.userService.allUsersAdminComunidad();
+  }
+
+  //Prueba de envio de correo despues de registro, llamando a microservicio notificaciones
+  @MessagePattern({ cmd: 'testSendMail' })
+  testSendMail(@Payload() user: UserDocument) {
+    return this.userService.testSendMail(user);
+  }
 }

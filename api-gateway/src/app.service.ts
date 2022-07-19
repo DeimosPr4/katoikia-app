@@ -51,11 +51,11 @@ export class AppService {
   }
 
   createGuard(dni: string, name: string, last_name: string, email: string, phone: number
-    , password: string, user_type: string, status: string, date_entry: Date) {
+    , password: string, user_type: string, status: string, date_entry: Date, community_id: string) {
     const pattern = { cmd: 'createGuard' };
     const payload = {
       dni: dni, name: name, last_name: last_name, email: email, phone: phone,
-      password: password, user_type: user_type, status: status, date_entry: date_entry
+      password: password, user_type: user_type, status: status, date_entry: date_entry, community_id
     };
     return this.clientUserApp
       .send<string>(pattern, payload)

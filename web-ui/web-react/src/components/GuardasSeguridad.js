@@ -18,7 +18,7 @@ const GuardasSeguridad = () => {
       fetchP();
     },[])
 
-    function registrarAdmin() {
+    function registrarGuarda() {
         var data = {
             dni: document.getElementById('identificacion').value,
             name: document.getElementById('nombre').value,
@@ -26,15 +26,27 @@ const GuardasSeguridad = () => {
             email: document.getElementById('correo_electronico').value,
             phone: document.getElementById('telefono').value,
             password: document.getElementById('correo_electronico').value,
-            user_type: "1", //1 es admin
-            status: "1"
+            user_type: "4", //4 es guarda
+            status: "1",
+            community_id:"62be68215692582bbfd77134"
         };
-       // console.log(data);
+        var data2={
+            dni: "98765",
+            name: "Danielito",
+            last_name: "Rodriguez",
+            email: "danirodriguez@gmail.com",
+            phone: 84664515,
+            password: "1203",
+            user_type: "2",
+            status: "4",
+            community_id:"62be68215692582bbfd77134"
+        }
+        console.log(data2);
 
-         fetch('http://localhost:4000/user/createAdminSystem/', {
+         fetch('http://localhost:4000/user/createGuard', {
             cache: 'no-cache',
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(data2),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -73,7 +85,7 @@ const GuardasSeguridad = () => {
             </div>
             <div className="col-12">
                 <div className="card">
-                    <h5>Registro de un administrador del sistema</h5>
+                    <h5>Registro de un guarda de seguridad</h5>
                     <div className="p-fluid formgrid grid">
                         <div className="field col-12 md:col-6">
                             <label htmlFor="nombre">Nombre</label>
@@ -95,7 +107,7 @@ const GuardasSeguridad = () => {
                             <label htmlFor="telefono">Teléfono</label>
                             <InputText id="telefono" type="number" rows="4" />
                         </div>
-                        <Button label="Registrar" onClick={registrarAdmin}></Button>
+                        <Button label="Registrar" onClick={registrarGuarda}></Button>
                     </div>
                 </div>
             </div>

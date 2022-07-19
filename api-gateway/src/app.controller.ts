@@ -34,9 +34,10 @@ export class AppController {
     @Body('user_type') user_type: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id:string
   ) {
     return this.appService.createGuard(dni, name, last_name, email, phone, password,
-      user_type, status, date_entry);
+      user_type, status, date_entry,community_id);
   }
 
   @Post('user/createUser')

@@ -16,7 +16,7 @@ export class UsersService {
     @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
 
   ) { }
-  private publicKey: string;
+  private publicKey: string; 
   async create(user: UserDocument): Promise<User> {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;

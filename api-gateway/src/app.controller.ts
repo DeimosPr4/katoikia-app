@@ -1,10 +1,8 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AppService } from "./app.service";
-
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
-
   // #==== API Users
   @Post('user/createAdminSystem')
   createAdminSystem(
@@ -78,6 +76,12 @@ export class AppController {
   @Get('user/findAdminComunidad')
   allUsersAdminComunidad() {
     return this.appService.allUsersAdminComunidad();
+  }
+  @Get('user/findGuards/:community')
+  findGuardsCommunity(
+    @Param('community_id') community_id: string
+  ) {
+    return this.appService.findGuardsCommunity(community_id);
   }
 
   @Get('user/find/:dni')

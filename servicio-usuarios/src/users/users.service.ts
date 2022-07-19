@@ -70,6 +70,10 @@ export class UsersService {
     return this.userModel.find({ user_type: 1 }).exec();
   }
 
+  //find admin del sistema
+  async findGuardsCommunity(pcommunity_id: string): Promise<User[]> { 
+    return this.userModel.find({ user_type: 4 }).exec();
+  }
     //find admin de comunidad
     async allUsersAdminComunidad(): Promise<User[]> { 
       return this.userModel.find({ user_type: 2 }).exec();   

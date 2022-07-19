@@ -7,7 +7,7 @@ import { Column } from 'primereact/column';
 const GuardasSeguridad = () => {
 
     const [pokemones,setPokemones]=useState([]);
-    const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/findAdminSistema/');
+    const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/findGuards/62be68215692582bbfd77134');
     async function fetchP(){
     let nombres=await fetch(urlFetch, {method:'GET'});
     let pokemonesRes= await nombres.json();
@@ -46,6 +46,7 @@ const GuardasSeguridad = () => {
          fetch('http://localhost:4000/user/createGuard', {
             cache: 'no-cache',
             method: 'POST',
+            mode:'cors',
             body: JSON.stringify(data2),
             headers: {
                 'Content-Type': 'application/json'

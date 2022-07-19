@@ -105,6 +105,16 @@ export class AppService {
       );
   }
 
+  findGuardsCommunity(community_id: string) {
+    const pattern = { cmd: 'findGuardsCommunity' };
+    const payload = { community_id: community_id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
   inicioSesion(pEmail: string, pPassword: string) {
     const pattern = { cmd: 'loginUser' };
     const payload = { email: pEmail, password: pPassword};

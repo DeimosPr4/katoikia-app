@@ -99,4 +99,10 @@ export class UsersService {
       );
   }
 
+
+
+  async findCommunityUser(community_id: string, user_type: number): Promise<User> {
+    return this.userModel.findOne({ community_id: community_id, user_type: user_type }).exec();
+  }
+
 }

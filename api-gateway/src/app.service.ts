@@ -115,6 +115,18 @@ export class AppService {
       );
   }
 
+
+  //GET parameter from API
+  findCommunityAdmin(community_id: string) {
+    const pattern = { cmd: 'findCommunityAdmin' };
+    const payload = { community_id: community_id };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
   // ====================== COMMUNITIES =============================== 
 
   //POST parameter from API

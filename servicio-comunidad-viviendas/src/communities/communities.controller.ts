@@ -29,6 +29,12 @@ export class CommunitiesController {
     return this.communitiesService.findOneName(_id);
   }
 
+ /* @MessagePattern({cmd: 'findCommunityAdmin'})
+  findCommunityAdmin(@Payload() community: any) {
+    let _community = community['community_id'];
+    return this.communitiesService.findCommunityAdmin(_community, "2");
+  }*/
+
   @MessagePattern({cmd: 'updateCommunity'})
   update(@Payload() community: CommunityDocument) {
     return this.communitiesService.update(community.id, community);

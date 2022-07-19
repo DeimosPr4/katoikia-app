@@ -66,4 +66,13 @@ export class UsersController {
   testSendMail(@Payload() user: UserDocument) {
     return this.userService.testSendMail(user);
   }
+
+  //buscar usuario de una comunidad
+  @MessagePattern({ cmd: 'findOneCommunityUser' })
+  findCommunityUser(@Payload() user: any) {
+    return this.userService.findCommunityUser(user["community_id"], user["user_type"]);
+  }
+
+
 }
+

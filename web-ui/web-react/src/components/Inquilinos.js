@@ -1,5 +1,5 @@
 import { InputText } from 'primereact/inputtext'
-import { React } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Inquilinos = () => {
   function registrarInquilino() {

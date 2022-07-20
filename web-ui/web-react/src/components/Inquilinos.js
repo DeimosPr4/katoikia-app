@@ -1,6 +1,5 @@
+import { InputText } from 'primereact/inputtext'
 import { React } from 'react'
-import { DataTable } from 'primereact/datatable'
-import { Column } from 'primereact/column'
 
 const Inquilinos = () => {
   function registrarInquilino() {
@@ -36,14 +35,14 @@ const Inquilinos = () => {
             <div className="p-fluid formgrid grid">
               <div className="p-field col-12 md:col-6">
                 <label htmlFor="correo_electronico">Correo electrónico</label>
-                <input type="email" className="form-control" id="correo_electronico" />
+                <InputText type="email" className="form-control" id="correo_electronico" />
               </div>
               <div className="p-field col-12 md:col-6">
                 <label htmlFor="numero_vivienda">Número de Vivienda</label>
-                <input type="text" className="form-control" id="numero_vivienda" />
+                <InputText type="text" className="form-control" id="numero_vivienda" />
               </div>
             </div>
-            <button type="button" className="btn btn-primary" onClick={registrarInquilino()}>
+            <button type="button" className="btn btn-primary" onClick={registrarInquilino}>
               Registrar
             </button>
           </div>
@@ -53,4 +52,4 @@ const Inquilinos = () => {
   )
 }
 
-export default React.memo(Inquilinos)
+export default React.memo(Inquilinos);

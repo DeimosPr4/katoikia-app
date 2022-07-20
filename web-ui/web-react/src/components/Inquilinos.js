@@ -6,24 +6,46 @@ const Inquilinos = () => {
   function registrarInquilino() {
     let data = {
       email: document.getElementById('correo_electronico').value,
-      user_type: '1', //1 es admin TODO: cambiar a otro valor
+      user_type: '3',
       status: '1',
     }
+
+    fetch('http://localhost:3000/api/createUser', {
+      method: 'POST',
+      cache: 'no-cache',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      if (response.ok) {
+        alert('Inquilino registrado correctamente')
+      } else {
+        alert('Error al registrar inquilino')
+      }
+    })
   }
 
   return (
     <div className="grid">
       <div className="col-12">
         <div className="card">
-          <h5>Inquilinos</h5>
-          <DataTable value={listaInquilinos} scrollable scrollHeight="400px" scrollDirection="both" className="mt-3">
-            <Column field="name" header="Nombre" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-            <Column field="last_name" header="Apellidos" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-            <Column field="dni" header="Identificación" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-            <Column field="email" header="Correo electrónico" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-            <Column field="phone" header="Telefóno" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
-            <Column field="community_id" header="Comunidad" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-          </DataTable>
+          <h5 className="card-header">Registrar inquilino</h5>
+          <div className="card-body">
+            <div className="p-fluid formgrid grid">
+              <div className="p-field col-12 md:col-6">
+                <label htmlFor="correo_electronico">Correo electrónico</label>
+                <input type="email" className="form-control" id="correo_electronico" />
+              </div>
+              <div className="p-field col-12 md:col-6">
+                <label htmlFor="numero_vivienda">Número de Vivienda</label>
+                <input type="text" className="form-control" id="numero_vivienda" />
+              </div>
+            </div>
+            <button type="button" className="btn btn-primary" onClick={registrarInquilino()}>
+              Registrar
+            </button>
+          </div>
         </div>
       </div>
     </div>

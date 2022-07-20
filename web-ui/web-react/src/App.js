@@ -32,6 +32,7 @@ import AdministradoresSistema from './components/AdministradoresSistema';
 import AdministradoresComunidad from './components/AdministradoresComunidad';
 import GuardasSeguridad from './components/GuardasSeguridad';
 import Communities from './components/ComunidadViviendas';
+import Inquilinos from './components/Inquilinos';
 
 import Crud from './pages/Crud';
 import EmptyPage from './pages/EmptyPage';
@@ -169,6 +170,7 @@ const App = () => {
                 {label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresComunidad'}, 
                 {label: 'Guardas de seguridad', icon: 'pi pi-fw pi-id-card', to: '/guardasSeguridad'}, 
                 {label: 'Comunidadades', icon: 'pi pi-fw pi-id-card', to: '/comunidadesViviendas'}, 
+                {label: 'Inquilinos', icon: 'pi pi-fw pi-id-card', to: '/inquilinos'},
                 {label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn'}
             ]
         },
@@ -326,6 +328,7 @@ const App = () => {
                     <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
                     <Route path="/guardasSeguridad" component={GuardasSeguridad} />
                     <Route path="/comunidadesViviendas" component={Communities} />
+                    <Route path="/inquilinos" component={Inquilinos} />
                     <Route path="/logIn" component={LogIn} />
                 </div>
 

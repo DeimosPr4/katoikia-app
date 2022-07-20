@@ -1,3 +1,4 @@
+import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext'
 import React, { useEffect, useState } from 'react'
 
@@ -41,22 +42,20 @@ const Inquilinos = () => {
     <div className="grid">
       <div className="col-12">
         <div className="card">
-          <h5 className="card-header">Registrar inquilino</h5>
-          <div className="card-body">
-            <div className="p-fluid formgrid grid">
-              <div className="p-field col-12 md:col-6">
-                <label htmlFor="correo_electronico">Correo electrónico</label>
-                <InputText type="email" className="form-control" id="correo_electronico" />
-              </div>
-              <div className="p-field col-12 md:col-6">
-                <label htmlFor="numero_vivienda">Número de Vivienda</label>
-                <InputText type="text" className="form-control" id="numero_vivienda" />
-              </div>
+          <h5 className="card-header">Registrar Inquilino</h5>
+          <div className="p-fluid formgrid grid">
+            <div className="p-field col-12 md:col-6">
+              <label htmlFor="correo_electronico">Correo electrónico</label>
+              <InputText type="email" className="form-control" id="correo_electronico" />
             </div>
-            <button type="button" className="btn btn-primary" onClick={registrarInquilino}>
-              Registrar
-            </button>
+            <div className="p-field col-12 md:col-6">
+              <label htmlFor="numero_vivienda">Número de Vivienda</label>
+              <Dropdown id="numero_vivienda" value={communityIdList[0]} options={communitiesList} />
+            </div>
           </div>
+          <button type="button" className="btn btn-primary" onClick={registrarInquilino}>
+            Registrar
+          </button>
         </div>
       </div>
     </div>

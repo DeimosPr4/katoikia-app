@@ -1,3 +1,4 @@
+import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext'
 import React, { useEffect, useState } from 'react'
@@ -52,10 +53,8 @@ const Inquilinos = () => {
               <label htmlFor="numero_vivienda">Número de Vivienda</label>
               <Dropdown id="numero_vivienda" value={communityIdList[0]} options={communitiesList} />
             </div>
+          <Button label="Registrar" onClick={registrarInquilino} />
           </div>
-          <button type="button" className="btn btn-primary" onClick={registrarInquilino}>
-            Registrar
-          </button>
         </div>
       </div>
     </div>

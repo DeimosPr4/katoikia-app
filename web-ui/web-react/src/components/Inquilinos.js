@@ -6,6 +6,7 @@ const Inquilinos = () => {
   function registrarInquilino() {
     let data = {
       email: document.getElementById('correo_electronico').value,
+      numero_vivienda: document.getElementById('numero_vivienda').value,
       user_type: '3',
       status: '1',
     }

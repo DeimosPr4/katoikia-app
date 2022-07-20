@@ -2,6 +2,17 @@ import { InputText } from 'primereact/inputtext'
 import React, { useEffect, useState } from 'react'
 
 const Inquilinos = () => {
+  const [communitiesList, setCommunitiesList] = useState([]);
+  const communityIdList = communitiesList.map(community => community.id);
+  async function getCommunites() {
+    let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
+    let list = await response.json();
+    setCommunitiesList(list.message);
+  }
+
+  useEffect(() => {
+    getCommunites();
+  }, [])
   function registrarInquilino() {
     let data = {
       email: document.getElementById('correo_electronico').value,

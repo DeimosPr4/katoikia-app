@@ -32,9 +32,6 @@ export class Community {
     phone: string;
 
     @Prop()
-    quote: number;
-
-    @Prop()
     status: string;
 
     @Prop()

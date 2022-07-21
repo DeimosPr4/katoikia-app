@@ -20,7 +20,6 @@ const Communities = () => {
         status: 'activo',
         date_entry: new Date(),
         houses: [],
-        quote: 0
     };
 
 
@@ -34,6 +33,7 @@ const Communities = () => {
     const [cantonId, setCantonId] = useState(null);
     const [districtsList, setDistrictsList] = useState([]);
     const [districtId, setDistrictId] = useState(null);
+    const [codeHouses, setCodeHouses] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const dt = useRef(null);
@@ -126,6 +126,12 @@ const Communities = () => {
         setDistrictId(getDistrictId);
     }
 
+
+    const handleCodeHouses = (event) => {
+        const getcodehouse = event.target.value;
+        setCodeHouses(getcodehouse);
+    }
+
     async function getCommunites() {
         let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
         let resJson = await response.json();
@@ -161,8 +167,7 @@ const Communities = () => {
 
             for (let i = 0; i < _community.num_houses; i++){
                 _community.houses.push({
-                    number_house: i+1,
-                    description: "es esta descripcion",
+                    number_house: codeHouses + (i+1),
                 })
             }
            // console.log(houses)
@@ -197,6 +202,8 @@ const Communities = () => {
                 setProvinciaId('');
                 setCantonId('');
                 setDistrictId('');
+                setCodeHouses('');
+
                 setCommunity(emptyCommunity);
             })
             .catch(
@@ -229,7 +236,6 @@ const Communities = () => {
                         <Column field="district" header="Distrito" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
                         <Column field="phone" header="Telefóno" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
                         <Column field="num_houses" header="Número de viviendas" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
-                        <Column field="quote" header="Cuota mensual" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
                         <Column field="name_admin" header="Administrador" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
                     </DataTable>
                 </div>
@@ -240,14 +246,14 @@ const Communities = () => {
 
                     <h5>Registro de comunidad de viviendas</h5>
                     <div className="p-fluid formgrid grid">
-                        <div className="field col-12 md:col-6">
+                        <div className="field col-12 md:col-12">
                         <label htmlFor="name">Nombre</label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-home"></i>
                                     </span>
-                                    <InputText id="name"  value={community.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && community.name==='' } )} />
+                                    <InputText id="name"  value={community.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames( submitted && community.name==='' ? 'p-invalid' : ''   )} />
                                 </div>
                                 {submitted  && community.name==='' && <small className="p-invalid">Nombre es requirido.</small>}
                             </div>
@@ -259,9 +265,9 @@ const Communities = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-map-marker"></i>
                                     </span>
-                                    <Dropdown placeholder="--Seleccione Provincia--" value={provinciaId} options={p} onChange={handleProvinces} required autoFocus className={classNames({ 'p-invalid': submitted && (!community.province || community.province === '') } )} />
+                                    <Dropdown placeholder="--Seleccione Provincia--" value={provinciaId} options={p} onChange={handleProvinces} required autoFocus className={classNames({ 'p-invalid': submitted && !provinciaId } )} />
                                 </div>
-                                {submitted && (!community.province || community.province === '') && <small className="p-invalid">Provincia es requirido.</small>}
+                                {submitted && !provinciaId && <small className="p-invalid">Provincia es requirido.</small>}
                             </div>
                         </div>
                         <div className="field col-12 md:col-6">
@@ -271,9 +277,9 @@ const Communities = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-map-marker"></i>
                                     </span>
-                                    <Dropdown placeholder="--Seleccione Cantón--" value={cantonId} options={c} onChange={handleCanton} required  autoFocus className={classNames({ 'p-invalid': submitted && !community.canton } )}/>
+                                    <Dropdown placeholder="--Seleccione Cantón--" value={cantonId} options={c} onChange={handleCanton} required  autoFocus className={classNames({ 'p-invalid': submitted && !cantonId } )}/>
                                 </div>
-                                {submitted  && !community.canton && <small className="p-invalid">Cantón es requirido.</small>}
+                                {submitted  && !cantonId && <small className="p-invalid">Cantón es requirido.</small>}
                             </div>
                         </div>
                         <div className="field col-12 md:col-6">
@@ -283,9 +289,9 @@ const Communities = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-map-marker"></i>
                                     </span>
-                                    <Dropdown placeholder="--Seleccione Distrito--" value={districtId} options={d} onChange={handleDistrict} required  autoFocus className={classNames({ 'p-invalid': submitted && !community.district } )}/>
+                                    <Dropdown placeholder="--Seleccione Distrito--" value={districtId} options={d} onChange={handleDistrict} required  autoFocus className={classNames({ 'p-invalid': submitted && !districtId } )}/>
                                 </div>
-                                {submitted  && !community.district && <small className="p-invalid">Distrito es requirido.</small>}
+                                {submitted  && !districtId && <small className="p-invalid">Distrito es requirido.</small>}
                             </div>
                         </div>
                         <div className="field col-12 md:col-6">
@@ -310,6 +316,18 @@ const Communities = () => {
                                     <InputText id="num_houses"  value={community.num_houses} onChange={(e) => onInputChange(e, 'num_houses')} required autoFocus className={classNames({ 'p-invalid': submitted && community.num_houses < 1 } )} />
                                 </div>
                                 {submitted  && community.num_houses < 1 && <small className="p-invalid">Número de viviendas es requirido y debe ser mayor que 0.</small>}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="numHouse">Ingrese el prefijo para el código de las viviendas</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-hashtag"></i>
+                                    </span>
+                                    <InputText id="code_houses"  value={codeHouses} onChange={handleCodeHouses} required autoFocus className={classNames({ 'p-invalid': submitted && !codeHouses } )} />
+                                </div>
+                                {submitted  && !codeHouses && <small className="p-invalid">El código para las viviendas es requirido.</small>}
                             </div>
                         </div>
                         <div className="col-12 md:col-12 py-2">

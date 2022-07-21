@@ -10,9 +10,6 @@ import { Tenant, TenantSchema } from './tenant.schema';
 export class House extends Document  {
     @Prop({ default: " " })
     number_house: string;
-    
-    @Prop({ default: " " })
-    description: string;
 
     @Prop({ default: "desocupada" })
     state: string;

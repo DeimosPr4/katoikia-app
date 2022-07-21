@@ -131,11 +131,11 @@ export class AppService {
 
   //POST parameter from API
   createCommunity(name: string, province: string, canton: string, district: string
-    , num_houses: number, phone: number, quote: number, status: string, date_entry: Date, houses: [{}]) {
+    , num_houses: number, phone: string,  status: string, date_entry: Date, houses: []) {
     const pattern = { cmd: 'createCommunity' };
     const payload = {
       name: name, province: province, canton: canton, district: district, num_houses: num_houses,
-      phone: phone, quote: quote, status: status, date_entry: date_entry, houses
+      phone: phone, status: status, date_entry: date_entry, houses: houses
     };
     return this.clientCommunityApp
       .send<string>(pattern, payload)

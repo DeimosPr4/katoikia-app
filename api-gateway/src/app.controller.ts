@@ -78,16 +78,15 @@ export class AppController {
     @Body('canton') canton: string,
     @Body('district') district: string,
     @Body('num_houses') num_houses: number,
-    @Body('phone') phone: number,
-    @Body('quote') quote: number,
+    @Body('phone') phone: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
-    @Body('houses') houses: [{}],
+    @Body('houses') houses: [],
 
   ) {
     return this.appService.createCommunity(name, province, canton,
       district, num_houses, phone,
-      quote, status, date_entry, houses);
+      status, date_entry, houses);
   }
 
   @Get('community/allCommunities')

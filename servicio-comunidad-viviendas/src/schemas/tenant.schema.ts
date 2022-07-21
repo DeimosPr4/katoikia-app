@@ -4,7 +4,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class Tenant {
-    @Prop()
+    @Prop( {default: ''})
     tenant_id: string;
 }
 

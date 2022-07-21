@@ -27,24 +27,20 @@ export class CommunitiesService {
       .find()
       .setOptions({ sanitizeFilter: true })
       .exec()
-      .then( async community => {
-        if(community){
+      .then(async community => {
+        if (community) {
           await Promise.all(community.map(async c => {
+            //buscar al usuario con el id de la comunidad anexado
             let admin = await this.findCommunityAdmin(c["_id"], "2")
-            if(admin){
+            if (admin) {
               c["id_admin"] = admin["_id"]
               c["name_admin"] = admin["name"]
             }
             return c
           }))
-
-          console.log(community)
         }
-        
-        return  community;
+        return community;
       })
-
-    //buscar al usuario con el id de la comunidad anexado
   }
 
   findOne(id: string): Promise<Community> {

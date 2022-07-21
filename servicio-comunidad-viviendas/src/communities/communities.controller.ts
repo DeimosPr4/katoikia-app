@@ -23,6 +23,12 @@ export class CommunitiesController {
     return this.communitiesService.findOne(_id);
   }
 
+  @MessagePattern({cmd: 'findCommunityName'})
+  findOneName(@Payload() id: string) {
+    let _id = id['_id'];
+    return this.communitiesService.findOneName(_id);
+  }
+
   @MessagePattern({cmd: 'updateCommunity'})
   update(@Payload() community: CommunityDocument) {
     return this.communitiesService.update(community.id, community);

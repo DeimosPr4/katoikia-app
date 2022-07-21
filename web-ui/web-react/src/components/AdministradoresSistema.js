@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
-const FormAdminSistema = () => {
+const AdministradoresSistema = () => {
+
+    const [pokemones,setPokemones]=useState([]);
+    const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/findAdminSistema/');
+    async function fetchP(){
+    let nombres=await fetch(urlFetch, {method:'GET'});
+    let pokemonesRes= await nombres.json();
+    setPokemones(pokemonesRes.message);
+    console.log(pokemones);
+   }
+    useEffect(()=>{
+      fetchP();
+    },[])
 
     function registrarAdmin() {
         var data = {
-            dni: "12687",
-            name: "hola",
-            last_name: "buuu",
-            email: "tmora4c@ucenfotec.ac.cr",
-            phone: 84664515,
-            password: "1203",
-            user_type: "1",
-            status: "2"
+            dni: document.getElementById('identificacion').value,
+            name: document.getElementById('nombre').value,
+            last_name: document.getElementById('apellidos').value,
+            email: document.getElementById('correo_electronico').value,
+            phone: document.getElementById('telefono').value,
+            password: document.getElementById('correo_electronico').value,
+            user_type: "1", //1 es admin
+            status: "1"
         };
-        console.log(data);
+       // console.log(data);
+
          fetch('http://localhost:4000/user/createAdminSystem/', {
             cache: 'no-cache',
             method: 'POST',
@@ -26,7 +41,7 @@ const FormAdminSistema = () => {
         })
         .then(
             function (response) {
-                if (response.status != 200)
+                if (response.status != 201)
                     console.log('Ocurrió un error con el servicio: ' + response.status);
                 else
                     return response.json();
@@ -34,7 +49,7 @@ const FormAdminSistema = () => {
         )
         .then(
             function (response) {
-                console.log(response);
+                fetchP();
             }
         )
         .catch(
@@ -44,6 +59,18 @@ const FormAdminSistema = () => {
 
     return (
         <div className="grid">
+            <div className="col-12">
+                <div className="card">
+                    <h5>Administradores del sistema</h5>
+                    <DataTable value={pokemones}  scrollable scrollHeight="400px" scrollDirection="both" className="mt-3">
+                        <Column field="name" header="Nombre" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="last_name" header="Apellidos" style={{ flexGrow: 1, flexBasis: '160px' }} alignFrozen="left"></Column>
+                        <Column field="dni" header="Identificación" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="email" header="Correo electrónico" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="phone" header="Telefóno" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                    </DataTable>
+                </div>
+            </div>
             <div className="col-12">
                 <div className="card">
                     <h5>Registro de un administrador del sistema</h5>
@@ -66,14 +93,16 @@ const FormAdminSistema = () => {
                         </div>
                         <div className="field col-12">
                             <label htmlFor="telefono">Teléfono</label>
-                            <InputText id="telefono" type="text" rows="4" />
+                            <InputText id="telefono" type="number" rows="4" />
                         </div>
                         <Button label="Registrar" onClick={registrarAdmin}></Button>
                     </div>
                 </div>
             </div>
         </div>
+
+        
     )
 }
 
-export default React.memo(FormAdminSistema);
+export default React.memo(AdministradoresSistema);

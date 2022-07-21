@@ -60,6 +60,26 @@ export class AppService {
       );
   }
 
+  allUsersAdminSistema() {
+    const pattern = { cmd: 'findAdminSistema' };
+    const payload = {};
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  allUsersAdminComunidad() {
+    const pattern = { cmd: 'findAdminComunidad' };
+    const payload = {};
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
   //GET parameter from API
   findUser(paramUserDNI: string) {
     const pattern = { cmd: 'findUserDNI' };
@@ -111,6 +131,16 @@ export class AppService {
   //GET parameter from API
   findCommunity(paramCommunityId: string) {
     const pattern = { cmd: 'findOneCommunity' };
+    const payload = { id: paramCommunityId };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  findCommunityName(paramCommunityId: string) {
+    const pattern = { cmd: 'findCommunityName' };
     const payload = { id: paramCommunityId };
     return this.clientCommunityApp
       .send<string>(pattern, payload)

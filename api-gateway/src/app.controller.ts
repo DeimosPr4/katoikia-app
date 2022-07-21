@@ -52,6 +52,16 @@ export class AppController {
     return this.appService.inicioSesion(pEmail,pPassword);
   }
 
+  @Get('user/findAdminSistema')
+  allUsersAdminSistema() {
+    return this.appService.allUsersAdminSistema();
+  }
+
+  @Get('user/findAdminComunidad')
+  allUsersAdminComunidad() {
+    return this.appService.allUsersAdminComunidad();
+  }
+
   @Get('user/find/:dni')
   findUser(
     @Param('dni') paramUserDNI: string
@@ -90,6 +100,13 @@ export class AppController {
     @Param('id') paramCommunityId: string
   ) {
     return this.appService.findCommunity(paramCommunityId);
+  }
+
+  @Get('community/findCommunityName/:id')
+  findCommunityName(
+    @Param('id') paramCommunityId: string
+  ) {
+    return this.appService.findCommunityName(paramCommunityId);
   }
 
 

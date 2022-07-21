@@ -10,7 +10,7 @@ export class Community {
     @Prop()
     id_admin: string;
 
-    @Prop({ default: "Sin Administrador" })
+    @Prop()
     name_admin: string ;
 
     @Prop()
@@ -29,7 +29,7 @@ export class Community {
     num_houses: number;
 
     @Prop()
-    phone: number;
+    phone: string;
 
     @Prop()
     quote: number;

@@ -78,11 +78,11 @@ export class AppController {
     @Body('canton') canton: string,
     @Body('district') district: string,
     @Body('num_houses') num_houses: number,
-    @Body('phone') phone: number,
+    @Body('phone') phone: string,
     @Body('quote') quote: number,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
-    @Body('houses') houses: [{}],
+    @Body('houses') houses: [],
 
   ) {
     return this.appService.createCommunity(name, province, canton,

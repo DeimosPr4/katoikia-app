@@ -1,0 +1,489 @@
+[
+    {
+      "name": "San José",
+      "code": "101",
+      "parentCode": "1", 
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Escazú",
+      "code": "102",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Desamparados",
+      "code": "103",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Puriscal",
+      "code": "104",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Tarrazú",
+      "code": "105",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Aserrí­",
+      "code": "106",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Mora",
+      "code": "107",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Goicoechea",
+      "code": "108",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Santa Ana",
+      "code": "109",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Alajuelita",
+      "code": "110",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Vasquez de Coronado",
+      "code": "111",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Acosta",
+      "code": "112",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Tibás",
+      "code": "113",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Moravia",
+      "code": "114",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Montes de Oca",
+      "code": "115",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Turrubares",
+      "code": "116",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Dota",
+      "code": "117",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Curridabat",
+      "code": "118",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Pérez Zeledón",
+      "code": "119",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "León Cortés",
+      "code": "120",
+      "parentCode": "1",
+      "isoParent": "SJ"
+    },
+    {
+      "name": "Alajuela",
+      "code": "201",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "San Ramón",
+      "code": "202",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Grecia",
+      "code": "203",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "San Mateo",
+      "code": "204",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Atenas",
+      "code": "205",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Naranjo",
+      "code": "206",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Palmares",
+      "code": "207",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Poás",
+      "code": "208",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Orotina",
+      "code": "209",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "San Carlos",
+      "code": "210",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Alfaro Ruiz",
+      "code": "211",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Valverde Vega",
+      "code": "212",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Upala",
+      "code": "213",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Los Chiles",
+      "code": "214",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Guatuso",
+      "code": "215",
+      "parentCode": "2",
+      "isoParent": "ALAJ"
+    },
+    {
+      "name": "Cartago",
+      "code": "301",
+      "parentCode": "3",
+      "isoParent": "CAR"
+    },
+    {
+      "name": "Paraí­so",
+      "code": "302",
+      "parentCode": "3",
+      "isoParent": "CAR"
+    },
+    {
+      "name": "La Unión",
+      "code": "303",
+      "parentCode": "3",
+      "isoParent": "CAR"
+    },
+    {
+      "name": "Jiménez",
+      "code": "304",
+      "parentCode": "3",
+      "isoParent": "CAR"
+    },
+    {
+      "name": "Turrialba",
+      "code": "305",
+      "parentCode": "3",
+      "isoParent": "CAR"
+    },
+    {
+      "name": "Alvarado",
+      "code": "306",
+      "parentCode": "3",
+      "isoParent": "CAR"
+    },
+    {
+      "name": "Oreamuno",
+      "code": "307",
+      "parentCode": "3",
+      "isoParent": "CAR"
+    },
+    {
+      "name": "El Guarco",
+      "code": "308",
+      "parentCode": "3",
+      "isoParent": "CAR"
+    },
+    {
+      "name": "Heredia",
+      "code": "401",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "Barva",
+      "code": "402",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "Santo Domingo",
+      "code": "403",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "Santa Bárbara",
+      "code": "404",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "San Rafael",
+      "code": "405",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "San Isidro",
+      "code": "406",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "Belén",
+      "code": "407",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "Flores",
+      "code": "408",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "San Pablo",
+      "code": "409",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "Sarapiquí­ ",
+      "code": "410",
+      "parentCode": "4",
+      "isoParent": "HER"
+    },
+    {
+      "name": "Liberia",
+      "code": "501",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Nicoya",
+      "code": "502",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Santa Cruz",
+      "code": "503",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Bagaces",
+      "code": "504",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Carrillo",
+      "code": "505",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Cañas",
+      "code": "506",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Abangares",
+      "code": "507",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Tilarán",
+      "code": "508",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Nandayure",
+      "code": "509",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "La Cruz",
+      "code": "510",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Hojancha",
+      "code": "511",
+      "parentCode": "5",
+      "isoParent": "GUANA"
+    },
+    {
+      "name": "Puntarenas",
+      "code": "601",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Esparza",
+      "code": "602",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Buenos Aires",
+      "code": "603",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Montes de Oro",
+      "code": "604",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Osa",
+      "code": "605",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Aguirre",
+      "code": "606",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Golfito",
+      "code": "607",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Coto Brus",
+      "code": "608",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Parrita",
+      "code": "609",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Corredores",
+      "code": "610",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Garabito",
+      "code": "611",
+      "parentCode": "6",
+      "isoParent": "PUNT"
+    },
+    {
+      "name": "Limón",
+      "code": "701",
+      "parentCode": "7",
+      "isoParent": "LIM"
+    },
+    {
+      "name": "Pococí­",
+      "code": "702",
+      "parentCode": "7",
+      "isoParent": "LIM"
+    },
+    {
+      "name": "Siquirres ",
+      "code": "703",
+      "parentCode": "7",
+      "isoParent": "LIM"
+    },
+    {
+      "name": "Talamanca",
+      "code": "704",
+      "parentCode": "7",
+      "isoParent": "LIM"
+    },
+    {
+      "name": "Matina",
+      "code": "705",
+      "parentCode": "7",
+      "isoParent": "LIM"
+    },
+    {
+      "name": "Guácimo",
+      "code": "706",
+      "parentCode": "7",
+      "isoParent": "LIM"
+    }
+  ]
+  

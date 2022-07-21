@@ -1,0 +1,2352 @@
+[
+    {
+      "name": "Carmen",
+      "code": "10101",
+      "parentCode": "101"
+    },
+    {
+      "name": "Merced",
+      "code": "10102",
+      "parentCode": "101"
+    },
+    {
+      "name": "Hospital",
+      "code": "10103",
+      "parentCode": "101"
+    },
+    {
+      "name": "Catedral",
+      "code": "10104",
+      "parentCode": "101"
+    },
+    {
+      "name": "Zapote",
+      "code": "10105",
+      "parentCode": "101"
+    },
+    {
+      "name": "San Francisco de Dos Ríos",
+      "code": "10106",
+      "parentCode": "101"
+    },
+    {
+      "name": "Uruca",
+      "code": "10107",
+      "parentCode": "101"
+    },
+    {
+      "name": "Mata Redonda",
+      "code": "10108",
+      "parentCode": "101"
+    },
+    {
+      "name": "Pavas",
+      "code": "10109",
+      "parentCode": "101"
+    },
+    {
+      "name": "Hatillo",
+      "code": "10110",
+      "parentCode": "101"
+    },
+    {
+      "name": "San Sebastián",
+      "code": "10111",
+      "parentCode": "101"
+    },
+    {
+      "name": "EscazÃº",
+      "code": "10201",
+      "parentCode": "102"
+    },
+    {
+      "name": "San Antonio",
+      "code": "10202",
+      "parentCode": "102"
+    },
+    {
+      "name": "San Rafael",
+      "code": "10203",
+      "parentCode": "102"
+    },
+    {
+      "name": "Desamparados",
+      "code": "10301",
+      "parentCode": "103"
+    },
+    {
+      "name": "San Miguel",
+      "code": "10302",
+      "parentCode": "103"
+    },
+    {
+      "name": "San Juan de Dios",
+      "code": "10303",
+      "parentCode": "103"
+    },
+    {
+      "name": "San Rafael Arriba",
+      "code": "10304",
+      "parentCode": "103"
+    },
+    {
+      "name": "San Antonio",
+      "code": "10305",
+      "parentCode": "103"
+    },
+    {
+      "name": "Frailes",
+      "code": "10306",
+      "parentCode": "103"
+    },
+    {
+      "name": "Patarrá",
+      "code": "10307",
+      "parentCode": "103"
+    },
+    {
+      "name": "San Cristóbal",
+      "code": "10308",
+      "parentCode": "103"
+    },
+    {
+      "name": "Rosario",
+      "code": "10309",
+      "parentCode": "103"
+    },
+    {
+      "name": "Damas",
+      "code": "10310",
+      "parentCode": "103"
+    },
+    {
+      "name": "San Rafael Abajo",
+      "code": "10311",
+      "parentCode": "103"
+    },
+    {
+      "name": "Gravilias",
+      "code": "10312",
+      "parentCode": "103"
+    },
+    {
+      "name": "Los Guido",
+      "code": "10313",
+      "parentCode": "103"
+    },
+    {
+      "name": "Santiago",
+      "code": "10401",
+      "parentCode": "104"
+    },
+    {
+      "name": "Mercedes Sur",
+      "code": "10402",
+      "parentCode": "104"
+    },
+    {
+      "name": "Barbacoas",
+      "code": "10403",
+      "parentCode": "104"
+    },
+    {
+      "name": "Grifo Alto",
+      "code": "10404",
+      "parentCode": "104"
+    },
+    {
+      "name": "San Rafael",
+      "code": "10405",
+      "parentCode": "104"
+    },
+    {
+      "name": "Candelaria",
+      "code": "10406",
+      "parentCode": "104"
+    },
+    {
+      "name": "Desamparaditos",
+      "code": "10407",
+      "parentCode": "104"
+    },
+    {
+      "name": "San Antonio",
+      "code": "10408",
+      "parentCode": "104"
+    },
+    {
+      "name": "Chires",
+      "code": "10409",
+      "parentCode": "104"
+    },
+    {
+      "name": "San Marcos",
+      "code": "10501",
+      "parentCode": "105"
+    },
+    {
+      "name": "San Lorenzo",
+      "code": "10502",
+      "parentCode": "105"
+    },
+    {
+      "name": "San Carlos",
+      "code": "10503",
+      "parentCode": "105"
+    },
+    {
+      "name": "Aserrí",
+      "code": "10601",
+      "parentCode": "106"
+    },
+    {
+      "name": "Tarbaca o Praga",
+      "code": "10602",
+      "parentCode": "106"
+    },
+    {
+      "name": "Vuelta de Jorco",
+      "code": "10603",
+      "parentCode": "106"
+    },
+    {
+      "name": "San Gabriel",
+      "code": "10604",
+      "parentCode": "106"
+    },
+    {
+      "name": "La Legua",
+      "code": "10605",
+      "parentCode": "106"
+    },
+    {
+      "name": "Monterrey",
+      "code": "10606",
+      "parentCode": "106"
+    },
+    {
+      "name": "Salitrillos",
+      "code": "10607",
+      "parentCode": "106"
+    },
+    {
+      "name": "Colón",
+      "code": "10701",
+      "parentCode": "107"
+    },
+    {
+      "name": "Guayabo",
+      "code": "10702",
+      "parentCode": "107"
+    },
+    {
+      "name": "Tabarcia",
+      "code": "10703",
+      "parentCode": "107"
+    },
+    {
+      "name": "Piedras Negras",
+      "code": "10704",
+      "parentCode": "107"
+    },
+    {
+      "name": "Picagres",
+      "code": "10705",
+      "parentCode": "107"
+    },
+    {
+      "name": "Guadalupe",
+      "code": "10801",
+      "parentCode": "108"
+    },
+    {
+      "name": "San Francisco",
+      "code": "10802",
+      "parentCode": "108"
+    },
+    {
+      "name": "Calle Blancos",
+      "code": "10803",
+      "parentCode": "108"
+    },
+    {
+      "name": "Mata de Plátano",
+      "code": "10804",
+      "parentCode": "108"
+    },
+    {
+      "name": "Ipís",
+      "code": "10805",
+      "parentCode": "108"
+    },
+    {
+      "name": "Rancho Redondo",
+      "code": "10806",
+      "parentCode": "108"
+    },
+    {
+      "name": "Purral",
+      "code": "10807",
+      "parentCode": "108"
+    },
+    {
+      "name": "Santa Ana",
+      "code": "10901",
+      "parentCode": "109"
+    },
+    {
+      "name": "Salitral",
+      "code": "10902",
+      "parentCode": "109"
+    },
+    {
+      "name": "Pozos o Concepción",
+      "code": "10903",
+      "parentCode": "109"
+    },
+    {
+      "name": "Uruca o San Joaquín",
+      "code": "10904",
+      "parentCode": "109"
+    },
+    {
+      "name": "Piedades",
+      "code": "10905",
+      "parentCode": "109"
+    },
+    {
+      "name": "Brasil",
+      "code": "10906",
+      "parentCode": "109"
+    },
+    {
+      "name": "Alajuelita",
+      "code": "11001",
+      "parentCode": "110"
+    },
+    {
+      "name": "San Josecito",
+      "code": "11002",
+      "parentCode": "110"
+    },
+    {
+      "name": "San Antonio",
+      "code": "11003",
+      "parentCode": "110"
+    },
+    {
+      "name": "Concepción",
+      "code": "11004",
+      "parentCode": "110"
+    },
+    {
+      "name": "San Felipe",
+      "code": "11005",
+      "parentCode": "110"
+    },
+    {
+      "name": "San Isidro",
+      "code": "11101",
+      "parentCode": "111"
+    },
+    {
+      "name": "San Rafael",
+      "code": "11102",
+      "parentCode": "111"
+    },
+    {
+      "name": "Dulce Name de JesÃºs",
+      "code": "11103",
+      "parentCode": "111"
+    },
+    {
+      "name": "Patalillo",
+      "code": "11104",
+      "parentCode": "111"
+    },
+    {
+      "name": "Cascajal",
+      "code": "11105",
+      "parentCode": "111"
+    },
+    {
+      "name": "San Ignacio",
+      "code": "11201",
+      "parentCode": "112"
+    },
+    {
+      "name": "Guaitil",
+      "code": "11202",
+      "parentCode": "112"
+    },
+    {
+      "name": "Palmichal",
+      "code": "11203",
+      "parentCode": "112"
+    },
+    {
+      "name": "Cangrejal",
+      "code": "11204",
+      "parentCode": "112"
+    },
+    {
+      "name": "Sabanillas",
+      "code": "11205",
+      "parentCode": "112"
+    },
+    {
+      "name": "San Juan",
+      "code": "11301",
+      "parentCode": "113"
+    },
+    {
+      "name": "Cinco Esquinas",
+      "code": "11302",
+      "parentCode": "113"
+    },
+    {
+      "name": "Anselmo Llorente",
+      "code": "11303",
+      "parentCode": "113"
+    },
+    {
+      "name": "León XIII",
+      "code": "11304",
+      "parentCode": "113"
+    },
+    {
+      "name": "Colima",
+      "code": "11305",
+      "parentCode": "113"
+    },
+    {
+      "name": "San Vicente",
+      "code": "11401",
+      "parentCode": "114"
+    },
+    {
+      "name": "San Jerónimo",
+      "code": "11402",
+      "parentCode": "114"
+    },
+    {
+      "name": "Trinidad",
+      "code": "11403",
+      "parentCode": "114"
+    },
+    {
+      "name": "San Pedro",
+      "code": "11501",
+      "parentCode": "115"
+    },
+    {
+      "name": "Sabanilla",
+      "code": "11502",
+      "parentCode": "115"
+    },
+    {
+      "name": "Mercedes o Betania",
+      "code": "11503",
+      "parentCode": "115"
+    },
+    {
+      "name": "San Rafael",
+      "code": "11504",
+      "parentCode": "115"
+    },
+    {
+      "name": "San Pablo",
+      "code": "11601",
+      "parentCode": "116"
+    },
+    {
+      "name": "San Pedro",
+      "code": "11602",
+      "parentCode": "116"
+    },
+    {
+      "name": "San Juan de Mata",
+      "code": "11603",
+      "parentCode": "116"
+    },
+    {
+      "name": "San Luis",
+      "code": "11604",
+      "parentCode": "116"
+    },
+    {
+      "name": "Cárara",
+      "code": "11605",
+      "parentCode": "116"
+    },
+    {
+      "name": "Santa María",
+      "code": "11701",
+      "parentCode": "117"
+    },
+    {
+      "name": "Jardín",
+      "code": "11702",
+      "parentCode": "117"
+    },
+    {
+      "name": "Copey",
+      "code": "11703",
+      "parentCode": "117"
+    },
+    {
+      "name": "Curridabat",
+      "code": "11801",
+      "parentCode": "118"
+    },
+    {
+      "name": "Granadilla",
+      "code": "11802",
+      "parentCode": "118"
+    },
+    {
+      "name": "Sánchez",
+      "code": "11803",
+      "parentCode": "118"
+    },
+    {
+      "name": "Tirrases",
+      "code": "11804",
+      "parentCode": "118"
+    },
+    {
+      "name": "San Isidro de el General",
+      "code": "11901",
+      "parentCode": "119"
+    },
+    {
+      "name": "General",
+      "code": "11902",
+      "parentCode": "119"
+    },
+    {
+      "name": "Daniel Flores",
+      "code": "11903",
+      "parentCode": "119"
+    },
+    {
+      "name": "Rivas",
+      "code": "11904",
+      "parentCode": "119"
+    },
+    {
+      "name": "San Pedro",
+      "code": "11905",
+      "parentCode": "119"
+    },
+    {
+      "name": "Platanares",
+      "code": "11906",
+      "parentCode": "119"
+    },
+    {
+      "name": "Pejibaye",
+      "code": "11907",
+      "parentCode": "119"
+    },
+    {
+      "name": "Cajón",
+      "code": "11908",
+      "parentCode": "119"
+    },
+    {
+      "name": "BarÃº",
+      "code": "11909",
+      "parentCode": "119"
+    },
+    {
+      "name": "Río Nuevo",
+      "code": "11910",
+      "parentCode": "119"
+    },
+    {
+      "name": "Páramo",
+      "code": "11911",
+      "parentCode": "119"
+    },
+    {
+      "name": "San Pablo",
+      "code": "12001",
+      "parentCode": "120"
+    },
+    {
+      "name": "San Andrés",
+      "code": "12002",
+      "parentCode": "120"
+    },
+    {
+      "name": "Llano Bonito",
+      "code": "12003",
+      "parentCode": "120"
+    },
+    {
+      "name": "San Isidro",
+      "code": "12004",
+      "parentCode": "120"
+    },
+    {
+      "name": "Santa Cruz",
+      "code": "12005",
+      "parentCode": "120"
+    },
+    {
+      "name": "San Antonio",
+      "code": "12006",
+      "parentCode": "120"
+    },
+    {
+      "name": "Alajuela",
+      "code": "20101",
+      "parentCode": "201"
+    },
+    {
+      "name": "San José",
+      "code": "20102",
+      "parentCode": "201"
+    },
+    {
+      "name": "Carrizal",
+      "code": "20103",
+      "parentCode": "201"
+    },
+    {
+      "name": "San Antonio",
+      "code": "20104",
+      "parentCode": "201"
+    },
+    {
+      "name": "Guácima",
+      "code": "20105",
+      "parentCode": "201"
+    },
+    {
+      "name": "San Isidro",
+      "code": "20106",
+      "parentCode": "201"
+    },
+    {
+      "name": "Sabanilla",
+      "code": "20107",
+      "parentCode": "201"
+    },
+    {
+      "name": "San Rafael",
+      "code": "20108",
+      "parentCode": "201"
+    },
+    {
+      "name": "Río Segundo",
+      "code": "20109",
+      "parentCode": "201"
+    },
+    {
+      "name": "Desamparados",
+      "code": "20110",
+      "parentCode": "201"
+    },
+    {
+      "name": "Turrucares",
+      "code": "20111",
+      "parentCode": "201"
+    },
+    {
+      "name": "Tambor",
+      "code": "20112",
+      "parentCode": "201"
+    },
+    {
+      "name": "La Garita",
+      "code": "20113",
+      "parentCode": "201"
+    },
+    {
+      "name": "Sarapiquí",
+      "code": "20114",
+      "parentCode": "201"
+    },
+    {
+      "name": "San Ramón",
+      "code": "20201",
+      "parentCode": "202"
+    },
+    {
+      "name": "Santiago",
+      "code": "20202",
+      "parentCode": "202"
+    },
+    {
+      "name": "San Juan",
+      "code": "20203",
+      "parentCode": "202"
+    },
+    {
+      "name": "Piedades Norte",
+      "code": "20204",
+      "parentCode": "202"
+    },
+    {
+      "name": "Piedades Sur",
+      "code": "20205",
+      "parentCode": "202"
+    },
+    {
+      "name": "San Rafael",
+      "code": "20206",
+      "parentCode": "202"
+    },
+    {
+      "name": "San Isidro",
+      "code": "20207",
+      "parentCode": "202"
+    },
+    {
+      "name": "Angeles",
+      "code": "20208",
+      "parentCode": "202"
+    },
+    {
+      "name": "Alfaro",
+      "code": "20209",
+      "parentCode": "202"
+    },
+    {
+      "name": "Volio",
+      "code": "20210",
+      "parentCode": "202"
+    },
+    {
+      "name": "Concepción",
+      "code": "20211",
+      "parentCode": "202"
+    },
+    {
+      "name": "Zapotal",
+      "code": "20212",
+      "parentCode": "202"
+    },
+    {
+      "name": "San Isidro de Peñas Blancas",
+      "code": "20213",
+      "parentCode": "202"
+    },
+    {
+      "name": "Grecia",
+      "code": "20301",
+      "parentCode": "203"
+    },
+    {
+      "name": "San Isidro",
+      "code": "20302",
+      "parentCode": "203"
+    },
+    {
+      "name": "San José",
+      "code": "20303",
+      "parentCode": "203"
+    },
+    {
+      "name": "San Roque",
+      "code": "20304",
+      "parentCode": "203"
+    },
+    {
+      "name": "Tacares",
+      "code": "20305",
+      "parentCode": "203"
+    },
+    {
+      "name": "Río Cuarto",
+      "code": "20306",
+      "parentCode": "203"
+    },
+    {
+      "name": "Puente Piedra",
+      "code": "20307",
+      "parentCode": "203"
+    },
+    {
+      "name": "Bolívar",
+      "code": "20308",
+      "parentCode": "203"
+    },
+    {
+      "name": "San Mateo",
+      "code": "20401",
+      "parentCode": "204"
+    },
+    {
+      "name": "Desmonte",
+      "code": "20402",
+      "parentCode": "204"
+    },
+    {
+      "name": "JesÃºs María",
+      "code": "20403",
+      "parentCode": "204"
+    },
+    {
+      "name": "Atenas",
+      "code": "20501",
+      "parentCode": "205"
+    },
+    {
+      "name": "JesÃºs",
+      "code": "20502",
+      "parentCode": "205"
+    },
+    {
+      "name": "Mercedes",
+      "code": "20503",
+      "parentCode": "205"
+    },
+    {
+      "name": "San Isidro",
+      "code": "20504",
+      "parentCode": "205"
+    },
+    {
+      "name": "Concepción",
+      "code": "20505",
+      "parentCode": "205"
+    },
+    {
+      "name": "San José",
+      "code": "20506",
+      "parentCode": "205"
+    },
+    {
+      "name": "Santa Eulalia",
+      "code": "20507",
+      "parentCode": "205"
+    },
+    {
+      "name": "Escobal",
+      "code": "20508",
+      "parentCode": "205"
+    },
+    {
+      "name": "Naranjo",
+      "code": "20601",
+      "parentCode": "206"
+    },
+    {
+      "name": "San Miguel",
+      "code": "20602",
+      "parentCode": "206"
+    },
+    {
+      "name": "San José",
+      "code": "20603",
+      "parentCode": "206"
+    },
+    {
+      "name": "Cirrí Sur",
+      "code": "20604",
+      "parentCode": "206"
+    },
+    {
+      "name": "San Jerónimo",
+      "code": "20605",
+      "parentCode": "206"
+    },
+    {
+      "name": "San Juan",
+      "code": "20606",
+      "parentCode": "206"
+    },
+    {
+      "name": "Rosario",
+      "code": "20607",
+      "parentCode": "206"
+    },
+    {
+      "name": "Palmares",
+      "code": "20701",
+      "parentCode": "207"
+    },
+    {
+      "name": "Zaragoza",
+      "code": "20702",
+      "parentCode": "207"
+    },
+    {
+      "name": "Buenos Aires",
+      "code": "20703",
+      "parentCode": "207"
+    },
+    {
+      "name": "Santiago",
+      "code": "20704",
+      "parentCode": "207"
+    },
+    {
+      "name": "Candelaria",
+      "code": "20705",
+      "parentCode": "207"
+    },
+    {
+      "name": "Esquipulas",
+      "code": "20706",
+      "parentCode": "207"
+    },
+    {
+      "name": "La Granja",
+      "code": "20707",
+      "parentCode": "207"
+    },
+    {
+      "name": "San Pedro",
+      "code": "20801",
+      "parentCode": "208"
+    },
+    {
+      "name": "San Juan",
+      "code": "20802",
+      "parentCode": "208"
+    },
+    {
+      "name": "San Rafael",
+      "code": "20803",
+      "parentCode": "208"
+    },
+    {
+      "name": "Carrillos",
+      "code": "20804",
+      "parentCode": "208"
+    },
+    {
+      "name": "Sabana Redonda",
+      "code": "20805",
+      "parentCode": "208"
+    },
+    {
+      "name": "Orotina",
+      "code": "20901",
+      "parentCode": "209"
+    },
+    {
+      "name": "Mastate",
+      "code": "20902",
+      "parentCode": "209"
+    },
+    {
+      "name": "Hacienda Vieja",
+      "code": "20903",
+      "parentCode": "209"
+    },
+    {
+      "name": "Coyolar",
+      "code": "20904",
+      "parentCode": "209"
+    },
+    {
+      "name": "Ceiba",
+      "code": "20905",
+      "parentCode": "209"
+    },
+    {
+      "name": "Quesada",
+      "code": "21001",
+      "parentCode": "210"
+    },
+    {
+      "name": "Florencia",
+      "code": "21002",
+      "parentCode": "210"
+    },
+    {
+      "name": "Buenavista",
+      "code": "21003",
+      "parentCode": "210"
+    },
+    {
+      "name": "Aguas Zarcas",
+      "code": "21004",
+      "parentCode": "210"
+    },
+    {
+      "name": "Venecia",
+      "code": "21005",
+      "parentCode": "210"
+    },
+    {
+      "name": "Pital",
+      "code": "21006",
+      "parentCode": "210"
+    },
+    {
+      "name": "Fortuna",
+      "code": "21007",
+      "parentCode": "210"
+    },
+    {
+      "name": "Tigra",
+      "code": "21008",
+      "parentCode": "210"
+    },
+    {
+      "name": "Palmera",
+      "code": "21009",
+      "parentCode": "210"
+    },
+    {
+      "name": "Venado",
+      "code": "21010",
+      "parentCode": "210"
+    },
+    {
+      "name": "Cutris",
+      "code": "21011",
+      "parentCode": "210"
+    },
+    {
+      "name": "Monterrey",
+      "code": "21012",
+      "parentCode": "210"
+    },
+    {
+      "name": "Pocosol",
+      "code": "21013",
+      "parentCode": "210"
+    },
+    {
+      "name": "Zarcero",
+      "code": "21101",
+      "parentCode": "211"
+    },
+    {
+      "name": "Laguna",
+      "code": "21102",
+      "parentCode": "211"
+    },
+    {
+      "name": "Tapezco",
+      "code": "21103",
+      "parentCode": "211"
+    },
+    {
+      "name": "Guadalupe",
+      "code": "21104",
+      "parentCode": "211"
+    },
+    {
+      "name": "Palmira",
+      "code": "21105",
+      "parentCode": "211"
+    },
+    {
+      "name": "Zapote",
+      "code": "21106",
+      "parentCode": "211"
+    },
+    {
+      "name": "Las Brisas",
+      "code": "21107",
+      "parentCode": "211"
+    },
+    {
+      "name": "Sarchí Norte",
+      "code": "21201",
+      "parentCode": "212"
+    },
+    {
+      "name": "Sarchí Sur",
+      "code": "21202",
+      "parentCode": "212"
+    },
+    {
+      "name": "Toro Amarillo",
+      "code": "21203",
+      "parentCode": "212"
+    },
+    {
+      "name": "San Pedro",
+      "code": "21204",
+      "parentCode": "212"
+    },
+    {
+      "name": "Rodríguez",
+      "code": "21205",
+      "parentCode": "212"
+    },
+    {
+      "name": "Upala",
+      "code": "21301",
+      "parentCode": "213"
+    },
+    {
+      "name": "Aguas Claras",
+      "code": "21302",
+      "parentCode": "213"
+    },
+    {
+      "name": "San José o Pizote",
+      "code": "21303",
+      "parentCode": "213"
+    },
+    {
+      "name": "Bijagua",
+      "code": "21304",
+      "parentCode": "213"
+    },
+    {
+      "name": "Delicias",
+      "code": "21305",
+      "parentCode": "213"
+    },
+    {
+      "name": "Dos Ríos",
+      "code": "21306",
+      "parentCode": "213"
+    },
+    {
+      "name": "Yolillal",
+      "code": "21307",
+      "parentCode": "213"
+    },
+    {
+      "name": "Los Chiles",
+      "code": "21401",
+      "parentCode": "214"
+    },
+    {
+      "name": "Caño Negro",
+      "code": "21402",
+      "parentCode": "214"
+    },
+    {
+      "name": "Amparo",
+      "code": "21403",
+      "parentCode": "214"
+    },
+    {
+      "name": "San Jorge",
+      "code": "21404",
+      "parentCode": "214"
+    },
+    {
+      "name": "San Rafael",
+      "code": "21501",
+      "parentCode": "215"
+    },
+    {
+      "name": "Buenavista",
+      "code": "21502",
+      "parentCode": "215"
+    },
+    {
+      "name": "Cote",
+      "code": "21503",
+      "parentCode": "215"
+    },
+    {
+      "name": "Oriental",
+      "code": "30101",
+      "parentCode": "301"
+    },
+    {
+      "name": "Occidental",
+      "code": "30102",
+      "parentCode": "301"
+    },
+    {
+      "name": "Carmen",
+      "code": "30103",
+      "parentCode": "301"
+    },
+    {
+      "name": "San Nicolás",
+      "code": "30104",
+      "parentCode": "301"
+    },
+    {
+      "name": "Aguacaliente o San Francisco",
+      "code": "30105",
+      "parentCode": "301"
+    },
+    {
+      "name": "Guadalupe o Arenilla",
+      "code": "30106",
+      "parentCode": "301"
+    },
+    {
+      "name": "Corralillo",
+      "code": "30107",
+      "parentCode": "301"
+    },
+    {
+      "name": "Tierra Blanca",
+      "code": "30108",
+      "parentCode": "301"
+    },
+    {
+      "name": "Dulce Name",
+      "code": "30109",
+      "parentCode": "301"
+    },
+    {
+      "name": "Llano Grande",
+      "code": "30110",
+      "parentCode": "301"
+    },
+    {
+      "name": "Quebradilla",
+      "code": "30111",
+      "parentCode": "301"
+    },
+    {
+      "name": "Paraíso",
+      "code": "30201",
+      "parentCode": "302"
+    },
+    {
+      "name": "Santiago",
+      "code": "30202",
+      "parentCode": "302"
+    },
+    {
+      "name": "Orosi",
+      "code": "30203",
+      "parentCode": "302"
+    },
+    {
+      "name": "Cachí",
+      "code": "30204",
+      "parentCode": "302"
+    },
+    {
+      "name": "Los Llanos de Santa Lucía",
+      "code": "30205",
+      "parentCode": "302"
+    },
+    {
+      "name": "Tres Ríos",
+      "code": "30301",
+      "parentCode": "303"
+    },
+    {
+      "name": "San Diego",
+      "code": "30302",
+      "parentCode": "303"
+    },
+    {
+      "name": "San Juan",
+      "code": "30303",
+      "parentCode": "303"
+    },
+    {
+      "name": "San Rafael",
+      "code": "30304",
+      "parentCode": "303"
+    },
+    {
+      "name": "Concepción",
+      "code": "30305",
+      "parentCode": "303"
+    },
+    {
+      "name": "Dulce Name",
+      "code": "30306",
+      "parentCode": "303"
+    },
+    {
+      "name": "San Ramón",
+      "code": "30307",
+      "parentCode": "303"
+    },
+    {
+      "name": "Río Azul",
+      "code": "30308",
+      "parentCode": "303"
+    },
+    {
+      "name": "Juan Viñas",
+      "code": "30401",
+      "parentCode": "304"
+    },
+    {
+      "name": "Tucurrique",
+      "code": "30402",
+      "parentCode": "304"
+    },
+    {
+      "name": "Pejibaye",
+      "code": "30403",
+      "parentCode": "304"
+    },
+    {
+      "name": "Turrialba",
+      "code": "30501",
+      "parentCode": "305"
+    },
+    {
+      "name": "La Suiza",
+      "code": "30502",
+      "parentCode": "305"
+    },
+    {
+      "name": "Peralta",
+      "code": "30503",
+      "parentCode": "305"
+    },
+    {
+      "name": "Santa Cruz",
+      "code": "30504",
+      "parentCode": "305"
+    },
+    {
+      "name": "Santa Teresita",
+      "code": "30505",
+      "parentCode": "305"
+    },
+    {
+      "name": "Pavones",
+      "code": "30506",
+      "parentCode": "305"
+    },
+    {
+      "name": "Tuis",
+      "code": "30507",
+      "parentCode": "305"
+    },
+    {
+      "name": "Tayutic",
+      "code": "30508",
+      "parentCode": "305"
+    },
+    {
+      "name": "Santa Rosa",
+      "code": "30509",
+      "parentCode": "305"
+    },
+    {
+      "name": "Tres Equis",
+      "code": "30510",
+      "parentCode": "305"
+    },
+    {
+      "name": "La Isabel",
+      "code": "30511",
+      "parentCode": "305"
+    },
+    {
+      "name": "Chirripó",
+      "code": "30512",
+      "parentCode": "305"
+    },
+    {
+      "name": "Pacayas",
+      "code": "30601",
+      "parentCode": "306"
+    },
+    {
+      "name": "Cervantes",
+      "code": "30602",
+      "parentCode": "306"
+    },
+    {
+      "name": "Capellades",
+      "code": "30603",
+      "parentCode": "306"
+    },
+    {
+      "name": "San Rafael",
+      "code": "30701",
+      "parentCode": "307"
+    },
+    {
+      "name": "Cot",
+      "code": "30702",
+      "parentCode": "307"
+    },
+    {
+      "name": "Potrero Cerrado",
+      "code": "30703",
+      "parentCode": "307"
+    },
+    {
+      "name": "Cipreses",
+      "code": "30704",
+      "parentCode": "307"
+    },
+    {
+      "name": "Santa Rosa",
+      "code": "30705",
+      "parentCode": "307"
+    },
+    {
+      "name": "El Tejar",
+      "code": "30801",
+      "parentCode": "308"
+    },
+    {
+      "name": "San Isidro",
+      "code": "30802",
+      "parentCode": "308"
+    },
+    {
+      "name": "Tobosi",
+      "code": "30803",
+      "parentCode": "308"
+    },
+    {
+      "name": "Patio de Agua",
+      "code": "30804",
+      "parentCode": "308"
+    },
+    {
+      "name": "Heredia",
+      "code": "40101",
+      "parentCode": "401"
+    },
+    {
+      "name": "Mercedes",
+      "code": "40102",
+      "parentCode": "401"
+    },
+    {
+      "name": "San Francisco",
+      "code": "40103",
+      "parentCode": "401"
+    },
+    {
+      "name": "Ulloa",
+      "code": "40104",
+      "parentCode": "401"
+    },
+    {
+      "name": "Varablanca",
+      "code": "40105",
+      "parentCode": "401"
+    },
+    {
+      "name": "Barva",
+      "code": "40201",
+      "parentCode": "402"
+    },
+    {
+      "name": "San Pedro",
+      "code": "40202",
+      "parentCode": "402"
+    },
+    {
+      "name": "San Pablo",
+      "code": "40203",
+      "parentCode": "402"
+    },
+    {
+      "name": "San Roque",
+      "code": "40204",
+      "parentCode": "402"
+    },
+    {
+      "name": "Santa Lucía",
+      "code": "40205",
+      "parentCode": "402"
+    },
+    {
+      "name": "San José de la Montaña",
+      "code": "40206",
+      "parentCode": "402"
+    },
+    {
+      "name": "Santo Domingo",
+      "code": "40301",
+      "parentCode": "403"
+    },
+    {
+      "name": "San Vicente",
+      "code": "40302",
+      "parentCode": "403"
+    },
+    {
+      "name": "San Miguel",
+      "code": "40303",
+      "parentCode": "403"
+    },
+    {
+      "name": "Paracito",
+      "code": "40304",
+      "parentCode": "403"
+    },
+    {
+      "name": "Santo Tomás",
+      "code": "40305",
+      "parentCode": "403"
+    },
+    {
+      "name": "Santa Rosa",
+      "code": "40306",
+      "parentCode": "403"
+    },
+    {
+      "name": "Tures",
+      "code": "40307",
+      "parentCode": "403"
+    },
+    {
+      "name": "Pará",
+      "code": "40308",
+      "parentCode": "403"
+    },
+    {
+      "name": "Santa Bárbara",
+      "code": "40401",
+      "parentCode": "404"
+    },
+    {
+      "name": "San Pedro",
+      "code": "40402",
+      "parentCode": "404"
+    },
+    {
+      "name": "San Juan",
+      "code": "40403",
+      "parentCode": "404"
+    },
+    {
+      "name": "JesÃºs",
+      "code": "40404",
+      "parentCode": "404"
+    },
+    {
+      "name": "Santo Domingo del Roble",
+      "code": "40405",
+      "parentCode": "404"
+    },
+    {
+      "name": "Puraba",
+      "code": "40406",
+      "parentCode": "404"
+    },
+    {
+      "name": "San Rafael",
+      "code": "40501",
+      "parentCode": "405"
+    },
+    {
+      "name": "San Josecito",
+      "code": "40502",
+      "parentCode": "405"
+    },
+    {
+      "name": "Santiago",
+      "code": "40503",
+      "parentCode": "405"
+    },
+    {
+      "name": "Angeles",
+      "code": "40504",
+      "parentCode": "405"
+    },
+    {
+      "name": "Concepción",
+      "code": "40505",
+      "parentCode": "405"
+    },
+    {
+      "name": "San Isidro",
+      "code": "40601",
+      "parentCode": "406"
+    },
+    {
+      "name": "San José",
+      "code": "40602",
+      "parentCode": "406"
+    },
+    {
+      "name": "Concepción",
+      "code": "40603",
+      "parentCode": "406"
+    },
+    {
+      "name": "San Francisco",
+      "code": "40604",
+      "parentCode": "406"
+    },
+    {
+      "name": "San Antonio",
+      "code": "40701",
+      "parentCode": "407"
+    },
+    {
+      "name": "La Ribera",
+      "code": "40702",
+      "parentCode": "407"
+    },
+    {
+      "name": "Asunción",
+      "code": "40703",
+      "parentCode": "407"
+    },
+    {
+      "name": "San Joaquín",
+      "code": "40801",
+      "parentCode": "408"
+    },
+    {
+      "name": "Barrantes",
+      "code": "40802",
+      "parentCode": "408"
+    },
+    {
+      "name": "Llorente",
+      "code": "40803",
+      "parentCode": "408"
+    },
+    {
+      "name": "San Pablo",
+      "code": "40901",
+      "parentCode": "409"
+    },
+    {
+      "name": "Puerto Viejo",
+      "code": "41001",
+      "parentCode": "410"
+    },
+    {
+      "name": "La Virgen",
+      "code": "41002",
+      "parentCode": "410"
+    },
+    {
+      "name": "Horquetas",
+      "code": "41003",
+      "parentCode": "410"
+    },
+    {
+      "name": "Llanuras de Gaspar",
+      "code": "41004",
+      "parentCode": "410"
+    },
+    {
+      "name": "Cureña",
+      "code": "41005",
+      "parentCode": "410"
+    },
+    {
+      "name": "Liberia",
+      "code": "50101",
+      "parentCode": "501"
+    },
+    {
+      "name": "Cañas Dulces",
+      "code": "50102",
+      "parentCode": "501"
+    },
+    {
+      "name": "Mayorga",
+      "code": "50103",
+      "parentCode": "501"
+    },
+    {
+      "name": "Nacascolo",
+      "code": "50104",
+      "parentCode": "501"
+    },
+    {
+      "name": "Curubande",
+      "code": "50105",
+      "parentCode": "501"
+    },
+    {
+      "name": "Nicoya",
+      "code": "50201",
+      "parentCode": "502"
+    },
+    {
+      "name": "Mansión",
+      "code": "50202",
+      "parentCode": "502"
+    },
+    {
+      "name": "San Antonio",
+      "code": "50203",
+      "parentCode": "502"
+    },
+    {
+      "name": "Quebrada Honda",
+      "code": "50204",
+      "parentCode": "502"
+    },
+    {
+      "name": "Sámara",
+      "code": "50205",
+      "parentCode": "502"
+    },
+    {
+      "name": "Nósara",
+      "code": "50206",
+      "parentCode": "502"
+    },
+    {
+      "name": "Belén de Nosarita",
+      "code": "50207",
+      "parentCode": "502"
+    },
+    {
+      "name": "Santa Cruz",
+      "code": "50301",
+      "parentCode": "503"
+    },
+    {
+      "name": "Bolsón",
+      "code": "50302",
+      "parentCode": "503"
+    },
+    {
+      "name": "Veintisiete de Abril",
+      "code": "50303",
+      "parentCode": "503"
+    },
+    {
+      "name": "Tempate",
+      "code": "50304",
+      "parentCode": "503"
+    },
+    {
+      "name": "Cartagena",
+      "code": "50305",
+      "parentCode": "503"
+    },
+    {
+      "name": "Cuajiniquil",
+      "code": "50306",
+      "parentCode": "503"
+    },
+    {
+      "name": "Diriá",
+      "code": "50307",
+      "parentCode": "503"
+    },
+    {
+      "name": "Cabo Velas",
+      "code": "50308",
+      "parentCode": "503"
+    },
+    {
+      "name": "Tamarindo",
+      "code": "50309",
+      "parentCode": "503"
+    },
+    {
+      "name": "Bagaces",
+      "code": "50401",
+      "parentCode": "504"
+    },
+    {
+      "name": "Fortuna",
+      "code": "50402",
+      "parentCode": "504"
+    },
+    {
+      "name": "Mogote",
+      "code": "50403",
+      "parentCode": "504"
+    },
+    {
+      "name": "Río Naranjo",
+      "code": "50404",
+      "parentCode": "504"
+    },
+    {
+      "name": "Filadelfia",
+      "code": "50501",
+      "parentCode": "505"
+    },
+    {
+      "name": "Palmira",
+      "code": "50502",
+      "parentCode": "505"
+    },
+    {
+      "name": "Sardinal",
+      "code": "50503",
+      "parentCode": "505"
+    },
+    {
+      "name": "Belén",
+      "code": "50504",
+      "parentCode": "505"
+    },
+    {
+      "name": "Cañas",
+      "code": "50601",
+      "parentCode": "506"
+    },
+    {
+      "name": "Palmira",
+      "code": "50602",
+      "parentCode": "506"
+    },
+    {
+      "name": "San Miguel",
+      "code": "50603",
+      "parentCode": "506"
+    },
+    {
+      "name": "Bebedero",
+      "code": "50604",
+      "parentCode": "506"
+    },
+    {
+      "name": "Porozal",
+      "code": "50605",
+      "parentCode": "506"
+    },
+    {
+      "name": "Juntas",
+      "code": "50701",
+      "parentCode": "507"
+    },
+    {
+      "name": "Sierra",
+      "code": "50702",
+      "parentCode": "507"
+    },
+    {
+      "name": "San Juan",
+      "code": "50703",
+      "parentCode": "507"
+    },
+    {
+      "name": "Colorado",
+      "code": "50704",
+      "parentCode": "507"
+    },
+    {
+      "name": "Tilarán",
+      "code": "50801",
+      "parentCode": "508"
+    },
+    {
+      "name": "Quebrada Grande",
+      "code": "50802",
+      "parentCode": "508"
+    },
+    {
+      "name": "Tronadora",
+      "code": "50803",
+      "parentCode": "508"
+    },
+    {
+      "name": "Santa Rosa",
+      "code": "50804",
+      "parentCode": "508"
+    },
+    {
+      "name": "Líbano",
+      "code": "50805",
+      "parentCode": "508"
+    },
+    {
+      "name": "Tierras Morenas",
+      "code": "50806",
+      "parentCode": "508"
+    },
+    {
+      "name": "Arenal",
+      "code": "50807",
+      "parentCode": "508"
+    },
+    {
+      "name": "Carmona",
+      "code": "50901",
+      "parentCode": "509"
+    },
+    {
+      "name": "Santa Rita",
+      "code": "50902",
+      "parentCode": "509"
+    },
+    {
+      "name": "Zapotal",
+      "code": "50903",
+      "parentCode": "509"
+    },
+    {
+      "name": "San Pablo",
+      "code": "50904",
+      "parentCode": "509"
+    },
+    {
+      "name": "Porvenir",
+      "code": "50905",
+      "parentCode": "509"
+    },
+    {
+      "name": "Bejuco",
+      "code": "50906",
+      "parentCode": "509"
+    },
+    {
+      "name": "La Cruz",
+      "code": "51001",
+      "parentCode": "510"
+    },
+    {
+      "name": "Santa Cecilia",
+      "code": "51002",
+      "parentCode": "510"
+    },
+    {
+      "name": "Garita",
+      "code": "51003",
+      "parentCode": "510"
+    },
+    {
+      "name": "Santa Elena",
+      "code": "51004",
+      "parentCode": "510"
+    },
+    {
+      "name": "Hojancha",
+      "code": "51101",
+      "parentCode": "511"
+    },
+    {
+      "name": "Monte Romo",
+      "code": "51102",
+      "parentCode": "511"
+    },
+    {
+      "name": "Puerto Carrillo",
+      "code": "51103",
+      "parentCode": "511"
+    },
+    {
+      "name": "Huacas",
+      "code": "51104",
+      "parentCode": "511"
+    },
+    {
+      "name": "Puntarenas",
+      "code": "60101",
+      "parentCode": "601"
+    },
+    {
+      "name": "Pitahaya",
+      "code": "60102",
+      "parentCode": "601"
+    },
+    {
+      "name": "Chomes",
+      "code": "60103",
+      "parentCode": "601"
+    },
+    {
+      "name": "Lepanto",
+      "code": "60104",
+      "parentCode": "601"
+    },
+    {
+      "name": "Paquera",
+      "code": "60105",
+      "parentCode": "601"
+    },
+    {
+      "name": "Manzanillo",
+      "code": "60106",
+      "parentCode": "601"
+    },
+    {
+      "name": "Guacimal",
+      "code": "60107",
+      "parentCode": "601"
+    },
+    {
+      "name": "Barranca",
+      "code": "60108",
+      "parentCode": "601"
+    },
+    {
+      "name": "Monte Verde",
+      "code": "60109",
+      "parentCode": "601"
+    },
+    {
+      "name": "Isla del Coco",
+      "code": "60110",
+      "parentCode": "601"
+    },
+    {
+      "name": "Cóbano",
+      "code": "60111",
+      "parentCode": "601"
+    },
+    {
+      "name": "Chacarita",
+      "code": "60112",
+      "parentCode": "601"
+    },
+    {
+      "name": "Chira",
+      "code": "60113",
+      "parentCode": "601"
+    },
+    {
+      "name": "Acapulco",
+      "code": "60114",
+      "parentCode": "601"
+    },
+    {
+      "name": "Roble",
+      "code": "60115",
+      "parentCode": "601"
+    },
+    {
+      "name": "Arancibia",
+      "code": "60116",
+      "parentCode": "601"
+    },
+    {
+      "name": "Espíritu Santo",
+      "code": "60201",
+      "parentCode": "602"
+    },
+    {
+      "name": "San Juan Grande",
+      "code": "60202",
+      "parentCode": "602"
+    },
+    {
+      "name": "Macacona",
+      "code": "60203",
+      "parentCode": "602"
+    },
+    {
+      "name": "San Rafael",
+      "code": "60204",
+      "parentCode": "602"
+    },
+    {
+      "name": "San Jerónimo",
+      "code": "60205",
+      "parentCode": "602"
+    },
+    {
+      "name": "Buenos Aires",
+      "code": "60301",
+      "parentCode": "603"
+    },
+    {
+      "name": "Volcán",
+      "code": "60302",
+      "parentCode": "603"
+    },
+    {
+      "name": "Potrero Grande",
+      "code": "60303",
+      "parentCode": "603"
+    },
+    {
+      "name": "Boruca",
+      "code": "60304",
+      "parentCode": "603"
+    },
+    {
+      "name": "Pilas",
+      "code": "60305",
+      "parentCode": "603"
+    },
+    {
+      "name": "Colinas o Bajo de Maíz",
+      "code": "60306",
+      "parentCode": "603"
+    },
+    {
+      "name": "Chánguena",
+      "code": "60307",
+      "parentCode": "603"
+    },
+    {
+      "name": "Bioley",
+      "code": "60308",
+      "parentCode": "603"
+    },
+    {
+      "name": "Brunka",
+      "code": "60309",
+      "parentCode": "603"
+    },
+    {
+      "name": "Miramar",
+      "code": "60401",
+      "parentCode": "604"
+    },
+    {
+      "name": "Unión",
+      "code": "60402",
+      "parentCode": "604"
+    },
+    {
+      "name": "San Isidro",
+      "code": "60403",
+      "parentCode": "604"
+    },
+    {
+      "name": "Puerto Cortés",
+      "code": "60501",
+      "parentCode": "605"
+    },
+    {
+      "name": "Palmar",
+      "code": "60502",
+      "parentCode": "605"
+    },
+    {
+      "name": "Sierpe",
+      "code": "60503",
+      "parentCode": "605"
+    },
+    {
+      "name": "Bahía Ballena",
+      "code": "60504",
+      "parentCode": "605"
+    },
+    {
+      "name": "Piedras Blancas",
+      "code": "60505",
+      "parentCode": "605"
+    },
+    {
+      "name": "Quepos",
+      "code": "60601",
+      "parentCode": "606"
+    },
+    {
+      "name": "Savegre",
+      "code": "60602",
+      "parentCode": "606"
+    },
+    {
+      "name": "Naranjito",
+      "code": "60603",
+      "parentCode": "606"
+    },
+    {
+      "name": "Golfito",
+      "code": "60701",
+      "parentCode": "607"
+    },
+    {
+      "name": "Puerto Jiménez",
+      "code": "60702",
+      "parentCode": "607"
+    },
+    {
+      "name": "Guaycará",
+      "code": "60703",
+      "parentCode": "607"
+    },
+    {
+      "name": "Pavon",
+      "code": "60704",
+      "parentCode": "607"
+    },
+    {
+      "name": "San Vito",
+      "code": "60801",
+      "parentCode": "608"
+    },
+    {
+      "name": "Sabalito",
+      "code": "60802",
+      "parentCode": "608"
+    },
+    {
+      "name": "Agua Buena",
+      "code": "60803",
+      "parentCode": "608"
+    },
+    {
+      "name": "Limoncito",
+      "code": "60804",
+      "parentCode": "608"
+    },
+    {
+      "name": "Pittier",
+      "code": "60805",
+      "parentCode": "608"
+    },
+    {
+      "name": "Parrita",
+      "code": "60901",
+      "parentCode": "609"
+    },
+    {
+      "name": "Corredor",
+      "code": "61001",
+      "parentCode": "610"
+    },
+    {
+      "name": "La Cuesta",
+      "code": "61002",
+      "parentCode": "610"
+    },
+    {
+      "name": "Paso Canoas",
+      "code": "61003",
+      "parentCode": "610"
+    },
+    {
+      "name": "Laurel",
+      "code": "61004",
+      "parentCode": "610"
+    },
+    {
+      "name": "Jacó",
+      "code": "61101",
+      "parentCode": "611"
+    },
+    {
+      "name": "Tárcoles",
+      "code": "61102",
+      "parentCode": "611"
+    },
+    {
+      "name": "Limón",
+      "code": "70101",
+      "parentCode": "701"
+    },
+    {
+      "name": "Valle La Estrella",
+      "code": "70102",
+      "parentCode": "701"
+    },
+    {
+      "name": "Río Blanco",
+      "code": "70103",
+      "parentCode": "701"
+    },
+    {
+      "name": "Matama",
+      "code": "70104",
+      "parentCode": "701"
+    },
+    {
+      "name": "Guápiles",
+      "code": "70201",
+      "parentCode": "702"
+    },
+    {
+      "name": "Jiménez",
+      "code": "70202",
+      "parentCode": "702"
+    },
+    {
+      "name": "Rita",
+      "code": "70203",
+      "parentCode": "702"
+    },
+    {
+      "name": "Roxana",
+      "code": "70204",
+      "parentCode": "702"
+    },
+    {
+      "name": "Cariari",
+      "code": "70205",
+      "parentCode": "702"
+    },
+    {
+      "name": "Colorado",
+      "code": "70206",
+      "parentCode": "702"
+    },
+    {
+      "name": "Siquirres",
+      "code": "70301",
+      "parentCode": "703"
+    },
+    {
+      "name": "Pacuarito",
+      "code": "70302",
+      "parentCode": "703"
+    },
+    {
+      "name": "Florida",
+      "code": "70303",
+      "parentCode": "703"
+    },
+    {
+      "name": "Germania",
+      "code": "70304",
+      "parentCode": "703"
+    },
+    {
+      "name": "Cairo",
+      "code": "70305",
+      "parentCode": "703"
+    },
+    {
+      "name": "Alegría",
+      "code": "70306",
+      "parentCode": "703"
+    },
+    {
+      "name": "Bratsi",
+      "code": "70401",
+      "parentCode": "704"
+    },
+    {
+      "name": "Sixaola",
+      "code": "70402",
+      "parentCode": "704"
+    },
+    {
+      "name": "Cahuita",
+      "code": "70403",
+      "parentCode": "704"
+    },
+    {
+      "name": "Telire",
+      "code": "70404",
+      "parentCode": "704"
+    },
+    {
+      "name": "Matina",
+      "code": "70501",
+      "parentCode": "705"
+    },
+    {
+      "name": "Batán",
+      "code": "70502",
+      "parentCode": "705"
+    },
+    {
+      "name": "Carrandí",
+      "code": "70503",
+      "parentCode": "705"
+    },
+    {
+      "name": "Guácimo",
+      "code": "70601",
+      "parentCode": "706"
+    },
+    {
+      "name": "Mercedes",
+      "code": "70602",
+      "parentCode": "706"
+    },
+    {
+      "name": "Pocora",
+      "code": "70603",
+      "parentCode": "706"
+    },
+    {
+      "name": "Río Jiménez",
+      "code": "70604",
+      "parentCode": "706"
+    },
+    {
+      "name": "Duacarí",
+      "code": "70605",
+      "parentCode": "706"
+    }
+  ]

@@ -4,7 +4,6 @@ import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
-import { LocationService } from '../service/LocationService';
 
 
 const Communities = () => {
@@ -123,7 +122,7 @@ const Communities = () => {
                             <label htmlFor="name">Nombre</label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon p-button p-khaki-dropdown">
+                                    <span className="p-inputgroup-addon p-button p-icon-input">
                                         <i className="pi pi-home"></i>
                                     </span>
                                     <InputText id="name" type="text" />
@@ -134,7 +133,7 @@ const Communities = () => {
                             <label htmlFor="districts">Provincia</label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon p-button p-khaki-dropdown">
+                                    <span className="p-inputgroup-addon p-button p-icon-input">
                                         <i className="pi pi-map-marker"></i>
                                     </span>
                                     <Dropdown placeholder="--Seleccione Provincia--" value={provinciaId} options={p} onChange={handleProvinces} />
@@ -145,7 +144,7 @@ const Communities = () => {
                             <label htmlFor="cantons">Cantón</label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon p-button p-khaki-dropdown">
+                                    <span className="p-inputgroup-addon p-button p-icon-input">
                                         <i className="pi pi-map-marker"></i>
                                     </span>
                                     <Dropdown placeholder="--Seleccione Cantón--" value={cantonId} options={c} onChange={handleCanton} />
@@ -156,7 +155,7 @@ const Communities = () => {
                             <label htmlFor="districts">Distrito</label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon p-button p-khaki-dropdown">
+                                    <span className="p-inputgroup-addon p-button p-icon-input">
                                         <i className="pi pi-map-marker"></i>
                                     </span>
                                     <Dropdown placeholder="--Seleccione Distrito--" value={districtId} options={d} />
@@ -169,7 +168,7 @@ const Communities = () => {
                             <label htmlFor="telefono">Teléfono</label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon p-button p-khaki-dropdown">
+                                    <span className="p-inputgroup-addon p-button p-icon-input">
                                         <i className="pi pi-phone"></i>
                                     </span>
                                     <InputText id="telefono" type="text" rows="4" />
@@ -182,7 +181,7 @@ const Communities = () => {
                             <label htmlFor="numHouse">Numero de Viviendas</label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon p-button p-khaki-dropdown">
+                                    <span className="p-inputgroup-addon p-button p-icon-input">
                                         <i className="pi pi-hashtag"></i>
                                     </span>
                                     <InputText id="num" type="number" rows="4" />

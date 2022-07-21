@@ -142,6 +142,9 @@ const Communities = () => {
             item.province = pList.find(p => p.code === item.province).name
             item.canton = cList.find(p => p.code === item.canton).name
             item.district = dList.find(p => p.code === item.district).name
+            if(!item.id_admin){
+                item.name_admin = "Sin Administrador"
+            }
         })
         setCommunitiesList(await resJson.message);
     }

@@ -93,7 +93,7 @@ const AdministradoresSistema = () => {
                         </div>
                         <div className="field col-12">
                             <label htmlFor="telefono">Teléfono</label>
-                            <InputText id="telefono" type="number" rows="4" />
+                            <InputText type="tel" id="telefono" pattern="[0-9]{8}"/>
                         </div>
                         <Button label="Registrar" onClick={registrarAdmin}></Button>
                     </div>

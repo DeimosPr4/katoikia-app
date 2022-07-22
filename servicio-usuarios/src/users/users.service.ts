@@ -16,7 +16,7 @@ export class UsersService {
     @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
 
   ) { }
-  private publicKey: string; 
+  private publicKey: string;
   async create(user: UserDocument): Promise<User> {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
@@ -79,18 +79,14 @@ export class UsersService {
 
 
   //find admin del sistema
-  async findGuardsCommunity(pcommunity_id: string): Promise<User[]> { 
+  async findGuardsCommunity(pcommunity_id: string): Promise<User[]> {
     return this.userModel.find({ user_type: 4 }).exec();
   }
-    //find admin de comunidad
-    async allUsersAdminComunidad(): Promise<User[]> { 
-      return this.userModel.find({ user_type: 2 }).exec();   
-    }
-
   //find admin de comunidad
   async allUsersAdminComunidad(): Promise<User[]> {
     return this.userModel.find({ user_type: 2 }).exec();
   }
+
 
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);
@@ -109,11 +105,12 @@ export class UsersService {
       );
   }
 
-
-
   async findCommunityUser(community_id: string, user_type: number): Promise<User> {
     return this.userModel.findOne({ community_id: community_id, user_type: user_type }).exec();
   }
 
+  async deleteAdminSystem(id: string) {
+    return this.userModel.deleteOne({_id: id}).exec();
+  }
 
 }

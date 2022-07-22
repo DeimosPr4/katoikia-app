@@ -11,6 +11,7 @@ import classNames from 'classnames';
 const Communities = () => {
 
     let emptyCommunity = {
+        _id: null,
         name: '',
         province: provinciaId,
         canton: cantonId,
@@ -227,6 +228,118 @@ const Communities = () => {
         setCommunity(_community);
     }
 
+
+    const hideDeleteAdminSystemDialog = () => {
+        setDeleteAdminSystemDialog(false);
+    }
+
+    const hideDeleteAdminsSystemsDialog = () => {
+        setDeleteAdminsSystemDialog(false);
+    }
+
+    const confirmDeleteAdminSystem = (sysAdmin) => {
+        setSysAdmin(sysAdmin);
+        setDeleteAdminSystemDialog(true);
+    }
+
+    const confirmDeleteSelected = () => {
+        setDeleteAdminsSystemDialog(true);
+    }
+
+    const deleteSysAdmin = () => {
+
+        fetch('http://localhost:4000/user/deleteAdminSystem/' + sysadmin._id, {
+            cache: 'no-cache',
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else
+                        return response.json();
+                }
+            )
+            .then(
+                function (response) {
+                    let _sysadmin = communities.filter(val => val._id !== community._id);
+                    setAdministrators(_sysadmin);
+                    setDeleteAdminSystemDialog(false);
+                    setSysAdmin(emptySysAdmin);
+                    toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador del Sistema Eliminado', life: 3000 });
+                }
+            )
+            .catch(
+                err => {
+                    console.log('Ocurrió un error con el fetch', err)
+                    toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador del Sistema no se pudo eliminar', life: 3000 });
+                }
+            );
+    }
+
+    const deleteSelectedAdminsSystem = () => {
+        let _communities = communitiesList.filter(val => !selectedAdministrators.includes(val));
+        selectedAdministrators.map((item) => {
+            fetch('http://localhost:4000/user/deleteAdminSystem/' + item._id, {
+                cache: 'no-cache',
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        })
+        setCommunitiesList(_communities);
+        setDeleteAdminsSystemDialog(false);
+        setSelectedAdministrators(null);
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+    }
+
+    const actionsAdmin = (rowData) => {
+        return (
+            <div className="actions">
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => confirmDeleteAdminSystem(rowData)} />
+            </div>
+        );
+    }
+
+    const leftToolbarTemplate = () => {
+        return (
+            <React.Fragment>
+                <div className="my-2">
+                    <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedAdministrators || !selectedAdministrators.length} />
+                </div>
+            </React.Fragment>
+        )
+    }
+
+    const rightToolbarTemplate = () => {
+        return (
+            <React.Fragment>
+                <Button label="Exportar" icon="pi pi-upload" className="p-button-help"  />
+            </React.Fragment>
+        )
+    }
+
+    const header = (
+        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 className="m-0">Administradores del sistema</h5>
+            <span className="block mt-2 md:mt-0 p-input-icon-left">
+                <i className="pi pi-search" />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+            </span>
+        </div>
+    );
+
+    const deleteAdminSystemDialogFooter = (
+        <>
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteAdminSystemDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSysAdmin} />
+        </>
+    );
+    
     return (
         <div className="grid">
             <div className="col-12">

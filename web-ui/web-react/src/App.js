@@ -30,6 +30,7 @@ import BlocksDemo from './templates/BlocksDemo';
 import IconsDemo from './templates/IconsDemo';
 import AdministradoresSistema from './components/AdministradoresSistema';
 import AdministradoresComunidad from './components/AdministradoresComunidad';
+import GuardasSeguridad from './components/GuardasSeguridad';
 import Communities from './components/ComunidadViviendas';
 
 import Crud from './pages/Crud';
@@ -166,6 +167,7 @@ const App = () => {
                 {label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'},
                 {label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema'}, 
                 {label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresComunidad'}, 
+                {label: 'Guardas de seguridad', icon: 'pi pi-fw pi-id-card', to: '/guardasSeguridad'}, 
                 {label: 'Comunidadades', icon: 'pi pi-fw pi-id-card', to: '/comunidadesViviendas'}, 
                 {label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn'}
             ]
@@ -322,6 +324,7 @@ const App = () => {
                     <Route path="/documentation" component={Documentation} />
                     <Route path="/administradoresSistema" component={AdministradoresSistema} />
                     <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
+                    <Route path="/guardasSeguridad" component={GuardasSeguridad} />
                     <Route path="/comunidadesViviendas" component={Communities} />
                     <Route path="/logIn" component={LogIn} />
                 </div>

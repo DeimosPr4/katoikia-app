@@ -17,6 +17,10 @@ export class UsersController {
     return this.userService.create(user);
   }
 
+  @MessagePattern({ cmd: 'createGuard' })
+  createGuard(@Payload() user: UserDocument) {
+    return this.userService.create(user);
+  }
 
 
   @MessagePattern({ cmd: 'findAllUsers' })
@@ -29,6 +33,13 @@ export class UsersController {
     let dni = id['dni'];
     return this.userService.findOneByDNI(dni);
   }
+
+  @MessagePattern({ cmd: 'findGuardsCommunity' })
+  findGuardsCommunity(@Payload() community_id: string) {
+    let pcommunity_id = community_id['community_id'];
+    return this.userService.findGuardsCommunity(pcommunity_id);
+  }
+  
 
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {

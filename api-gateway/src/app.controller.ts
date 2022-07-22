@@ -1,10 +1,8 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AppService } from "./app.service";
-
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
-
   // #==== API Users
   @Post('user/createAdminSystem')
   createAdminSystem(
@@ -20,6 +18,24 @@ export class AppController {
   ) {
     return this.appService.createAdminSystem(dni, name, last_name, email, phone, password,
       user_type, status, date_entry);
+  }
+
+  @Post('user/createGuard')
+  createGuard(
+    //Nombre, Apellidos, Correo electrónico, Cédula, Teléfono, Contraseña
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('password') password: string,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id:string
+  ) {
+    return this.appService.createGuard(dni, name, last_name, email, phone, password,
+      user_type, status, date_entry,community_id);
   }
 
   @Post('user/createUser')
@@ -60,6 +76,12 @@ export class AppController {
   @Get('user/findAdminComunidad')
   allUsersAdminComunidad() {
     return this.appService.allUsersAdminComunidad();
+  }
+  @Get('user/findGuards/:community')
+  findGuardsCommunity(
+    @Param('community_id') community_id: string
+  ) {
+    return this.appService.findGuardsCommunity(community_id);
   }
 
   @Get('user/find/:dni')

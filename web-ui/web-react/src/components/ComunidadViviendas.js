@@ -156,7 +156,7 @@ const Communities = () => {
 
     const saveCommunity = () => {
 
-        if (community.name.trim() ) {
+        if (community.name && community.num_houses > 0 && provinciaId && cantonId && districtId && community.phone ) {
             let _communities = [...communitiesList];
             let _community = { ...community };
             _community.province = provinciaId;
@@ -234,13 +234,13 @@ const Communities = () => {
                     <h5>Comunidades de Viviendas</h5>
 
                     <DataTable value={communitiesList} scrollable scrollHeight="400px" scrollDirection="both" className="mt-3">
-                        <Column field="name" header="Nombre" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="province" header="Provincia" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="canton" header="Cantón" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="district" header="Distrito" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="phone" header="Telefóno" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
-                        <Column field="num_houses" header="Número de viviendas" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
-                        <Column field="name_admin" header="Administrador" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
+                        <Column field="name" header="🏘️ Nombre" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="province" header="📍 Provincia" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="canton" header="📍 Cantón" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="district" header="📍 Distrito" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="phone" header="☎️ Telefóno" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
+                        <Column field="num_houses" header="#️⃣ Número de viviendas" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
+                        <Column field="name_admin" header="👩🏻‍💼👨🏻‍💼 Administrador" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
                     </DataTable>
                 </div>
             </div>
@@ -257,7 +257,7 @@ const Communities = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-home"></i>
                                     </span>
-                                    <InputText id="name" value={community.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={submitted && community.name === '' ? 'p-invalid' : ''} />
+                                    <InputText id="name" value={community.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({'p-invalid' : submitted && community.name === ''})} />
                                 </div>
                                 {submitted && community.name === '' && <small className="p-invalid">Nombre es requirido.</small>}
                             </div>
@@ -329,7 +329,7 @@ const Communities = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-hashtag"></i>
                                     </span>
-                                    <InputText id="code_houses" value={codeHouses} onChange={handleCodeHouses} required autoFocus className={classNames({ 'p-invalid': submitted && codeHouses === '' })} />
+                                    <InputText id="code_houses" value={codeHouses} onChange={handleCodeHouses} autoFocus className={classNames({ 'p-invalid': submitted && codeHouses === '' })} />
                                 </div>
                                 {submitted && codeHouses === '' && <small className="p-invalid">El código para las viviendas es requirido.</small>}
                             </div>

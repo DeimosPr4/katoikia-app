@@ -7,6 +7,11 @@ export type CommunityDocument = Community & Document;
 
 @Schema({ collection: 'communities' })
 export class Community {
+    @Prop()
+    id_admin: string;
+
+    @Prop()
+    name_admin: string ;
 
     @Prop()
     name: string;
@@ -24,10 +29,7 @@ export class Community {
     num_houses: number;
 
     @Prop()
-    phone: number;
-
-    @Prop()
-    quote: number;
+    phone: string;
 
     @Prop()
     status: string;
@@ -37,6 +39,7 @@ export class Community {
 
     @Prop({ type: [HouseSchema] })
     houses: Array<House>;
+
 }
 
 

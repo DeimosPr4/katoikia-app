@@ -5,7 +5,7 @@ import { UsersService } from './users.service';
 
 @Controller()
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly userService: UsersService) { }
 
   @MessagePattern({ cmd: 'createUser' })
   create(@Payload() user: UserDocument) {
@@ -21,6 +21,7 @@ export class UsersController {
   createGuard(@Payload() user: UserDocument) {
     return this.userService.create(user);
   }
+
 
   @MessagePattern({ cmd: 'findAllUsers' })
   findAll() {
@@ -39,6 +40,7 @@ export class UsersController {
     return this.userService.findGuardsCommunity(pcommunity_id);
   }
   
+
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
     return this.userService.update(user.id, user);
@@ -52,10 +54,10 @@ export class UsersController {
 
   //inicio de sesion
   @MessagePattern({ cmd: 'loginUser' })
-  findLogin(@Payload() body:string) {
-    let pemail= body['email'];
-    let ppassword= body['password'];
-    return this.userService.findLogin(pemail,ppassword);
+  findLogin(@Payload() body: string) {
+    let pemail = body['email'];
+    let ppassword = body['password'];
+    return this.userService.findLogin(pemail, ppassword);
   }
 
   //buscar solo admins del sistema
@@ -64,9 +66,24 @@ export class UsersController {
     return this.userService.allUsersAdminSistema();
   }
 
-    //buscar solo admins de comunidad
-    @MessagePattern({ cmd: 'findAdminComunidad' })
-    allUsersAdminComunidad() {
-      return this.userService.allUsersAdminComunidad();
-    }
+  //buscar solo admins de comunidad
+  @MessagePattern({ cmd: 'findAdminComunidad' })
+  allUsersAdminComunidad() {
+    return this.userService.allUsersAdminComunidad();
+  }
+
+  //Prueba de envio de correo despues de registro, llamando a microservicio notificaciones
+  @MessagePattern({ cmd: 'testSendMail' })
+  testSendMail(@Payload() user: UserDocument) {
+    return this.userService.testSendMail(user);
+  }
+
+  //buscar usuario de una comunidad
+  @MessagePattern({ cmd: 'findOneCommunityUser' })
+  findCommunityUser(@Payload() user: any) {
+    return this.userService.findCommunityUser(user["community_id"], user["user_type"]);
+  }
+
+
 }
+

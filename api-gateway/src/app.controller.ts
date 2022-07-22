@@ -100,16 +100,15 @@ export class AppController {
     @Body('canton') canton: string,
     @Body('district') district: string,
     @Body('num_houses') num_houses: number,
-    @Body('phone') phone: number,
-    @Body('quote') quote: number,
+    @Body('phone') phone: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
-    @Body('houses') houses: [{}],
+    @Body('houses') houses: [],
 
   ) {
     return this.appService.createCommunity(name, province, canton,
       district, num_houses, phone,
-      quote, status, date_entry, houses);
+      status, date_entry, houses);
   }
 
   @Get('community/allCommunities')
@@ -131,6 +130,14 @@ export class AppController {
     return this.appService.findCommunityName(paramCommunityId);
   }
 
+
+  
+  @Post('community/findCommunityAdmin')
+  findCommunityAdmin(
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.findCommunityAdmin(community_id);
+  }
 
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
@@ -318,4 +325,38 @@ export class AppController {
   ) {
     return this.appService.findReport(paramReport);
   }
+
+
+  @Post('email/sendMail')
+  senMail(
+    @Body('email') email: string,
+  ) {
+
+    return this.appService.sendMail(email);
+  }
+  @Post('email/html')
+  html(
+    @Body('email') email: string,
+    @Body('name') name: string,
+  ) {
+
+    return this.appService.html(email, name);
+  }
+
+    // #==== API Users
+    @Post('user/testSendMail')
+    testSendMail(
+      @Body('dni') dni: string,
+      @Body('name') name: string,
+      @Body('last_name') last_name: string,
+      @Body('email') email: string,
+      @Body('phone') phone: number,
+      @Body('password') password: string,
+      @Body('user_type') user_type: string,
+      @Body('status') status: string,
+      @Body('date_entry') date_entry: Date,
+    ) {
+      return this.appService.testSendMail(dni, name, last_name, email, phone, password,
+        user_type, status, date_entry);
+    }
 }

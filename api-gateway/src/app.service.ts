@@ -116,6 +116,17 @@ export class AppService {
       );
   }
 
+  
+  deleteAdminSystem(id: string) {
+    const pattern = { cmd: 'deleteAdminSystem' };
+    const payload = { id: id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
   inicioSesion(pEmail: string, pPassword: string) {
     const pattern = { cmd: 'loginUser' };
     const payload = { email: pEmail, password: pPassword};

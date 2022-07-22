@@ -84,6 +84,12 @@ export class UsersController {
     return this.userService.findCommunityUser(user["community_id"], user["user_type"]);
   }
 
+  @MessagePattern({ cmd: 'deleteAdminSystem' })
+  deleteAdminSystem(@Payload() user: any) {
+    console.log("entró")
+
+    return this.userService.deleteAdminSystem(user["id"]);
+  }
 
 }
 

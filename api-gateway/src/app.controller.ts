@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { AppService } from "./app.service";
 @Controller()
 export class AppController {
@@ -91,6 +91,13 @@ export class AppController {
     return this.appService.findUser(paramUserDNI);
   }
 
+
+  @Delete('user/deleteAdminSystem/:id')
+  deleteAdminSystem(
+    @Param('id') id: string,
+  ) {
+    return this.appService.deleteAdminSystem(id);
+  }
 
   // #==== API Communities
   @Post('community/createCommunity')
@@ -342,6 +349,4 @@ export class AppController {
 
     return this.appService.html(email, name);
   }
-
-   
 }

@@ -221,11 +221,11 @@ const AdministradoresSistema = () => {
                         globalFilter={globalFilter} emptyMessage="No hay administradores del sistema registrados."
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-                        <Column field="name" sortable header="Nombre" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="last_name" sortable header="Apellidos" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
-                        <Column field="dni" sortable header="Identificación" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="email" sortable header="Correo electrónico" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="phone" sortable header="Telefóno" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="name" sortable header="👩🏻‍💼👨🏻‍💼 Nombre" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="last_name" sortable header="👩🏻‍💼👨🏻‍💼 Apellidos" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
+                        <Column field="dni" sortable header="💳 Identificación" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="email" sortable header="📧 Correo electrónico" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="phone" sortable header="📞 Telefóno" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column header="Acciones" style={{ flexGrow: 1,flexBasis: '60px' }} body={actionsAdmin}></Column>
 
                     </DataTable>

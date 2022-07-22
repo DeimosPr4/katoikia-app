@@ -238,7 +238,7 @@ const Communities = () => {
                         <Column field="province" header="📍 Provincia" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
                         <Column field="canton" header="📍 Cantón" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
                         <Column field="district" header="📍 Distrito" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="phone" header="☎️ Telefóno" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
+                        <Column field="phone" header="📞 Telefóno" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
                         <Column field="num_houses" header="#️⃣ Número de viviendas" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
                         <Column field="name_admin" header="👩🏻‍💼👨🏻‍💼 Administrador" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
                     </DataTable>

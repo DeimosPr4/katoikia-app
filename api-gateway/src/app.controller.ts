@@ -343,20 +343,5 @@ export class AppController {
     return this.appService.html(email, name);
   }
 
-    // #==== API Users
-    @Post('user/testSendMail')
-    testSendMail(
-      @Body('dni') dni: string,
-      @Body('name') name: string,
-      @Body('last_name') last_name: string,
-      @Body('email') email: string,
-      @Body('phone') phone: number,
-      @Body('password') password: string,
-      @Body('user_type') user_type: string,
-      @Body('status') status: string,
-      @Body('date_entry') date_entry: Date,
-    ) {
-      return this.appService.testSendMail(dni, name, last_name, email, phone, password,
-        user_type, status, date_entry);
-    }
+   
 }

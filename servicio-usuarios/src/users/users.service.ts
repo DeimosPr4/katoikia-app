@@ -82,10 +82,6 @@ export class UsersService {
   async findGuardsCommunity(pcommunity_id: string): Promise<User[]> { 
     return this.userModel.find({ user_type: 4 }).exec();
   }
-    //find admin de comunidad
-    async allUsersAdminComunidad(): Promise<User[]> { 
-      return this.userModel.find({ user_type: 2 }).exec();   
-    }
 
   //find admin de comunidad
   async allUsersAdminComunidad(): Promise<User[]> {

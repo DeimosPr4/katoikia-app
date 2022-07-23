@@ -245,14 +245,12 @@ const AdministradoresSistema = () => {
         </>
     )
 
-
     return (
         <div className="grid">
             <div className="col-12">
                 <Toast ref={toast} />
                 <div className="card">
-
-                    <   Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
                     <DataTable ref={dt} value={administrators} dataKey="_id" paginator rows={5} selection={selectedAdministrators} onSelectionChange={(e) => setSelectedAdministrators(e.value)}
                         scrollable scrollHeight="400px" scrollDirection="both" header={header}
                         rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"

@@ -7,6 +7,12 @@ import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
 import classNames from 'classnames';
 import { Toolbar } from 'primereact/toolbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+
 
 const Communities = () => {
 
@@ -41,7 +47,8 @@ const Communities = () => {
     const [deleteCommunityDialog, setDeleteCommunityDialog] = useState(false);
     const [deleteCommunitiesDialog, setDeleteCommunitiesDialog] = useState(false);
     const toast = useRef(null);
-    const dt = useEffect(null);
+    const dt = useRef(null);
+
 
 
     const p = provincesList.map((item) => ({
@@ -61,8 +68,6 @@ const Communities = () => {
         value: item.code,
         parent: item.parentCode
     }))
-
-
 
 
 
@@ -292,15 +297,15 @@ const Communities = () => {
 
     const deleteSelectedCommunities = () => {
         let _communities = communitiesList.filter(val => !selectedCommunities.includes(val));
-       /* selectedCommunities.map((item) => {
-            fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
-                cache: 'no-cache',
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-        })*/
+        /*  selectedCommunities.map((item) => {
+             fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
+                 cache: 'no-cache',
+                 method: 'DELETE',
+                 headers: {
+                     'Content-Type': 'application/json'
+                 }
+             })
+         })*/
         setCommunitiesList(_communities);
         setDeleteCommunitiesDialog(false);
         setSelectedCommunities(null);
@@ -350,25 +355,75 @@ const Communities = () => {
         </>
     );
 
+    const headerName = (
+        <>
+            <p> <FontAwesomeIcon icon={faHome} style={{ color: "#C08135" }} />  Nombre</p>
+        </>
+    )
+
+    const headerProvince = (
+        <>
+            <p> <FontAwesomeIcon icon={faMapLocationDot} style={{ color: "#D7A86E" }} />    Pronvincia</p>
+        </>
+    )
+
+    const headerCanton = (
+        <>
+            <p> <FontAwesomeIcon icon={faMapLocationDot} style={{ color: "#C08135" }} />    Cantón</p>
+        </>
+    )
+
+    const headerDistrict = (
+        <>
+            <p> <FontAwesomeIcon icon={faMapLocationDot} style={{ color: "#D7A86E" }} />    Distrito</p>
+        </>
+    )
+
+    const headerPhone = (
+        <>
+            <p> <FontAwesomeIcon icon={faPhoneAlt} style={{ color: "#C08135" }} />   Teléfono</p>
+        </>
+    )
+
+    const headerNumberHouses = (
+        <>
+            <p> <FontAwesomeIcon icon={faPhoneAlt} style={{ color: "#D7A86E" }} />   Número de viviendas</p>
+        </>
+    )
+
+    const headerAdministrator = (
+        <>
+            <p> <FontAwesomeIcon icon={faPhoneAlt} style={{ color: "#C08135" }} />   Administrador</p>
+        </>
+    )
+
+    const headerOptions = (
+        <>
+            <p>Opciones <FontAwesomeIcon icon={faEllipsis} style={{ color: "#D7A86E" }} /></p>
+        </>
+    )
+
     return (
         <div className="grid">
             <div className="col-12">
-            <Toast ref={toast} />
+                <Toast ref={toast} />
                 <div className="card">
-                <   Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                    <   Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
                     <DataTable ref={dt} value={communitiesList} dataKey="_id" paginator rows={5} selection={selectedCommunities} onSelectionChange={(e) => setSelectedCommunities(e.value)}
                         scrollable scrollHeight="400px" scrollDirection="both" header={header}
                         rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} comunidades de viviendas"
                         globalFilter={globalFilter} emptyMessage="No hay comunidades de viviendas registrados.">
-                        <Column field="name" header="🏘️ Nombre" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="province" className='' header="Provincia" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="canton" header="📍 Cantón" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="district" header="📍 Distrito" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="phone" header="📞 Telefóno" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
-                        <Column field="num_houses" header="#️⃣ Número de viviendas" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
-                        <Column field="name_admin" header="👩🏻‍💼👨🏻‍💼 Administrador" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
+                        <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+                        <Column field="name" header={headerName} style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="province" header={headerProvince} style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="canton" header={headerCanton} style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="district" header={headerDistrict} style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
+                        <Column field="num_houses" header={headerNumberHouses} style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
+                        <Column field="name_admin" header={headerAdministrator} style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
+                        <Column header={headerOptions} body={actionsCommunity}></Column>
                     </DataTable>
                 </div>
             </div>

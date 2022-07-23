@@ -258,8 +258,7 @@ const AdministradoresSistema = () => {
                         rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} administradores del sistema"
-                        globalFilter={globalFilter} emptyMessage="No hay administradores del sistema registrados."
-                    >
+                        globalFilter={globalFilter} emptyMessage="No hay administradores del sistema registrados.">
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
                         <Column field="name" sortable header={headerName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="last_name" sortable header={headerLastName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>

@@ -6,7 +6,7 @@ import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
 import classNames from 'classnames';
-
+import { Toolbar } from 'primereact/toolbar';
 
 const Communities = () => {
 
@@ -36,9 +36,12 @@ const Communities = () => {
     const [districtId, setDistrictId] = useState(null);
     const [codeHouses, setCodeHouses] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [selectedCommunities, setSelectedCommunities] = useState(null);
+    const [globalFilter, setGlobalFilter] = useState(null);
+    const [deleteCommunityDialog, setDeleteCommunityDialog] = useState(false);
+    const [deleteCommunitiesDialog, setDeleteCommunitiesDialog] = useState(false);
     const toast = useRef(null);
-    const dt = useRef(null);
-
+    const dt = useEffect(null);
 
 
     const p = provincesList.map((item) => ({
@@ -157,7 +160,7 @@ const Communities = () => {
 
     const saveCommunity = () => {
 
-        if (community.name && community.num_houses > 0 && provinciaId && cantonId && districtId && community.phone ) {
+        if (community.name && community.num_houses > 0 && provinciaId && cantonId && districtId && community.phone) {
             let _communities = [...communitiesList];
             let _community = { ...community };
             _community.province = provinciaId;
@@ -229,78 +232,85 @@ const Communities = () => {
     }
 
 
-    const hideDeleteAdminSystemDialog = () => {
-        setDeleteAdminSystemDialog(false);
+    const hideDeleteCommunityDialog = () => {
+        setDeleteCommunityDialog(false);
     }
 
-    const hideDeleteAdminsSystemsDialog = () => {
-        setDeleteAdminsSystemDialog(false);
+    const hideDeleteCommunitiesDialog = () => {
+        setDeleteCommunitiesDialog(false);
     }
 
-    const confirmDeleteAdminSystem = (sysAdmin) => {
-        setSysAdmin(sysAdmin);
-        setDeleteAdminSystemDialog(true);
+    const confirmDeleteCommunity = (community) => {
+        setCommunity(community);
+        setDeleteCommunityDialog(true);
     }
 
     const confirmDeleteSelected = () => {
-        setDeleteAdminsSystemDialog(true);
+        setDeleteCommunitiesDialog(true);
     }
 
-    const deleteSysAdmin = () => {
+    const deleteCommunity = () => {
 
-        fetch('http://localhost:4000/user/deleteAdminSystem/' + sysadmin._id, {
-            cache: 'no-cache',
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(
-                function (response) {
-                    if (response.status != 201)
-                        console.log('Ocurrió un error con el servicio: ' + response.status);
-                    else
-                        return response.json();
-                }
-            )
-            .then(
-                function (response) {
-                    let _sysadmin = communities.filter(val => val._id !== community._id);
-                    setAdministrators(_sysadmin);
-                    setDeleteAdminSystemDialog(false);
-                    setSysAdmin(emptySysAdmin);
-                    toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador del Sistema Eliminado', life: 3000 });
-                }
-            )
-            .catch(
-                err => {
-                    console.log('Ocurrió un error con el fetch', err)
-                    toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador del Sistema no se pudo eliminar', life: 3000 });
-                }
-            );
+        /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
+               cache: 'no-cache',
+               method: 'DELETE',
+               headers: {
+                   'Content-Type': 'application/json'
+               }
+           })
+               .then(
+                   function (response) {
+                       if (response.status != 201)
+                           console.log('Ocurrió un error con el servicio: ' + response.status);
+                       else
+                           return response.json();
+                   }
+               )
+               .then(
+                   function (response) {
+                       
+                       let _community = communities.filter(val => val._id !== community._id);
+                       setCommunities(_community);
+                       setDeleteCommunityDialog(false);
+                       setCommunity(emptyCommunity);
+                       toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });
+                   }
+               )
+               .catch(
+                   err => {
+                       console.log('Ocurrió un error con el fetch', err)
+                       toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Comunidad de Viviendas no se pudo eliminar', life: 3000 });
+                   }
+               ); 
+        */
+        let _community = communitiesList.filter(val => val._id !== community._id);
+        setCommunitiesList(_community);
+        setDeleteCommunityDialog(false);
+        setCommunity(emptyCommunity);
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });
     }
 
-    const deleteSelectedAdminsSystem = () => {
-        let _communities = communitiesList.filter(val => !selectedAdministrators.includes(val));
-        selectedAdministrators.map((item) => {
-            fetch('http://localhost:4000/user/deleteAdminSystem/' + item._id, {
+    const deleteSelectedCommunities = () => {
+        let _communities = communitiesList.filter(val => !selectedCommunities.includes(val));
+       /* selectedCommunities.map((item) => {
+            fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
                 cache: 'no-cache',
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-        })
+        })*/
         setCommunitiesList(_communities);
-        setDeleteAdminsSystemDialog(false);
-        setSelectedAdministrators(null);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+        setDeleteCommunitiesDialog(false);
+        setSelectedCommunities(null);
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Comunidades de Viviendas Eliminada', life: 3000 });
     }
 
-    const actionsAdmin = (rowData) => {
+    const actionsCommunity = (rowData) => {
         return (
             <div className="actions">
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => confirmDeleteAdminSystem(rowData)} />
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => confirmDeleteCommunity(rowData)} />
             </div>
         );
     }
@@ -309,7 +319,7 @@ const Communities = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedAdministrators || !selectedAdministrators.length} />
+                    <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedCommunities || !selectedCommunities.length} />
                 </div>
             </React.Fragment>
         )
@@ -318,14 +328,14 @@ const Communities = () => {
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="Exportar" icon="pi pi-upload" className="p-button-help"  />
+                <Button label="Exportar" icon="pi pi-upload" className="p-button-help" />
             </React.Fragment>
         )
     }
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Administradores del sistema</h5>
+            <h5 className="m-0">Comunidade de Viviendas</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
@@ -333,22 +343,27 @@ const Communities = () => {
         </div>
     );
 
-    const deleteAdminSystemDialogFooter = (
+    const deleteCommunityDialogFooter = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteAdminSystemDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSysAdmin} />
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCommunityDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteCommunity} />
         </>
     );
-    
+
     return (
         <div className="grid">
             <div className="col-12">
+            <Toast ref={toast} />
                 <div className="card">
-                    <h5>Comunidades de Viviendas</h5>
-
-                    <DataTable value={communitiesList} scrollable scrollHeight="400px" scrollDirection="both" className="mt-3">
+                <   Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                    <DataTable ref={dt} value={communitiesList} dataKey="_id" paginator rows={5} selection={selectedCommunities} onSelectionChange={(e) => setSelectedCommunities(e.value)}
+                        scrollable scrollHeight="400px" scrollDirection="both" header={header}
+                        rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
+                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} comunidades de viviendas"
+                        globalFilter={globalFilter} emptyMessage="No hay comunidades de viviendas registrados.">
                         <Column field="name" header="🏘️ Nombre" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
-                        <Column field="province" header="📍 Provincia" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
+                        <Column field="province" className='' header="Provincia" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
                         <Column field="canton" header="📍 Cantón" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
                         <Column field="district" header="📍 Distrito" style={{ flexGrow: 1, flexBasis: '160px' }}></Column>
                         <Column field="phone" header="📞 Telefóno" style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
@@ -359,8 +374,6 @@ const Communities = () => {
             </div>
             <div className="col-12">
                 <div className="card">
-                    <Toast ref={toast} />
-
                     <h5>Registro de comunidad de viviendas</h5>
                     <div className="p-fluid formgrid grid">
                         <div className="field col-12 md:col-12">
@@ -370,7 +383,7 @@ const Communities = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-home"></i>
                                     </span>
-                                    <InputText id="name" value={community.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({'p-invalid' : submitted && community.name === ''})} />
+                                    <InputText id="name" value={community.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && community.name === '' })} />
                                 </div>
                                 {submitted && community.name === '' && <small className="p-invalid">Nombre es requirido.</small>}
                             </div>

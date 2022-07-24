@@ -245,7 +245,7 @@ const Crud = () => {
     const statusBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Status</span>
+                <span className="p-column-title">Hi Status</span>
                 <span className={`product-badge status-${rowData.inventoryStatus.toLowerCase()}`}>{rowData.inventoryStatus}</span>
             </>
         )

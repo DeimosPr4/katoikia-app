@@ -25,7 +25,7 @@ export class CommunitiesController {
 
   @MessagePattern({cmd: 'findCommunityName'})
   findOneName(@Payload() id: string) {
-    let _id = id['_id'];
+    let _id = id['id'];
     return this.communitiesService.findOneName(_id);
   }
 

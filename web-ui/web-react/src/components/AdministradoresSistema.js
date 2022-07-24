@@ -6,6 +6,13 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faAt } from '@fortawesome/free-solid-svg-icons';
+import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+
 
 const AdministradoresSistema = () => {
 
@@ -18,7 +25,6 @@ const AdministradoresSistema = () => {
     const [deleteAdminsSystemDialog, setDeleteAdminsSystemDialog] = useState(false);
     const toast = useRef(null);
     const dt = useRef(null);
-
 
     let emptySysAdmin = {
         _id: null,
@@ -123,17 +129,15 @@ const AdministradoresSistema = () => {
                 function (response) {
                     let _sysadmin = administrators.filter(val => val._id !== sysadmin._id);
                     setAdministrators(_sysadmin);
-
                     setDeleteAdminSystemDialog(false);
                     setSysAdmin(emptySysAdmin);
-
-                    toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador del Sistema Eliminado', life: 3000 });
+                    toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Administrador del Sistema Eliminado', life: 3000 });
                 }
             )
             .catch(
                 err => {
                     console.log('Ocurrió un error con el fetch', err)
-                    toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador del Sistema no se pudo eliminar', life: 3000 });
+                    toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador del Sistema no se pudo Eliminar', life: 3000 });
                 }
             );
     }
@@ -152,9 +156,8 @@ const AdministradoresSistema = () => {
         setAdministrators(_administrators);
         setDeleteAdminsSystemDialog(false);
         setSelectedAdministrators(null);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Administradores del Sistema Eliminados', life: 3000 });
     }
-
 
     const actionsAdmin = (rowData) => {
         return (
@@ -177,7 +180,7 @@ const AdministradoresSistema = () => {
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="Exportar" icon="pi pi-upload" className="p-button-help"  />
+                <Button label="Exportar" icon="pi pi-upload" className="p-button-help" />
             </React.Fragment>
         )
     }
@@ -205,31 +208,64 @@ const AdministradoresSistema = () => {
             <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedAdminsSystem} />
         </>
     );
+
+    const headerName = (
+        <>
+            <p> <FontAwesomeIcon icon={faUserAlt} style={{color: "#C08135"}} />  Nombre</p>
+        </>
+    )
+
+    const headerLastName = (
+        <>
+            <p> <FontAwesomeIcon icon={faUserAlt} style={{color: "#D7A86E"}} />    Apellidos</p>
+        </>
+    )
+
+    const headerDNI = (
+        <>
+            <p> <FontAwesomeIcon icon={faIdCardAlt} style={{color: "#C08135"}} />    Identificación</p>
+        </>
+    )
+
+    const headerEmail = (
+        <>
+            <p> <FontAwesomeIcon icon={faAt} style={{color: "#D7A86E"}} />    Correo Electrónico</p>
+        </>
+    )
+
+    const headerPhone = (
+        <>
+            <p> <FontAwesomeIcon icon={faPhoneAlt} style={{color: "#C08135"}} />   Teléfono</p>
+        </>
+    )
+
+    const headerOptions = (
+        <>
+            <p>Opciones <FontAwesomeIcon icon={faEllipsis} style={{color: "#D7A86E"}} /></p>
+        </>
+    )
+
     return (
         <div className="grid">
             <div className="col-12">
                 <Toast ref={toast} />
-
                 <div className="card">
-                <   Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-
+                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
                     <DataTable ref={dt} value={administrators} dataKey="_id" paginator rows={5} selection={selectedAdministrators} onSelectionChange={(e) => setSelectedAdministrators(e.value)}
                         scrollable scrollHeight="400px" scrollDirection="both" header={header}
                         rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} administradores del sistema"
-                        globalFilter={globalFilter} emptyMessage="No hay administradores del sistema registrados."
-                    >
+                        globalFilter={globalFilter} emptyMessage="No hay administradores del sistema registrados.">
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-                        <Column field="name" sortable header="👩🏻‍💼👨🏻‍💼 Nombre" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="last_name" sortable header="👩🏻‍💼👨🏻‍💼 Apellidos" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
-                        <Column field="dni" sortable header="💳 Identificación" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="email" sortable header="📧 Correo electrónico" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="phone" sortable header="📞 Telefóno" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column header="Acciones" style={{ flexGrow: 1,flexBasis: '60px' }} body={actionsAdmin}></Column>
-
+                        <Column field="name" sortable header={headerName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="last_name" sortable header={headerLastName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
+                        <Column field="dni" sortable header={headerDNI} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+                        </Column>
+                        <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="phone" sortable header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column header={headerOptions} style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdmin}></Column>
                     </DataTable>
-
                     <Dialog visible={deleteAdminSystemDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminSystemDialogFooter} onHide={hideDeleteAdminSystemDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
@@ -239,7 +275,7 @@ const AdministradoresSistema = () => {
                     <Dialog visible={deleteAdminsSystemDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminsSystemDialogFooter} onHide={hideDeleteAdminsSystemsDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {sysadmin && <span>¿Está seguro eliminar los adminsitradores del sistema seleccionados?</span>}
+                            {selectedAdministrators && <span>¿Está seguro eliminar los adminsitradores del sistema seleccionados?</span>}
                         </div>
                     </Dialog>
                 </div>
@@ -266,19 +302,18 @@ const AdministradoresSistema = () => {
                         </div>
                         <div className="field col-12">
                             <label htmlFor="telefono">Teléfono</label>
-                            <InputText type="tel" id="telefono" pattern="[0-9]{8}"/>
+                            <InputText type="tel" id="telefono" pattern="[0-9]{8}" />
                         </div>
                         <Button label="Registrar" onClick={registrarAdmin}></Button>
                     </div>
                 </div>
             </div>
         </div>
-
-
     )
 }
 
 const comparisonFn = function (prevProps, nextProps) {
     return prevProps.location.pathname === nextProps.location.pathname;
 };
+
 export default React.memo(AdministradoresSistema, comparisonFn);

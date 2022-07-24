@@ -41,6 +41,18 @@ export class UsersController {
   }
   
 
+  @MessagePattern({ cmd: 'findTenantsCommunity' })
+  findTenantsCommunity(@Payload() community_id: string) {
+    let pcommunity_id = community_id['community_id'];
+    return this.userService.findTenantsCommunity(pcommunity_id);
+  }
+
+  @MessagePattern({ cmd: 'findTenants' })
+  findTenants() {
+    return this.userService.findTenants();
+  }
+
+
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
     return this.userService.update(user.id, user);

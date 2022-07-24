@@ -77,6 +77,7 @@ export class AppController {
   allUsersAdminComunidad() {
     return this.appService.allUsersAdminComunidad();
   }
+
   @Get('user/findGuards/:community')
   findGuardsCommunity(
     @Param('community_id') community_id: string
@@ -84,6 +85,11 @@ export class AppController {
     return this.appService.findGuardsCommunity(community_id);
   }
 
+  @Get('user/findTenants')
+  allUsersTenants() {
+    return this.appService.allUsersTenants();
+  }
+  
   @Get('user/find/:dni')
   findUser(
     @Param('dni') paramUserDNI: string

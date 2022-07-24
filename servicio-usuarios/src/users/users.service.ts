@@ -87,6 +87,17 @@ export class UsersService {
     return this.userModel.find({ user_type: 2 }).exec();
   }
 
+  
+  //find inquilinos
+  async findTenants(): Promise<User[]> {
+    return this.userModel.find({ user_type: 3 }).exec();
+  }
+
+  
+  //find inquilinos
+  async findTenantsCommunity(pcommunity_id: string): Promise<User[]> {
+    return this.userModel.find({ community_id: pcommunity_id, user_type: 4 }).exec();
+  }
 
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);

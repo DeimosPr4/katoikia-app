@@ -95,6 +95,17 @@ export class AppService {
       );
   }
 
+  allUsersTenants() {
+    const pattern = { cmd: 'findTenants' };
+    const payload = {};
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+  
+
   //GET parameter from API
   findUser(paramUserDNI: string) {
     const pattern = { cmd: 'findUserDNI' };

@@ -47,7 +47,7 @@ export class CommunitiesService {
     return this.communityModel.findOne({ _id: id }).exec();
   }
   findOneName(id: string): Promise<Community> {
-    return this.communityModel.findOne({ _id: "62be68215692582bbfd77134" }).exec();
+    return this.communityModel.findOne({ _id: id }).exec();
   }
 
   update(id: string, community: CommunityDocument) {

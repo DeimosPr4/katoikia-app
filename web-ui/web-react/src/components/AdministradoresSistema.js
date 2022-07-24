@@ -213,9 +213,9 @@ const AdministradoresSistema = () => {
                 <div className="card">
                 <   Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
-                    <DataTable ref={dt} value={administrators} dataKey="_id" paginator  rows={10}
+                    <DataTable responsiveLayout="scroll" ref={dt} value={administrators} dataKey="_id" paginator  rows={10}
                          filterDisplay="menu"  selection={selectedAdministrators} onSelectionChange={(e) => setSelectedAdministrators(e.value)}
-                          emptyMessage="No se encuentran administradores de sistema registrados."
+                          emptyMessage="No se encuentran administradores de sistema registrados." header={header}
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
                         <Column field="name" sortable header='Nombre' style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>

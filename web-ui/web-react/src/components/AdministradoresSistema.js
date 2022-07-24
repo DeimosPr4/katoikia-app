@@ -275,7 +275,7 @@ const AdministradoresSistema = () => {
                     <Dialog visible={deleteAdminsSystemDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminsSystemDialogFooter} onHide={hideDeleteAdminsSystemsDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {administrators && <span>¿Está seguro eliminar los adminsitradores del sistema seleccionados?</span>}
+                            {selectedAdministrators && <span>¿Está seguro eliminar los adminsitradores del sistema seleccionados?</span>}
                         </div>
                     </Dialog>
                 </div>

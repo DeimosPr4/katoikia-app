@@ -309,7 +309,7 @@ const Communities = () => {
         setCommunitiesList(_communities);
         setDeleteCommunitiesDialog(false);
         setSelectedCommunities(null);
-        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Comunidades de Viviendas Eliminada', life: 3000 });
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Comunidades de Viviendas Eliminadas', life: 3000 });
     }
 
     const actionsCommunity = (rowData) => {
@@ -352,6 +352,14 @@ const Communities = () => {
         <>
             <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCommunityDialog} />
             <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteCommunity} />
+        </>
+    );
+
+    
+    const deleteCommutitiesDialogFooter = (
+        <>
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCommunitiesDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedCommunities} />
         </>
     );
 
@@ -425,6 +433,18 @@ const Communities = () => {
                         <Column field="name_admin" header={headerAdministrator} style={{ flexGrow: 1, flexBasis: '180px' }}></Column>
                         <Column header={headerOptions} body={actionsCommunity}></Column>
                     </DataTable>
+                    <Dialog visible={deleteCommunityDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteCommunityDialogFooter} onHide={hideDeleteCommunityDialog}>
+                        <div className="flex align-items-center justify-content-center">
+                            <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                            {community && <span>¿Estás seguro que desea eliminar a <b>{sysadmin.name}</b>?</span>}
+                        </div>
+                    </Dialog>
+                    <Dialog visible={deleteCommunitiesDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteCommutitiesDialogFooter} onHide={hideDeleteCommunitiesDialog}>
+                        <div className="flex align-items-center justify-content-center">
+                            <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                            {selectedCommunities && <span>¿Está seguro eliminar los adminsitradores del sistema seleccionados?</span>}
+                        </div>
+                    </Dialog>
                 </div>
             </div>
             <div className="col-12">

@@ -152,10 +152,7 @@ const AdministradoresComunidad = () => {
         setDeleteAdminCommunityDialog(true);
     }
 
-    const confirmDeleteSelected = () => {
-        setDeleteAdminsCommunitiesDialog(true);
-    }
-
+   
     const actionsAdminCommunity = (rowData) => {
         return (
             <div className="actions">
@@ -164,34 +161,6 @@ const AdministradoresComunidad = () => {
         );
     }
 
-    const leftToolbarTemplate = () => {
-        return (
-            <React.Fragment>
-                <div className="my-2">
-                    <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedAdminsCommunities || !selectedAdminsCommunities.length} />
-                </div>
-            </React.Fragment>
-        )
-    }
-
-    const rightToolbarTemplate = () => {
-        return (
-            <React.Fragment>
-                <Button label="Exportar" icon="pi pi-upload" className="p-button-help" />
-            </React.Fragment>
-        )
-    }
-
-
-    const header = (
-        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Administradores de Comunidades</h5>
-            <span className="block mt-2 md:mt-0 p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
-            </span>
-        </div>
-    );
 
     const deleteAdminCommunityDialogFooter = (
         <>
@@ -346,9 +315,11 @@ const AdministradoresComunidad = () => {
         )
     }
 
+   
+
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Administradores del sistema <i class="fal fa-user"></i></h5>
+            <h5 className="m-0">Administradores de Comunidades</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />

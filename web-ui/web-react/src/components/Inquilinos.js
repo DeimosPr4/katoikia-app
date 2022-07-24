@@ -1,10 +1,40 @@
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Dropdown } from 'primereact/dropdown';
+import { Toast } from 'primereact/toast';
+import classNames from 'classnames';
 
 const Inquilinos = () => {
   const [communitiesList, setCommunitiesList] = useState([]);
+  const [tenants, setTenants] = useState([]);
+
+  const [tenant, setTenant] = useState(emptyTenant);
+
+  let emptyTenant = {
+    _id: null,
+    dni: '',
+    name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    password: '',
+    user_type: '1',
+    community_id: '',
+    community_name: '',
+    number_house: '',
+    status: ''
+  };
+
+
+  async function getTenants() {
+
+  }
+
+
   const communityIdList = communitiesList.map(community => community.id);
   async function getCommunites() {
     let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
@@ -53,7 +83,7 @@ const Inquilinos = () => {
               <label htmlFor="numero_vivienda">Número de Vivienda</label>
               <Dropdown id="numero_vivienda" value={communityIdList[0]} options={communitiesList} />
             </div>
-          <Button label="Registrar" onClick={registrarInquilino} />
+            <Button label="Registrar" onClick={registrarInquilino} />
           </div>
         </div>
       </div>

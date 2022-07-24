@@ -6,13 +6,13 @@ import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
 import classNames from 'classnames';
+import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-
 
 const Communities = () => {
 
@@ -436,7 +436,7 @@ const Communities = () => {
                     <Dialog visible={deleteCommunityDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteCommunityDialogFooter} onHide={hideDeleteCommunityDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {community && <span>¿Estás seguro que desea eliminar a <b>{sysadmin.name}</b>?</span>}
+                            {community && <span>¿Estás seguro que desea eliminar a <b>{community.name}</b>?</span>}
                         </div>
                     </Dialog>
                     <Dialog visible={deleteCommunitiesDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteCommutitiesDialogFooter} onHide={hideDeleteCommunitiesDialog}>

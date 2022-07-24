@@ -184,7 +184,7 @@ const AdministradoresSistema = () => {
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Administradores del sistema</h5>
+            <h5 className="m-0">Administradores del sistema <i class="fal fa-user"></i></h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
@@ -213,19 +213,16 @@ const AdministradoresSistema = () => {
                 <div className="card">
                 <   Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
-                    <DataTable ref={dt} value={administrators} dataKey="_id" paginator rows={5} selection={selectedAdministrators} onSelectionChange={(e) => setSelectedAdministrators(e.value)}
-                        scrollable scrollHeight="400px" scrollDirection="both" header={header}
-                        rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} administradores del sistema"
-                        globalFilter={globalFilter} emptyMessage="No hay administradores del sistema registrados."
+                    <DataTable ref={dt} value={administrators} dataKey="_id" paginator  rows={10}
+                         filterDisplay="menu"  selection={selectedAdministrators} onSelectionChange={(e) => setSelectedAdministrators(e.value)}
+                          emptyMessage="No se encuentran administradores de sistema registrados."
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-                        <Column field="name" sortable header="👩🏻‍💼👨🏻‍💼 Nombre" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="last_name" sortable header="👩🏻‍💼👨🏻‍💼 Apellidos" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
-                        <Column field="dni" sortable header="💳 Identificación" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="email" sortable header="📧 Correo electrónico" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="phone" sortable header="📞 Telefóno" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="name" sortable header='Nombre' style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="last_name" sortable header="Apellidos" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
+                        <Column field="dni" sortable header="Identificación" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="email" sortable header="Correo electrónico" style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="phone" sortable header="Telefóno" style={{ flexGrow: 1,flexBasis: '160px',  minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column header="Acciones" style={{ flexGrow: 1,flexBasis: '60px' }} body={actionsAdmin}></Column>
 
                     </DataTable>

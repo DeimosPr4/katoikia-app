@@ -50,6 +50,7 @@ import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
 import LogIn from './components/LogIn';
+import {PrimeIcons} from 'primereact/api';
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState('static');
@@ -166,11 +167,11 @@ const App = () => {
             label: 'Home',
             items: [
                 {label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'},
-                {label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema'}, 
-                {label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresComunidad'}, 
-                {label: 'Guardas de seguridad', icon: 'pi pi-fw pi-id-card', to: '/guardasSeguridad'}, 
-                {label: 'Comunidadades', icon: 'pi pi-fw pi-id-card', to: '/comunidadesViviendas'}, 
-                {label: 'Inquilinos', icon: 'pi pi-fw pi-id-card', to: '/inquilinos'},
+                {label: 'Administradores del sistema', icon: PrimeIcons.USERS, to: '/administradoresSistema'}, 
+                {label: 'Administradores de comunidad', icon: PrimeIcons.USERS, to: '/administradoresComunidad'}, 
+                {label: 'Guardas de seguridad', icon: PrimeIcons.LOCK, to: '/guardasSeguridad'}, 
+                {label: 'Comunidadades', icon: PrimeIcons.BUILDING, to: '/comunidadesViviendas'}, 
+                {label: 'Inquilinos', icon: PrimeIcons.USER, to: '/inquilinos'},
                 {label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn'}
             ]
         },

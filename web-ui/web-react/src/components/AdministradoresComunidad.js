@@ -13,6 +13,7 @@ import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown } from 'primereact/dropdown';
 
 
 const AdministradoresComunidad = () => {
@@ -44,6 +45,20 @@ const AdministradoresComunidad = () => {
         status: '1'
     };
 
+    async function getCommunites() {
+        let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
+        let resList = await response.json();
+        let list = await resList.message;
+        console.log(list);
+
+        setCommunitiesList(await list);
+    }
+
+    useEffect(() => {
+        getCommunites();
+    }, [])
+
+
     async function listaAdmin() {
         let nombres = await fetch('http://localhost:4000/user/findAdminComunidad/', { method: 'GET' })
             .then((response) => response.json())
@@ -63,25 +78,16 @@ const AdministradoresComunidad = () => {
 
     }
 
-    async function nombreComunidad(id) {
-        let nombres = await fetch('http://localhost:4000/community/findCommunityName/' + id, { method: 'GET' });
-        let nombresRes = await nombres.json();
-        return await nombresRes.message['name'];
-    }
-
-
-    async function setNameCommunities() {
-        Promise.all(listaAdmins.map(async function (administrador) {
-            // await listaComunidades(administrador.community_id);
-            administrador.community_id = await listaAdminComunidad.name;
-        }))
-    }
-
     useEffect(() => {
         listaAdmin();
 
     }, [])
 
+    const cList = communitiesList.map((item) => ({
+        label: item.name,
+        value: item.id,
+    }))
+    
 
     const deleteAdminCommunity = () => {
         /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
@@ -141,6 +147,9 @@ const AdministradoresComunidad = () => {
     }
 
 
+    const saveCommunityAdmin = () => {
+
+    }
 
     const hideDeleteAdminCommunityDialog = () => {
         setDeleteAdminCommunityDialog(false);
@@ -196,12 +205,12 @@ const AdministradoresComunidad = () => {
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="Exportar" icon="pi pi-upload" className="p-button-help"  />
+                <Button label="Exportar" icon="pi pi-upload" className="p-button-help" />
             </React.Fragment>
         )
     }
 
-  
+
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5 className="m-0">Administradores de Comunidades</h5>
@@ -289,6 +298,38 @@ const AdministradoresComunidad = () => {
                             {selectedAdminsCommunities && <span>¿Está seguro eliminar los administradores de las comunidades de viviendas seleccionados?</span>}
                         </div>
                     </Dialog>
+                </div>
+            </div>
+            <div className="col-12">
+                <div className="card">
+                    <h5>Registro de un administrador de una comunidad de viviendas</h5>
+                    <div className="p-fluid formgrid grid">
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="nombre">Nombre</label>
+                            <InputText id="nombre" type="text" />
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="apellidos">Apellidos</label>
+                            <InputText id="apellidos" type="text" />
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="correo_electronico">Correo electrónico</label>
+                            <InputText id="correo_electronico" type="text" />
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="identificacion">Identificación</label>
+                            <InputText id="identificacion" type="text" />
+                        </div>
+                        <div className="field col-12">
+                            <label htmlFor="telefono">Teléfono</label>
+                            <InputText type="tel" id="telefono" pattern="[0-9]{8}" />
+                        </div>
+                        <div className="p-field col-12 md:col-6">
+                            <label htmlFor="administrator">Comunidad a asignar: </label>
+                            <Dropdown id="administrator" value={communityId} options={cList} />
+                        </div>
+                        <Button label="Registrar" onClick={saveCommunityAdmin} />
+                    </div>
                 </div>
             </div>
         </div>

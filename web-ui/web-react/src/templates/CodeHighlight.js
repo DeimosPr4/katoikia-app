@@ -8,25 +8,24 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-scss';
 
 export const CodeHighlight = (props) => {
+  const codeElement = useRef(null);
 
-    const codeElement = useRef(null);
+  useEffect(() => {
+    if (Prism) {
+      Prism.highlightElement(codeElement.current);
+    }
+  }, []);
 
-    useEffect(() => {
-        if (Prism) {
-            Prism.highlightElement(codeElement.current);
-        }
-    }, []);
-
-    return (
-        <pre style={props.style}>
-            <code ref={codeElement} className={`language-${props.lang}`}>
-                {props.children}&nbsp;
-                </code>
-        </pre>
-    );
-}
+  return (
+    <pre style={props.style}>
+      <code ref={codeElement} className={`language-${props.lang}`}>
+        {props.children}&nbsp;
+      </code>
+    </pre>
+  );
+};
 
 CodeHighlight.defaultProps = {
-    lang: 'jsx',
-    style: null
+  lang: 'jsx',
+  style: null,
 };

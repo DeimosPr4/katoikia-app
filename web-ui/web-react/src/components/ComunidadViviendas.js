@@ -24,7 +24,7 @@ const Communities = () => {
         district: districtId,
         phone: '',
         num_houses: 0,
-        status: 'activo',
+        status: '1',
         date_entry: new Date(),
         houses: [],
     };

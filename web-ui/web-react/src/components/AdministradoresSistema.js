@@ -35,7 +35,7 @@ const AdministradoresSistema = () => {
         phone: '',
         password: '',
         user_type: '1',
-        status: ''
+        status: '1'
     };
 
     async function fetchP() {

@@ -14,21 +14,9 @@ import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'primereact/dropdown';
-
+import classNames from 'classnames';
 
 const AdministradoresComunidad = () => {
-
-    const [listaAdmins, setListaAdmins] = useState([]);
-    const [listaAdminComunidad, setListaAdminComunidad] = useState([]);
-    const [adminCommunity, setAdminCommunity] = useState(emptyAdminCommunity);
-    const [selectedAdminsCommunities, setSelectedAdminsCommunities] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState(null);
-    const [deleteAdminCommunityDialog, setDeleteAdminCommunityDialog] = useState(false);
-    const [deleteAdminsCommunitiesDialog, setDeleteAdminsCommunitiesDialog] = useState(false);
-    const toast = useRef(null);
-    const dt = useRef(null);
-    const [communitiesList, setCommunitiesList] = useState([]);
-    const [communityId, setCommunityId] = useState([]);
 
 
     let emptyAdminCommunity = {
@@ -39,24 +27,27 @@ const AdministradoresComunidad = () => {
         email: '',
         phone: '',
         password: '',
+        confirmPassword: '',
         community_id: '',
         community_name: '',
         user_type: '2',
         status: '1'
     };
 
-    async function getCommunites() {
-        let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
-        let resList = await response.json();
-        let list = await resList.message;
-        console.log(list);
+    const [listaAdmins, setListaAdmins] = useState([]);
+    const [listaAdminComunidad, setListaAdminComunidad] = useState([]);
+    const [adminCommunity, setAdminCommunity] = useState(emptyAdminCommunity);
+    const [selectedAdminsCommunities, setSelectedAdminsCommunities] = useState(null);
+    const [globalFilter, setGlobalFilter] = useState(null);
+    const [deleteAdminCommunityDialog, setDeleteAdminCommunityDialog] = useState(false);
+    const [deleteAdminsCommunitiesDialog, setDeleteAdminsCommunitiesDialog] = useState(false);
+    const [communitiesList, setCommunitiesList] = useState([]);
+    const [communityId, setCommunityId] = useState(null);
+    const [submitted, setSubmitted] = useState(false);
+    const toast = useRef(null);
+    const dt = useRef(null);
 
-        setCommunitiesList(await list);
-    }
 
-    useEffect(() => {
-        getCommunites();
-    }, [])
 
 
     async function listaAdmin() {
@@ -83,11 +74,25 @@ const AdministradoresComunidad = () => {
 
     }, [])
 
+
+    async function getCommunites() {
+        let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
+        let resList = await response.json();
+        let list = await resList.message;
+        console.log(list);
+
+        setCommunitiesList(await list);
+    }
+
+    useEffect(() => {
+        getCommunites();
+    }, [])
+
     const cList = communitiesList.map((item) => ({
         label: item.name,
         value: item.id,
     }))
-    
+
 
     const deleteAdminCommunity = () => {
         /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
@@ -147,8 +152,16 @@ const AdministradoresComunidad = () => {
     }
 
 
-    const saveCommunityAdmin = () => {
+    const saveAdminCommunity = () => {
+        if (adminCommunity.password !== adminCommunity.confirmPassword) {
+            setSubmitted(true);
+        } else if (adminCommunity.name && adminCommunity.dni && adminCommunity.last_name && adminCommunity.email && adminCommunity.password && adminCommunity.phone) {
+            toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
 
+        } else {
+            setSubmitted(true);
+
+        }
     }
 
     const hideDeleteAdminCommunityDialog = () => {
@@ -264,6 +277,18 @@ const AdministradoresComunidad = () => {
     )
 
 
+    const onInputChange = (e, name) => {
+        const val = (e.target && e.target.value) || '';
+        let _adminCommunity = { ...adminCommunity };
+        _adminCommunity[`${name}`] = val;
+
+        setAdminCommunity(_adminCommunity);
+    }
+
+    const handleCommunities = (event) => {
+        const getCommunity = event.target.value;
+        setCommunityId(getCommunity);
+    }
     return (
         <div className="grid">
             <div className="col-12">
@@ -305,30 +330,80 @@ const AdministradoresComunidad = () => {
                     <h5>Registro de un administrador de una comunidad de viviendas</h5>
                     <div className="p-fluid formgrid grid">
                         <div className="field col-12 md:col-6">
-                            <label htmlFor="nombre">Nombre</label>
-                            <InputText id="nombre" type="text" />
+                            <label htmlFor="name">Nombre</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="name" value={adminCommunity.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.name === '' })} />
+                                </div>
+                                {submitted && adminCommunity.name === '' && <small className="p-invalid">Nombre es requirido.</small>}
+                            </div>
                         </div>
                         <div className="field col-12 md:col-6">
-                            <label htmlFor="apellidos">Apellidos</label>
-                            <InputText id="apellidos" type="text" />
+                            <label htmlFor="name">Apellido(s)</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="last_name" value={adminCommunity.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.last_name === '' })} />
+                                </div>
+                                {submitted && adminCommunity.last_name === '' && <small className="p-invalid">Apellidos es requirido.</small>}
+                            </div>
                         </div>
                         <div className="field col-12 md:col-6">
-                            <label htmlFor="correo_electronico">Correo electrónico</label>
-                            <InputText id="correo_electronico" type="text" />
+                            <label htmlFor="name">Correo Electrónico</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="email" value={adminCommunity.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.email === '' })} />
+                                </div>
+                                {submitted && adminCommunity.email === '' && <small className="p-invalid">Correo electrónico
+                                    es requirido.</small>}
+                            </div>
                         </div>
                         <div className="field col-12 md:col-6">
-                            <label htmlFor="identificacion">Identificación</label>
-                            <InputText id="identificacion" type="text" />
+                            <label htmlFor="name">Identificación</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="dni" value={adminCommunity.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.dni === '' })} />
+                                </div>
+                                {submitted && adminCommunity.email === '' && <small className="p-invalid">Identificación es requirida.</small>}
+                            </div>
                         </div>
-                        <div className="field col-12">
-                            <label htmlFor="telefono">Teléfono</label>
-                            <InputText type="tel" id="telefono" pattern="[0-9]{8}" />
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="name">Número de teléfono</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-phone"></i>
+                                    </span>
+                                    <InputText id="phone" value={adminCommunity.phone} onChange={(e) => onInputChange(e, 'phone')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.phone === '' })} />
+                                </div>
+                                {submitted && adminCommunity.phone === '' && <small className="p-invalid">Número de teléfono es requirida.</small>}
+                            </div>
                         </div>
-                        <div className="p-field col-12 md:col-6">
+                        <div className="field col-12 md:col-6">
                             <label htmlFor="administrator">Comunidad a asignar: </label>
-                            <Dropdown id="administrator" value={communityId} options={cList} />
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <Dropdown placeholder="--Seleccione la Comunidad a Asignar--" id="administrator" value={communityId} options={cList} 
+                                     onChange={handleCommunities} required autoFocus className={classNames({ 'p-invalid': submitted && !communityId })}/>
+                                </div>
+                                {submitted && !communityId && <small className="p-invalid">Comunidad es requirida.</small>}
+                            </div>
                         </div>
-                        <Button label="Registrar" onClick={saveCommunityAdmin} />
+                        <Button label="Registrar" onClick={saveAdminCommunity} />
                     </div>
                 </div>
             </div>

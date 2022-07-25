@@ -1,11 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose'; 
+import { Document } from 'mongoose';
 
-export type BookDocument = Book & Document; 
+export type BookDocument = Book & Document;
 
-@Schema() 
+@Schema()
 export class Book {
-  @Prop() 
+  @Prop()
   genre: string;
 
   @Prop()
@@ -20,8 +20,8 @@ export class Book {
   @Prop()
   image_url: string;
 
-  @Prop([String]) 
+  @Prop([String])
   keywords: string[];
 }
 
-export const BookSchema = SchemaFactory.createForClass(Book); 
+export const BookSchema = SchemaFactory.createForClass(Book);

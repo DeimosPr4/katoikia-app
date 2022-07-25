@@ -7,8 +7,8 @@
   },
   "scripts": {
     "format": "npm run format:prettier && npm run format:html",
-    "format:prettier": "prettier --config .prettierrc \"src/**/*.{ts,css,less,scss,js}\" --write",
-    "format:html": "js-beautify --config .jsbeautifyrc --type 'html' --file 'src/**/*.html' --replace"
+    "format:prettier": "prettier --config .prettierrc \"**/src/**/*.{ts,css,less,scss,js}\" --write",
+    "format:html": "js-beautify --config .jsbeautifyrc --type 'html' --file '**/src/**/*.html' --replace"
   },
   "husky": {
     "hooks": {

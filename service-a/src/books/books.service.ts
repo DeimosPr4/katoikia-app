@@ -4,7 +4,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Book, BookDocument } from './schemas/book.schema';
 import { Model } from 'mongoose';
-import { Request } from 'express'; 
+import { Request } from 'express';
 
 @Injectable()
 export class BooksService {
@@ -16,10 +16,10 @@ export class BooksService {
     return this.bookModel.create(book);
   }
 
-  async findAll(request: Request): Promise<Book[]> { 
+  async findAll(request: Request): Promise<Book[]> {
     return this.bookModel
-      .find(request.query) 
-      .setOptions({ sanitizeFilter: true }) 
+      .find(request.query)
+      .setOptions({ sanitizeFilter: true })
       .exec();
   }
 

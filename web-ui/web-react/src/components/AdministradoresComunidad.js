@@ -31,6 +31,7 @@ const AdministradoresComunidad = () => {
         community_id: '',
         community_name: '',
         user_type: '2',
+        date_entry: new Date(),
         status: '1'
     };
 
@@ -48,8 +49,6 @@ const AdministradoresComunidad = () => {
     const dt = useRef(null);
 
 
-
-
     async function listaAdmin() {
         let nombres = await fetch('http://localhost:4000/user/findAdminComunidad/', { method: 'GET' })
             .then((response) => response.json())
@@ -58,14 +57,14 @@ const AdministradoresComunidad = () => {
                     //item.full_name returns the repositorie name
                     return fetch(`http://localhost:4000/community/findCommunityName/${item.community_id}`, { method: 'GET' })
                         .then((response2) => response2.json())
-                        .then(data => {
-                            console.log(data.message.name);
-                            item.community_name = data.message.name
+                        .then(data => data.message)
+                        .then( data => {
+                            item.community_name = data['name']
                             return item
                         })
                 }));
-            }).then(data => setListaAdmins(data)
-            );
+            })
+            .then(data => setListaAdmins(data));
 
     }
 
@@ -90,7 +89,7 @@ const AdministradoresComunidad = () => {
 
     const cList = communitiesList.map((item) => ({
         label: item.name,
-        value: item.id,
+        value: item._id,
     }))
 
 
@@ -153,9 +152,46 @@ const AdministradoresComunidad = () => {
 
 
     const saveAdminCommunity = () => {
-        if (adminCommunity.password !== adminCommunity.confirmPassword) {
-            setSubmitted(true);
-        } else if (adminCommunity.name && adminCommunity.dni && adminCommunity.last_name && adminCommunity.email && adminCommunity.password && adminCommunity.phone) {
+        if (adminCommunity.name && adminCommunity.dni && adminCommunity.last_name && adminCommunity.email && adminCommunity.phone) {
+
+            let _administrators= [...listaAdmins];
+            let _adminCommunity = { ...adminCommunity };
+            _adminCommunity.community_id = communityId;
+            console.log(_adminCommunity)
+            console.log(communityId)
+
+            fetch('http://localhost:4000/user/createAdminCommunity', {
+                cache: 'no-cache',
+                method: 'POST',
+                body: JSON.stringify(_adminCommunity),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(
+                    function (response) {
+                        if (response.status != 201)
+                            console.log('Ocurrió un error con el servicio: ' + response.status);
+                        else
+                            return response.json();
+                    }
+                )
+                .then(() => {
+
+                   // _adminCommunity.community_id = communitiesList.find(c => c._id === _adminCommunity.community_id).name
+
+                    _administrators.push(_adminCommunity);
+                    toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Comunidad de vivienda Creada', life: 3000 });
+
+                    setListaAdmins(_administrators);
+
+                    setAdminCommunity(emptyAdminCommunity);
+
+                })
+                .catch(
+                    err => console.log('Ocurrió un error con el fetch', err)
+                );
+
             toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
 
         } else {
@@ -286,8 +322,9 @@ const AdministradoresComunidad = () => {
     }
 
     const handleCommunities = (event) => {
-        const getCommunity = event.target.value;
-        setCommunityId(getCommunity);
+        const getCommunityValue = event.target.value;
+        setCommunityId(getCommunityValue);
+        console.log(getCommunityValue)
     }
     return (
         <div className="grid">
@@ -397,8 +434,8 @@ const AdministradoresComunidad = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-home"></i>
                                     </span>
-                                    <Dropdown placeholder="--Seleccione la Comunidad a Asignar--" id="administrator" value={communityId} options={cList} 
-                                     onChange={handleCommunities} required autoFocus className={classNames({ 'p-invalid': submitted && !communityId })}/>
+                                    <Dropdown placeholder="--Seleccione la Comunidad a Asignar--" id="administrator" value={communityId} options={cList}
+                                        onChange={handleCommunities} required autoFocus className={classNames({ 'p-invalid': submitted && !communityId })} />
                                 </div>
                                 {submitted && !communityId && <small className="p-invalid">Comunidad es requirida.</small>}
                             </div>

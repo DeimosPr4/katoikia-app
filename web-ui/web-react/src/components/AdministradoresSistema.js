@@ -59,6 +59,7 @@ const AdministradoresSistema = () => {
             user_type: "1", //1 es admin
             status: "1"
         };
+        setSysAdmin(data)
         // console.log(data);
 
         fetch('http://localhost:4000/user/createAdminSystem/', {
@@ -80,7 +81,7 @@ const AdministradoresSistema = () => {
             .then(
                 function (response) {
                     let _administrators = [...administrators];
-                    let _admin = { ...response.message };;
+                    let _admin = { ...sysadmin };
                     _administrators.push(_admin);
                     setAdministrators(_administrators)
                 }

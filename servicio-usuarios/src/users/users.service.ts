@@ -4,6 +4,7 @@ import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Md5 } from "md5-typescript";
 import { map } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 
 import { RpcException, ClientProxy } from '@nestjs/microservices';
 
@@ -14,6 +15,7 @@ export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
+    @Inject('SERVICIO_COMUNIDADES') private readonly clientCommunityApp: ClientProxy,
 
   ) { }
   private publicKey: string;
@@ -21,6 +23,38 @@ export class UsersService {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
     return this.userModel.create(user);
+  }
+
+
+  async createAdminCommunity(user: UserDocument) {
+    let password = user.password;
+    let passwordEncriptada = Md5.init(user.password);
+    user.password = passwordEncriptada;
+    this.userModel.create(user);
+    let community = await this.findCommunity(user.community_id);
+    user.community_id = community['name'];
+
+    const pattern = { cmd: 'emailCreateUserAdminCommunity' };
+    const payload = { email: user['email'], password: password, name: user['name'], date_entry: user['date_entry'] };
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  async findCommunity(community_id: string) {
+    const pattern = { cmd: 'findOneCommunity' }
+    const payload = { _id: community_id }
+
+    let callback = await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+    const finalValue = await lastValueFrom(callback);
+    return finalValue['response'];
+
   }
 
   async findAll(): Promise<User[]> {
@@ -110,7 +144,11 @@ export class UsersService {
   }
 
   async deleteAdminSystem(id: string) {
-    return this.userModel.deleteOne({_id: id}).exec();
+    return this.userModel.deleteOne({ _id: id }).exec();
   }
 
+
+
+
 }
+

@@ -12,35 +12,35 @@ export class CommunitiesController {
     return this.communitiesService.create(community);
   }
 
-  @MessagePattern({cmd: 'findAllCommunities'})
+  @MessagePattern({ cmd: 'findAllCommunities' })
   findAll() {
     return this.communitiesService.findAll();
   }
 
-  @MessagePattern({cmd: 'findOneCommunity'})
+  @MessagePattern({ cmd: 'findOneCommunity' })
   findOne(@Payload() id: string) {
     let _id = id['_id'];
     return this.communitiesService.findOne(_id);
   }
 
-  @MessagePattern({cmd: 'findCommunityName'})
+  @MessagePattern({ cmd: 'findCommunityName' })
   findOneName(@Payload() id: string) {
     let _id = id['id'];
     return this.communitiesService.findOneName(_id);
   }
 
- /* @MessagePattern({cmd: 'findCommunityAdmin'})
+  /* @MessagePattern({cmd: 'findCommunityAdmin'})
   findCommunityAdmin(@Payload() community: any) {
     let _community = community['community_id'];
     return this.communitiesService.findCommunityAdmin(_community, "2");
   }*/
 
-  @MessagePattern({cmd: 'updateCommunity'})
+  @MessagePattern({ cmd: 'updateCommunity' })
   update(@Payload() community: CommunityDocument) {
     return this.communitiesService.update(community.id, community);
   }
 
-  @MessagePattern({cmd: 'removeCommunity'})
+  @MessagePattern({ cmd: 'removeCommunity' })
   remove(@Payload() id: string) {
     let _id = id['_id'];
     return this.communitiesService.remove(_id);

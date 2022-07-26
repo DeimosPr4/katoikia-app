@@ -1,4 +1,4 @@
 export interface Admin {
-    id_community: string;
-    user_type: string;
+  id_community: string;
+  user_type: string;
 }

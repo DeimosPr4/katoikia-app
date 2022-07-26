@@ -14,7 +14,6 @@ import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
 const GuardasSeguridad = () => {
-
     const [listaGuardas,setListaGuardas]=useState([]);
     const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/findGuards/62be68215692582bbfd77134');
     const [guarda, setGuarda] = useState(emptyGuarda);
@@ -317,9 +316,7 @@ console.log('ssss');
                 </div>
             </div>
         </div>
-
-        
-    )
-}
+  );
+};
 
 export default React.memo(GuardasSeguridad);

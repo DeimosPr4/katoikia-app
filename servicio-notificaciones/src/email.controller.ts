@@ -54,7 +54,7 @@ export class EmailController {
             to: user["email"],
             from: "mbonilla.guti@gmail.com",
             subject: 'Usuario registrado',
-            template: 'emailCreateUserAdmin',
+            template: 'emailCreateUserAdminCommunity',
             context: {
                 name: user["name"],
                 password: user["password"],
@@ -72,7 +72,7 @@ export class EmailController {
                 {
                     filename: 'Logo Katoikia.svg',
                     path: __dirname + '/mails/images/Logo Katoikia.svg',
-                    cid: 'logo' //my mistake was putting "cid:logo@cid" here! 
+                    cid: 'logoKatoikia' //my mistake was putting "cid:logo@cid" here! 
                 }
             ]
         });

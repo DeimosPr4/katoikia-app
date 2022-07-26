@@ -181,7 +181,7 @@ const AdministradoresComunidad = () => {
                    // _adminCommunity.community_id = communitiesList.find(c => c._id === _adminCommunity.community_id).name
 
                     _administrators.push(_adminCommunity);
-                    toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Comunidad de vivienda Creada', life: 3000 });
+                    toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
 
                     setListaAdmins(_administrators);
 
@@ -192,7 +192,6 @@ const AdministradoresComunidad = () => {
                     err => console.log('Ocurrió un error con el fetch', err)
                 );
 
-            toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
 
         } else {
             setSubmitted(true);

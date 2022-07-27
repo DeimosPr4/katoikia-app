@@ -4,6 +4,6 @@ import { NotificationsController } from './notifications.controller';
 
 @Module({
   controllers: [NotificationsController],
-  providers: [NotificationsService]
+  providers: [NotificationsService],
 })
 export class NotificationsModule {}

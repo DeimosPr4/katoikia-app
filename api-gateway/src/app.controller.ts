@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
-import { AppService } from "./app.service";
+import { AppService } from './app.service';
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
   // #==== API Users
   @Post('user/createAdminSystem')
   createAdminSystem(
@@ -30,7 +30,7 @@ export class AppController {
     @Body('user_type') user_type: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
-    @Body('community_id') community_id:string
+    @Body('community_id') community_id: string,
   ) {
     return this.appService.createGuard(dni, name, last_name, email, phone,
       user_type, status, date_entry,community_id);
@@ -66,8 +66,18 @@ export class AppController {
     @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
   ) {
-    return this.appService.createUser(dni, name, last_name, email, phone, password,
-      user_type, status, date_entry, community_id);
+    return this.appService.createUser(
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      password,
+      user_type,
+      status,
+      date_entry,
+      community_id,
+    );
   }
 
   @Get('user/allUsers')
@@ -80,7 +90,7 @@ export class AppController {
     @Body('email') pEmail: string,
     @Body('password') pPassword: string,
   ) {
-    return this.appService.inicioSesion(pEmail,pPassword);
+    return this.appService.inicioSesion(pEmail, pPassword);
   }
 
   @Get('user/findAdminSistema')
@@ -93,24 +103,17 @@ export class AppController {
     return this.appService.allUsersAdminComunidad();
   }
   @Get('user/findGuards/:community')
-  findGuardsCommunity(
-    @Param('community_id') community_id: string
-  ) {
+  findGuardsCommunity(@Param('community_id') community_id: string) {
     return this.appService.findGuardsCommunity(community_id);
   }
 
   @Get('user/find/:dni')
-  findUser(
-    @Param('dni') paramUserDNI: string
-  ) {
+  findUser(@Param('dni') paramUserDNI: string) {
     return this.appService.findUser(paramUserDNI);
   }
 
-
   @Delete('user/deleteAdminSystem/:id')
-  deleteAdminSystem(
-    @Param('id') id: string,
-  ) {
+  deleteAdminSystem(@Param('id') id: string) {
     return this.appService.deleteAdminSystem(id);
   }
 
@@ -126,11 +129,18 @@ export class AppController {
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
     @Body('houses') houses: [],
-
   ) {
-    return this.appService.createCommunity(name, province, canton,
-      district, num_houses, phone,
-      status, date_entry, houses);
+    return this.appService.createCommunity(
+      name,
+      province,
+      canton,
+      district,
+      num_houses,
+      phone,
+      status,
+      date_entry,
+      houses,
+    );
   }
 
   @Get('community/allCommunities')
@@ -139,25 +149,17 @@ export class AppController {
   }
 
   @Get('community/findCommunity/:id')
-  findCommunity(
-    @Param('id') paramCommunityId: string
-  ) {
+  findCommunity(@Param('id') paramCommunityId: string) {
     return this.appService.findCommunity(paramCommunityId);
   }
 
   @Get('community/findCommunityName/:id')
-  findCommunityName(
-    @Param('id') paramCommunityId: string
-  ) {
+  findCommunityName(@Param('id') paramCommunityId: string) {
     return this.appService.findCommunityName(paramCommunityId);
   }
 
-
-  
   @Post('community/findCommunityAdmin')
-  findCommunityAdmin(
-    @Body('community_id') community_id: string,
-  ) {
+  findCommunityAdmin(@Body('community_id') community_id: string) {
     return this.appService.findCommunityAdmin(community_id);
   }
 
@@ -170,22 +172,22 @@ export class AppController {
     @Body('bookable') bookable: number,
     @Body('community_id') community_id: string,
   ) {
-
-    return this.appService.createCommonArea(name, hourMin, hourMax,
-      bookable, community_id);
+    return this.appService.createCommonArea(
+      name,
+      hourMin,
+      hourMax,
+      bookable,
+      community_id,
+    );
   }
-
 
   @Get('commonArea/allCommonAreas')
   allCommonAreas() {
     return this.appService.allCommonAreas();
   }
 
-
   @Get('commonArea/findCommonArea/:id')
-  findCommonArea(
-    @Param('id') paramCommonAreaId: string
-  ) {
+  findCommonArea(@Param('id') paramCommonAreaId: string) {
     return this.appService.findCommonArea(paramCommonAreaId);
   }
 
@@ -201,7 +203,15 @@ export class AppController {
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
   ) {
-    return this.appService.createGuest(name, last_name, dni, number_plate, phone,  status, date_entry);
+    return this.appService.createGuest(
+      name,
+      last_name,
+      dni,
+      number_plate,
+      phone,
+      status,
+      date_entry,
+    );
   }
 
   @Get('guest/allGuests')
@@ -210,13 +220,10 @@ export class AppController {
   }
 
   @Get('guest/find/:dni')
-  findGuest(
-    @Param('dni') paramGuestDNI: string
-  ) {
+  findGuest(@Param('dni') paramGuestDNI: string) {
     return this.appService.findGuest(paramGuestDNI);
   }
 
-  
   // #==== API Payment
 
   @Post('payment/createPayment')
@@ -229,8 +236,15 @@ export class AppController {
     @Body('user_id') user_id: string,
     @Body('communty_id') communty_id: string,
   ) {
-    return this.appService.createPayment(date_payment, mount, description, 
-      period, status,  user_id, communty_id);
+    return this.appService.createPayment(
+      date_payment,
+      mount,
+      description,
+      period,
+      status,
+      user_id,
+      communty_id,
+    );
   }
 
   @Get('payment/allPayments')
@@ -239,9 +253,7 @@ export class AppController {
   }
 
   @Get('payment/find/:dni')
-  findPayment(
-    @Param('dni') paramPaymentDNI: string
-  ) {
+  findPayment(@Param('dni') paramPaymentDNI: string) {
     return this.appService.findPayment(paramPaymentDNI);
   }
 
@@ -256,8 +268,14 @@ export class AppController {
     @Body('user_id') user_id: string,
     @Body('common_area_id') common_area_id: string,
   ) {
-    return this.appService.createReservation(start_time, finish_time, status, 
-      date_entry, user_id, common_area_id);
+    return this.appService.createReservation(
+      start_time,
+      finish_time,
+      status,
+      date_entry,
+      user_id,
+      common_area_id,
+    );
   }
 
   @Get('reservation/allReservations')
@@ -266,13 +284,10 @@ export class AppController {
   }
 
   @Get('reservation/find/:id')
-  findReservation(
-    @Param('id') paramReservation: string
-  ) {
+  findReservation(@Param('id') paramReservation: string) {
     return this.appService.findReservation(paramReservation);
   }
 
-  
   // #==== API Post
 
   @Post('post/createPost')
@@ -291,12 +306,9 @@ export class AppController {
   }
 
   @Get('post/find/:id')
-  findPost(
-    @Param('id') paramPost: string
-  ) {
+  findPost(@Param('id') paramPost: string) {
     return this.appService.findPost(paramPost);
   }
-
 
   // #==== API Comment
 
@@ -316,14 +328,10 @@ export class AppController {
   }
 
   @Get('post/findComment/:id')
-  findComment(
-    @Param('id') paramComment: string
-  ) {
+  findComment(@Param('id') paramComment: string) {
     return this.appService.findComment(paramComment);
   }
 
-
-  
   // #==== API Report
 
   @Post('report/createReport')
@@ -333,7 +341,12 @@ export class AppController {
     @Body('date_entry') date_entry: Date,
     @Body('user_id') user_id: string,
   ) {
-    return this.appService.createReport(action, description, date_entry, user_id);
+    return this.appService.createReport(
+      action,
+      description,
+      date_entry,
+      user_id,
+    );
   }
 
   @Get('report/allReports')
@@ -342,26 +355,16 @@ export class AppController {
   }
 
   @Get('report/find/:id')
-  findReport(
-    @Param('id') paramReport: string
-  ) {
+  findReport(@Param('id') paramReport: string) {
     return this.appService.findReport(paramReport);
   }
 
-
   @Post('email/sendMail')
-  senMail(
-    @Body('email') email: string,
-  ) {
-
+  senMail(@Body('email') email: string) {
     return this.appService.sendMail(email);
   }
   @Post('email/html')
-  html(
-    @Body('email') email: string,
-    @Body('name') name: string,
-  ) {
-
+  html(@Body('email') email: string, @Body('name') name: string) {
     return this.appService.html(email, name);
   }
 

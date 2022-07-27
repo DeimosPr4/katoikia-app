@@ -1,38 +1,56 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { ClientProxy } from "@nestjs/microservices";
-import { map } from "rxjs/operators";
-
+import { ClientProxy } from '@nestjs/microservices';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AppService {
   constructor(
     @Inject('SERVICIO_USUARIOS') private readonly clientUserApp: ClientProxy,
-    @Inject('SERVICIO_COMUNIDADES') private readonly clientCommunityApp: ClientProxy,
-    @Inject('SERVICIO_AREAS_COMUNES') private readonly clientCommonAreaApp: ClientProxy,
+    @Inject('SERVICIO_COMUNIDADES')
+    private readonly clientCommunityApp: ClientProxy,
+    @Inject('SERVICIO_AREAS_COMUNES')
+    private readonly clientCommonAreaApp: ClientProxy,
     @Inject('SERVICIO_INVITADOS') private readonly clientGuestApp: ClientProxy,
     @Inject('SERVICIO_PAGOS') private readonly clientPaymentApp: ClientProxy,
-    @Inject('SERVICIO_RESERVACIONES') private readonly clientReservationApp: ClientProxy,
+    @Inject('SERVICIO_RESERVACIONES')
+    private readonly clientReservationApp: ClientProxy,
     @Inject('SERVICIO_POSTS') private readonly clientPostApp: ClientProxy,
     @Inject('SERVICIO_REPORTES') private readonly clientReportApp: ClientProxy,
-    @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
-  ) { }
+    @Inject('SERVICIO_NOTIFICACIONES')
+    private readonly clientNotificationtApp: ClientProxy,
+  ) {}
 
-  // ====================== USERS =============================== 
+  // ====================== USERS ===============================
 
   //POST parameter from API
-  createUser(dni: string, name: string, last_name: string, email: string, phone: number
-    , password: string, user_type: string, status: string, date_entry: Date, community_id: string) {
+  createUser(
+    dni: string,
+    name: string,
+    last_name: string,
+    email: string,
+    phone: number,
+    password: string,
+    user_type: string,
+    status: string,
+    date_entry: Date,
+    community_id: string,
+  ) {
     const pattern = { cmd: 'createUser' };
     const payload = {
-      dni: dni, name: name, last_name: last_name, email: email, phone: phone,
-      password: password, user_type: user_type, status: status, date_entry: date_entry,
-      community_id: community_id
+      dni: dni,
+      name: name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
+      password: password,
+      user_type: user_type,
+      status: status,
+      date_entry: date_entry,
+      community_id: community_id,
     };
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //POST parameter from API
@@ -45,9 +63,7 @@ export class AppService {
     };
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   createGuard(dni: string, name: string, last_name: string, email: string, phone: number
@@ -60,9 +76,7 @@ export class AppService {
     };
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   
@@ -86,9 +100,7 @@ export class AppService {
     const payload = {};
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allUsersAdminSistema() {
@@ -96,9 +108,7 @@ export class AppService {
     const payload = {};
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allUsersAdminComunidad() {
@@ -106,9 +116,7 @@ export class AppService {
     const payload = {};
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -117,9 +125,7 @@ export class AppService {
     const payload = { dni: paramUserDNI };
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   findGuardsCommunity(community_id: string) {
@@ -127,9 +133,7 @@ export class AppService {
     const payload = { community_id: community_id };
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
 
@@ -138,9 +142,7 @@ export class AppService {
     const payload = { id: id };
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   inicioSesion(pEmail: string, pPassword: string) {
@@ -148,11 +150,8 @@ export class AppService {
     const payload = { email: pEmail, password: pPassword };
     return this.clientUserApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
-
 
   //GET parameter from API
   findCommunityAdmin(community_id: string) {
@@ -160,26 +159,29 @@ export class AppService {
     const payload = { community_id: community_id };
     return this.clientCommunityApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
-  // ====================== COMMUNITIES =============================== 
+  // ====================== COMMUNITIES ===============================
 
   //POST parameter from API
   createCommunity(name: string, province: string, canton: string, district: string
     , num_houses: number, phone: string, status: string, date_entry: Date, houses: []) {
     const pattern = { cmd: 'createCommunity' };
     const payload = {
-      name: name, province: province, canton: canton, district: district, num_houses: num_houses,
-      phone: phone, status: status, date_entry: date_entry, houses: houses
+      name: name,
+      province: province,
+      canton: canton,
+      district: district,
+      num_houses: num_houses,
+      phone: phone,
+      status: status,
+      date_entry: date_entry,
+      houses: houses,
     };
     return this.clientCommunityApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allCommunities() {
@@ -187,9 +189,7 @@ export class AppService {
     const payload = {};
     return this.clientCommunityApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -198,9 +198,7 @@ export class AppService {
     const payload = { id: paramCommunityId };
     return this.clientCommunityApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   findCommunityName(paramCommunityId: string) {
@@ -208,27 +206,29 @@ export class AppService {
     const payload = { id: paramCommunityId };
     return this.clientCommunityApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
-
-
-  // ====================== COMMON AREAS =============================== 
+  // ====================== COMMON AREAS ===============================
   //POST parameter from API
-  createCommonArea(name: string, hourMin: string, hourMax: string,
-    bookable: number, community_id: string) {
+  createCommonArea(
+    name: string,
+    hourMin: string,
+    hourMax: string,
+    bookable: number,
+    community_id: string,
+  ) {
     const pattern = { cmd: 'createCommonArea' };
     const payload = {
-      name: name, hourMin: hourMin, hourMax: hourMax, bookable: bookable,
-      community_id: community_id
+      name: name,
+      hourMin: hourMin,
+      hourMax: hourMax,
+      bookable: bookable,
+      community_id: community_id,
     };
     return this.clientCommonAreaApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allCommonAreas() {
@@ -236,9 +236,7 @@ export class AppService {
     const payload = {};
     return this.clientCommonAreaApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -247,18 +245,21 @@ export class AppService {
     const payload = { id: paramCommonAreaId };
     return this.clientCommonAreaApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
-
-  // ====================== GUESTS =============================== 
-
+  // ====================== GUESTS ===============================
 
   //POST parameter from API
-  createGuest(name: string, last_name: string, dni: string, number_plate: string, phone: number
-    , status: string, date_entry: Date) {
+  createGuest(
+    name: string,
+    last_name: string,
+    dni: string,
+    number_plate: string,
+    phone: number,
+    status: string,
+    date_entry: Date,
+  ) {
     const pattern = { cmd: 'createGuest' };
     const payload = {
       name: name, last_name: last_name, dni: dni, number_plate: number_plate, phone: phone,
@@ -266,9 +267,7 @@ export class AppService {
     };
     return this.clientGuestApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allGuests() {
@@ -276,9 +275,7 @@ export class AppService {
     const payload = {};
     return this.clientGuestApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -287,16 +284,21 @@ export class AppService {
     const payload = { dni: paramGuestDNI };
     return this.clientGuestApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   // ====================== PAYMENTS =============================== 
 
   //POST parameter from API
-  createPayment(date_payment: Date, mount: number, description: string, period: string
-    , status: string, user_id: string, communty_id: string) {
+  createPayment(
+    date_payment: Date,
+    mount: number,
+    description: string,
+    period: string,
+    status: string,
+    user_id: string,
+    communty_id: string,
+  ) {
     const pattern = { cmd: 'createPayment' };
     const payload = {
       date_payment: date_payment, mount: mount, description: description,
@@ -304,9 +306,7 @@ export class AppService {
     };
     return this.clientPaymentApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allPayments() {
@@ -314,9 +314,7 @@ export class AppService {
     const payload = {};
     return this.clientPaymentApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -325,13 +323,10 @@ export class AppService {
     const payload = { id: paramPaymentId };
     return this.clientPaymentApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
-
-  // ====================== RESERVATIONS =============================== 
+  // ====================== RESERVATIONS ===============================
 
   //POST parameter from API
   createReservation(start_time: string, finish_time: string, status: string,
@@ -343,9 +338,7 @@ export class AppService {
     };
     return this.clientReservationApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allReservations() {
@@ -353,9 +346,7 @@ export class AppService {
     const payload = {};
     return this.clientReservationApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -364,13 +355,10 @@ export class AppService {
     const payload = { id: paramReservationId };
     return this.clientReservationApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
-
-  // ====================== POSTS =============================== 
+  // ====================== POSTS ===============================
 
   //POST parameter from API
   createPost(post: string, date_entry: Date, user_id: string,
@@ -382,9 +370,7 @@ export class AppService {
     };
     return this.clientPostApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allPosts() {
@@ -392,9 +378,7 @@ export class AppService {
     const payload = {};
     return this.clientPostApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -403,12 +387,10 @@ export class AppService {
     const payload = { id: paramPostId };
     return this.clientPostApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
-  // ====================== COMMNENT POSTS =============================== 
+  // ====================== COMMNENT POSTS ===============================
 
   //Comment parameter from API
   createComment(comment: string, date_entry: Date, user_id: string,
@@ -420,9 +402,7 @@ export class AppService {
     };
     return this.clientPostApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allComments() {
@@ -430,9 +410,7 @@ export class AppService {
     const payload = {};
     return this.clientPostApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -441,12 +419,10 @@ export class AppService {
     const payload = { id: paramCommentId };
     return this.clientPostApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
-  // ====================== REPORTS =============================== 
+  // ====================== REPORTS ===============================
 
   //Report parameter from API
   createReport(action: string, description: string, date_entry: Date,
@@ -458,9 +434,7 @@ export class AppService {
     };
     return this.clientReportApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   allReports() {
@@ -468,9 +442,7 @@ export class AppService {
     const payload = {};
     return this.clientReportApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   //GET parameter from API
@@ -479,20 +451,15 @@ export class AppService {
     const payload = { id: paramReportId };
     return this.clientReportApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
-
 
   sendMail(email: string) {
     const pattern = { cmd: 'sendMail' };
     const payload = { email: email };
     return this.clientNotificationtApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
   html(email: string, name: string) {
@@ -500,9 +467,7 @@ export class AppService {
     const payload = { email: email, name: name };
     return this.clientNotificationtApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
 

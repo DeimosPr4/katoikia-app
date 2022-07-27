@@ -5,7 +5,7 @@ import { UsersService } from './users.service';
 
 @Controller()
 export class UsersController {
-  constructor(private readonly userService: UsersService) { }
+  constructor(private readonly userService: UsersService) {}
 
   @MessagePattern({ cmd: 'createUser' })
   create(@Payload() user: UserDocument) {
@@ -43,7 +43,6 @@ export class UsersController {
     let pcommunity_id = community_id['community_id'];
     return this.userService.findGuardsCommunity(pcommunity_id);
   }
-  
 
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
@@ -85,17 +84,19 @@ export class UsersController {
   //buscar usuario de una comunidad
   @MessagePattern({ cmd: 'findOneCommunityUser' })
   findCommunityUser(@Payload() user: any) {
-    return this.userService.findCommunityUser(user["community_id"], user["user_type"]);
+    return this.userService.findCommunityUser(
+      user['community_id'],
+      user['user_type'],
+    );
   }
 
   @MessagePattern({ cmd: 'deleteAdminSystem' })
   deleteAdminSystem(@Payload() user: any) {
-    console.log("entró")
+    console.log('entró');
 
-    return this.userService.deleteAdminSystem(user["id"]);
+    return this.userService.deleteAdminSystem(user['id']);
   }
 
   
 
 }
-

@@ -2,13 +2,11 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Md5 } from "md5-typescript";
+import { Md5 } from 'md5-typescript';
 import { map } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
 
 import { RpcException, ClientProxy } from '@nestjs/microservices';
-
-
 
 @Injectable()
 export class UsersService {
@@ -58,10 +56,7 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userModel
-      .find()
-      .setOptions({ sanitizeFilter: true })
-      .exec();
+    return this.userModel.find().setOptions({ sanitizeFilter: true }).exec();
   }
   async findOne(id: string): Promise<User> {
     return this.userModel.findOne({ _id: id }).exec();
@@ -90,13 +85,11 @@ export class UsersService {
       repo.find({ email: email }).exec((err, res) => {
         if (err) {
           reject(err);
-        }
-        else {
+        } else {
           let passwordEncriptada = Md5.init(password);
           if (res[0].password == passwordEncriptada) {
             resolve(res[0]);
-          }
-          else {
+          } else {
             resolve(null);
           }
         }
@@ -111,7 +104,6 @@ export class UsersService {
     return this.userModel.find({ user_type: 1 }).exec();
   }
 
-
   //find admin del sistema
   async findGuardsCommunity(pcommunity_id: string): Promise<User[]> {
     return this.userModel.find({ user_type: 4 }).exec();
@@ -121,11 +113,10 @@ export class UsersService {
     return this.userModel.find({ user_type: 2 }).exec();
   }
 
-
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
-    this.userModel.create(user)
+    this.userModel.create(user);
     /*.then(() => {
       
     } );*/
@@ -134,13 +125,16 @@ export class UsersService {
     const payload = { email: user['email'], name: user['name'] };
     return this.clientNotificationtApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+      .pipe(map((message: string) => ({ message })));
   }
 
-  async findCommunityUser(community_id: string, user_type: number): Promise<User> {
-    return this.userModel.findOne({ community_id: community_id, user_type: user_type }).exec();
+  async findCommunityUser(
+    community_id: string,
+    user_type: number,
+  ): Promise<User> {
+    return this.userModel
+      .findOne({ community_id: community_id, user_type: user_type })
+      .exec();
   }
 
   async deleteAdminSystem(id: string) {

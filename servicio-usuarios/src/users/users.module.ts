@@ -4,19 +4,19 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { UsersController } from './users.controller';
 import { User, UserSchema } from '../schemas/user.schema';
-import { ClientsModule, Transport } from "@nestjs/microservices";
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: "SERVICIO_NOTIFICACIONES",
+        name: 'SERVICIO_NOTIFICACIONES',
         transport: Transport.TCP,
         options: {
-          host: "127.0.0.1",
-          port: 3009
-        }
-      }
+          host: '127.0.0.1',
+          port: 3009,
+        },
+      },
     ]),
     ClientsModule.register([
       {
@@ -31,6 +31,6 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), 
   ],
   controllers: [UsersController],
-  providers: [UsersService]
+  providers: [UsersService],
 })
 export class UsersModule {}

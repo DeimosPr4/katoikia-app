@@ -6,10 +6,18 @@ import { User } from './user/user.entity';
 
 @Controller()
 export class EmailController {
-    constructor(private mailService: MailerService) { }
+  constructor(private mailService: MailerService) {}
 
-    @MessagePattern({ cmd: 'sendMail' })
-    sendMail(@Payload() toEmail: string) {
+  @MessagePattern({ cmd: 'sendMail' })
+  sendMail(@Payload() toEmail: string) {
+    var response = this.mailService.sendMail({
+      to: toEmail['email'],
+      from: 'mbonilla.guti@gmail.com',
+      subject: 'Plain Text Email ✔',
+      text: 'Welcome NestJS Email Sending Tutorial',
+    });
+    return response;
+  }
 
         var response = this.mailService.sendMail({
             to: toEmail["email"],

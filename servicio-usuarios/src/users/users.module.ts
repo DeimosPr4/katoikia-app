@@ -18,7 +18,17 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    ClientsModule.register([
+      {
+        name: "SERVICIO_COMUNIDADES",
+        transport: Transport.TCP,
+        options: {
+          host: "127.0.0.1",
+          port: 3002
+        }
+      }
+    ]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), 
   ],
   controllers: [UsersController],
   providers: [UsersService],

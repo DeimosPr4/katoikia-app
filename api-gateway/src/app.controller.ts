@@ -11,22 +11,12 @@ export class AppController {
     @Body('last_name') last_name: string,
     @Body('email') email: string,
     @Body('phone') phone: number,
-    @Body('password') password: string,
     @Body('user_type') user_type: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
   ) {
-    return this.appService.createAdminSystem(
-      dni,
-      name,
-      last_name,
-      email,
-      phone,
-      password,
-      user_type,
-      status,
-      date_entry,
-    );
+    return this.appService.createAdminSystem(dni, name, last_name, email, phone, 
+            user_type, status, date_entry);
   }
 
   @Post('user/createGuard')
@@ -37,24 +27,30 @@ export class AppController {
     @Body('last_name') last_name: string,
     @Body('email') email: string,
     @Body('phone') phone: number,
-    @Body('password') password: string,
     @Body('user_type') user_type: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
   ) {
-    return this.appService.createGuard(
-      dni,
-      name,
-      last_name,
-      email,
-      phone,
-      password,
-      user_type,
-      status,
-      date_entry,
-      community_id,
-    );
+    return this.appService.createGuard(dni, name, last_name, email, phone,
+      user_type, status, date_entry,community_id);
+  }
+
+  @Post('user/createAdminCommunity')
+  createAdminCommunity(
+    //Nombre, Apellidos, Correo electrónico, Cédula, Teléfono, Contraseña
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id:string
+  ) {
+    return this.appService.createAdminCommunity(dni, name, last_name, email, phone,
+      user_type, status, date_entry,community_id);
   }
 
   @Post('user/createUser')
@@ -371,4 +367,8 @@ export class AppController {
   html(@Body('email') email: string, @Body('name') name: string) {
     return this.appService.html(email, name);
   }
+
+
+
+  
 }

@@ -22,6 +22,11 @@ export class UsersController {
     return this.userService.create(user);
   }
 
+  @MessagePattern({ cmd: 'createAdminCommunity' })
+  createAdminCommunity(@Payload() user: UserDocument) {
+    return this.userService.createAdminCommunity(user);
+  }
+
   @MessagePattern({ cmd: 'findAllUsers' })
   findAll() {
     return this.userService.findAll();
@@ -91,4 +96,7 @@ export class UsersController {
 
     return this.userService.deleteAdminSystem(user['id']);
   }
+
+  
+
 }

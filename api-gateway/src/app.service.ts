@@ -54,62 +54,45 @@ export class AppService {
   }
 
   //POST parameter from API
-  createAdminSystem(
-    dni: string,
-    name: string,
-    last_name: string,
-    email: string,
-    phone: number,
-    password: string,
-    user_type: string,
-    status: string,
-    date_entry: Date,
-  ) {
+  createAdminSystem(dni: string, name: string, last_name: string, email: string, phone: number
+    , user_type: string, status: string, date_entry: Date) {
     const pattern = { cmd: 'createAdminSystem' };
     const payload = {
-      dni: dni,
-      name: name,
-      last_name: last_name,
-      email: email,
-      phone: phone,
-      password: password,
-      user_type: user_type,
-      status: status,
-      date_entry: date_entry,
+      dni: dni, name: name, last_name: last_name, email: email, phone: phone,
+      password: this.generatePassword(), user_type: user_type, status: status, date_entry: date_entry
     };
     return this.clientUserApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
 
-  createGuard(
-    dni: string,
-    name: string,
-    last_name: string,
-    email: string,
-    phone: number,
-    password: string,
-    user_type: string,
-    status: string,
-    date_entry: Date,
-    community_id: string,
-  ) {
+  createGuard(dni: string, name: string, last_name: string, email: string, phone: number
+    , user_type: string, status: string, date_entry: Date, community_id: string) {
     const pattern = { cmd: 'createGuard' };
     const payload = {
-      dni: dni,
-      name: name,
-      last_name: last_name,
-      email: email,
-      phone: phone,
-      password: password,
-      user_type: user_type,
-      status: status,
-      date_entry: date_entry,
-      community_id,
+      dni: dni, name: name, last_name: last_name, email: email, phone: phone,
+      password: this.generatePassword(), user_type: user_type, status: status, date_entry: date_entry, community_id
+
     };
     return this.clientUserApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
+  }
+
+  
+  createAdminCommunity(dni: string, name: string, last_name: string, email: string, phone: number
+    , user_type: string, status: string, date_entry: Date, community_id: string) {
+    const pattern = { cmd: 'createAdminCommunity' };
+    const payload = {
+      dni: dni, name: name, last_name: last_name, email: email, phone: phone,
+      password: this.generatePassword(), user_type: user_type, status: status, date_entry: date_entry, community_id
+
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
   }
 
   allUsers() {
@@ -153,6 +136,7 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+
   deleteAdminSystem(id: string) {
     const pattern = { cmd: 'deleteAdminSystem' };
     const payload = { id: id };
@@ -181,17 +165,8 @@ export class AppService {
   // ====================== COMMUNITIES ===============================
 
   //POST parameter from API
-  createCommunity(
-    name: string,
-    province: string,
-    canton: string,
-    district: string,
-    num_houses: number,
-    phone: string,
-    status: string,
-    date_entry: Date,
-    houses: [],
-  ) {
+  createCommunity(name: string, province: string, canton: string, district: string
+    , num_houses: number, phone: string, status: string, date_entry: Date, houses: []) {
     const pattern = { cmd: 'createCommunity' };
     const payload = {
       name: name,
@@ -287,13 +262,8 @@ export class AppService {
   ) {
     const pattern = { cmd: 'createGuest' };
     const payload = {
-      name: name,
-      last_name: last_name,
-      dni: dni,
-      number_plate: number_plate,
-      phone: phone,
-      status: status,
-      date_entry: date_entry,
+      name: name, last_name: last_name, dni: dni, number_plate: number_plate, phone: phone,
+      status: status, date_entry: date_entry
     };
     return this.clientGuestApp
       .send<string>(pattern, payload)
@@ -317,7 +287,7 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  // ====================== PAYMENTS ===============================
+  // ====================== PAYMENTS =============================== 
 
   //POST parameter from API
   createPayment(
@@ -331,13 +301,8 @@ export class AppService {
   ) {
     const pattern = { cmd: 'createPayment' };
     const payload = {
-      date_payment: date_payment,
-      mount: mount,
-      description: description,
-      period: period,
-      status: status,
-      user_id: user_id,
-      communty_id: communty_id,
+      date_payment: date_payment, mount: mount, description: description,
+      period: period, status: status, user_id: user_id, communty_id: communty_id
     };
     return this.clientPaymentApp
       .send<string>(pattern, payload)
@@ -364,22 +329,12 @@ export class AppService {
   // ====================== RESERVATIONS ===============================
 
   //POST parameter from API
-  createReservation(
-    start_time: string,
-    finish_time: string,
-    status: string,
-    date_entry: Date,
-    user_id: string,
-    common_area_id: string,
-  ) {
+  createReservation(start_time: string, finish_time: string, status: string,
+    date_entry: Date, user_id: string, common_area_id: string) {
     const pattern = { cmd: 'createReservation' };
     const payload = {
-      start_time: start_time,
-      finish_time: finish_time,
-      status: status,
-      date_entry: date_entry,
-      user_id: user_id,
-      common_area_id: common_area_id,
+      start_time: start_time, finish_time: finish_time, status: status,
+      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id
     };
     return this.clientReservationApp
       .send<string>(pattern, payload)
@@ -406,18 +361,12 @@ export class AppService {
   // ====================== POSTS ===============================
 
   //POST parameter from API
-  createPost(
-    post: string,
-    date_entry: Date,
-    user_id: string,
-    community_id: string,
-  ) {
+  createPost(post: string, date_entry: Date, user_id: string,
+    community_id: string) {
     const pattern = { cmd: 'createPost' };
     const payload = {
-      post: post,
-      date_entry: date_entry,
-      user_id: user_id,
-      community_id: community_id,
+      post: post, date_entry: date_entry, user_id: user_id,
+      community_id: community_id
     };
     return this.clientPostApp
       .send<string>(pattern, payload)
@@ -444,18 +393,12 @@ export class AppService {
   // ====================== COMMNENT POSTS ===============================
 
   //Comment parameter from API
-  createComment(
-    comment: string,
-    date_entry: Date,
-    user_id: string,
-    post_id: string,
-  ) {
+  createComment(comment: string, date_entry: Date, user_id: string,
+    post_id: string) {
     const pattern = { cmd: 'createComment' };
     const payload = {
-      comment: comment,
-      date_entry: date_entry,
-      user_id: user_id,
-      post_id: post_id,
+      comment: comment, date_entry: date_entry, user_id: user_id,
+      post_id: post_id
     };
     return this.clientPostApp
       .send<string>(pattern, payload)
@@ -482,18 +425,12 @@ export class AppService {
   // ====================== REPORTS ===============================
 
   //Report parameter from API
-  createReport(
-    action: string,
-    description: string,
-    date_entry: Date,
-    user_id: string,
-  ) {
+  createReport(action: string, description: string, date_entry: Date,
+    user_id: string) {
     const pattern = { cmd: 'createReport' };
     const payload = {
-      action: action,
-      description: description,
-      date_entry: date_entry,
-      user_id: user_id,
+      action: action, description: description, date_entry: date_entry,
+      user_id: user_id
     };
     return this.clientReportApp
       .send<string>(pattern, payload)
@@ -531,5 +468,23 @@ export class AppService {
     return this.clientNotificationtApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
+  }
+
+
+
+  /* Function to generate combination of password */
+  generatePassword() {
+    var pass = '';
+    var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+      'abcdefghijklmnopqrstuvwxyz0123456789@#$';
+
+    for (let i = 1; i <= 8; i++) {
+      var char = Math.floor(Math.random()
+        * str.length + 1);
+
+      pass += str.charAt(char)
+    }
+
+    return pass;
   }
 }

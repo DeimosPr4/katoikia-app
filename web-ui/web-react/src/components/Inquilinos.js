@@ -55,15 +55,19 @@ const Inquilinos = () => {
           <div className="p-fluid formgrid grid">
             <div className="p-field col-12 md:col-6">
               <label htmlFor="nombre">Nombre</label>
-              <InputText type="text" className="form-control" id="nombre"/>
+              <InputText type="text" className="form-control" id="nombre" />
             </div>
             <div className="p-field col-12 md:col-6">
               <label htmlFor="apellidos">Apellidos</label>
-              <InputText type="text" className="form-control" id="apellidos"/>
+              <InputText type="text" className="form-control" id="apellidos" />
             </div>
             <div className="p-field col-12 md:col-6">
               <label htmlFor="identificacion">Identificación</label>
-              <InputText type="text" className="form-control" id="identificacion"/>
+              <InputText
+                type="text"
+                className="form-control"
+                id="identificacion"
+              />
             </div>
             <div className="p-field col-12 md:col-6">
               <label htmlFor="correo_electronico">Correo electrónico</label>
@@ -83,7 +87,11 @@ const Inquilinos = () => {
             </div>
             <div className="p-field col-12 md:col-6">
               <label htmlFor="identificacion">Identificación</label>
-              <InputText type="password" className="form-control" id="identificacion"/>
+              <InputText
+                type="password"
+                className="form-control"
+                id="identificacion"
+              />
             </div>
             <Button label="Registrar" onClick={registrarInquilino} />
           </div>

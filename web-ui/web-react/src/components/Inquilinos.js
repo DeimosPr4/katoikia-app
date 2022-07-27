@@ -20,8 +20,13 @@ const Inquilinos = () => {
   }, []);
   function registrarInquilino() {
     let data = {
+      dni: document.getElementById('identificacion').value,
+      name: document.getElementById('nombre').value,
+      last_name: document.getElementById('apellidos').value,
+      phone: document.getElementById('telefono').value,
       email: document.getElementById('correo_electronico').value,
       community_id: document.getElementById('numero_vivienda').value,
+      password: document.getElementById('password').value,
       user_type: '3',
       status: '1',
     };
@@ -49,6 +54,18 @@ const Inquilinos = () => {
           <h5 className="card-header">Registrar Inquilino</h5>
           <div className="p-fluid formgrid grid">
             <div className="p-field col-12 md:col-6">
+              <label htmlFor="nombre">Nombre</label>
+              <InputText type="text" className="form-control" id="nombre"/>
+            </div>
+            <div className="p-field col-12 md:col-6">
+              <label htmlFor="apellidos">Apellidos</label>
+              <InputText type="text" className="form-control" id="apellidos"/>
+            </div>
+            <div className="p-field col-12 md:col-6">
+              <label htmlFor="identificacion">Identificación</label>
+              <InputText type="text" className="form-control" id="identificacion"/>
+            </div>
+            <div className="p-field col-12 md:col-6">
               <label htmlFor="correo_electronico">Correo electrónico</label>
               <InputText
                 type="email"
@@ -63,6 +80,10 @@ const Inquilinos = () => {
                 value={communityIdList[0]}
                 options={communitiesList}
               />
+            </div>
+            <div className="p-field col-12 md:col-6">
+              <label htmlFor="identificacion">Identificación</label>
+              <InputText type="password" className="form-control" id="identificacion"/>
             </div>
             <Button label="Registrar" onClick={registrarInquilino} />
           </div>

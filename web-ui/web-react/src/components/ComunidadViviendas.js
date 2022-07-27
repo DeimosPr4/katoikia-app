@@ -23,7 +23,7 @@ const Communities = () => {
     district: districtId,
     phone: '',
     num_houses: 0,
-    status: 'activo',
+    status: '1',
     date_entry: new Date(),
     houses: [],
   };
@@ -64,17 +64,6 @@ const Communities = () => {
     parent: item.parentCode,
   }));
 
-  useEffect(() => {
-    fillProvinces();
-  }, []);
-
-  useEffect(() => {
-    fillCantons();
-  }, [provinciaId]);
-
-  useEffect(() => {
-    fillDistricts();
-  }, [cantonId]);
 
   async function getProvinces() {
     const response = await fetch('assets/demo/data/provincias.json', {
@@ -118,6 +107,20 @@ const Communities = () => {
     setDistrictsList(await districts);
   }
 
+
+  useEffect(() => {
+    fillProvinces();
+  }, []);
+
+  useEffect(() => {
+    fillCantons();
+  }, [provinciaId]);
+
+  useEffect(() => {
+    fillDistricts();
+  }, [cantonId]);
+
+  
   const handleProvinces = (event) => {
     const getprovinciaId = event.target.value;
     setProvinciaId(getprovinciaId);

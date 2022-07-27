@@ -19,15 +19,6 @@ export class EmailController {
     return response;
   }
 
-        var response = this.mailService.sendMail({
-            to: toEmail["email"],
-            from: "mbonilla.guti@gmail.com",
-            subject: 'Plain Text Email ✔',
-            text: 'Welcome NestJS Email Sending Tutorial',
-        });
-        return response;
-    }
-
     @MessagePattern({ cmd: 'html' })
     async postHTMLEmail(@Payload() user: any) {
         const url = "http://localhost:3000/";

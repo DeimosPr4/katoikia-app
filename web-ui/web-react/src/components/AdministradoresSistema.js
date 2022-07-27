@@ -36,53 +36,63 @@ const AdministradoresSistema = () => {
     phone: '',
     password: '',
     user_type: '1',
-    status: '',
+    status: '1',
   };
 
-    
 
-    function registrarAdmin() {
-        var data = {
-            dni: document.getElementById('identificacion').value,
-            name: document.getElementById('nombre').value,
-            last_name: document.getElementById('apellidos').value,
-            email: document.getElementById('correo_electronico').value,
-            phone: document.getElementById('telefono').value,
-            password: document.getElementById('correo_electronico').value,
-            user_type: "1", //1 es admin
-            status: "1"
-        };
-        setSysAdmin(data)
-        // console.log(data);
+  async function fetchP() {
+    let nombres = await fetch(urlFetch, { method: 'GET' });
+    let adminRes = await nombres.json();
+    setAdministrators(adminRes.message);
+    console.log(administrators);
+  }
+  useEffect(() => {
+    fetchP();
+  }, [])
 
-        fetch('http://localhost:4000/user/createAdminSystem/', {
-            cache: 'no-cache',
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(
-                function (response) {
-                    if (response.status != 201)
-                        console.log('Ocurrió un error con el servicio: ' + response.status);
-                    else
-                        return response.json();
-                }
-            )
-            .then(
-                function (response) {
-                    let _administrators = [...administrators];
-                    let _admin = { ...sysadmin };
-                    _administrators.push(_admin);
-                    setAdministrators(_administrators)
-                }
-            )
-            .catch(
-                err => console.log('Ocurrió un error con el fetch', err)
-            );
-    }
+
+  function registrarAdmin() {
+    var data = {
+      dni: document.getElementById('identificacion').value,
+      name: document.getElementById('nombre').value,
+      last_name: document.getElementById('apellidos').value,
+      email: document.getElementById('correo_electronico').value,
+      phone: document.getElementById('telefono').value,
+      password: document.getElementById('correo_electronico').value,
+      user_type: "1", //1 es admin
+      status: "1"
+    };
+    setSysAdmin(data)
+    // console.log(data);
+
+    fetch('http://localhost:4000/user/createAdminSystem/', {
+      cache: 'no-cache',
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+          let _administrators = [...administrators];
+          let _admin = { ...sysadmin };
+          _administrators.push(_admin);
+          setAdministrators(_administrators)
+        }
+      )
+      .catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+  }
 
   const confirmDeleteAdminSystem = (sysAdmin) => {
     setSysAdmin(sysAdmin);
@@ -92,6 +102,15 @@ const AdministradoresSistema = () => {
   const confirmDeleteSelected = () => {
     setDeleteAdminsSystemDialog(true);
   };
+
+  const hideDeleteAdminSystemDialog = () => {
+    setDeleteAdminSystemDialog(false);
+  };
+
+  const hideDeleteAdminsSystemDialog = () => {
+    setDeleteAdminsSystemDialog(false);
+  };
+
 
   const deleteSysAdmin = () => {
     fetch('http://localhost:4000/user/deleteAdminSystem/' + sysadmin._id, {
@@ -198,7 +217,7 @@ const AdministradoresSistema = () => {
   const header = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
       <h5 className="m-0">
-        Administradores del sistema <i class="fal fa-user"></i>
+        Administradores del sistema <i className="fal fa-user"></i>
       </h5>
       <span className="block mt-2 md:mt-0 p-input-icon-left">
         <i className="pi pi-search" />
@@ -234,7 +253,7 @@ const AdministradoresSistema = () => {
         label="No"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={hideDeleteAdminsSystemsDialog}
+        onClick={hideDeleteAdminsSystemDialog}
       />
       <Button
         label="Yes"
@@ -424,7 +443,7 @@ const AdministradoresSistema = () => {
             header="Confirmar"
             modal
             footer={deleteAdminsSystemDialogFooter}
-            onHide={hideDeleteAdminsSystemsDialog}
+            onHide={hideDeleteAdminsSystemDialog}
           >
             <div className="flex align-items-center justify-content-center">
               <i

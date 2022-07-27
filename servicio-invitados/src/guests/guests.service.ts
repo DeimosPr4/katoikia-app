@@ -13,18 +13,13 @@ export class GuestsService {
     return this.guestModel.create(guest);
   }
 
-  async findAll(): Promise<Guest[]> { 
-    return this.guestModel
-      .find() 
-      .setOptions({ sanitizeFilter: true }) 
-      .exec();
+  async findAll(): Promise<Guest[]> {
+    return this.guestModel.find().setOptions({ sanitizeFilter: true }).exec();
   }
-
 
   findOneId(id: string): Promise<Guest> {
     return this.guestModel.findOne({ _id: id }).exec();
   }
-
 
   findOne(id: string): Promise<Guest> {
     return this.guestModel.findOne({ dni: id }).exec();

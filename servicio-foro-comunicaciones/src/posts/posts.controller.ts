@@ -3,10 +3,9 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PostsService } from './posts.service';
 import { Post, PostDocument } from '../schemas/post.schema';
 
-
 @Controller()
 export class PostsController {
-  constructor(private readonly postsService: PostsService) { }
+  constructor(private readonly postsService: PostsService) {}
 
   @MessagePattern({ cmd: 'createPost' })
   create(@Payload() post: PostDocument) {

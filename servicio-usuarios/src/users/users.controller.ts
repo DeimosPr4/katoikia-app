@@ -1,7 +1,8 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseFilters } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { User, UserDocument } from '../schemas/user.schema';
 import { UsersService } from './users.service';
+import { MongoExceptionFilter } from 'src/MongoExceptionFilter';
 
 @Controller()
 export class UsersController {
@@ -13,6 +14,7 @@ export class UsersController {
   }
 
   @MessagePattern({ cmd: 'createAdminSystem' })
+  @UseFilters(MongoExceptionFilter)
   createUserAdmin(@Payload() user: UserDocument) {
     return this.userService.create(user);
   }

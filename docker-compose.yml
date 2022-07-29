@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  apiGateway:
+    build: ./api-gateway
+    networks: 
+      - microserviciosNetwork
+  comunidad:
+    build: ./servicio-comunidad-viviendas
+    networks:
+      - microserviciosNetwork
+
+networks: 
+  microserviciosNetwork

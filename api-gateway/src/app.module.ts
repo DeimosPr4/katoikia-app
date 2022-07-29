@@ -20,7 +20,7 @@ import { AppService } from './app.service';
         name: 'SERVICIO_COMUNIDADES',
         transport: Transport.TCP,
         options: {
-          host: '127.0.0.1',
+          host: 'microserviciosNetwork',
           port: 3002,
         },
       },

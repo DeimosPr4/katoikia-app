@@ -22,7 +22,7 @@ export class EmailController {
     @MessagePattern({ cmd: 'html' })
     async postHTMLEmail(@Payload() user: any) {
         const url = "http://localhost:3000/";
-        const image = "images/email.ong";
+        const image = "images/email.png";
         var response = await this.mailService.sendMail({
             to: user["email"],
             from: "mbonilla.guti@gmail.com",
@@ -48,7 +48,7 @@ export class EmailController {
     async emailCreateUserAdmin(@Payload() user: any) {
         const url = "http://localhost:3000/";
         const image = "images/email.png";
-        const logo = "images/Logo Katoikia.svg";
+        const logo = "images/Logo Katoikia.png";
         var response = await this.mailService.sendMail({
             to: user["email"],
             from: "mbonilla.guti@gmail.com",
@@ -69,8 +69,8 @@ export class EmailController {
                     cid: 'image_email' //my mistake was putting "cid:logo@cid" here! 
                 },
                 {
-                    filename: 'Logo Katoikia.svg',
-                    path: __dirname + '/mails/images/Logo Katoikia.svg',
+                    filename: 'Logo_Katoikia.png',
+                    path: __dirname + '/mails/images/Logo_Katoikia.png',
                     cid: 'logoKatoikia' //my mistake was putting "cid:logo@cid" here! 
                 }
             ]

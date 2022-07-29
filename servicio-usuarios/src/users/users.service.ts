@@ -25,20 +25,24 @@ export class UsersService {
 
 
   async createAdminCommunity(user: UserDocument) {
-    let password = user.password;
-    let passwordEncriptada = Md5.init(user.password);
-    user.password = passwordEncriptada;
-    this.userModel.create(user);
-    let community = await this.findCommunity(user.community_id);
-    user.community_id = community['name'];
+      let password = user.password;
+      let passwordEncriptada = Md5.init(user.password);
+      user.password = passwordEncriptada;
 
-    const pattern = { cmd: 'emailCreateUserAdminCommunity' };
-    const payload = { email: user['email'], password: password, name: user['name'], date_entry: user['date_entry'] };
-    return this.clientNotificationtApp
-      .send<string>(pattern, payload)
-      .pipe(
-        map((message: string) => ({ message })),
-      );
+       this.userModel.create(user)
+        
+
+      let community = await this.findCommunity(user.community_id);
+      user.community_id = community['name'];
+  
+      const pattern = { cmd: 'emailCreateUserAdminCommunity' };
+      const payload = { email: user['email'], password: password, name: user['name'], 
+      date_entry: user['date_entry'], community_name: community['name'] };
+      return this.clientNotificationtApp
+        .send<string>(pattern, payload)
+        .pipe(
+          map((message: string) => ({ message })),
+        );
   }
 
   async findCommunity(community_id: string) {
@@ -141,8 +145,22 @@ export class UsersService {
     return this.userModel.deleteOne({ _id: id }).exec();
   }
 
+  async validateEmail(email: string) {
+    let repo1 = this.userModel;
+    return new Promise<User>((resolve, reject) => {
+      let repo = repo1;
 
-
+      repo.find({ email: email }).exec((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          if (res.length > 0) {
+            return res;
+          }
+        }
+      });
+    });
+  }
 
 }
 

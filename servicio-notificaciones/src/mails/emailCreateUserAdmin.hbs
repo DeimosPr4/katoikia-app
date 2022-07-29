@@ -10,6 +10,10 @@
     <title></title> <!-- The title tag shows in email notifications, like Android 4.4. -->
 
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <!-- CSS Reset : BEGIN -->
     <style>
@@ -119,7 +123,7 @@
     <!-- Progressive Enhancements : BEGIN -->
     <style>
         .primary {
-            background: #30e3ca;
+            background: #D7A86E;
         }
 
         .bg_white {
@@ -150,7 +154,7 @@
 
         .btn.btn-primary {
             border-radius: 5px;
-            background: #30e3ca;
+            background: #D7A86E;
             color: #ffffff;
         }
 
@@ -185,6 +189,7 @@
             color: #000000;
             margin-top: 0;
             font-weight: 400;
+            margin-bottom: 12px;
         }
 
         body {
@@ -192,11 +197,11 @@
             font-weight: 400;
             font-size: 15px;
             line-height: 1.8;
-            color: rgba(0, 0, 0, .4);
+            color: rgba(0, 0, 0, 0.808);
         }
 
         a {
-            color: #30e3ca;
+            color: #D7A86E;
         }
 
         table {}
@@ -208,7 +213,7 @@
         }
 
         .logo h1 a {
-            color: #30e3ca;
+            color: #D7A86E;
             font-size: 24px;
             font-weight: 700;
             font-family: 'Lato', sans-serif;
@@ -221,7 +226,7 @@
         }
 
         .hero .text {
-            color: rgba(0, 0, 0, .3);
+            color: rgba(0, 0, 0, 0.884);
         }
 
         .hero .text h2 {
@@ -239,7 +244,7 @@
 
         .hero .text h2 span {
             font-weight: 600;
-            color: #30e3ca;
+            color: #D7A86E;
         }
 
 
@@ -272,7 +277,7 @@
             content: '';
             width: 100%;
             height: 2px;
-            background: #30e3ca;
+            background: #D7A86E;
             margin: 0 auto;
         }
 
@@ -281,8 +286,7 @@
         }
 
         .heading-section-white h2 {
-            font-family:
-                line-height: 1;
+            line-height: 1;
             padding-bottom: 0;
         }
 
@@ -356,17 +360,23 @@
                     <td valign="top" class="bg_white" style="padding: 1em 2.5em 0 2.5em;">
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tr>
-                                <td class="logo" style="text-align: center;">
+
+                                <td class="logo" style="text-align: right;">
+                                    <img src="cid:logoLatoikia" alt="Logo Katoikia"
+                                        style="width: 60px; max-width: 60px; height: auto; margin: auto; display: block; float: right;">
+                                </td>
+                                <td class="logo" style="text-align: left;">
                                     <h1><a href="#">Katoikia</a></h1>
                                 </td>
                             </tr>
                         </table>
                     </td>
+
                 </tr><!-- end tr -->
                 <tr>
                     <td valign="middle" class="hero bg_white" style="padding: 3em 0 2em 0;">
-                        <img  src="cid:logoLatoikia" alt=""
-                            style="width: 300px; max-width: 600px; height: auto; margin: auto; display: block;">
+                        <img src="cid:image_email" alt="Logo Katoikia"
+                            style="width: 150px; max-width: 300px; height: auto; margin: auto; display: block;">
                     </td>
                 </tr><!-- end tr -->
                 <tr>
@@ -375,16 +385,22 @@
                             <tr>
                                 <td>
                                     <div class="text" style="padding: 0 2.5em; text-align: center;">
-                                        <h2>Hola, {{ name }}</h2>
-                                        <h2>Ha sido registrado como un Administrador General del sitio web Katoikia</h2>
-                                        <h3>Fecha de registro {{date_entry}}</h3>
-                                        
+                                        <h2> Hola , {{ name }} <i class="fa-regular fa-face-smile-wink"
+                                                style="color:#D7A86E; font-size: 0.8em; margin-left: 20px;"></i></h2>
+                                        <h3>Ha sido registrado como un Administrador General del sitio web Katoikia</h3>
+                                        <h4><i class="fa-solid fa-calendar-day"
+                                                style="color:#D7A86E; margin-right: 10px;"></i> Fecha de registro
+                                            {{date_entry}}</h4>
+                                    </div>
+                                    <div class="text" style="padding: 0 4em; text-align: left;">
                                         <h3>Estas son sus credenciales:</h3>
-                                        <ul>
-                                            <li>Correo electronico:  {{email}}</li>
-                                            <li>Password:  {{password}}</li>
-                                        </ul>
-                                        <h3>Inicie sesión en el sitio web para poder acceder y disfrutar todos sus benefucuin</h3>
+                                        <p><i class="fa-regular fa-envelope"  style="color:#D7A86E; margin-right: 10px;"></i>  Correo electronico: {{email}}</p>
+                                        <p><i class="fa-solid fa-key"  style="color:#D7A86E; margin-right: 10px;"></i> Password: {{password}}</p>
+
+                                    </div>
+                                    <div class="text" style="padding: 0 2.5em; text-align: center;">
+                                        <h3>Inicie sesión en el sitio web para poder acceder y disfrutar todos sus
+                                            beneficios</h3>
                                         <p><a href="{{ url }}" class="btn btn-primary">Iniciar sesión</a></p>
                                     </div>
                                 </td>
@@ -392,47 +408,46 @@
                         </table>
                     </td>
                 </tr><!-- end tr -->
+                
                 <!-- 1 Column Text + Button : END -->
             </table>
             <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
                 style="margin: auto;">
-                <tr>
-                    <td valign="middle" class="bg_light footer email-section">
-                        <table>
+                <td valign="middle" class="bg_light footer email-section">
+                    <table>
+                      <tr>
+                        <td valign="top" width="33.333%" style="padding-top: 20px">
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
-                                <td valign="top" width="33.333%" style="padding-top: 20px;">
-                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                        <tr>
-                                            <td style="text-align: left; padding-right: 10px;">
-                                              <!--  <h3 class="heading">About</h3>
-                                                <p>A small river named Duden flows by their place and supplies it with
-                                                    the necessary regelialia.</p>
-                                                    -->
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td valign="top" width="33.333%" style="padding-top: 20px;">
-                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                        <tr>
-                                            <td style="text-align: left; padding-left: 5px; padding-right: 5px;">
-                                              <!--  <h3 class="heading">Informacion de contacto</h3>
-                                                <ul>
-                                                    <li><span class="text">203 Fake St. Mountain View, San Francisco,
-                                                            California, USA</span></li>
-                                                    <li><span class="text">+2 392 3929 210</span></a></li>
-                                                </ul>
-                                                -->
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                
+                              <td style="text-align: left; padding-right: 10px">
+                                <h3 class="heading">Acerca de</h3>
+                                <p>Katoikia es su compañero más cercano para poder estar en contacto con sus vecinos y conocer sobre los mejores anuncios sobre su comunidad.</p>
+                              </td>
                             </tr>
-                        </table>
-                    </td>
-                </tr><!-- end: tr -->
-                
+                          </table>
+                        </td>
+                        <td valign="top" width="33.333%" style="padding-top: 20px">
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <tr>
+                              <td style="text-align: left; padding-left: 5px; padding-right: 5px">
+                                <h3 class="heading">Información de contacto</h3>
+                                <ul>
+                                  <li><span href="mailto:katoikiaapp@gmail.com" class="text">katoikiaapp@gmail.com</span></li>
+                                </ul>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <!-- end: tr -->
+                <tr>
+                  <td class="bg_light" style="text-align: center">
+                    <p><a href="http://localhost:3000" style="color: rgba(0, 0, 0, 0.8)">katoikiaapp.org</a></p>
+                  </td>
+
             </table>
 
         </div>

@@ -2,7 +2,6 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 var uniqueValidator = require('mongoose-unique-validator');
 import { IsEmail, IsNotEmpty, IsString, Validate } from 'class-validator';
-import { UserExistsRule } from 'src/exceptions/UserExistsRule';
 
 export type UserDocument = User & Document;
 
@@ -18,7 +17,6 @@ export class User {
   last_name: string;
 
   @Prop({required: true, unique: true})
-  @Validate(UserExistsRule)
   email: string; 
 
   @Prop({required: true, unique: true})

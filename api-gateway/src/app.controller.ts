@@ -367,8 +367,4 @@ export class AppController {
   html(@Body('email') email: string, @Body('name') name: string) {
     return this.appService.html(email, name);
   }
-
-
-
-  
 }

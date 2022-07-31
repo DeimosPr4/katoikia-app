@@ -32,6 +32,8 @@ export class CommonAreasService {
   }
 
   async remove(id: string) {
-    return this.commonAreaModel.findByIdAndRemove({ _id: id }).exec();
+    return this.commonAreaModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
   }
 }

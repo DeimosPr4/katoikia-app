@@ -6,26 +6,17 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
-
+import { Dropdown } from 'primereact/dropdown';
+import classNames from 'classnames';
 
 const AdministradoresComunidad = () => {
-
-    const [listaAdmins, setListaAdmins] = useState([]);
-    const [listaAdminComunidad, setListaAdminComunidad] = useState([]);
-    const [adminCommunity, setAdminCommunity] = useState(emptyAdminCommunity);
-    const [selectedAdminsCommunities, setSelectedAdminsCommunities] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState(null);
-    const [deleteAdminCommunityDialog, setDeleteAdminCommunityDialog] = useState(false);
-    const [deleteAdminsCommunitiesDialog, setDeleteAdminsCommunitiesDialog] = useState(false);
-    const toast = useRef(null);
-    const dt = useRef(null);
 
     let emptyAdminCommunity = {
         _id: null,
@@ -35,11 +26,27 @@ const AdministradoresComunidad = () => {
         email: '',
         phone: '',
         password: '',
+        confirmPassword: '',
         community_id: '',
         community_name: '',
         user_type: '2',
-        status: ''
+        date_entry: new Date(),
+        status: '1'
     };
+
+    const [listaAdmins, setListaAdmins] = useState([]);
+    const [listaAdminComunidad, setListaAdminComunidad] = useState([]);
+    const [adminCommunity, setAdminCommunity] = useState(emptyAdminCommunity);
+    const [selectedAdminsCommunities, setSelectedAdminsCommunities] = useState(null);
+    const [globalFilter, setGlobalFilter] = useState(null);
+    const [deleteAdminCommunityDialog, setDeleteAdminCommunityDialog] = useState(false);
+    const [deleteAdminsCommunitiesDialog, setDeleteAdminsCommunitiesDialog] = useState(false);
+    const [communitiesList, setCommunitiesList] = useState([]);
+    const [communityId, setCommunityId] = useState(null);
+    const [submitted, setSubmitted] = useState(false);
+    const toast = useRef(null);
+    const dt = useRef(null);
+
 
     async function listaAdmin() {
         let nombres = await fetch('http://localhost:4000/user/findAdminComunidad/', { method: 'GET' })
@@ -49,35 +56,42 @@ const AdministradoresComunidad = () => {
                     //item.full_name returns the repositorie name
                     return fetch(`http://localhost:4000/community/findCommunityName/${item.community_id}`, { method: 'GET' })
                         .then((response2) => response2.json())
+                        .then(data => data.message)
                         .then(data => {
-                            console.log(data.message.name);
-                            item.community_name = data.message.name
+                            item.community_name = data['name']
                             return item
                         })
                 }));
-            }).then(data => setListaAdmins(data)
-            );
+            })
+            .then(data => setListaAdmins(data));
 
     }
 
-    async function nombreComunidad(id) {
-        let nombres = await fetch('http://localhost:4000/community/findCommunityName/' + id, { method: 'GET' });
-        let nombresRes = await nombres.json();
-        return await nombresRes.message['name'];
-    }
 
 
-    async function setNameCommunities() {
-        Promise.all(listaAdmins.map(async function (administrador) {
-            // await listaComunidades(administrador.community_id);
-            administrador.community_id = await listaAdminComunidad.name;
-        }))
+
+
+    async function getCommunites() {
+        let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
+        let resList = await response.json();
+        let list = await resList.message;
+        console.log(list);
+
+        setCommunitiesList(await list);
     }
 
     useEffect(() => {
         listaAdmin();
-
     }, [])
+
+    useEffect(() => {
+        getCommunites();
+    },[])
+
+    const cList = communitiesList.map((item) => ({
+        label: item.name,
+        value: item._id,
+    }))
 
 
     const deleteAdminCommunity = () => {
@@ -113,31 +127,90 @@ const AdministradoresComunidad = () => {
                    }
                ); 
         */
-        let _administrators = listaAdmins.filter(val => val._id !== adminCommunity._id);
+        let _administrators = listaAdmins.filter(
+            (val) => val._id !== adminCommunity._id,
+        );
         setListaAdmins(_administrators);
         setDeleteAdminCommunityDialog(false);
         setAdminCommunity(emptyAdminCommunity);
-        toast.current.show({ severity: 'success', summary: 'Administrador de Comunidad Eliminada', life: 3000 });
-    }
+        toast.current.show({
+            severity: 'success',
+            summary: 'Administrador de Comunidad Eliminada',
+            life: 3000,
+        });
+    };
 
     const deleteSelectedAdminsCommunity = () => {
-        let _admins = listaAdmins.filter(val => !selectedAdminsCommunities.includes(val));
+        let _admins = listaAdmins.filter(
+            (val) => !selectedAdminsCommunities.includes(val),
+        );
         /*  selectedCommunities.map((item) => {
-             fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
-                 cache: 'no-cache',
-                 method: 'DELETE',
-                 headers: {
-                     'Content-Type': 'application/json'
-                 }
-             })
-         })*/
+                 fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
+                     cache: 'no-cache',
+                     method: 'DELETE',
+                     headers: {
+                         'Content-Type': 'application/json'
+                     }
+                 })
+             })*/
         setListaAdmins(_admins);
         setDeleteAdminsCommunitiesDialog(false);
         setSelectedAdminsCommunities(null);
-        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Administradores de Comunidad de Viviendas Eliminado', life: 3000 });
+        toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Administradores de Comunidad de Viviendas Eliminados',
+            life: 3000,
+        });
+    };
+
+    const saveAdminCommunity = () => {
+        if (adminCommunity.name && adminCommunity.dni && adminCommunity.last_name && adminCommunity.email && adminCommunity.phone) {
+
+            let _administrators = [...listaAdmins];
+            let _adminCommunity = { ...adminCommunity };
+            _adminCommunity.community_id = communityId;
+            console.log(_adminCommunity)
+            console.log(communityId)
+
+            fetch('http://localhost:4000/user/createAdminCommunity', {
+                cache: 'no-cache',
+                method: 'POST',
+                body: JSON.stringify(_adminCommunity),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(
+                    function (response) {
+                        if (response.status != 201)
+                            console.log('Ocurrió un error con el servicio: ' + response.status);
+                        else
+                            return response.json();
+                    }
+                )
+                .then(() => {
+
+                    // _adminCommunity.community_id = communitiesList.find(c => c._id === _adminCommunity.community_id).name
+
+                    _administrators.push(_adminCommunity);
+                    toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
+
+                    setListaAdmins(_administrators);
+
+                    setAdminCommunity(emptyAdminCommunity);
+
+                })
+                .catch(
+                    err => console.log('Ocurrió un error con el fetch', err)
+                );
+
+
+        } else {
+            setSubmitted(true);
+
+        }
     }
-
-
 
     const hideDeleteAdminCommunityDialog = () => {
         setDeleteAdminCommunityDialog(false);
@@ -152,14 +225,23 @@ const AdministradoresComunidad = () => {
         setDeleteAdminCommunityDialog(true);
     }
 
-   
+    const confirmDeleteSelected = () => {
+        setDeleteAdminsCommunitiesDialog(true);
+    };
+
+
+
     const actionsAdminCommunity = (rowData) => {
         return (
             <div className="actions">
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => confirmDeleteAdminCommunity(rowData)} />
+                <Button
+                    icon="pi pi-trash"
+                    className="p-button-rounded p-button-danger mt-2"
+                    onClick={() => confirmDeleteAdminCommunity(rowData)}
+                />
             </div>
         );
-    }
+    };
 
 
     const deleteAdminCommunityDialogFooter = (
@@ -176,132 +258,12 @@ const AdministradoresComunidad = () => {
         </>
     );
 
-    const headerName = (
-        <>
-            <p> <FontAwesomeIcon icon={faUserAlt} style={{ color: "#C08135" }} />  Nombre</p>
-        </>
-    )
-
-    const headerLastName = (
-        <>
-            <p> <FontAwesomeIcon icon={faUserAlt} style={{ color: "#D7A86E" }} />    Apellidos</p>
-        </>
-    )
-
-    const headerDNI = (
-        <>
-            <p> <FontAwesomeIcon icon={faIdCardAlt} style={{ color: "#C08135" }} />    Identificación</p>
-        </>
-    )
-
-    const headerEmail = (
-        <>
-            <p> <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />    Correo Electrónico</p>
-        </>
-    )
-
-    const headerPhone = (
-        <>
-            <p> <FontAwesomeIcon icon={faPhoneAlt} style={{ color: "#C08135" }} />   Teléfono</p>
-        </>
-    )
-
-    const headerCommuntiy = (
-        <>
-            <p> <FontAwesomeIcon icon={faHomeAlt} style={{ color: "#D7A86E" }} />   Comunidad</p>
-        </>
-    )
-
-    const headerOptions = (
-        <>
-            <p><FontAwesomeIcon icon={faEllipsis} size="2x" style={{ color: "#C08135" }} /></p>
-        </>
-    )
-
-    const hideDeleteAdminSystemDialog = () => {
-        setDeleteAdminSystemDialog(false);
-    }
-
-    const hideDeleteAdminsSystemsDialog = () => {
-        setDeleteAdminsSystemDialog(false);
-    }
-
-    const confirmDeleteAdminSystem = (sysAdmin) => {
-        setSysAdmin(sysAdmin);
-        setDeleteAdminSystemDialog(true);
-    }
-
-    const confirmDeleteSelected = () => {
-        setDeleteAdminsSystemDialog(true);
-    }
-
-    const deleteSysAdmin = () => {
-
-        fetch('http://localhost:4000/user/deleteAdminSystem/' + sysadmin._id, {
-            cache: 'no-cache',
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(
-                function (response) {
-                    if (response.status != 201)
-                        console.log('Ocurrió un error con el servicio: ' + response.status);
-                    else
-                        return response.json();
-                }
-            )
-            .then(
-                function (response) {
-                    let _sysadmin = listaAdmins.filter(val => val._id !== sysadmin._id);
-                    setListaAdmins(_sysadmin);
-
-                    setDeleteAdminSystemDialog(false);
-                    setSysAdmin(emptySysAdmin);
-
-                    toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador del Sistema Eliminado', life: 3000 });
-                }
-            )
-            .catch(
-                err => {
-                    console.log('Ocurrió un error con el fetch', err)
-                    toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador del Sistema no se pudo eliminar', life: 3000 });
-                }
-            );
-    }
-
-    const deleteSelectedAdminsSystem = () => {
-        let _administrators = listaAdmins.filter(val => !selectedAdministrators.includes(val));
-        selectedAdministrators.map((item) => {
-            fetch('http://localhost:4000/user/deleteAdminSystem/' + item._id, {
-                cache: 'no-cache',
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-        })
-        setListaAdmins(_administrators);
-        setDeleteAdminsSystemDialog(false);
-        setSelectedAdministrators(null);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    }
-
-
-    const actionsAdmin = (rowData) => {
-        return (
-            <div className="actions">
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => confirmDeleteAdminSystem(rowData)} />
-            </div>
-        );
-    }
 
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedAdministrators || !selectedAdministrators.length} />
+                    <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedAdminsCommunities || !selectedAdminsCommunities.length} />
                 </div>
             </React.Fragment>
         )
@@ -310,40 +272,106 @@ const AdministradoresComunidad = () => {
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="Exportar" icon="pi pi-upload" className="p-button-help"  />
+                <Button label="Exportar" icon="pi pi-upload" className="p-button-help" />
             </React.Fragment>
         )
     }
 
-   
 
     const header = (
-        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Administradores de Comunidades</h5>
-            <span className="block mt-2 md:mt-0 p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
-            </span>
-        </div>
+        <React.Fragment>
+
+            <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 className="m-0">Administradores de Comunidades</h5>
+                <span className="block mt-2 md:mt-0 p-input-icon-left">
+                    <i className="pi pi-search" />
+                    <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+                </span>
+            </div>
+        </React.Fragment>
     );
 
-    const deleteAdminSystemDialogFooter = (
+    const headerName = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteAdminSystemDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSysAdmin} />
+            <p>{' '}
+                <FontAwesomeIcon icon={faUserAlt} style={{ color: "#C08135" }} /> {' '}
+                Nombre
+            </p>
         </>
-    );
+    )
 
-    const deleteAdminsSystemDialogFooter = (
+    const headerLastName = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteAdminsSystemsDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedAdminsSystem} />
+            <p>
+                {' '}
+                <FontAwesomeIcon icon={faUserAlt} style={{ color: "#D7A86E" }} />{' '}
+                Apellidos
+            </p>
         </>
-    );
+    )
 
+    const headerDNI = (
+        <>
+            <p> {' '}
+                <FontAwesomeIcon icon={faIdCardAlt} style={{ color: "#C08135" }} />{' '}
+                Identificación
+            </p>
+        </>
+    )
 
+    const headerEmail = (
+        <>
+            <p> {' '}
+                <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />{' '}
+                Correo Electrónic
+            </p>
+        </>
+    )
+
+    const headerPhone = (
+        <>
+            <p> <FontAwesomeIcon icon={faPhoneAlt} style={{ color: "#C08135" }} />{' '}
+                Teléfono
+            </p>
+        </>
+    )
+
+    const headerCommuntiy = (
+        <>
+            <p>
+                {' '}
+                <FontAwesomeIcon icon={faHomeAlt} style={{ color: "#D7A86E" }} />{' '}
+                Comunidad</p>
+        </>
+    )
+
+    const headerOptions = (
+        <>
+            <p>
+                {' '}
+                <FontAwesomeIcon icon={faEllipsis} size="2x" style={{ color: "#C08135" }} />{' '}
+
+            </p>
+        </>
+    )
+
+    const onInputChange = (e, name) => {
+        const val = (e.target && e.target.value) || '';
+        let _adminCommunity = { ...adminCommunity };
+        _adminCommunity[`${name}`] = val;
+
+        setAdminCommunity(_adminCommunity);
+    }
+
+    const handleCommunities = (event) => {
+        const getCommunityValue = event.target.value;
+        setCommunityId(getCommunityValue);
+        console.log(getCommunityValue)
+    }
 
     return (
+
+
         <div className="grid">
             <div className="col-12">
                 <Toast ref={toast} />
@@ -379,8 +407,90 @@ const AdministradoresComunidad = () => {
                     </Dialog>
                 </div>
             </div>
+            <div className="col-12">
+                <div className="card">
+                    <h5>Registro de un administrador de una comunidad de viviendas</h5>
+                    <div className="p-fluid formgrid grid">
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="name">Nombre</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="name" value={adminCommunity.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.name === '' })} />
+                                </div>
+                                {submitted && adminCommunity.name === '' && <small className="p-invalid">Nombre es requirido.</small>}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="name">Apellido(s)</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="last_name" value={adminCommunity.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.last_name === '' })} />
+                                </div>
+                                {submitted && adminCommunity.last_name === '' && <small className="p-invalid">Apellidos es requirido.</small>}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="name">Correo Electrónico</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="email" value={adminCommunity.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.email === '' })} />
+                                </div>
+                                {submitted && adminCommunity.email === '' && <small className="p-invalid">Correo electrónico
+                                    es requirido.</small>}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="name">Identificación</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="dni" value={adminCommunity.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.dni === '' })} />
+                                </div>
+                                {submitted && adminCommunity.email === '' && <small className="p-invalid">Identificación es requirida.</small>}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="name">Número de teléfono</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-phone"></i>
+                                    </span>
+                                    <InputText id="phone" value={adminCommunity.phone} onChange={(e) => onInputChange(e, 'phone')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.phone === '' })} />
+                                </div>
+                                {submitted && adminCommunity.phone === '' && <small className="p-invalid">Número de teléfono es requirida.</small>}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="administrator">Comunidad a asignar: </label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <Dropdown placeholder="--Seleccione la Comunidad a Asignar--" id="administrator" value={communityId} options={cList}
+                                        onChange={handleCommunities} required autoFocus className={classNames({ 'p-invalid': submitted && !communityId })} />
+                                </div>
+                                {submitted && !communityId && <small className="p-invalid">Comunidad es requirida.</small>}
+                            </div>
+                        </div>
+                        <Button label="Registrar" onClick={saveAdminCommunity} />
+                    </div>
+                </div>
+            </div>
         </div>
-    )
-}
+    );
+};
 
 export default React.memo(AdministradoresComunidad);

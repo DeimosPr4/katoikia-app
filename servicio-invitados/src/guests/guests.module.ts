@@ -5,9 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Guest, GuestSchema } from 'src/schemas/guest.schema';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Guest.name, schema: GuestSchema }]), 
+    MongooseModule.forFeature([{ name: Guest.name, schema: GuestSchema }]),
   ],
   controllers: [GuestsController],
-  providers: [GuestsService]
+  providers: [GuestsService],
 })
 export class GuestsModule {}

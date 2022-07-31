@@ -4,6 +4,8 @@ import React, { useEffect, useState, useRef } from 'react'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
+import React, { useEffect, useState } from 'react';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
@@ -20,52 +22,13 @@ import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 
 const Inquilinos = () => {
   const [communitiesList, setCommunitiesList] = useState([]);
-  const [communityId, setCommunityId] = useState(null);
-  const [tenants, setTenants] = useState([]);
-  const [tenant, setTenant] = useState(emptyTenant);
-  const [selectedAdministrators, setSelectedAdministrators] = useState(null);
-  const [globalFilter, setGlobalFilter] = useState(null);
-  const [deleteAdminSystemDialog, setDeleteAdminSystemDialog] = useState(false);
-  const [deleteAdminsSystemDialog, setDeleteAdminsSystemDialog] = useState(false);
-  const toast = useRef(null);
-  const dt = useRef(null);
-
-
-  let emptyTenant = {
-    _id: null,
-    dni: '',
-    name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-    password: '',
-    user_type: '1',
-    community_id: '',
-    community_name: '',
-    number_house: '',
-    status: ''
-  };
-
-
-  async function getTenants() {
-    let response = await fetch('http://localhost:4000/users/findTenants', { method: 'GET' });
-    let resJson = await response.json();
-    await resJson.message.map((item) => {
-      item.name = communitiesList.find(p => p.code === item.province).name
-      item.canton = cList.find(p => p.code === item.canton).name
-      item.district = dList.find(p => p.code === item.district).name
-      if (!item.id_admin) {
-          item.name_admin = "Sin Administrador"
-      }
-  })
-  }
-
+  const communityIdList = communitiesList.map((community) => community.id);
   async function getCommunites() {
-    let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
-    let resList = await response.json();
-    let list = await resList.message;
-    console.log(list);
-
+    let response = await fetch(
+      'http://localhost:4000/community/allCommunities',
+      { method: 'GET' },
+    );
+    let list = await response.json();
     setCommunitiesList(await list);
   }
 
@@ -76,11 +39,16 @@ const Inquilinos = () => {
 
   function registrarInquilino() {
     let data = {
+      dni: document.getElementById('identificacion').value,
+      name: document.getElementById('nombre').value,
+      last_name: document.getElementById('apellidos').value,
+      phone: document.getElementById('telefono').value,
       email: document.getElementById('correo_electronico').value,
       community_id: document.getElementById('numero_vivienda').value,
+      password: document.getElementById('password').value,
       user_type: '3',
       status: '1',
-    }
+    };
 
     fetch('http://localhost:3000/api/createUser', {
       method: 'POST',
@@ -91,11 +59,11 @@ const Inquilinos = () => {
       },
     }).then((response) => {
       if (response.ok) {
-        alert('Inquilino registrado correctamente')
+        alert('Inquilino registrado correctamente');
       } else {
-        alert('Error al registrar inquilino')
+        alert('Error al registrar inquilino');
       }
-    })
+    });
   }
 
   const cList = communitiesList.map((item) => ({
@@ -207,20 +175,48 @@ const headerOptions = (
         <div className="card">
           <h5 className="card-header">Registrar Inquilino</h5>
           <div className="p-fluid formgrid grid">
-            <div className="p-field col-12 md:col-6">
-              <label htmlFor="correo_electronico">Correo electrónico</label>
-              <InputText type="email" className="form-control" id="correo_electronico" />
+            <div className="field col-12 md:col-6">
+              <label htmlFor="nombre">Nombre</label>
+              <InputText type="text" className="form-control" id="nombre" />
             </div>
-            <div className="p-field col-12 md:col-6">
+            <div className="field col-12 md:col-6">
+              <label htmlFor="apellidos">Apellidos</label>
+              <InputText type="text" className="form-control" id="apellidos" />
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="identificacion">Identificación</label>
+              <InputText
+                type="text"
+                className="form-control"
+                id="identificacion"
+              />
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="correo_electronico">Correo electrónico</label>
+              <InputText
+                type="email"
+                className="form-control"
+                id="correo_electronico"
+              />
+            </div>
+            <div className="field col-12 md:col-6">
               <label htmlFor="numero_vivienda">Número de Vivienda</label>
               <Dropdown id="numero_vivienda" value={communityId} options={cList} />
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="identificacion">Identificación</label>
+              <InputText
+                type="password"
+                className="form-control"
+                id="identificacion"
+              />
             </div>
             <Button label="Registrar" onClick={registrarInquilino} />
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default React.memo(Inquilinos);

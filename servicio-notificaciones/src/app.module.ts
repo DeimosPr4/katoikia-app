@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { ClientsModule, Transport } from "@nestjs/microservices";
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthModule } from './auth/auth.module';
 import { EmailController } from './email.controller';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
 
 @Module({
   imports: [
@@ -42,15 +41,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     ClientsModule.register([
       {
-        name: "SERVICIO_NOTIFICACIONES",
+        name: 'SERVICIO_NOTIFICACIONES',
         transport: Transport.TCP,
         options: {
-          host: "127.0.0.1",
-          port: 3009
-        }
-      }
+          host: '127.0.0.1',
+          port: 3009,
+        },
+      },
     ]),
-    AuthModule],
+    AuthModule,
+  ],
   controllers: [AppController, EmailController],
   providers: [],
 })

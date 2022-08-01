@@ -14,8 +14,8 @@ import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
 const GuardasSeguridad = () => {
-    const [listaGuardas,setListaGuardas]=useState([]);
-    const [urlFetch,setUrlFetch]=useState('http://localhost:4000/user/findGuards/62be68215692582bbfd77134');
+    const [listaGuardas, setListaGuardas] = useState([]);
+    const [urlFetch, setUrlFetch] = useState('http://localhost:4000/user/findGuards/62be68215692582bbfd77134');
     const [guarda, setGuarda] = useState(emptyGuarda);
     const [selectedGuardas, setSelectedGuardas] = useState(null);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -37,14 +37,14 @@ const GuardasSeguridad = () => {
 
 
 
-    async function listaGuardasF(){
-    let nombres=await fetch(urlFetch, {method:'GET'});
-    let listaGuardasRes= await nombres.json();
-    setListaGuardas(listaGuardasRes.message);
-   }
-    useEffect(()=>{
+    async function listaGuardasF() {
+        let nombres = await fetch(urlFetch, { method: 'GET' });
+        let listaGuardasRes = await nombres.json();
+        setListaGuardas(listaGuardasRes.message);
+    }
+    useEffect(() => {
         listaGuardasF();
-    },[])
+    }, [])
 
     function registrarGuarda() {
         var data = {
@@ -56,9 +56,9 @@ const GuardasSeguridad = () => {
             password: document.getElementById('correo_electronico').value,
             user_type: "4", //4 es guarda
             status: "1",
-            community_id:"62be68215692582bbfd77134"
+            community_id: "62be68215692582bbfd77134"
         };
-        var data2={
+        var data2 = {
             dni: "11979037",
             name: "Jorge",
             last_name: "Soto",
@@ -67,35 +67,35 @@ const GuardasSeguridad = () => {
             password: "1203",
             user_type: "2",
             status: "4",
-            community_id:"62be68215692582bbfd77134"
+            community_id: "62be68215692582bbfd77134"
         }
-console.log('ssss');
-         fetch('http://localhost:4000/user/createGuard', {
+        console.log('ssss');
+        fetch('http://localhost:4000/user/createGuard', {
             cache: 'no-cache',
             method: 'POST',
-            mode:'cors',
+            mode: 'cors',
             body: JSON.stringify(data2),
             headers: {
                 'Content-Type': 'application/json'
             }
         })
-        .then(
-            function (response) {
-                if (response.status != 201)
-                    console.log('Ocurrió un error con el servicio: ' + response.status);
-                else
-                    return response.json();
-            }
-        )
-        .then(
-            function (response) {
-                 console.log('fff');
-                listaGuardasF();
-            }
-        )
-        .catch(
-            err => console.log('Ocurrió un error con el fetch', err)
-        );
+            .then(
+                function (response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else
+                        return response.json();
+                }
+            )
+            .then(
+                function (response) {
+                    console.log('fff');
+                    listaGuardasF();
+                }
+            )
+            .catch(
+                err => console.log('Ocurrió un error con el fetch', err)
+            );
     }
 
     const hideDeleteGuardaDialog = () => {
@@ -218,48 +218,58 @@ console.log('ssss');
 
     const headerName = (
         <>
-            <p>Nombre</p>
+            <p>{' '}
+                <FontAwesomeIcon icon={faUserAlt} style={{ color: "#C08135" }} /> {' '}
+                Nombre
+            </p>
         </>
     )
 
     const headerLastName = (
         <>
-            <p>Apellidos</p>
+            <p>
+                {' '}
+                <FontAwesomeIcon icon={faUserAlt} style={{ color: "#D7A86E" }} />{' '}
+                Apellido(s)
+            </p>
         </>
     )
 
     const headerDNI = (
-        <>
-            <p>Identificación</p>
-        </>
+        <p> {' '}
+            <FontAwesomeIcon icon={faIdCardAlt} style={{ color: "#C08135" }} />{' '}
+            Identificación
+        </p>
     )
 
     const headerEmail = (
         <>
-            <p>Correo Electrónico</p>
+            <p> {' '}
+                <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />{' '}
+                Correo Electrónico
+            </p>
         </>
     )
 
     const headerPhone = (
         <>
-            <p>Teléfono</p>
+            <p>
+                {' '}
+                <FontAwesomeIcon icon={faPhoneAlt} style={{ color: '#C08135' }} />{' '}
+                Teléfono
+            </p>
         </>
     )
 
-    const headerOptions = (
-        <>
-            <p>Opciones</p>
-        </>
-    )
 
     return (
         <div className="grid">
-            <div className="col-12"> 
+            <div className="col-12">
                 <Toast ref={toast} />
                 <div className="card">
-                <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
                     <DataTable ref={dt} value={listaGuardas} dataKey="_id" paginator rows={5} selection={selectedGuardas} onSelectionChange={(e) => setSelectedGuardas(e.value)}
-                        responsiveLayout="scroll"  header={header}
+                        responsiveLayout="scroll" header={header}
                         rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
@@ -270,8 +280,8 @@ console.log('ssss');
                         <Column field="dni" sortable header={headerDNI} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
                         </Column>
                         <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="phone" sortable header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column header={headerOptions} style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdmin}></Column>
+                        <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdmin}></Column>
                     </DataTable>
                     <Dialog visible={deleteGuardaDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminSystemDialogFooter} onHide={hideDeleteGuardaDialog}>
                         <div className="flex align-items-center justify-content-center">
@@ -316,7 +326,7 @@ console.log('ssss');
                 </div>
             </div>
         </div>
-  );
+    );
 };
 
 export default React.memo(GuardasSeguridad);

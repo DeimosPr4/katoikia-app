@@ -345,15 +345,7 @@ const AdministradoresComunidad = () => {
         </>
     )
 
-    const headerOptions = (
-        <>
-            <p>
-                {' '}
-                <FontAwesomeIcon icon={faEllipsis} size="2x" style={{ color: "#C08135" }} />{' '}
-
-            </p>
-        </>
-    )
+  
 
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
@@ -389,9 +381,9 @@ const AdministradoresComunidad = () => {
                         <Column field="dni" sortable header={headerDNI} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
                         </Column>
                         <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="phone" sortable header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="community_name" header={headerCommuntiy} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column header={headerOptions} style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdminCommunity}></Column>
+                        <Column field="phone"  header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="community_name" sortable header={headerCommuntiy} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column  style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdminCommunity}></Column>
                     </DataTable>
                     <Dialog visible={deleteAdminCommunityDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminCommunityDialogFooter} onHide={hideDeleteAdminCommunityDialog}>
                         <div className="flex align-items-center justify-content-center">

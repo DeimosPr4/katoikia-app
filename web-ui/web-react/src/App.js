@@ -183,7 +183,7 @@ const App = () => {
           to: '/guardasSeguridad',
         },
         {
-          label: 'Comunidadades',
+          label: 'Comunidades',
           icon: PrimeIcons.BUILDING,
           to: '/comunidadesViviendas',
         },

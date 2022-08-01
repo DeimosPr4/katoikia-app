@@ -32,6 +32,8 @@ export class GuestsService {
   }
 
   async remove(id: string) {
-    return this.guestModel.findByIdAndRemove({ _id: id }).exec();
+    return this.guestModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
   }
 }

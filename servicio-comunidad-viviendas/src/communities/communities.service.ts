@@ -56,7 +56,9 @@ export class CommunitiesService {
   }
 
   async remove(id: string) {
-    return this.communityModel.findByIdAndRemove({ _id: id }).exec();
+    return this.communityModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
   }
 
   async findCommunityAdmin(community: string, user_type: string) {

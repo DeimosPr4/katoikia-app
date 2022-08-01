@@ -259,8 +259,8 @@ export class AppService {
   }
 
 
-    //GET parameter from API
-    removeCommonArea(paramCommonAreaId: string) {
+    //DELETE parameter from API
+    deleteCommonArea(paramCommonAreaId: string) {
       const pattern = { cmd: 'removeCommonArea' };
       const payload = { id: paramCommonAreaId };
       return this.clientCommonAreaApp

@@ -41,6 +41,8 @@ export class ReservationsService {
   }
 
   async remove(id: string) {
-    return this.reservationModel.findByIdAndRemove({ _id: id }).exec();
+    return this.reservationModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
   }
 }

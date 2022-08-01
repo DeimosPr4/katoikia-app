@@ -27,6 +27,10 @@ const AdministradoresSistema = () => {
   const toast = useRef(null);
   const dt = useRef(null);
 
+  const [changeStatusAdminSystemDialog, setChangeStatusAdminSystemDialog] = useState(false);
+  const [changeStatusAdminsSystemDialog, setChangeStatusAdminsSystemDialog] =
+    useState(false);
+
   let emptySysAdmin = {
     _id: null,
     dni: '',
@@ -111,6 +115,14 @@ const AdministradoresSistema = () => {
     setDeleteAdminsSystemDialog(false);
   };
 
+  const confirmChangeStatusAdminSystem = (sysAdmin) => {
+    setSysAdmin(sysAdmin);
+    setDeleteAdminSystemDialog(true);
+  };
+
+  const hideChangeStatusAdminSystemDialog = () => {
+    setChangeStatusAdminSystemDialog(false);
+  };
 
   const deleteSysAdmin = () => {
     fetch('http://localhost:4000/user/deleteAdminSystem/' + sysadmin._id, {
@@ -127,8 +139,9 @@ const AdministradoresSistema = () => {
       })
       .then(function (response) {
         let _sysadmin = administrators.filter(
-          (val) => val._id !== sysadmin._id,
+          (val) => (val._id !== sysadmin._id || val.status != -1),
         );
+        
         setAdministrators(_sysadmin);
         setDeleteAdminSystemDialog(false);
         setSysAdmin(emptySysAdmin);
@@ -152,7 +165,7 @@ const AdministradoresSistema = () => {
 
   const deleteSelectedAdminsSystem = () => {
     let _administrators = administrators.filter(
-      (val) => !selectedAdministrators.includes(val),
+      (val) => (!selectedAdministrators.includes(val) || val.status != -1),
     );
     selectedAdministrators.map((item) => {
       fetch('http://localhost:4000/user/deleteAdminSystem/' + item._id, {
@@ -163,6 +176,7 @@ const AdministradoresSistema = () => {
         },
       });
     });
+
     setAdministrators(_administrators);
     setDeleteAdminsSystemDialog(false);
     setSelectedAdministrators(null);
@@ -174,9 +188,55 @@ const AdministradoresSistema = () => {
     });
   };
 
+  const changeStatusAdminSystm = () => {
+    fetch('http://localhost:4000/user/statusAdminSystem/' + sysadmin._id, {
+      cache: 'no-cache',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (response) {
+        if (response.status != 201)
+          console.log('Ocurrió un error con el servicio: ' + response.status);
+        else return response.json();
+      })
+      .then(function (response) {
+        let _sysadmin = administrators.filter(
+          (val) => (val._id !== sysadmin._id || val.status != -1),
+        );
+
+        setAdministrators(_sysadmin);
+        setDeleteAdminSystemDialog(false);
+        setSysAdmin(emptySysAdmin);
+        toast.current.show({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Administrador del Sistema Eliminado',
+          life: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('Ocurrió un error con el fetch', err);
+        toast.current.show({
+          severity: 'danger',
+          summary: 'Error',
+          detail: 'Administrador del Sistema no se pudo Eliminar',
+          life: 3000,
+        });
+      });
+  };
+
+
+
   const actionsAdmin = (rowData) => {
     return (
       <div className="actions">
+          <Button
+          icon="pi pi-eye"
+          className="p-button-rounded p-button-warning mt-2"
+          onClick={() => confirmChangeStatusAdminSystem(rowData)}
+        />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-danger mt-2"
@@ -260,6 +320,23 @@ const AdministradoresSistema = () => {
         icon="pi pi-check"
         className="p-button-text"
         onClick={deleteSelectedAdminsSystem}
+      />
+    </>
+  );
+
+  const changeStatusAdminSystemDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideChangeStatusAdminSystemDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={changeStatusAdminSystm}
       />
     </>
   );

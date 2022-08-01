@@ -15,6 +15,7 @@ import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
+import { useCookies } from "react-cookie";
 
 
 const AreasComunes = () => {
@@ -43,6 +44,12 @@ const AreasComunes = () => {
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const dt = useRef(null);
+
+    const [cookies, setCookie] = useCookies();
+
+    async function getCommonAreas() {
+        
+    }
 
 };
 

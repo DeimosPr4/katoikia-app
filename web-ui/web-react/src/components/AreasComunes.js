@@ -9,11 +9,10 @@ import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { useCookies } from "react-cookie";
 
@@ -53,9 +52,9 @@ const AreasComunes = () => {
                 if (data) {
                     data.map(item => {
                         if (item.bookable == '1') {
-                            item.bookable_text = 'Obligatoria';
+                            item.bookable_text = 'Necesaria';
                         } else {
-                            item.bookable_text = 'Libre';
+                            item.bookable_text = 'No es necesarioa';
                         }
 
                         if (item.status == '1') {
@@ -261,7 +260,7 @@ const AreasComunes = () => {
     const headerBookable = (
         <>
             <p> {' '}
-                <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />{' '}
+                <FontAwesomeIcon icon={faClipboardCheck} style={{ color: "#D7A86E" }} />{' '}
                 Reservación
             </p>
         </>
@@ -270,7 +269,7 @@ const AreasComunes = () => {
     const headerStatus = (
         <>
             <p> {' '}
-                <FontAwesomeIcon icon={faAt} style={{ color: "#C08135" }} />{' '}
+                <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#C08135" }} />{' '}
                 Estado
             </p>
         </>
@@ -278,10 +277,17 @@ const AreasComunes = () => {
 
 
     const bookableBodyTemplate = (rowData) => {
+        let class_color = '';
+        if(rowData.bookable == '1') {
+            class_color = '0';
+        } else {
+            class_color = '1';
+
+        }
         return (
             <>
                 <span
-                    className={`status status-${rowData.bookable}`}
+                    className={`status status-${class_color}`}
                 >
                     {rowData.bookable_text}
                 </span>
@@ -317,7 +323,7 @@ const AreasComunes = () => {
                         <Column field="name" sortable header={headerName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="hourMin" header={headerHourMin} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
                         <Column field="hourMax" header={headerHourMax} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>                    </Column>
-                        <Column field="bookable" sortable header={headerBookable} body={bookableBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="bookable" sortable header={headerBookable} body={bookableBodyTemplate} style={{ flexGrow: 1, flexBasis: '200px', minWidth: '200px', wordBreak: 'break-word' }}></Column>
                         <Column field="status" sortable header={headerStatus} body={statusBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsCommonArea}></Column>
                     </DataTable>

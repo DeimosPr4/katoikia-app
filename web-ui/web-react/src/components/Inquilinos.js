@@ -296,11 +296,7 @@ const Inquilinos = () => {
     </>
   )
 
-  const headerOptions = (
-    <>
-      <p>Opciones <FontAwesomeIcon icon={faEllipsis} style={{ color: "#D7A86E" }} /></p>
-    </>
-  )
+ 
   return (
     <div className="grid">
       <div className="col-12">
@@ -319,9 +315,9 @@ const Inquilinos = () => {
             <Column field="dni" sortable header={headerDNI} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
             </Column>
             <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-            <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-            <Column field="number_house" header={headerNumberHouse} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-            <Column header={headerOptions} style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsTenant}></Column>
+            <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px', wordBreak: 'break-word' }}></Column>
+            <Column field="number_house" sortable header={headerNumberHouse} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word', justifyContent: 'center' }}></Column>
+            <Column  style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsTenant}></Column>
           </DataTable>
           <Dialog visible={deleteTenantDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteTenantDialogFooter} onHide={hideDeleteTenantDialog}>
             <div className="flex align-items-center justify-content-center">

@@ -125,7 +125,7 @@ const AreasComunes = () => {
     };
 
     const deleteSelectedCommonAreas = () => {
-        let _commonareas = commonAreaList.filter(
+        let _common_areas = commonAreaList.filter(
             (val) => !selectedCommonAreas.includes(val),
         );
         selectedCommonAreas.map((item) => {
@@ -140,7 +140,7 @@ const AreasComunes = () => {
         _common_areas = _common_areas.filter(
             (val) => val.status != -1,
         )
-        setCommonAreaList(_commonareas);
+        setCommonAreaList(_common_areas);
         setDeleteCommonAreasDialog(false);
         setSelectedCommonAreas(null);
         toast.current.show({

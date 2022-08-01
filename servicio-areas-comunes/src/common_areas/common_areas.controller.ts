@@ -33,4 +33,10 @@ export class CommonAreasController {
     let _id = id['_id'];
     return this.commonAreasService.remove(_id);
   }
+
+  @MessagePattern({ cmd: 'findByCommunity' })
+  findByCommunity(@Payload() id: string) {
+    let _community_id = id['community_id'];
+    return this.commonAreasService.findByCommunity(_community_id);
+  }
 }

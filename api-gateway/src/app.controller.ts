@@ -108,9 +108,9 @@ export class AppController {
     return this.appService.findGuardsCommunity(community_id);
   }
 
-  @Get('user/findTenants')
-  allUsersTenants() {
-    return this.appService.allUsersTenants();
+  @Get('user/findTenants/:community_id')
+  allUsersTenants(@Param('community_id') paramCommunity_id: string) {
+    return this.appService.findTenantsCommunity(paramCommunity_id);
   }
   
   @Get('user/find/:dni')

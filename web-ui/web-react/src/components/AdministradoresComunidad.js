@@ -75,7 +75,6 @@ const AdministradoresComunidad = () => {
         let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
         let resList = await response.json();
         let list = await resList.message;
-        console.log(list);
 
         setCommunitiesList(await list);
     }
@@ -323,7 +322,7 @@ const AdministradoresComunidad = () => {
         <>
             <p> {' '}
                 <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />{' '}
-                Correo Electrónic
+                Correo Electrónico
             </p>
         </>
     )
@@ -389,7 +388,7 @@ const AdministradoresComunidad = () => {
                         <Column field="dni" sortable header={headerDNI} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
                         </Column>
                         <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="phone" sortable header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="community_name" header={headerCommuntiy} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column header={headerOptions} style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdminCommunity}></Column>
                     </DataTable>

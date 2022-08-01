@@ -35,11 +35,11 @@ const AreasComunes = () => {
         status: '1'
     };
 
-    const [listaCommonAreas, setListaCommonAreas] = useState([]);
+    const [commonAreasList, setCommonAreasList] = useState([]);
     const [commonArea, setCommonArea] = useState(emptyCommonArea);
-    const [selectedAdminsCommunities, setSelectedAdminsCommunities] = useState(null);
-    const [deleteAdminCommunityDialog, setDeleteAdminCommunityDialog] = useState(false);
-    const [deleteAdminsCommunitiesDialog, setDeleteAdminsCommunitiesDialog] = useState(false);
+    const [selectedCommonAreas, setSelectedCommonAreas] = useState(null);
+    const [deleteCommonAreaDialog, setDeleteCommonAreaDialog] = useState(false);
+    const [deleteCommonAreasDialog, setDeleteCommonAreasDialog] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const dt = useRef(null);

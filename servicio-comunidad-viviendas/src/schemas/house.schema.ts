@@ -7,7 +7,7 @@ import { Tenant, TenantSchema } from './tenant.schema';
 @Schema()
 export class House extends Document {
   @Prop({ default: ' ' })
-  number_house: string;
+  number: string;
 
   @Prop({ default: 'desocupada' })
   state: string;

@@ -48,7 +48,10 @@ const Communities = () => {
   const toast = useRef(null);
   const dt = useRef(null);
 
+
+
   //para el perfil de la comunidad
+  const [tenants, setTenants] = useState([]);
 
   const [communityDialog, setCommunityDialog] = useState(false);
   const [editcommunityDialog, setEditCommunityDialog] = useState(false);
@@ -173,6 +176,16 @@ const Communities = () => {
     getCommunites();
   }, []);
 
+  /*async function tenantsList(id) {
+    await fetch(`http://localhost:4000/user/findTenants/${id}`, { method: 'GET' })
+      .then((response) => response.json())
+      .then(data => data.message)
+      .then(data => {
+        setTenants(data)
+      });
+  }*/
+
+
   const saveCommunity = () => {
     if (
       community.name &&
@@ -243,17 +256,15 @@ const Communities = () => {
 
 
 
-  async function findNameTenant(tenant_id) {
+  function findNameTenant(tenant_id) {
     let name = '';
     if (tenant_id == '') {
       name = 'Sin inquilino';
     } else {
-      name = await fetch('http://localhost:4000/user/findUserById/' + tenant_id, { method: "GET" });
-      let response = await response.json();
-      let res = await response.message;
-      name = res['name'] + ' ' + res['last_name'];
+      let tenant = tenants.find(t => t._id == tenant_id )
+      name = tenant['name'] + ' ' + tenant['last_name'];
     }
-
+    console.log(name);
     return name;
   }
 
@@ -288,7 +299,9 @@ const Communities = () => {
   };
 
 
-  const infoCommunity = (community) => {
+  const infoCommunity = async (community) => {
+    //await tenantsList(community._id);
+
     setCommunity({ ...community });
     setCommunityDialog(true);
   };
@@ -574,9 +587,9 @@ const Communities = () => {
 
 
   const tenantsBodyTemplate = (rowData) => {
-    let tenants = rowData.tenants;
+    /*let tenants = rowData.tenants;
     let name = findNameTenant(tenants.tenant_id);
-    console.log(name)
+    console.log(name)*/
   };
 
 

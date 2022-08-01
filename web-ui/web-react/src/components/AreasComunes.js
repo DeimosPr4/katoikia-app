@@ -24,16 +24,11 @@ const AreasComunes = () => {
         _id: null,
         dni: '',
         name: '',
-        last_name: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
+        hourMin: '',
+        hourMax: '',
         community_id: '',
-        community_name: '',
-        user_type: '2',
-        date_entry: new Date(),
-        status: '1'
+        bookable: '1',
+        bookable_text: '',
     };
 
     const [commonAreaList, setCommonAreaList] = useState([]);
@@ -53,7 +48,16 @@ const AreasComunes = () => {
             .then((response) => response.json())
             .then(data => data.message)
             .then(data => {
-                setCommonAreaList(data)
+                if(data) {
+                    data.map(item => {
+                        if(item.bookable == '1') {
+                            item.bookable_text = 'Disponible';
+                        } else{
+                            item.bookable_text = 'Cerrado';
+                        }
+                    })
+                }
+                setCommonAreaList(data);
             });
     }
 
@@ -248,19 +252,20 @@ const AreasComunes = () => {
         </>
     )
 
-    const headerCommuntiy = (
-        <>
-            <p>
-                {' '}
-                <FontAwesomeIcon icon={faHomeAlt} style={{ color: "#C08135" }} />{' '}
-                Comunidad</p>
-        </>
-    )
 
+    const statusBodyTemplate = (rowData) => {
+        return (
+          <>
+            <span
+              className={`status status-${rowData.bookable}`}
+            >
+              {rowData.bookable_text}
+            </span>
+          </>
+        );
+      };
 
     return (
-
-
         <div className="grid">
             <div className="col-12">
                 <Toast ref={toast} />
@@ -274,10 +279,9 @@ const AreasComunes = () => {
                         globalFilter={globalFilter} emptyMessage="No hay administradores de comunidades registrados.">
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
                         <Column field="name" sortable header={headerName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="hour_min"  header={headerHourMin} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
-                        <Column field="hour_max"  header={headerHourMax} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>                    </Column>
-                        <Column field="bookable" sortable header={headerBookable} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="community_name" sortable header={headerCommuntiy} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="hourMin"  header={headerHourMin} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
+                        <Column field="hourMax"  header={headerHourMax} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>                    </Column>
+                        <Column field="bookable" sortable header={headerBookable} body={statusBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsCommonArea}></Column>
                     </DataTable>
                     <Dialog visible={deleteCommonAreaDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteCommonAreaDialogFooter} onHide={hideDeleteCommonAreaDialog}>

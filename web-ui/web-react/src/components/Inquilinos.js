@@ -31,6 +31,7 @@ const Inquilinos = () => {
     password: '',
     community_id: '',
     community_name: '',
+    number_house: 'Sin número de vivienda',
     user_type: '4',
     date_entry: new Date(),
     status: '1'
@@ -55,7 +56,15 @@ const Inquilinos = () => {
     await fetch(`http://localhost:4000/user/findTenants/${cookies.community_id}`, { method: 'GET' })
       .then((response) => response.json())
       .then(data => data.message)
-      .then(data => setTenants(data));
+      .then(data => {
+
+        data.map((item) => {
+          if(item.number_house ==""){
+            item.number_house = "Sin vivienda asignada";
+          }
+        })
+        setTenants(data)
+      });
   }
 
 
@@ -279,11 +288,7 @@ const Inquilinos = () => {
     </>
   )
 
-  const headerCommuntiy = (
-    <>
-      <p> <FontAwesomeIcon icon={faHome} style={{ color: "#D7A86E" }} />   Comunidad</p>
-    </>
-  )
+
 
   const headerNumberHouse = (
     <>
@@ -315,7 +320,7 @@ const Inquilinos = () => {
             </Column>
             <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
             <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-            <Column field="community_name" header={headerCommuntiy} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+            <Column field="number_house" header={headerNumberHouse} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
             <Column header={headerOptions} style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsTenant}></Column>
           </DataTable>
           <Dialog visible={deleteTenantDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteTenantDialogFooter} onHide={hideDeleteTenantDialog}>

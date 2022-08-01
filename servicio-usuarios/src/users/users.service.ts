@@ -127,12 +127,27 @@ export class UsersService {
 
 
   //find inquilinos
-  async findTenantsCommunity(pcommunity_id: string): Promise<User[]> {
-    let houses = await this.findCommunityHouses(pcommunity_id);
+  async findTenantsCommunity(pcommunity_id: string) {
+    //let tenants = await this.findCommunityTenants(pcommunity_id);
 
-    return this.userModel.find({ community_id: pcommunity_id, user_type: 4 }).exec()
-    .then();
+
+
+    return await this.userModel.find({ community_id: pcommunity_id, user_type: 4 })
+      .then(async (users) => {
+        if (users) {
+          await Promise.all(
+            users.map(async (u) => {
+              //buscar al usuario con el id de la comunidad anexado
+              let number_house = await this.findNumHouseTenant(pcommunity_id, u['_id']);
+              u['number_house'] = number_house;
+              return u;
+            }),
+          )
+        }
+        return users;
+      })
   }
+
 
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);
@@ -179,7 +194,7 @@ export class UsersService {
     });
   }
 
-  async findCommunityHouses(community_id: string) {
+  async findNumHouseTenant(community_id: string, tenant_id: string) {
     const pattern = { cmd: 'findOneCommunity' }
     const payload = { _id: community_id }
 
@@ -190,8 +205,15 @@ export class UsersService {
       )
     const finalValue = await lastValueFrom(callback);
     const response = finalValue['response'];
-    console.log(response['houses']);
-    return response['houses'];
+    const houses = response['houses'];
+    let num_house = "";
+    await houses.forEach(async house => {
+        if (tenant_id == house.tenants.tenant_id) {
+          num_house = house.number_house;
+        }
+    })
+    return num_house;
   }
+
 }
 

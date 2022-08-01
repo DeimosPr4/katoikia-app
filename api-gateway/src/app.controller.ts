@@ -191,6 +191,11 @@ export class AppController {
     return this.appService.findCommonArea(paramCommonAreaId);
   }
 
+  @Get('commonArea/findByCommunity/:community_id')
+  findByCommunity(@Param('community_id') paramCommunityId: string) {
+    return this.appService.findByCommunity(paramCommunityId);
+  }
+
   // #==== API GUEST
   //#API userService - create user
   @Post('guest/createGuest')

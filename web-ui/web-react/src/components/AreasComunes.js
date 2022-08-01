@@ -60,13 +60,17 @@ const AreasComunes = () => {
 
                         if (item.status == '1') {
                             item.status_text = 'Activo';
-                        } else if(item.status == '0') {
+                        } else if (item.status == '0') {
                             item.status_text = 'Inactivo';
                         } else {
                             item.status_text = 'Eliminado';
                         }
                     })
                 }
+
+                data = data.filter(
+                    (val) => val.status != -1,
+                )
                 setCommonAreaList(data);
             });
     }
@@ -98,6 +102,9 @@ const AreasComunes = () => {
                     let _common_areas = commonAreaList.filter(
                         (val) => val._id !== commonArea._id,
                     );
+                    _common_areas = _common_areas.filter(
+                        (val) => val.status != -1,
+                    )
                     setCommonAreaList(_common_areas);
                     setDeleteCommonAreaDialog(false);
                     setCommonArea(emptyCommonArea);
@@ -121,15 +128,18 @@ const AreasComunes = () => {
         let _commonareas = commonAreaList.filter(
             (val) => !selectedCommonAreas.includes(val),
         );
-        /*  selectedCommunities.map((item) => {
-                 fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
-                     cache: 'no-cache',
-                     method: 'DELETE',
-                     headers: {
-                         'Content-Type': 'application/json'
-                     }
-                 })
-             })*/
+        selectedCommonAreas.map((item) => {
+            fetch('http://localhost:4000/commonArea/deleteCommonArea/' + item._id, {
+                cache: 'no-cache',
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        });
+        _common_areas = _common_areas.filter(
+            (val) => val.status != -1,
+        )
         setCommonAreaList(_commonareas);
         setDeleteCommonAreasDialog(false);
         setSelectedCommonAreas(null);

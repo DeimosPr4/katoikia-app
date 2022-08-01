@@ -258,6 +258,16 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+
+    //GET parameter from API
+    removeCommonArea(paramCommonAreaId: string) {
+      const pattern = { cmd: 'removeCommonArea' };
+      const payload = { id: paramCommonAreaId };
+      return this.clientCommonAreaApp
+        .send<string>(pattern, payload)
+        .pipe(map((message: string) => ({ message })));
+    }
+
   // ====================== GUESTS ===============================
 
   //POST parameter from API

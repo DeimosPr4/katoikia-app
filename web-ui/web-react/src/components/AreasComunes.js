@@ -275,8 +275,8 @@ const AreasComunes = () => {
                         scrollable scrollHeight="400px" scrollDirection="both" header={header}
                         rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} administradores de comunidades de viviendas"
-                        globalFilter={globalFilter} emptyMessage="No hay administradores de comunidades registrados.">
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} áreas comunes"
+                        globalFilter={globalFilter} emptyMessage="No hay áreas comunes registrados.">
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
                         <Column field="name" sortable header={headerName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="hourMin"  header={headerHourMin} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>

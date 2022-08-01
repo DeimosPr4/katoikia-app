@@ -112,6 +112,11 @@ export class AppController {
     return this.appService.findUser(paramUserDNI);
   }
 
+  @Get('user/findUserById/:id')
+  findUserById(@Param('id') id: string) {
+    return this.appService.findUserById(id);
+  }
+
   @Delete('user/deleteAdminSystem/:id')
   deleteAdminSystem(@Param('id') id: string) {
     return this.appService.deleteAdminSystem(id);

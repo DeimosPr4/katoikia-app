@@ -162,6 +162,17 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+
+   //GET parameter from API
+   findUserById(id: string) {
+    const pattern = { cmd: 'findById' };
+    const payload = { id: id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+
   // ====================== COMMUNITIES ===============================
 
   //POST parameter from API

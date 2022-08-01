@@ -432,7 +432,7 @@ const Communities = () => {
           icon={faMapLocationDot}
           style={{ color: '#D7A86E' }}
         />{' '}
-        Pronvincia
+        Provincia
       </p>
     </>
   );

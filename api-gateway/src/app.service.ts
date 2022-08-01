@@ -248,6 +248,16 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+
+   //GET parameter from API
+   findByCommunity(paramCommunityId: string) {
+    const pattern = { cmd: 'findByCommunity' };
+    const payload = { community_id: paramCommunityId };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   // ====================== GUESTS ===============================
 
   //POST parameter from API

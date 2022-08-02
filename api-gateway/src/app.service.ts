@@ -161,6 +161,13 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
+  changeStatus(pId: string, pStatus: string) {
+    const pattern = { cmd: 'changeStatus' };
+    const payload = { id: pId, status: pStatus };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
 
   // ====================== COMMUNITIES ===============================
 

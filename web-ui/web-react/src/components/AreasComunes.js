@@ -21,7 +21,6 @@ const AreasComunes = () => {
 
     let emptyCommonArea = {
         _id: null,
-        dni: '',
         name: '',
         hourMin: '',
         hourMax: '',
@@ -106,41 +105,42 @@ const AreasComunes = () => {
                     else return response.json();
                 })
                 .then((data) => {
-
                     if (data) {
-                        data.map(item => {
-                            if (item.bookable == '1') {
-                                item.bookable_text = 'Necesaria';
-                            } else {
-                                item.bookable_text = 'No es necesarioa';
-                            }
-    
-                            if (item.status == '1') {
-                                item.status_text = 'Activo';
-                            } else if (item.status == '0') {
-                                item.status_text = 'Inactivo';
-                            } else {
-                                item.status_text = 'Eliminado';
-                            }
-                        })
-                    }
-    
-                    _common_area = data.filter(
-                        (val) => val.status != -1,
-                    )
+                        if (_common_area.bookable == '1') {
+                            _common_area.bookable_text = 'Necesaria';
+                        } else {
+                            _common_area.bookable_text = 'No es necesaria';
+                        }
 
+                        if (_common_area.status == '1') {
+                            _common_area.status_text = 'Activo';
+                        } else if (_common_area.status == '0') {
+                            _common_area.status_text = 'Inactivo';
+                        } else {
+                            _common_area.status_text = 'Eliminado';
+                        }
+                    }
                     _common_areas.push(_common_area);
+
                     toast.current.show({
                         severity: 'success',
                         summary: 'Registro exitoso',
                         detail: 'Área Común Creada',
                         life: 3000,
                     });
-
                     setCommonAreaList(_common_areas);
                     setCommonArea(emptyCommonArea);
                 })
-                .catch((err) => console.log('Ocurrió un error con el fetch', err));
+                .catch((err) => {
+                    console.log('Ocurrió un error con el fetch', err);
+                    toast.current.show({
+                        severity: 'danger',
+                        summary: 'Error',
+                        detail: 'No se pudo registrar el área común',
+                        life: 3000
+                    });
+
+                });
         } else {
             setSubmitted(true);
         }

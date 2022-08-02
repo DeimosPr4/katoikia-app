@@ -83,8 +83,7 @@ const AreasComunes = () => {
     const saveCommonArea = () => {
         if (
             commonArea.name &&
-            commonArea.hourMin &&
-            commonArea.hourMax
+            commonArea.hourMin < commonArea.hourMax
         ) {
             let _common_areas = [...commonAreaList];
             let _common_area = { ...commonArea };
@@ -104,23 +103,26 @@ const AreasComunes = () => {
                         console.log('Ocurrió un error con el servicio: ' + response.status);
                     else return response.json();
                 })
+                .then(function (data) {
+                    return data.message;
+                })
                 .then((data) => {
                     if (data) {
-                        if (_common_area.bookable == '1') {
-                            _common_area.bookable_text = 'Necesaria';
+                        if (data.bookable == '1') {
+                            data.bookable_text = 'Necesaria';
                         } else {
-                            _common_area.bookable_text = 'No es necesaria';
+                            data.bookable_text = 'No es necesaria';
                         }
 
-                        if (_common_area.status == '1') {
-                            _common_area.status_text = 'Activo';
-                        } else if (_common_area.status == '0') {
-                            _common_area.status_text = 'Inactivo';
+                        if (data.status == '1') {
+                            data.status_text = 'Activo';
+                        } else if (data.status == '0') {
+                            data.status_text = 'Inactivo';
                         } else {
-                            _common_area.status_text = 'Eliminado';
+                            data.status_text = 'Eliminado';
                         }
                     }
-                    _common_areas.push(_common_area);
+                    _common_areas.push(data);
 
                     toast.current.show({
                         severity: 'success',
@@ -386,6 +388,16 @@ const AreasComunes = () => {
     };
 
 
+    function compareTimesMinRequired(hour1, hour2){
+        var timeFormat1 =  Number(hour1.replace(/[:]/g,''));
+        var timeFormat2 = Number(hour2.replace(/[:]/g,''));
+        if(timeFormat1 <= timeFormat2){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     return (
         <div className="grid">
@@ -452,11 +464,11 @@ const AreasComunes = () => {
                                 required
                                 autoFocus
                                 className={classNames({
-                                    'p-invalid': submitted && commonArea.hourMin === '',
+                                    'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
                                 })}
                             />
-                            {submitted && commonArea.hourMin === '' && (
-                                <small className="p-invalid">Hora de apertura es requirido.</small>
+                            {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
+                                <small className="p-invalid">La hora de apertura debe ser menor que la hora de cierre.</small>
                             )}
                         </div>
                         <div className="field col-12 md:col-6">
@@ -470,11 +482,11 @@ const AreasComunes = () => {
                                 required
                                 autoFocus
                                 className={classNames({
-                                    'p-invalid': submitted && commonArea.hourMax === '',
+                                    'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
                                 })}
                             />
-                            {submitted && commonArea.hourMax === '' && (
-                                <small className="p-invalid">Hora de apertura es requirido.</small>
+                            {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
+                                <small className="p-invalid">La hora de cierre debe ser mayor que la hora de apertura</small>
                             )}
                         </div>
                         <div className="field col-12 md:col-6">

@@ -45,6 +45,7 @@ const Communities = () => {
   const [globalFilter, setGlobalFilter] = useState(null);
   const [deleteCommunityDialog, setDeleteCommunityDialog] = useState(false);
   const [deleteCommunitiesDialog, setDeleteCommunitiesDialog] = useState(false);
+  const [editCommunityDialog, setEditCommunityDialog] = useState(false);
   const toast = useRef(null);
   const dt = useRef(null);
 
@@ -54,7 +55,6 @@ const Communities = () => {
   const [tenants, setTenants] = useState([]);
 
   const [communityDialog, setCommunityDialog] = useState(false);
-  const [editcommunityDialog, setEditCommunityDialog] = useState(false);
 
 
 
@@ -315,6 +315,93 @@ const Communities = () => {
     setEditCommunityDialog(true);
   };
 
+  const hideEditCommunityDialog = () => {
+    setEditCommunityDialog(false);
+  };
+
+  const confirmEditCommunity = (community) => {
+    setCommunity(community);
+    setEditCommunityDialog(true);
+  };
+  //desactivar o activar una comunidad
+  const cambiarDesactivarEstadoCommunity = () => {
+    var data = {
+      id: community._id,
+      status: "0",
+    };
+    console.log(data);
+
+    fetch('http://localhost:4000/community/changeStatus', {
+      cache: 'no-cache',
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+          setEditCommunityDialog(false);
+          toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Comunidad de Viviendas Actualizada',
+            life: 3000,
+          });
+        }
+      )
+      .catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+  }
+    //desactivar o activar una comunidad
+    const cambiarActivarEstadoCommunity = () => {
+      var data = {
+        id: community._id,
+        status: "1",
+      };
+      console.log(data);
+      fetch('http://localhost:4000/community/changeStatus', {
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(
+          function (response) {
+            if (response.status != 201)
+              console.log('Ocurrió un error con el servicio: ' + response.status);
+            else
+              return response.json();
+          }
+        )
+        .then(
+          function (response) {
+            setEditCommunityDialog(false);
+            toast.current.show({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Comunidad de Viviendas Actualizada',
+              life: 3000,
+            });
+          }
+        )
+        .catch(
+          err => console.log('Ocurrió un error con el fetch', err)
+        );
+    }
+
+
   const deleteCommunity = () => {
     /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
                cache: 'no-cache',
@@ -387,14 +474,24 @@ const Communities = () => {
   const actionsCommunity = (rowData) => {
     return (
       <div className="actions">
+         <Button
+          icon="pi pi-eye"
+          className="p-button-rounded p-button-success mt-2 mx-2"
+          onClick={() => confirmEditCommunity(rowData)}
+        />
+        <Button
+          icon="pi pi-eye-slash"
+          className="p-button-rounded p-button-danger mt-2 mx-2"
+          onClick={() => confirmEditCommunity(rowData)}
+        />
         <Button
           icon="pi pi-exclamation-circle"
-          className="p-button-rounded p-button-primary mr-2"
+          className="p-button-rounded p-button-primary mt-2 mx-2"
           onClick={() => infoCommunity(rowData)}
         />
         <Button
           icon="pi pi-trash"
-          className="p-button-rounded p-button-danger mt-2"
+          className="p-button-rounded p-button-danger mt-2 mx-2"
           onClick={() => confirmDeleteCommunity(rowData)}
         />
       </div>
@@ -485,6 +582,39 @@ const Communities = () => {
         icon="pi pi-check"
         className="p-button-text"
         onClick={deleteSelectedCommunities}
+      />
+    </>
+  );
+  const editDesactivarCommunityDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideEditCommunityDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={cambiarDesactivarEstadoCommunity}
+      />
+    </>
+  );
+
+  const editActivarCommunityDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideEditCommunityDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={cambiarActivarEstadoCommunity}
       />
     </>
   );
@@ -797,7 +927,46 @@ const Communities = () => {
             </div>
 
           </Dialog>
-
+          <Dialog
+            visible={editCommunityDialog}
+            style={{ width: '450px' }}
+            header="Confirmar"
+            modal
+            footer={editActivarCommunityDialogFooter}
+            onHide={hideEditCommunityDialog}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: '2rem' }}
+              />
+              {community && (
+                <span>
+                  ¿Estás seguro que desea cambiar estado a <b>{community.name}</b>?
+                </span>
+              )}
+            </div>
+          </Dialog>
+          <Dialog
+            visible={editCommunityDialog}
+            style={{ width: '450px' }}
+            header="Confirmar"
+            modal
+            footer={editDesactivarCommunityDialogFooter}
+            onHide={hideEditCommunityDialog}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: '2rem' }}
+              />
+              {community && (
+                <span>
+                  ¿Estás seguro que desea cambiar estado a <b>{community.name}</b>?
+                </span>
+              )}
+            </div>
+          </Dialog>
           <Dialog
             visible={deleteCommunityDialog}
             style={{ width: '450px' }}

@@ -51,6 +51,7 @@ import './assets/layout/layout.scss';
 import './App.scss';
 import LogIn from './components/LogIn';
 import { PrimeIcons } from 'primereact/api';
+import AreasComunes from './components/AreasComunes';
 
 const App = () => {
   const [layoutMode, setLayoutMode] = useState('static');
@@ -187,7 +188,16 @@ const App = () => {
           icon: PrimeIcons.BUILDING,
           to: '/comunidadesViviendas',
         },
-        { label: 'Inquilinos', icon: PrimeIcons.USER, to: '/inquilinos' },
+        {
+          label: 'Inquilinos',
+          icon: PrimeIcons.USER,
+          to: '/inquilinos'
+        },
+        {
+          label: 'Áreas Comunes de Comunidad',
+          icon: PrimeIcons.BUILDING,
+          to: '/areasComunes',
+        },
         { label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn' },
       ],
     },
@@ -411,6 +421,7 @@ const App = () => {
           <Route path="/guardasSeguridad" component={GuardasSeguridad} />
           <Route path="/comunidadesViviendas" component={Communities} />
           <Route path="/inquilinos" component={Inquilinos} />
+          <Route path="/areasComunes" component={AreasComunes} />
           <Route path="/logIn" component={LogIn} />
         </div>
 

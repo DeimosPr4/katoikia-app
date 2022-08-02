@@ -502,7 +502,7 @@ const Communities = () => {
           icon={faMapLocationDot}
           style={{ color: '#D7A86E' }}
         />{' '}
-        Pronvincia
+        Provincia
       </p>
     </>
   );
@@ -563,27 +563,16 @@ const Communities = () => {
     </>
   );
 
-  const headerOptions = (
-    <>
-      <p>
-        Opciones{' '}
-        <FontAwesomeIcon icon={faEllipsis} style={{ color: '#D7A86E' }} />
-      </p>
-    </>
-  );
-
-
   //ver perfil comunidad
   const headerTenant = (
     <>
       <p>
         {' '}
         <FontAwesomeIcon icon={faUserAlt} style={{ color: '#C08135' }} />{' '}
-        Inquilinos
       </p>
+        Inquilinos
     </>
   );
-
 
 
   const tenantsBodyTemplate = (rowData) => {
@@ -591,7 +580,6 @@ const Communities = () => {
     let name = findNameTenant(tenants.tenant_id);
     console.log(name)*/
   };
-
 
   return (
     <div className="grid">
@@ -628,21 +616,25 @@ const Communities = () => {
             ></Column>
             <Column
               field="name"
+              sortable
               header={headerName}
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
             <Column
               field="province"
+              sortable
               header={headerProvince}
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
             <Column
               field="canton"
+              sortable
               header={headerCanton}
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
             <Column
               field="district"
+              sortable
               header={headerDistrict}
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
@@ -653,15 +645,16 @@ const Communities = () => {
             ></Column>
             <Column
               field="num_houses"
+              sortable
               header={headerNumberHouses}
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
             <Column
               field="name_admin"
-              header={headerAdministrator}
+              sortable
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
-            <Column header={headerOptions} body={actionsCommunity}></Column>
+            <Column  body={actionsCommunity}></Column>
           </DataTable>
 
 

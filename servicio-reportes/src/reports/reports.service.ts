@@ -31,6 +31,9 @@ export class ReportsService {
   }
 
   async remove(id: string) {
-    return this.reportModel.findByIdAndRemove({ _id: id }).exec();
+    return this.reportModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
+    
   }
 }

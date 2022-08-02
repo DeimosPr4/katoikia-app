@@ -78,8 +78,14 @@ export class UsersService {
     });
   }
 
-  async remove(id: string) {
+ /* async remove(id: string) {
     return this.userModel.findByIdAndRemove({ _id: id }).exec();
+  }*/
+
+  async remove(id: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
   }
 
   //inicio de sesion
@@ -174,7 +180,9 @@ export class UsersService {
   }
 
   async deleteAdminSystem(id: string) {
-    return this.userModel.deleteOne({ _id: id }).exec();
+    return this.userModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
   }
 
   async validateEmail(email: string) {

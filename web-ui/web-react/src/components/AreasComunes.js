@@ -9,11 +9,10 @@ import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { useCookies } from "react-cookie";
 
@@ -29,6 +28,8 @@ const AreasComunes = () => {
         community_id: '',
         bookable: '1',
         bookable_text: '',
+        status: '1',
+        status_text: '',
     };
 
     const [commonAreaList, setCommonAreaList] = useState([]);
@@ -48,15 +49,27 @@ const AreasComunes = () => {
             .then((response) => response.json())
             .then(data => data.message)
             .then(data => {
-                if(data) {
+                if (data) {
                     data.map(item => {
-                        if(item.bookable == '1') {
-                            item.bookable_text = 'Disponible';
-                        } else{
-                            item.bookable_text = 'Cerrado';
+                        if (item.bookable == '1') {
+                            item.bookable_text = 'Necesaria';
+                        } else {
+                            item.bookable_text = 'No es necesarioa';
+                        }
+
+                        if (item.status == '1') {
+                            item.status_text = 'Activo';
+                        } else if (item.status == '0') {
+                            item.status_text = 'Inactivo';
+                        } else {
+                            item.status_text = 'Eliminado';
                         }
                     })
                 }
+
+                data = data.filter(
+                    (val) => val.status != -1,
+                )
                 setCommonAreaList(data);
             });
     }
@@ -67,65 +80,66 @@ const AreasComunes = () => {
 
 
     const deleteCommonArea = () => {
-        /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
-               cache: 'no-cache',
-               method: 'DELETE',
-               headers: {
-                   'Content-Type': 'application/json'
-               }
-           })
-               .then(
-                   function (response) {
-                       if (response.status != 201)
-                           console.log('Ocurrió un error con el servicio: ' + response.status);
-                       else
-                           return response.json();
-                   }
-               )
-               .then(
-                   function (response) {
-                       
-                       let _community = communities.filter(val => val._id !== community._id);
-                       setCommunities(_community);
-                       setDeleteCommunityDialog(false);
-                       setCommunity(emptyCommunity);
-                       toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });
-                   }
-               )
-               .catch(
-                   err => {
-                       console.log('Ocurrió un error con el fetch', err)
-                       toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Comunidad de Viviendas no se pudo eliminar', life: 3000 });
-                   }
-               ); 
-        */
-        let _common_areas = commonAreaList.filter(
-            (val) => val._id !== commonArea._id,
-        );
-        setCommonAreaList(_common_areas);
-        setDeleteCommonAreaDialog(false);
-        setCommonArea(emptyCommonArea);
-        toast.current.show({
-            severity: 'success',
-            summary: 'Área Común Eliminada',
-            life: 3000,
-        });
+        fetch('http://localhost:4000/commonArea/deleteCommonArea/' + commonArea._id, {
+            cache: 'no-cache',
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else
+                        return response.json();
+                }
+            )
+            .then(
+                function (response) {
+
+                    let _common_areas = commonAreaList.filter(
+                        (val) => val._id !== commonArea._id,
+                    );
+                    _common_areas = _common_areas.filter(
+                        (val) => val.status != -1,
+                    )
+                    setCommonAreaList(_common_areas);
+                    setDeleteCommonAreaDialog(false);
+                    setCommonArea(emptyCommonArea);
+                    toast.current.show({
+                        severity: 'success',
+                        summary: 'Área Común Eliminada',
+                        life: 3000,
+                    });
+                }
+            )
+            .catch(
+                err => {
+                    console.log('Ocurrió un error con el fetch', err)
+                    toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Área Común no se pudo eliminar', life: 3000 });
+                }
+            );
+
     };
 
     const deleteSelectedCommonAreas = () => {
-        let _commonareas = commonAreaList.filter(
+        let _common_areas = commonAreaList.filter(
             (val) => !selectedCommonAreas.includes(val),
         );
-        /*  selectedCommunities.map((item) => {
-                 fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
-                     cache: 'no-cache',
-                     method: 'DELETE',
-                     headers: {
-                         'Content-Type': 'application/json'
-                     }
-                 })
-             })*/
-        setCommonAreaList(_commonareas);
+        selectedCommonAreas.map((item) => {
+            fetch('http://localhost:4000/commonArea/deleteCommonArea/' + item._id, {
+                cache: 'no-cache',
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        });
+        _common_areas = _common_areas.filter(
+            (val) => val.status != -1,
+        )
+        setCommonAreaList(_common_areas);
         setDeleteCommonAreasDialog(false);
         setSelectedCommonAreas(null);
         toast.current.show({
@@ -246,24 +260,52 @@ const AreasComunes = () => {
     const headerBookable = (
         <>
             <p> {' '}
-                <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />{' '}
-                Reservable
+                <FontAwesomeIcon icon={faClipboardCheck} style={{ color: "#D7A86E" }} />{' '}
+                Reservación
+            </p>
+        </>
+    )
+
+    const headerStatus = (
+        <>
+            <p> {' '}
+                <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#C08135" }} />{' '}
+                Estado
             </p>
         </>
     )
 
 
+    const bookableBodyTemplate = (rowData) => {
+        let class_color = '';
+        if(rowData.bookable == '1') {
+            class_color = '0';
+        } else {
+            class_color = '1';
+
+        }
+        return (
+            <>
+                <span
+                    className={`status status-${class_color}`}
+                >
+                    {rowData.bookable_text}
+                </span>
+            </>
+        );
+    };
+
     const statusBodyTemplate = (rowData) => {
         return (
-          <>
-            <span
-              className={`status status-${rowData.bookable}`}
-            >
-              {rowData.bookable_text}
-            </span>
-          </>
+            <>
+                <span
+                    className={`status status-${rowData.status}`}
+                >
+                    {rowData.status_text}
+                </span>
+            </>
         );
-      };
+    };
 
     return (
         <div className="grid">
@@ -279,9 +321,10 @@ const AreasComunes = () => {
                         globalFilter={globalFilter} emptyMessage="No hay áreas comunes registrados.">
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
                         <Column field="name" sortable header={headerName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="hourMin"  header={headerHourMin} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
-                        <Column field="hourMax"  header={headerHourMax} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>                    </Column>
-                        <Column field="bookable" sortable header={headerBookable} body={statusBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="hourMin" header={headerHourMin} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
+                        <Column field="hourMax" header={headerHourMax} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>                    </Column>
+                        <Column field="bookable" sortable header={headerBookable} body={bookableBodyTemplate} style={{ flexGrow: 1, flexBasis: '200px', minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        <Column field="status" sortable header={headerStatus} body={statusBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsCommonArea}></Column>
                     </DataTable>
                     <Dialog visible={deleteCommonAreaDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteCommonAreaDialogFooter} onHide={hideDeleteCommonAreaDialog}>

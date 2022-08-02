@@ -196,6 +196,12 @@ export class AppController {
     return this.appService.findByCommunity(paramCommunityId);
   }
 
+
+  @Delete('commonArea/deleteCommonArea/:id')
+  deleteCommonArea(@Param('id') id: string) {
+    return this.appService.deleteCommonArea(id);
+  }
+
   // #==== API GUEST
   //#API userService - create user
   @Post('guest/createGuest')

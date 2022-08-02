@@ -35,7 +35,7 @@ export class CommonAreasService {
     return this.commonAreaModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
       new: true,
     });  
-  }
+  };
 
   async findByCommunity(community_id: string): Promise<CommonArea[]> {
     return this.commonAreaModel.find({ community_id: community_id }).exec();

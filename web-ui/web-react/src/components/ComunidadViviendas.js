@@ -176,14 +176,18 @@ const Communities = () => {
     getCommunites();
   }, []);
 
-  /*async function tenantsList(id) {
+  async function tenantsList(id) {
     await fetch(`http://localhost:4000/user/findTenants/${id}`, { method: 'GET' })
       .then((response) => response.json())
       .then(data => data.message)
       .then(data => {
         setTenants(data)
       });
-  }*/
+  }
+
+  useEffect(() => {
+    tenantsList(community._id);
+  }, [])
 
 
   const saveCommunity = () => {
@@ -300,7 +304,7 @@ const Communities = () => {
 
 
   const infoCommunity = async (community) => {
-    //await tenantsList(community._id);
+    await tenantsList(community._id);
 
     setCommunity({ ...community });
     setCommunityDialog(true);
@@ -569,16 +573,22 @@ const Communities = () => {
       <p>
         {' '}
         <FontAwesomeIcon icon={faUserAlt} style={{ color: '#C08135' }} />{' '}
-      </p>
         Inquilinos
+      </p>
+        
     </>
   );
 
 
   const tenantsBodyTemplate = (rowData) => {
-    /*let tenants = rowData.tenants;
+    let tenants = rowData.tenants;
     let name = findNameTenant(tenants.tenant_id);
-    console.log(name)*/
+    console.log(name);
+    return (
+      <>
+          {name}
+      </>
+    )
   };
 
   return (
@@ -652,9 +662,13 @@ const Communities = () => {
             <Column
               field="name_admin"
               sortable
+              header={headerAdministrator}
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
-            <Column  body={actionsCommunity}></Column>
+            <Column
+             body={actionsCommunity}
+             style={{ flexGrow: 1, flexBasis: '180px' }}
+             ></Column>
           </DataTable>
 
 
@@ -761,7 +775,7 @@ const Communities = () => {
                         rowsPerPageOptions={[5, 10, 25]}
                         className="datatable-responsive mt-3"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} comunidades de viviendas"
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} viviendas"
                         globalFilter={globalFilter}
                       >
                         <Column

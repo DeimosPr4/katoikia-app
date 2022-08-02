@@ -33,6 +33,8 @@ export class PostCommentsService {
   }
 
   async remove(id: string) {
-    return this.commentModel.findByIdAndRemove({ _id: id }).exec();
+    return this.commentModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
   }
 }

@@ -20,6 +20,9 @@ export class CommonArea {
   bookable: number; //saber si es necesario reservarlo o no
 
   @Prop()
+  status: string;
+
+  @Prop()
   community_id: string;
 }
 

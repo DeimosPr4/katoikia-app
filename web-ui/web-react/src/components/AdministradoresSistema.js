@@ -313,15 +313,6 @@ const AdministradoresSistema = () => {
     </>
   );
 
-  const headerOptions = (
-    <>
-      <p>
-        Opciones{' '}
-        <FontAwesomeIcon icon={faEllipsis} style={{ color: '#D7A86E' }} />
-      </p>
-    </>
-  );
-
   return (
     <div className="grid">
       <div className="col-12">
@@ -402,7 +393,6 @@ const AdministradoresSistema = () => {
             ></Column>
             <Column
               field="phone"
-              sortable
               header={headerPhone}
               style={{
                 flexGrow: 1,
@@ -412,7 +402,7 @@ const AdministradoresSistema = () => {
               }}
             ></Column>
             <Column
-              header={headerOptions}
+              
               style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }}
               body={actionsAdmin}
             ></Column>

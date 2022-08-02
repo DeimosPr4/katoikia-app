@@ -7120,6 +7120,15 @@
 }
 
 
+.icon-khaki {
+    color: var(--primary-color);
+}
+
+.row {
+    display: flex;
+}
+
+
 .status {
     border-radius: var(--border-radius);
     padding: 0.25em 0.5rem;

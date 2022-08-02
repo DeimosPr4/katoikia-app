@@ -40,6 +40,12 @@ export class UsersController {
     return this.userService.findOneByDNI(dni);
   }
 
+  @MessagePattern({ cmd: 'findById' })
+  findById(@Payload() id: string) {
+    let _id = id['id'];
+    return this.userService.findOne(_id);
+  }
+
   @MessagePattern({ cmd: 'findGuardsCommunity' })
   findGuardsCommunity(@Payload() community_id: string) {
     let pcommunity_id = community_id['community_id'];

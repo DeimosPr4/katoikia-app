@@ -119,6 +119,17 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  allUsersTenants() {
+    const pattern = { cmd: 'findTenants' };
+    const payload = {};
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+  
+
   //GET parameter from API
   findUser(paramUserDNI: string) {
     const pattern = { cmd: 'findUserDNI' };
@@ -136,6 +147,13 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  findTenantsCommunity(community_id: string) {
+    const pattern = { cmd: 'findTenantsCommunity' };
+    const payload = { community_id: community_id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
 
   deleteAdminSystem(id: string) {
     const pattern = { cmd: 'deleteAdminSystem' };

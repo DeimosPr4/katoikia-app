@@ -25,24 +25,26 @@ export class UsersService {
 
 
   async createAdminCommunity(user: UserDocument) {
-      let password = user.password;
-      let passwordEncriptada = Md5.init(user.password);
-      user.password = passwordEncriptada;
+    let password = user.password;
+    let passwordEncriptada = Md5.init(user.password);
+    user.password = passwordEncriptada;
 
-       this.userModel.create(user)
-        
+    this.userModel.create(user)
 
-      let community = await this.findCommunity(user.community_id);
-      user.community_id = community['name'];
-  
-      const pattern = { cmd: 'emailCreateUserAdminCommunity' };
-      const payload = { email: user['email'], password: password, name: user['name'], 
-      date_entry: user['date_entry'], community_name: community['name'] };
-      return this.clientNotificationtApp
-        .send<string>(pattern, payload)
-        .pipe(
-          map((message: string) => ({ message })),
-        );
+
+    let community = await this.findCommunity(user.community_id);
+    user.community_id = community['name'];
+
+    const pattern = { cmd: 'emailCreateUserAdminCommunity' };
+    const payload = {
+      email: user['email'], password: password, name: user['name'],
+      date_entry: user['date_entry'], community_name: community['name']
+    };
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
   }
 
   async findCommunity(community_id: string) {
@@ -117,6 +119,36 @@ export class UsersService {
     return this.userModel.find({ user_type: 2 }).exec();
   }
 
+
+  //find inquilinos
+  async findTenants(): Promise<User[]> {
+    return this.userModel.find({ user_type: 3 }).exec();
+  }
+
+
+  //find inquilinos
+  async findTenantsCommunity(pcommunity_id: string) {
+    //let tenants = await this.findCommunityTenants(pcommunity_id);
+
+
+
+    return await this.userModel.find({ community_id: pcommunity_id, user_type: 4 })
+      .then(async (users) => {
+        if (users) {
+          await Promise.all(
+            users.map(async (u) => {
+              //buscar al usuario con el id de la comunidad anexado
+              let number_house = await this.findNumHouseTenant(pcommunity_id, u['_id']);
+              u['number_house'] = number_house;
+              return u;
+            }),
+          )
+        }
+        return users;
+      })
+  }
+
+
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
@@ -160,6 +192,27 @@ export class UsersService {
         }
       });
     });
+  }
+
+  async findNumHouseTenant(community_id: string, tenant_id: string) {
+    const pattern = { cmd: 'findOneCommunity' }
+    const payload = { _id: community_id }
+
+    let callback = await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+    const finalValue = await lastValueFrom(callback);
+    const response = finalValue['response'];
+    const houses = response['houses'];
+    let num_house = "";
+    await houses.forEach(async house => {
+        if (tenant_id == house.tenants.tenant_id) {
+          num_house = house.number_house;
+        }
+    })
+    return num_house;
   }
 
 }

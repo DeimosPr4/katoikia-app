@@ -22,8 +22,8 @@ const AreasComunes = () => {
     let emptyCommonArea = {
         _id: null,
         name: '',
-        hourMin: '',
-        hourMax: '',
+        hourMin: '00:00',
+        hourMax: '01:00',
         community_id: '',
         bookable: '1',
         bookable_text: '',
@@ -444,7 +444,9 @@ const AreasComunes = () => {
                         <div className="field col-12 md:col-6">
                             <label htmlFor="hourMin">Hora apertura</label>
                             <InputText id="hourMin"
-                                type="text"
+                                type="time"
+                                min="00:00" max="23:59"
+                                step="3600000"
                                 onChange={(e) => onInputChange(e, 'hourMin')}
                                 value={commonArea.hourMin}
                                 required
@@ -460,7 +462,9 @@ const AreasComunes = () => {
                         <div className="field col-12 md:col-6">
                             <label htmlFor="hourMax">Hora de cierre</label>
                             <InputText id="hourMax"
-                                type="text"
+                                type="time"
+                                min="00:00" max="23:59"
+                                step="3600000"
                                 onChange={(e) => onInputChange(e, 'hourMax')}
                                 value={commonArea.hourMax}
                                 required

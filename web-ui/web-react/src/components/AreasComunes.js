@@ -388,10 +388,10 @@ const AreasComunes = () => {
     };
 
 
-    function compareTimesMinRequired(hour1, hour2){
-        var timeFormat1 =  Number(hour1.replace(/[:]/g,''));
-        var timeFormat2 = Number(hour2.replace(/[:]/g,''));
-        if(timeFormat1 <= timeFormat2){
+    function compareTimesMinRequired(hour1, hour2) {
+        var timeFormat1 = Number(hour1.replace(/[:]/g, ''));
+        var timeFormat2 = Number(hour2.replace(/[:]/g, ''));
+        if (timeFormat1 <= timeFormat2) {
             return true;
         } else {
             return false;
@@ -439,60 +439,83 @@ const AreasComunes = () => {
                     <div className="p-fluid formgrid grid">
                         <div className="field col-12 md:col-6">
                             <label htmlFor="name">Nombre</label>
-                            <InputText id="name"
-                                type="text"
-                                onChange={(e) => onInputChange(e, 'name')}
-                                value={commonArea.name}
-                                required
-                                autoFocus
-                                className={classNames({
-                                    'p-invalid': submitted && commonArea.name === '',
-                                })}
-                            />
-                            {submitted && commonArea.name === '' && (
-                                <small className="p-invalid">Nombre es requirido.</small>
-                            )}
+                            <div className="p-0 col-12 md:col-12">
+
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="name"
+                                        type="text"
+                                        onChange={(e) => onInputChange(e, 'name')}
+                                        value={commonArea.name}
+                                        required
+                                        autoFocus
+                                        className={classNames({
+                                            'p-invalid': submitted && commonArea.name === '',
+                                        })}
+                                    />
+                                </div>
+                                {submitted && commonArea.name === '' && (
+                                    <small className="p-invalid">Nombre es requirido.</small>
+                                )}
+                            </div>
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="hourMin">Hora apertura</label>
-                            <InputText id="hourMin"
-                                type="time"
-                                min="00:00" max="23:59"
-                                step="3600000"
-                                onChange={(e) => onInputChange(e, 'hourMin')}
-                                value={commonArea.hourMin}
-                                required
-                                autoFocus
-                                className={classNames({
-                                    'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
-                                })}
-                            />
-                            {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
-                                <small className="p-invalid">La hora de apertura debe ser menor que la hora de cierre.</small>
-                            )}
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="hourMin"
+                                        type="time"
+                                        min="00:00" max="23:59"
+                                        step="3600000"
+                                        onChange={(e) => onInputChange(e, 'hourMin')}
+                                        value={commonArea.hourMin}
+                                        required
+                                        autoFocus
+                                        className={classNames({
+                                            'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
+                                        })}
+                                    />
+                                </div>
+                                {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
+                                    <small className="p-invalid">La hora de apertura debe ser menor que la hora de cierre.</small>
+                                )}
+                            </div>
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="hourMax">Hora de cierre</label>
-                            <InputText id="hourMax"
-                                type="time"
-                                min="00:00" max="23:59"
-                                step="3600000"
-                                onChange={(e) => onInputChange(e, 'hourMax')}
-                                value={commonArea.hourMax}
-                                required
-                                autoFocus
-                                className={classNames({
-                                    'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
-                                })}
-                            />
-                            {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
-                                <small className="p-invalid">La hora de cierre debe ser mayor que la hora de apertura</small>
-                            )}
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="hourMax"
+                                        type="time"
+                                        min="00:00" max="23:59"
+                                        step="3600000"
+                                        onChange={(e) => onInputChange(e, 'hourMax')}
+                                        value={commonArea.hourMax}
+                                        required
+                                        autoFocus
+                                        className={classNames({
+                                            'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
+                                        })}
+                                    />
+                                </div>
+                                {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
+                                    <small className="p-invalid">La hora de cierre debe ser mayor que la hora de apertura</small>
+                                )}
+                            </div>
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="bookable">¿Necesita Reservación?</label>
-                            <div className="formgrid grid">
+                            <div className="formgrid grid align-items-end" style={{marginTop: '12px', width: '300px'}}>
                                 <div className="field-radiobutton col-6">
+
                                     <RadioButton
                                         inputId="bookable1"
                                         name="bookable"
@@ -500,7 +523,11 @@ const AreasComunes = () => {
                                         onChange={onBookableChange}
                                         checked={commonArea.bookable === '1'}
                                     />
-                                    <label htmlFor="bookable1">Sí</label>
+                                    <label htmlFor="bookable1">
+                                        <span className="p-icon-input-khaki">
+                                            <i className="pi pi-check status status-1"></i> Sí
+                                        </span>
+                                    </label>
                                 </div>
                                 <div className="field-radiobutton col-6">
                                     <RadioButton
@@ -510,7 +537,11 @@ const AreasComunes = () => {
                                         onChange={onBookableChange}
                                         checked={commonArea.bookable === '0'}
                                     />
-                                    <label htmlFor="bookable2">No</label>
+                                    <label htmlFor="bookable2">
+                                        <span className="p-icon-input-khaki">
+                                            <i className="pi pi-times status status-0"></i> No
+                                        </span>
+                                    </label>
                                 </div>
                             </div>
                         </div>

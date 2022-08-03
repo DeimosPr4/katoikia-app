@@ -58,7 +58,7 @@ const AdministradoresSistema = () => {
         item.status_text = 'Inactivo';
       } 
     })
-    setAdministrators(adminRes.message);
+    setAdministrators(await data);
   }
   useEffect(() => {
     fetchP();
@@ -262,7 +262,7 @@ const AdministradoresSistema = () => {
       <div className="actions">
         <Button
           icon={`${icono}`}
-          className={`p-button-rounded p-button-warning mt-2 mx-2`}
+          className="p-button-rounded p-button-warning mt-2 mx-2"
           onClick={() => confirmChangeStatusAdminSystem(rowData)}
           title={`${text}`}
         />
@@ -419,6 +419,7 @@ const AdministradoresSistema = () => {
       </p>
     </>
   );
+  
   const headerStatus = (
     <>
       <p> {' '}
@@ -613,12 +614,12 @@ const AdministradoresSistema = () => {
               <InputText id="nombre" type="text" />
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="apellidos">Apellidos</label>
+              <label htmlFor="apellidos">Apellido(s)</label>
               <InputText id="apellidos" type="text" />
             </div>
             <div className="field col-12 md:col-6">
               <label htmlFor="correo_electronico">Correo electrónico</label>
-              <InputText id="correo_electronico" type="text" />
+              <InputText id="correo_electronico" type="email" />
             </div>
             <div className="field col-12 md:col-6">
               <label htmlFor="identificacion">Identificación</label>

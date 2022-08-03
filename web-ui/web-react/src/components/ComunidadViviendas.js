@@ -12,9 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
-import { icon } from '@fortawesome/fontawesome-svg-core';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 const Communities = () => {
@@ -353,7 +351,6 @@ const Communities = () => {
       id: community._id,
       status: community.status,
     };
-    console.log(data);
     fetch('http://localhost:4000/community/changeStatus', {
       cache: 'no-cache',
       method: 'POST',
@@ -699,15 +696,15 @@ const Communities = () => {
 
   const statusBodyTemplate = (rowData) => {
     return (
-        <>
-            <span
-                className={`status status-${rowData.status}`}
-            >
-                {rowData.status_text}
-            </span>
-        </>
+      <>
+        <span
+          className={`status status-${rowData.status}`}
+        >
+          {rowData.status_text}
+        </span>
+      </>
     );
-};
+  };
 
   const tenantsBodyTemplate = (rowData) => {
     let tenants = rowData.tenants;
@@ -793,12 +790,12 @@ const Communities = () => {
               header={headerAdministrator}
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
-            <Column 
-            field="status" 
-            sortable 
-            header={headerStatus} 
-            body={statusBodyTemplate} 
-            style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            <Column
+              field="status"
+              sortable
+              header={headerStatus}
+              body={statusBodyTemplate}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
             </Column>
             <Column
               body={actionsCommunity}

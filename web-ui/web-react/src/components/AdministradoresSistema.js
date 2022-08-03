@@ -41,14 +41,24 @@ const AdministradoresSistema = () => {
     password: '',
     user_type: '1',
     status: '1',
+    status_text: '',
   };
 
 
   async function fetchP() {
     let nombres = await fetch(urlFetch, { method: 'GET' });
     let adminRes = await nombres.json();
+    let data = await adminRes.message.filter(
+      (val) => val.status != -1,
+    )
+    await data.map((item) => {
+      if (item.status == '1') {
+        item.status_text = 'Activo';
+      } else if (item.status == '0') {
+        item.status_text = 'Inactivo';
+      } 
+    })
     setAdministrators(adminRes.message);
-    console.log(administrators);
   }
   useEffect(() => {
     fetchP();
@@ -67,7 +77,6 @@ const AdministradoresSistema = () => {
       status: "1"
     };
     setSysAdmin(data)
-    // console.log(data);
 
     fetch('http://localhost:4000/user/createAdminSystem/', {
       cache: 'no-cache',
@@ -186,7 +195,7 @@ const AdministradoresSistema = () => {
         let _sysadmin = administrators.filter(
           (val) => (val._id !== sysadmin._id || val.status != -1),
         );
-        
+
         setAdministrators(_sysadmin);
         setDeleteAdminSystemDialog(false);
         setSysAdmin(emptySysAdmin);
@@ -235,27 +244,33 @@ const AdministradoresSistema = () => {
     });
   };
 
-  
+
 
   const actionsAdmin = (rowData) => {
-     let icono = '';
+    let icono = '';
+    let text = '';
     if (rowData.status == '0') {
       icono = "pi pi-eye";
+      text = "Activar Administrador"
     } else if (rowData.status == '1') {
       icono = "pi pi-eye-slash";
+      text = "Inactivar Administrador"
+
     }
 
     return (
       <div className="actions">
-          <Button
+        <Button
           icon={`${icono}`}
           className={`p-button-rounded p-button-warning mt-2 mx-2`}
           onClick={() => confirmChangeStatusAdminSystem(rowData)}
+          title={`${text}`}
         />
         <Button
           icon="pi pi-trash"
-          className="p-button-rounded p-button-danger mt-2"
+          className="p-button-rounded p-button-danger mt-2 mx-2"
           onClick={() => confirmDeleteAdminSystem(rowData)}
+          title="Eliminar Administrador"
         />
       </div>
     );
@@ -413,6 +428,18 @@ const AdministradoresSistema = () => {
     </>
   )
 
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <>
+        <span
+          className={`status status-${rowData.status}`}
+        >
+          {rowData.status_text}
+        </span>
+      </>
+    );
+  };
+
   return (
     <div className="grid">
       <div className="col-12">
@@ -502,8 +529,15 @@ const AdministradoresSistema = () => {
               }}
             ></Column>
             <Column
-              
-              style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }}
+              field="status"
+              sortable
+              header={headerStatus}
+              body={statusBodyTemplate}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            </Column>
+            <Column
+
+              style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }}
               body={actionsAdmin}
             ></Column>
           </DataTable>

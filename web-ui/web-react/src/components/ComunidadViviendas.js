@@ -696,15 +696,15 @@ const Communities = () => {
 
   const statusBodyTemplate = (rowData) => {
     return (
-        <>
-            <span
-                className={`status status-${rowData.status}`}
-            >
-                {rowData.status_text}
-            </span>
-        </>
+      <>
+        <span
+          className={`status status-${rowData.status}`}
+        >
+          {rowData.status_text}
+        </span>
+      </>
     );
-};
+  };
 
   const tenantsBodyTemplate = (rowData) => {
     let tenants = rowData.tenants;
@@ -790,12 +790,12 @@ const Communities = () => {
               header={headerAdministrator}
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
-            <Column 
-            field="status" 
-            sortable 
-            header={headerStatus} 
-            body={statusBodyTemplate} 
-            style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            <Column
+              field="status"
+              sortable
+              header={headerStatus}
+              body={statusBodyTemplate}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
             </Column>
             <Column
               body={actionsCommunity}

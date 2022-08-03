@@ -12,8 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 const Communities = () => {
   let emptyCommunity = {
@@ -25,6 +25,7 @@ const Communities = () => {
     phone: '',
     num_houses: 0,
     status: '1',
+    status_text: '',
     date_entry: new Date(),
     houses: [],
   };
@@ -161,7 +162,17 @@ const Communities = () => {
     let pList = await getProvinces();
     let cList = await getCantons();
     let dList = await getDistricts();
-    await resJson.message.map((item) => {
+    let data = await resJson.message.filter(
+      (val) => val.status != -1,
+    )
+    await data.map((item) => {
+      if (item.status == '1') {
+        item.status_text = 'Activo';
+      } else if (item.status == '0') {
+        item.status_text = 'Inactivo';
+      } else {
+        item.status_text = 'Eliminado';
+      }
       item.province = pList.find((p) => p.code === item.province).name;
       item.canton = cList.find((p) => p.code === item.canton).name;
       item.district = dList.find((p) => p.code === item.district).name;
@@ -169,7 +180,7 @@ const Communities = () => {
         item.name_admin = 'Sin Administrador';
       }
     });
-    setCommunitiesList(await resJson.message);
+    setCommunitiesList(await data);
   }
 
   useEffect(() => {
@@ -181,6 +192,9 @@ const Communities = () => {
       .then((response) => response.json())
       .then(data => data.message)
       .then(data => {
+        data = data.filter(
+          (val) => val.status != -1,
+        )
         setTenants(data)
       });
   }
@@ -265,10 +279,9 @@ const Communities = () => {
     if (tenant_id == '') {
       name = 'Sin inquilino';
     } else {
-      let tenant = tenants.find(t => t._id == tenant_id )
+      let tenant = tenants.find(t => t._id == tenant_id)
       name = tenant['name'] + ' ' + tenant['last_name'];
     }
-    console.log(name);
     return name;
   }
 
@@ -323,14 +336,21 @@ const Communities = () => {
     setCommunity(community);
     setEditCommunityDialog(true);
   };
+
   //desactivar o activar una comunidad
-  const cambiarDesactivarEstadoCommunity = () => {
+  const cambiarEstadoCommunity = () => {
+    if (community.status == '1') {
+      community.status = '0';
+      community.status_text = 'Inactivo';
+
+    } else if (community.status == '0') {
+      community.status = '1';
+      community.status_text = 'Activo';
+    }
     var data = {
       id: community._id,
-      status: "0",
+      status: community.status,
     };
-    console.log(data);
-
     fetch('http://localhost:4000/community/changeStatus', {
       cache: 'no-cache',
       method: 'POST',
@@ -362,44 +382,6 @@ const Communities = () => {
         err => console.log('Ocurrió un error con el fetch', err)
       );
   }
-    //desactivar o activar una comunidad
-    const cambiarActivarEstadoCommunity = () => {
-      var data = {
-        id: community._id,
-        status: "1",
-      };
-      console.log(data);
-      fetch('http://localhost:4000/community/changeStatus', {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(
-          function (response) {
-            if (response.status != 201)
-              console.log('Ocurrió un error con el servicio: ' + response.status);
-            else
-              return response.json();
-          }
-        )
-        .then(
-          function (response) {
-            setEditCommunityDialog(false);
-            toast.current.show({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: 'Comunidad de Viviendas Actualizada',
-              life: 3000,
-            });
-          }
-        )
-        .catch(
-          err => console.log('Ocurrió un error con el fetch', err)
-        );
-    }
 
 
   const deleteCommunity = () => {
@@ -435,8 +417,11 @@ const Communities = () => {
                    }
                ); 
         */
-    let _community = communitiesList.filter((val) => val._id !== community._id);
-    setCommunitiesList(_community);
+    let _communities = communitiesList.filter((val) => val._id !== community._id);
+    _communities = _communities.filter(
+      (val) => val.status != -1,
+    )
+    setCommunitiesList(_communities);
     setDeleteCommunityDialog(false);
     setCommunity(emptyCommunity);
     toast.current.show({
@@ -460,6 +445,9 @@ const Communities = () => {
                  }
              })
          })*/
+    _communities = _communities.filter(
+      (val) => val.status != -1,
+    )
     setCommunitiesList(_communities);
     setDeleteCommunitiesDialog(false);
     setSelectedCommunities(null);
@@ -472,22 +460,25 @@ const Communities = () => {
   };
 
   const actionsCommunity = (rowData) => {
+
+    let icono = '';
+    if (rowData.status == '0') {
+      icono = "pi pi-eye";
+    } else if (rowData.status == '1') {
+      icono = "pi pi-eye-slash";
+    }
+
     return (
       <div className="actions">
-         <Button
-          icon="pi pi-eye"
-          className="p-button-rounded p-button-success mt-2 mx-2"
-          onClick={() => confirmEditCommunity(rowData)}
-        />
-        <Button
-          icon="pi pi-eye-slash"
-          className="p-button-rounded p-button-danger mt-2 mx-2"
-          onClick={() => confirmEditCommunity(rowData)}
-        />
         <Button
           icon="pi pi-exclamation-circle"
-          className="p-button-rounded p-button-primary mt-2 mx-2"
+          className="p-button-rounded p-button-info mt-2 mx-2"
           onClick={() => infoCommunity(rowData)}
+        />
+        <Button
+          icon={`${icono}`}
+          className={`p-button-rounded p-button-warning mt-2 mx-2`}
+          onClick={() => confirmEditCommunity(rowData)}
         />
         <Button
           icon="pi pi-trash"
@@ -528,7 +519,7 @@ const Communities = () => {
 
   const header = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-      <h5 className="m-0">Comunidade de Viviendas</h5>
+      <h5 className="m-0">Comunidades de Viviendas</h5>
       <span className="block mt-2 md:mt-0 p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -585,7 +576,7 @@ const Communities = () => {
       />
     </>
   );
-  const editDesactivarCommunityDialogFooter = (
+  const editEstadoCommunityDialogFooter = (
     <>
       <Button
         label="No"
@@ -597,27 +588,12 @@ const Communities = () => {
         label="Yes"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={cambiarDesactivarEstadoCommunity}
+        onClick={cambiarEstadoCommunity}
       />
     </>
   );
 
-  const editActivarCommunityDialogFooter = (
-    <>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={hideEditCommunityDialog}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={cambiarActivarEstadoCommunity}
-      />
-    </>
-  );
+
 
   const headerName = (
     <>
@@ -697,6 +673,15 @@ const Communities = () => {
     </>
   );
 
+  const headerStatus = (
+    <>
+      <p> {' '}
+        <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+        Estado
+      </p>
+    </>
+  )
+
   //ver perfil comunidad
   const headerTenant = (
     <>
@@ -705,18 +690,28 @@ const Communities = () => {
         <FontAwesomeIcon icon={faUserAlt} style={{ color: '#C08135' }} />{' '}
         Inquilinos
       </p>
-        
+
     </>
   );
 
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <>
+        <span
+          className={`status status-${rowData.status}`}
+        >
+          {rowData.status_text}
+        </span>
+      </>
+    );
+  };
 
   const tenantsBodyTemplate = (rowData) => {
     let tenants = rowData.tenants;
     let name = findNameTenant(tenants.tenant_id);
-    console.log(name);
     return (
       <>
-          {name}
+        {name}
       </>
     )
   };
@@ -796,9 +791,16 @@ const Communities = () => {
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
             <Column
-             body={actionsCommunity}
-             style={{ flexGrow: 1, flexBasis: '180px' }}
-             ></Column>
+              field="status"
+              sortable
+              header={headerStatus}
+              body={statusBodyTemplate}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            </Column>
+            <Column
+              body={actionsCommunity}
+              style={{ flexGrow: 1, flexBasis: '100px' }}
+            ></Column>
           </DataTable>
 
 
@@ -927,32 +929,13 @@ const Communities = () => {
             </div>
 
           </Dialog>
+
           <Dialog
             visible={editCommunityDialog}
             style={{ width: '450px' }}
             header="Confirmar"
             modal
-            footer={editActivarCommunityDialogFooter}
-            onHide={hideEditCommunityDialog}
-          >
-            <div className="flex align-items-center justify-content-center">
-              <i
-                className="pi pi-exclamation-triangle mr-3"
-                style={{ fontSize: '2rem' }}
-              />
-              {community && (
-                <span>
-                  ¿Estás seguro que desea cambiar estado a <b>{community.name}</b>?
-                </span>
-              )}
-            </div>
-          </Dialog>
-          <Dialog
-            visible={editCommunityDialog}
-            style={{ width: '450px' }}
-            header="Confirmar"
-            modal
-            footer={editDesactivarCommunityDialogFooter}
+            footer={editEstadoCommunityDialogFooter}
             onHide={hideEditCommunityDialog}
           >
             <div className="flex align-items-center justify-content-center">

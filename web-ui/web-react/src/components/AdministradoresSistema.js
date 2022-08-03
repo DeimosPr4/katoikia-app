@@ -11,7 +11,7 @@ import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 const AdministradoresSistema = () => {
   const [administrators, setAdministrators] = useState([]);
@@ -98,6 +98,51 @@ const AdministradoresSistema = () => {
       );
   }
 
+  const cambiarStatusUser = () => {
+    if (sysadmin.status == '1') {
+      sysadmin.status = '0';
+      sysadmin.status_text = 'Inactivo';
+
+    } else if (sysadmin.status == '0') {
+      sysadmin.status = '1';
+      sysadmin.status_text = 'Activo';
+    }
+    var data = {
+      id: sysadmin._id,
+      status: sysadmin.status,
+    };
+    fetch('http://localhost:4000/user/changeStatus', {
+      cache: 'no-cache',
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+          setChangeStatusAdminSystemDialog(false);
+          toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Administrador del Sistema Actualizado',
+            life: 3000,
+          });
+        }
+      )
+      .catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+  }
+
   const confirmDeleteAdminSystem = (sysAdmin) => {
     setSysAdmin(sysAdmin);
     setDeleteAdminSystemDialog(true);
@@ -115,13 +160,13 @@ const AdministradoresSistema = () => {
     setDeleteAdminsSystemDialog(false);
   };
 
-  const confirmChangeStatusAdminSystem = (sysAdmin) => {
-    setSysAdmin(sysAdmin);
-    setDeleteAdminSystemDialog(true);
+  const hideChangeStatusAdminDialog = () => {
+    setChangeStatusAdminSystemDialog(false);
   };
 
-  const hideChangeStatusAdminSystemDialog = () => {
-    setChangeStatusAdminSystemDialog(false);
+  const confirmChangeStatusAdminSystem = (sysAdmin) => {
+    setSysAdmin(sysAdmin);
+    setChangeStatusAdminSystemDialog(true);
   };
 
   const deleteSysAdmin = () => {
@@ -165,7 +210,7 @@ const AdministradoresSistema = () => {
 
   const deleteSelectedAdminsSystem = () => {
     let _administrators = administrators.filter(
-      (val) => (!selectedAdministrators.includes(val) || val.status != -1),
+      (val) => (!selectedAdministrators.includes(val)),
     );
     selectedAdministrators.map((item) => {
       fetch('http://localhost:4000/user/deleteAdminSystem/' + item._id, {
@@ -176,7 +221,9 @@ const AdministradoresSistema = () => {
         },
       });
     });
-
+    _administrators = _administrators.filter(
+      (val) => val.status != -1,
+    )
     setAdministrators(_administrators);
     setDeleteAdminsSystemDialog(false);
     setSelectedAdministrators(null);
@@ -188,53 +235,21 @@ const AdministradoresSistema = () => {
     });
   };
 
-  const changeStatusAdminSystm = () => {
-    fetch('http://localhost:4000/user/statusAdminSystem/' + sysadmin._id, {
-      cache: 'no-cache',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(function (response) {
-        if (response.status != 201)
-          console.log('Ocurrió un error con el servicio: ' + response.status);
-        else return response.json();
-      })
-      .then(function (response) {
-        let _sysadmin = administrators.filter(
-          (val) => (val._id !== sysadmin._id || val.status != -1),
-        );
-
-        setAdministrators(_sysadmin);
-        setDeleteAdminSystemDialog(false);
-        setSysAdmin(emptySysAdmin);
-        toast.current.show({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Administrador del Sistema Eliminado',
-          life: 3000,
-        });
-      })
-      .catch((err) => {
-        console.log('Ocurrió un error con el fetch', err);
-        toast.current.show({
-          severity: 'danger',
-          summary: 'Error',
-          detail: 'Administrador del Sistema no se pudo Eliminar',
-          life: 3000,
-        });
-      });
-  };
-
-
+  
 
   const actionsAdmin = (rowData) => {
+     let icono = '';
+    if (rowData.status == '0') {
+      icono = "pi pi-eye";
+    } else if (rowData.status == '1') {
+      icono = "pi pi-eye-slash";
+    }
+
     return (
       <div className="actions">
           <Button
-          icon="pi pi-eye"
-          className="p-button-rounded p-button-warning mt-2"
+          icon={`${icono}`}
+          className={`p-button-rounded p-button-warning mt-2 mx-2`}
           onClick={() => confirmChangeStatusAdminSystem(rowData)}
         />
         <Button
@@ -330,13 +345,13 @@ const AdministradoresSistema = () => {
         label="No"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={hideChangeStatusAdminSystemDialog}
+        onClick={hideChangeStatusAdminDialog}
       />
       <Button
         label="Yes"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={changeStatusAdminSystm}
+        onClick={cambiarStatusUser}
       />
     </>
   );
@@ -389,6 +404,14 @@ const AdministradoresSistema = () => {
       </p>
     </>
   );
+  const headerStatus = (
+    <>
+      <p> {' '}
+        <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+        Estado
+      </p>
+    </>
+  )
 
   return (
     <div className="grid">
@@ -521,6 +544,26 @@ const AdministradoresSistema = () => {
                 <span>
                   ¿Está seguro eliminar los adminsitradores del sistema
                   seleccionados?
+                </span>
+              )}
+            </div>
+          </Dialog>
+          <Dialog
+            visible={changeStatusAdminSystemDialog}
+            style={{ width: '450px' }}
+            header="Confirmar"
+            modal
+            footer={changeStatusAdminSystemDialogFooter}
+            onHide={hideChangeStatusAdminDialog}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: '2rem' }}
+              />
+              {sysadmin && (
+                <span>
+                  ¿Estás seguro que desea cambiar estado a <b>{sysadmin.name}</b>?
                 </span>
               )}
             </div>

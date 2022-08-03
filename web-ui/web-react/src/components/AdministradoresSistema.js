@@ -58,7 +58,7 @@ const AdministradoresSistema = () => {
         item.status_text = 'Inactivo';
       } 
     })
-    setAdministrators(adminRes.message);
+    setAdministrators(await data);
   }
   useEffect(() => {
     fetchP();

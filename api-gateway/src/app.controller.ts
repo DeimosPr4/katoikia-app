@@ -128,6 +128,14 @@ export class AppController {
     return this.appService.deleteAdminSystem(id);
   }
 
+  @Post('user/changeStatus')
+  changeStatusUser(
+    @Body('id') pId: string,
+    @Body('status') pStatus: string,
+  ) {
+    return this.appService.changeStatusUser(pId, pStatus);
+  }
+
   // #==== API Communities
   @Post('community/createCommunity')
   createCommunity(
@@ -174,11 +182,11 @@ export class AppController {
     return this.appService.findCommunityAdmin(community_id);
   }
   @Post('community/changeStatus')
-  changeStatus(
+  changeStatusCommunity(
     @Body('id') pId: string,
     @Body('status') pStatus: string,
   ) {
-    return this.appService.changeStatus(pId, pStatus);
+    return this.appService.changeStatusCommunity(pId, pStatus);
   }
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')

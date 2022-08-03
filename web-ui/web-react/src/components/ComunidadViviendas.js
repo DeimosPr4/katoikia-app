@@ -353,7 +353,6 @@ const Communities = () => {
       id: community._id,
       status: community.status,
     };
-    console.log(data);
     fetch('http://localhost:4000/community/changeStatus', {
       cache: 'no-cache',
       method: 'POST',

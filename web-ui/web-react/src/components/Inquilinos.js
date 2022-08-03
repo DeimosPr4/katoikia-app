@@ -34,7 +34,8 @@ const Inquilinos = () => {
     number_house: 'Sin número de vivienda',
     user_type: '4',
     date_entry: new Date(),
-    status: '1'
+    status: '1',
+    status_text: '',
   };
 
   const [tenants, setTenants] = useState([]);
@@ -50,6 +51,7 @@ const Inquilinos = () => {
   const dt = useRef(null);
 
   const [cookies, setCookie] = useCookies();
+  const [changeStatusTenantDialog, setChangeStatusTenantDialog] = useState(false);
 
 
   async function tenantsList() {
@@ -72,7 +74,9 @@ const Inquilinos = () => {
     let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
     let resList = await response.json();
     let list = await resList.message;
-
+    list = await list.filter(
+      (val) => val.status != -1,
+    )
     setCommunitiesList(await list);
   }
 

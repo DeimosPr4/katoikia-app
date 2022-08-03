@@ -223,5 +223,10 @@ export class UsersService {
     return num_house;
   }
 
+  async changeStatus(id: string, status: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, {status: status}, {
+      new: true,
+    });  
+  }
 }
 

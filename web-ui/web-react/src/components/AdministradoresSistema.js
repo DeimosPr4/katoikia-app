@@ -11,7 +11,7 @@ import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 const AdministradoresSistema = () => {
   const [administrators, setAdministrators] = useState([]);
@@ -27,6 +27,10 @@ const AdministradoresSistema = () => {
   const toast = useRef(null);
   const dt = useRef(null);
 
+  const [changeStatusAdminSystemDialog, setChangeStatusAdminSystemDialog] = useState(false);
+  const [changeStatusAdminsSystemDialog, setChangeStatusAdminsSystemDialog] =
+    useState(false);
+
   let emptySysAdmin = {
     _id: null,
     dni: '',
@@ -37,14 +41,24 @@ const AdministradoresSistema = () => {
     password: '',
     user_type: '1',
     status: '1',
+    status_text: '',
   };
 
 
   async function fetchP() {
     let nombres = await fetch(urlFetch, { method: 'GET' });
     let adminRes = await nombres.json();
-    setAdministrators(adminRes.message);
-    console.log(administrators);
+    let data = await adminRes.message.filter(
+      (val) => val.status != -1,
+    )
+    await data.map((item) => {
+      if (item.status == '1') {
+        item.status_text = 'Activo';
+      } else if (item.status == '0') {
+        item.status_text = 'Inactivo';
+      } 
+    })
+    setAdministrators(await data);
   }
   useEffect(() => {
     fetchP();
@@ -63,7 +77,6 @@ const AdministradoresSistema = () => {
       status: "1"
     };
     setSysAdmin(data)
-    // console.log(data);
 
     fetch('http://localhost:4000/user/createAdminSystem/', {
       cache: 'no-cache',
@@ -94,6 +107,51 @@ const AdministradoresSistema = () => {
       );
   }
 
+  const cambiarStatusUser = () => {
+    if (sysadmin.status == '1') {
+      sysadmin.status = '0';
+      sysadmin.status_text = 'Inactivo';
+
+    } else if (sysadmin.status == '0') {
+      sysadmin.status = '1';
+      sysadmin.status_text = 'Activo';
+    }
+    var data = {
+      id: sysadmin._id,
+      status: sysadmin.status,
+    };
+    fetch('http://localhost:4000/user/changeStatus', {
+      cache: 'no-cache',
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+          setChangeStatusAdminSystemDialog(false);
+          toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Administrador del Sistema Actualizado',
+            life: 3000,
+          });
+        }
+      )
+      .catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+  }
+
   const confirmDeleteAdminSystem = (sysAdmin) => {
     setSysAdmin(sysAdmin);
     setDeleteAdminSystemDialog(true);
@@ -111,6 +169,14 @@ const AdministradoresSistema = () => {
     setDeleteAdminsSystemDialog(false);
   };
 
+  const hideChangeStatusAdminDialog = () => {
+    setChangeStatusAdminSystemDialog(false);
+  };
+
+  const confirmChangeStatusAdminSystem = (sysAdmin) => {
+    setSysAdmin(sysAdmin);
+    setChangeStatusAdminSystemDialog(true);
+  };
 
   const deleteSysAdmin = () => {
     fetch('http://localhost:4000/user/deleteAdminSystem/' + sysadmin._id, {
@@ -127,8 +193,9 @@ const AdministradoresSistema = () => {
       })
       .then(function (response) {
         let _sysadmin = administrators.filter(
-          (val) => val._id !== sysadmin._id,
+          (val) => (val._id !== sysadmin._id || val.status != -1),
         );
+
         setAdministrators(_sysadmin);
         setDeleteAdminSystemDialog(false);
         setSysAdmin(emptySysAdmin);
@@ -152,7 +219,7 @@ const AdministradoresSistema = () => {
 
   const deleteSelectedAdminsSystem = () => {
     let _administrators = administrators.filter(
-      (val) => !selectedAdministrators.includes(val),
+      (val) => (!selectedAdministrators.includes(val)),
     );
     selectedAdministrators.map((item) => {
       fetch('http://localhost:4000/user/deleteAdminSystem/' + item._id, {
@@ -163,6 +230,9 @@ const AdministradoresSistema = () => {
         },
       });
     });
+    _administrators = _administrators.filter(
+      (val) => val.status != -1,
+    )
     setAdministrators(_administrators);
     setDeleteAdminsSystemDialog(false);
     setSelectedAdministrators(null);
@@ -174,13 +244,33 @@ const AdministradoresSistema = () => {
     });
   };
 
+
+
   const actionsAdmin = (rowData) => {
+    let icono = '';
+    let text = '';
+    if (rowData.status == '0') {
+      icono = "pi pi-eye";
+      text = "Activar Administrador"
+    } else if (rowData.status == '1') {
+      icono = "pi pi-eye-slash";
+      text = "Inactivar Administrador"
+
+    }
+
     return (
       <div className="actions">
         <Button
+          icon={`${icono}`}
+          className="p-button-rounded p-button-warning mt-2 mx-2"
+          onClick={() => confirmChangeStatusAdminSystem(rowData)}
+          title={`${text}`}
+        />
+        <Button
           icon="pi pi-trash"
-          className="p-button-rounded p-button-danger mt-2"
+          className="p-button-rounded p-button-danger mt-2 mx-2"
           onClick={() => confirmDeleteAdminSystem(rowData)}
+          title="Eliminar Administrador"
         />
       </div>
     );
@@ -264,6 +354,23 @@ const AdministradoresSistema = () => {
     </>
   );
 
+  const changeStatusAdminSystemDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideChangeStatusAdminDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={cambiarStatusUser}
+      />
+    </>
+  );
+
   const headerName = (
     <>
       <p>
@@ -312,6 +419,27 @@ const AdministradoresSistema = () => {
       </p>
     </>
   );
+  
+  const headerStatus = (
+    <>
+      <p> {' '}
+        <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+        Estado
+      </p>
+    </>
+  )
+
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <>
+        <span
+          className={`status status-${rowData.status}`}
+        >
+          {rowData.status_text}
+        </span>
+      </>
+    );
+  };
 
   return (
     <div className="grid">
@@ -402,8 +530,15 @@ const AdministradoresSistema = () => {
               }}
             ></Column>
             <Column
-              
-              style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }}
+              field="status"
+              sortable
+              header={headerStatus}
+              body={statusBodyTemplate}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            </Column>
+            <Column
+
+              style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }}
               body={actionsAdmin}
             ></Column>
           </DataTable>
@@ -448,6 +583,26 @@ const AdministradoresSistema = () => {
               )}
             </div>
           </Dialog>
+          <Dialog
+            visible={changeStatusAdminSystemDialog}
+            style={{ width: '450px' }}
+            header="Confirmar"
+            modal
+            footer={changeStatusAdminSystemDialogFooter}
+            onHide={hideChangeStatusAdminDialog}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: '2rem' }}
+              />
+              {sysadmin && (
+                <span>
+                  ¿Estás seguro que desea cambiar estado a <b>{sysadmin.name}</b>?
+                </span>
+              )}
+            </div>
+          </Dialog>
         </div>
       </div>
       <div className="col-12">
@@ -459,12 +614,12 @@ const AdministradoresSistema = () => {
               <InputText id="nombre" type="text" />
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="apellidos">Apellidos</label>
+              <label htmlFor="apellidos">Apellido(s)</label>
               <InputText id="apellidos" type="text" />
             </div>
             <div className="field col-12 md:col-6">
               <label htmlFor="correo_electronico">Correo electrónico</label>
-              <InputText id="correo_electronico" type="text" />
+              <InputText id="correo_electronico" type="email" />
             </div>
             <div className="field col-12 md:col-6">
               <label htmlFor="identificacion">Identificación</label>

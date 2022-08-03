@@ -331,14 +331,14 @@ const Inquilinos = () => {
   const deleteTenantDialogFooter = (
     <>
       <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteTenantDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteTenant} />
+      <Button label="Sí" icon="pi pi-check" className="p-button-text" onClick={deleteTenant} />
     </>
   );
 
   const deleteTenantsDialogFooter = (
     <>
       <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteTenantsDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedTenants} />
+      <Button label="Sí" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedTenants} />
     </>
   );
 
@@ -352,7 +352,7 @@ const Inquilinos = () => {
         onClick={hideChangeStatusTenantDialog}
       />
       <Button
-        label="Yes"
+        label="Sí"
         icon="pi pi-check"
         className="p-button-text"
         onClick={cambiarStatusUser}
@@ -457,7 +457,7 @@ const Inquilinos = () => {
           <Dialog visible={deleteTenantsDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteTenantsDialogFooter} onHide={hideDeleteTenantsDialog}>
             <div className="flex align-items-center justify-content-center">
               <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-              {selectedTentants && <span>¿Está seguro eliminar los Inquilinos seleccionados?</span>}
+              {selectedTentants && <span>¿Está seguro eliminar los inquilinos seleccionados?</span>}
             </div>
           </Dialog>
           <Dialog

@@ -257,7 +257,7 @@ const GuardasSeguridad = () => {
                     title={`${text}`}
                 />
                 <Button icon="pi pi-trash"
-                    className="p-button-rounded p-button-danger mt-2"
+                    className="p-button-rounded p-button-danger mt-2 mx-2"
                     onClick={() => confirmDeleteGuarda(rowData)} />
             </div>
         );
@@ -300,14 +300,14 @@ const GuardasSeguridad = () => {
     const deleteAdminSystemDialogFooter = (
         <>
             <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteGuardasDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteGuarda} />
+            <Button label="Sí" icon="pi pi-check" className="p-button-text" onClick={deleteGuarda} />
         </>
     );
 
     const deleteAdminsSystemDialogFooter = (
         <>
             <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteGuardasDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedGuardas} />
+            <Button label="Sí" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedGuardas} />
         </>
     );
 
@@ -320,7 +320,7 @@ const GuardasSeguridad = () => {
                 onClick={hideChangeStatusGuardDialog}
             />
             <Button
-                label="Yes"
+                label="Sí"
                 icon="pi pi-check"
                 className="p-button-text"
                 onClick={cambiarStatusUser}
@@ -393,7 +393,7 @@ const GuardasSeguridad = () => {
                         </Column>
                         <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdmin}></Column>
+                        <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsAdmin}></Column>
                     </DataTable>
                     <Dialog visible={deleteGuardaDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminSystemDialogFooter} onHide={hideDeleteGuardaDialog}>
                         <div className="flex align-items-center justify-content-center">
@@ -404,7 +404,7 @@ const GuardasSeguridad = () => {
                     <Dialog visible={deleteGuardasDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminsSystemDialogFooter} onHide={hideDeleteGuardasDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {selectedGuardas && <span>¿Está seguro eliminar los adminsitradores del sistema seleccionados?</span>}
+                            {selectedGuardas && <span>¿Está seguro eliminar los guardas de seguridad seleccionados?</span>}
                         </div>
                     </Dialog>
                     <Dialog

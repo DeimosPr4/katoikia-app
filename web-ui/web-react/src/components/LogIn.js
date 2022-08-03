@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 
 const LogIn = () => {
+
+    const [email, setEmail] = useState(""); 
+    const [password, setPassword] = useState(""); 
+
+
+    const iniciarSesion = () =>{
+
+    }
 
     
 
@@ -12,12 +20,12 @@ const LogIn = () => {
                     <h5>Iniciar Sesión</h5>
                     <div className="p-fluid formgrid grid">
                         <div className="field col-12">
-                            <label htmlFor="nombre">Correo electrónico</label>
-                            <InputText id="nombre" type="text" />
+                            <label htmlFor="correo">Correo electrónico</label>
+                            <InputText id="correo" type="text" placeholder='Correo electrónico'/>
                         </div>
                         <div className="field col-12 ">
-                            <label htmlFor="apellidos">Contraseña</label>
-                            <InputText id="apellidos" type="text" />
+                            <label htmlFor="contrasenna">Contraseña</label>
+                            <InputText id="contrasenna" type="text" placeholder='Contraseña'/>
                         </div>
 
                         {/* <Button label="Registrar" onClick={registrarAdmin}></Button> */}
@@ -29,7 +37,3 @@ const LogIn = () => {
 }
 
 export default LogIn
-
-/* image 1 */
-
-

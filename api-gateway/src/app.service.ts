@@ -261,6 +261,7 @@ export class AppService {
       hourMax: hourMax,
       bookable: bookable,
       community_id: community_id,
+      status: '1'
     };
     return this.clientCommonAreaApp
       .send<string>(pattern, payload)

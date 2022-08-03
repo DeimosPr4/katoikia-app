@@ -262,7 +262,7 @@ const AdministradoresSistema = () => {
       <div className="actions">
         <Button
           icon={`${icono}`}
-          className={`p-button-rounded p-button-warning mt-2 mx-2`}
+          className="p-button-rounded p-button-warning mt-2 mx-2"
           onClick={() => confirmChangeStatusAdminSystem(rowData)}
           title={`${text}`}
         />
@@ -419,6 +419,7 @@ const AdministradoresSistema = () => {
       </p>
     </>
   );
+  
   const headerStatus = (
     <>
       <p> {' '}

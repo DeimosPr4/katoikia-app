@@ -491,7 +491,7 @@ const Inquilinos = () => {
               <InputText type="text" className="form-control" id="nombre" />
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="apellidos">Apellidos</label>
+              <label htmlFor="apellidos">Apellido(s)</label>
               <InputText type="text" className="form-control" id="apellidos" />
             </div>
             <div className="field col-12 md:col-6">

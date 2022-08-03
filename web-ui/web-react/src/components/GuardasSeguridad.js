@@ -373,6 +373,26 @@ const GuardasSeguridad = () => {
         </>
     )
 
+    const headerStatus = (
+        <>
+            <p> {' '}
+                <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+                Estado
+            </p>
+        </>
+    )
+
+    const statusBodyTemplate = (rowData) => {
+        return (
+            <>
+                <span
+                    className={`status status-${rowData.status}`}
+                >
+                    {rowData.status_text}
+                </span>
+            </>
+        );
+    };
 
     return (
         <div className="grid">
@@ -393,6 +413,13 @@ const GuardasSeguridad = () => {
                         </Column>
                         <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column
+                            field="status"
+                            sortable
+                            header={headerStatus}
+                            body={statusBodyTemplate}
+                            style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+                        </Column>
                         <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsAdmin}></Column>
                     </DataTable>
                     <Dialog visible={deleteGuardaDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminSystemDialogFooter} onHide={hideDeleteGuardaDialog}>
@@ -438,12 +465,12 @@ const GuardasSeguridad = () => {
                             <InputText id="nombre" type="text" />
                         </div>
                         <div className="field col-12 md:col-6">
-                            <label htmlFor="apellidos">Apellidos</label>
+                            <label htmlFor="apellidos">Apellido(s)</label>
                             <InputText id="apellidos" type="text" />
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="correo_electronico">Correo electrónico</label>
-                            <InputText id="correo_electronico" type="text" />
+                            <InputText id="correo_electronico" type="email" />
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="identificacion">Identificación</label>
@@ -451,7 +478,7 @@ const GuardasSeguridad = () => {
                         </div>
                         <div className="field col-12">
                             <label htmlFor="telefono">Teléfono</label>
-                            <InputText id="telefono" type="number" rows="4" />
+                            <InputText id="telefono" type="tel" rows="4" />
                         </div>
                         <Button label="Registrar" onClick={registrarGuarda}></Button>
                     </div>

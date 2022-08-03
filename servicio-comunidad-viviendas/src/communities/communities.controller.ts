@@ -51,8 +51,6 @@ export class CommunitiesController {
    changeStatus(@Payload() body: string) {
      let pid = body['id'];
      let pstatus = body['status'];
-     console.log(pid);
-     console.log(pstatus);
      return this.communitiesService.changeStatus(pid,pstatus);
    }
 }

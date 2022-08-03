@@ -36,6 +36,9 @@ export class User {
 
   @Prop()
   community_id?: string;
+
+  @Prop()
+  number_house?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

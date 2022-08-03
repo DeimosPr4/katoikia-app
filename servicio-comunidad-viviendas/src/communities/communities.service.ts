@@ -61,6 +61,12 @@ export class CommunitiesService {
     });  
   }
 
+  async changeStatus(id: string, status: string) {
+    return this.communityModel.findOneAndUpdate({ _id: id }, {status: status}, {
+      new: true,
+    });  
+  }
+
   async findCommunityAdmin(community: string, user_type: string) {
     const pattern = { cmd: 'findOneCommunityUser' };
     const payload = { community_id: community, user_type: user_type };

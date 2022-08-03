@@ -40,11 +40,29 @@ export class UsersController {
     return this.userService.findOneByDNI(dni);
   }
 
+  @MessagePattern({ cmd: 'findById' })
+  findById(@Payload() id: string) {
+    let _id = id['id'];
+    return this.userService.findOne(_id);
+  }
+
   @MessagePattern({ cmd: 'findGuardsCommunity' })
   findGuardsCommunity(@Payload() community_id: string) {
     let pcommunity_id = community_id['community_id'];
     return this.userService.findGuardsCommunity(pcommunity_id);
   }
+
+  @MessagePattern({ cmd: 'findTenantsCommunity' })
+  findTenantsCommunity(@Payload() community_id: string) {
+    let pcommunity_id = community_id['community_id'];
+    return this.userService.findTenantsCommunity(pcommunity_id);
+  }
+
+  @MessagePattern({ cmd: 'findTenants' })
+  findTenants() {
+    return this.userService.findTenants();
+  }
+
 
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {

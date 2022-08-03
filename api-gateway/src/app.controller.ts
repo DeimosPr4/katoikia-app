@@ -102,14 +102,25 @@ export class AppController {
   allUsersAdminComunidad() {
     return this.appService.allUsersAdminComunidad();
   }
+
   @Get('user/findGuards/:community')
   findGuardsCommunity(@Param('community_id') community_id: string) {
     return this.appService.findGuardsCommunity(community_id);
   }
 
+  @Get('user/findTenants/:community_id')
+  allUsersTenants(@Param('community_id') paramCommunity_id: string) {
+    return this.appService.findTenantsCommunity(paramCommunity_id);
+  }
+  
   @Get('user/find/:dni')
   findUser(@Param('dni') paramUserDNI: string) {
     return this.appService.findUser(paramUserDNI);
+  }
+
+  @Get('user/findUserById/:id')
+  findUserById(@Param('id') id: string) {
+    return this.appService.findUserById(id);
   }
 
   @Delete('user/deleteAdminSystem/:id')
@@ -162,7 +173,13 @@ export class AppController {
   findCommunityAdmin(@Body('community_id') community_id: string) {
     return this.appService.findCommunityAdmin(community_id);
   }
-
+  @Post('community/changeStatus')
+  changeStatus(
+    @Body('id') pId: string,
+    @Body('status') pStatus: string,
+  ) {
+    return this.appService.changeStatus(pId, pStatus);
+  }
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(
@@ -189,6 +206,17 @@ export class AppController {
   @Get('commonArea/findCommonArea/:id')
   findCommonArea(@Param('id') paramCommonAreaId: string) {
     return this.appService.findCommonArea(paramCommonAreaId);
+  }
+
+  @Get('commonArea/findByCommunity/:community_id')
+  findByCommunity(@Param('community_id') paramCommunityId: string) {
+    return this.appService.findByCommunity(paramCommunityId);
+  }
+
+
+  @Delete('commonArea/deleteCommonArea/:id')
+  deleteCommonArea(@Param('id') id: string) {
+    return this.appService.deleteCommonArea(id);
   }
 
   // #==== API GUEST

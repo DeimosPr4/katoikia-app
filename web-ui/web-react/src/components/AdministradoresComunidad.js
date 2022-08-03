@@ -75,7 +75,6 @@ const AdministradoresComunidad = () => {
         let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
         let resList = await response.json();
         let list = await resList.message;
-        console.log(list);
 
         setCommunitiesList(await list);
     }
@@ -323,7 +322,7 @@ const AdministradoresComunidad = () => {
         <>
             <p> {' '}
                 <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />{' '}
-                Correo Electrónic
+                Correo Electrónico
             </p>
         </>
     )

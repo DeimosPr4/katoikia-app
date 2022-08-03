@@ -119,6 +119,17 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  allUsersTenants() {
+    const pattern = { cmd: 'findTenants' };
+    const payload = {};
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+  
+
   //GET parameter from API
   findUser(paramUserDNI: string) {
     const pattern = { cmd: 'findUserDNI' };
@@ -136,6 +147,13 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  findTenantsCommunity(community_id: string) {
+    const pattern = { cmd: 'findTenantsCommunity' };
+    const payload = { community_id: community_id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
 
   deleteAdminSystem(id: string) {
     const pattern = { cmd: 'deleteAdminSystem' };
@@ -161,6 +179,24 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
+  changeStatus(pId: string, pStatus: string) {
+    const pattern = { cmd: 'changeStatus' };
+    const payload = { id: pId, status: pStatus };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+
+   //GET parameter from API
+   findUserById(id: string) {
+    const pattern = { cmd: 'findById' };
+    const payload = { id: id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
 
   // ====================== COMMUNITIES ===============================
 
@@ -247,6 +283,26 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
+
+
+   //GET parameter from API
+   findByCommunity(paramCommunityId: string) {
+    const pattern = { cmd: 'findByCommunity' };
+    const payload = { community_id: paramCommunityId };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+
+    //DELETE parameter from API
+    deleteCommonArea(paramCommonAreaId: string) {
+      const pattern = { cmd: 'removeCommonArea' };
+      const payload = { id: paramCommonAreaId };
+      return this.clientCommonAreaApp
+        .send<string>(pattern, payload)
+        .pipe(map((message: string) => ({ message })));
+    }
 
   // ====================== GUESTS ===============================
 

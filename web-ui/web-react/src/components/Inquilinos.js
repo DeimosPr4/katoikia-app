@@ -59,9 +59,18 @@ const Inquilinos = () => {
       .then((response) => response.json())
       .then(data => data.message)
       .then(data => {
-
+        data = data.filter(
+          (val) => val.status != -1,
+        )
         data.map((item) => {
-          if(item.number_house ==""){
+          if (item.status == '1') {
+            item.status_text = 'Activo';
+          } else if (item.status == '0') {
+            item.status_text = 'Inactivo';
+          }
+
+
+          if (item.number_house == "") {
             item.number_house = "Sin vivienda asignada";
           }
         })
@@ -193,6 +202,50 @@ const Inquilinos = () => {
     });
   };
 
+  const cambiarStatusUser = () => {
+    if (tenant.status == '1') {
+      tenant.status = '0';
+      tenant.status_text = 'Inactivo';
+
+    } else if (tenant.status == '0') {
+      tenant.status = '1';
+      tenant.status_text = 'Activo';
+    }
+    var data = {
+      id: tenant._id,
+      status: tenant.status,
+    };
+    fetch('http://localhost:4000/user/changeStatus', {
+      cache: 'no-cache',
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+          setChangeStatusTenantDialog(false);
+          toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Inquilino Actualizado',
+            life: 3000,
+          });
+        }
+      )
+      .catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+  }
 
   const hideDeleteTenantDialog = () => {
     setDeleteTenantDialog(false);
@@ -211,11 +264,37 @@ const Inquilinos = () => {
     setDeleteTenantsDialog(true);
   };
 
+  const hideChangeStatusTenantDialog = () => {
+    setChangeStatusTenantDialog(false);
+  };
+
+  const confirmChangeStatusTenant = (tenant) => {
+    setTenant(tenant);
+    setChangeStatusTenantDialog(true);
+  };
 
   const actionsTenant = (rowData) => {
+    let icono = '';
+    let text = '';
+    if (rowData.status == '0') {
+      icono = "pi pi-eye";
+      text = "Activar Inquilino"
+    } else if (rowData.status == '1') {
+      icono = "pi pi-eye-slash";
+      text = "Inactivar Inquilino"
+
+    }
     return (
       <div className="actions">
-        <Button icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => confirmDeleteTenant(rowData)} />
+         <Button
+          icon={`${icono}`}
+          className={`p-button-rounded p-button-warning mt-2 mx-2`}
+          onClick={() => confirmChangeStatusTenant(rowData)}
+          title={`${text}`}
+        />
+        <Button icon="pi pi-trash" 
+        className="p-button-rounded p-button-danger mt-2" 
+        onClick={() => confirmDeleteTenant(rowData)} />
       </div>
     );
   }
@@ -262,6 +341,24 @@ const Inquilinos = () => {
     </>
   );
 
+
+  const changeStatusTenantDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideChangeStatusTenantDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={cambiarStatusUser}
+      />
+    </>
+  );
+  
   const headerName = (
     <>
       <p> <FontAwesomeIcon icon={faUserAlt} style={{ color: "#C08135" }} />  Nombre</p>
@@ -300,7 +397,7 @@ const Inquilinos = () => {
     </>
   )
 
- 
+
   return (
     <div className="grid">
       <div className="col-12">
@@ -321,7 +418,7 @@ const Inquilinos = () => {
             <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
             <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px', wordBreak: 'break-word' }}></Column>
             <Column field="number_house" sortable header={headerNumberHouse} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word', justifyContent: 'center' }}></Column>
-            <Column  style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsTenant}></Column>
+            <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsTenant}></Column>
           </DataTable>
           <Dialog visible={deleteTenantDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteTenantDialogFooter} onHide={hideDeleteTenantDialog}>
             <div className="flex align-items-center justify-content-center">
@@ -333,6 +430,26 @@ const Inquilinos = () => {
             <div className="flex align-items-center justify-content-center">
               <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
               {selectedTentants && <span>¿Está seguro eliminar los Inquilinos seleccionados?</span>}
+            </div>
+          </Dialog>
+          <Dialog
+            visible={changeStatusTenantDialog}
+            style={{ width: '450px' }}
+            header="Confirmar"
+            modal
+            footer={changeStatusTenantDialogFooter}
+            onHide={hideChangeStatusTenantDialog}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: '2rem' }}
+              />
+              {tenant && (
+                <span>
+                  ¿Estás seguro que desea cambiar estado a <b>{tenant.name}</b>?
+                </span>
+              )}
             </div>
           </Dialog>
         </div>

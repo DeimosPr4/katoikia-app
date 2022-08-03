@@ -15,6 +15,7 @@ import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 const Communities = () => {
   let emptyCommunity = {
@@ -26,6 +27,7 @@ const Communities = () => {
     phone: '',
     num_houses: 0,
     status: '1',
+    status_text: '',
     date_entry: new Date(),
     houses: [],
   };
@@ -166,7 +168,13 @@ const Communities = () => {
       (val) => val.status != -1,
     )
     await data.map((item) => {
-
+      if (item.status == '1') {
+        item.status_text = 'Activo';
+      } else if (item.status == '0') {
+        item.status_text = 'Inactivo';
+      } else {
+        item.status_text = 'Eliminado';
+      }
       item.province = pList.find((p) => p.code === item.province).name;
       item.canton = cList.find((p) => p.code === item.canton).name;
       item.district = dList.find((p) => p.code === item.district).name;
@@ -276,7 +284,6 @@ const Communities = () => {
       let tenant = tenants.find(t => t._id == tenant_id)
       name = tenant['name'] + ' ' + tenant['last_name'];
     }
-    console.log(name);
     return name;
   }
 
@@ -336,8 +343,11 @@ const Communities = () => {
   const cambiarEstadoCommunity = () => {
     if (community.status == '1') {
       community.status = '0';
+      community.status_text = 'Inactivo';
+
     } else if (community.status == '0') {
       community.status = '1';
+      community.status_text = 'Activo';
     }
     var data = {
       id: community._id,
@@ -413,7 +423,7 @@ const Communities = () => {
     let _communities = communitiesList.filter((val) => val._id !== community._id);
     _communities = _communities.filter(
       (val) => val.status != -1,
-  )
+    )
     setCommunitiesList(_communities);
     setDeleteCommunityDialog(false);
     setCommunity(emptyCommunity);
@@ -666,6 +676,15 @@ const Communities = () => {
     </>
   );
 
+  const headerStatus = (
+    <>
+      <p> {' '}
+        <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+        Estado
+      </p>
+    </>
+  )
+
   //ver perfil comunidad
   const headerTenant = (
     <>
@@ -678,11 +697,21 @@ const Communities = () => {
     </>
   );
 
+  const statusBodyTemplate = (rowData) => {
+    return (
+        <>
+            <span
+                className={`status status-${rowData.status}`}
+            >
+                {rowData.status_text}
+            </span>
+        </>
+    );
+};
 
   const tenantsBodyTemplate = (rowData) => {
     let tenants = rowData.tenants;
     let name = findNameTenant(tenants.tenant_id);
-    console.log(name);
     return (
       <>
         {name}
@@ -764,6 +793,13 @@ const Communities = () => {
               header={headerAdministrator}
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
+            <Column 
+            field="status" 
+            sortable 
+            header={headerStatus} 
+            body={statusBodyTemplate} 
+            style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            </Column>
             <Column
               body={actionsCommunity}
               style={{ flexGrow: 1, flexBasis: '100px' }}

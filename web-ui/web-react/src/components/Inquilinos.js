@@ -15,6 +15,7 @@ import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 import { useCookies } from "react-cookie";
 
@@ -34,7 +35,8 @@ const Inquilinos = () => {
     number_house: 'Sin número de vivienda',
     user_type: '4',
     date_entry: new Date(),
-    status: '1'
+    status: '1',
+    status_text: '',
   };
 
   const [tenants, setTenants] = useState([]);
@@ -50,6 +52,7 @@ const Inquilinos = () => {
   const dt = useRef(null);
 
   const [cookies, setCookie] = useCookies();
+  const [changeStatusTenantDialog, setChangeStatusTenantDialog] = useState(false);
 
 
   async function tenantsList() {
@@ -57,9 +60,18 @@ const Inquilinos = () => {
       .then((response) => response.json())
       .then(data => data.message)
       .then(data => {
-
+        data = data.filter(
+          (val) => val.status != -1,
+        )
         data.map((item) => {
-          if(item.number_house ==""){
+          if (item.status == '1') {
+            item.status_text = 'Activo';
+          } else if (item.status == '0') {
+            item.status_text = 'Inactivo';
+          }
+
+
+          if (item.number_house == "") {
             item.number_house = "Sin vivienda asignada";
           }
         })
@@ -72,7 +84,9 @@ const Inquilinos = () => {
     let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
     let resList = await response.json();
     let list = await resList.message;
-
+    list = await list.filter(
+      (val) => val.status != -1,
+    )
     setCommunitiesList(await list);
   }
 
@@ -189,6 +203,50 @@ const Inquilinos = () => {
     });
   };
 
+  const cambiarStatusUser = () => {
+    if (tenant.status == '1') {
+      tenant.status = '0';
+      tenant.status_text = 'Inactivo';
+
+    } else if (tenant.status == '0') {
+      tenant.status = '1';
+      tenant.status_text = 'Activo';
+    }
+    var data = {
+      id: tenant._id,
+      status: tenant.status,
+    };
+    fetch('http://localhost:4000/user/changeStatus', {
+      cache: 'no-cache',
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+          setChangeStatusTenantDialog(false);
+          toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Inquilino Actualizado',
+            life: 3000,
+          });
+        }
+      )
+      .catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+  }
 
   const hideDeleteTenantDialog = () => {
     setDeleteTenantDialog(false);
@@ -207,11 +265,37 @@ const Inquilinos = () => {
     setDeleteTenantsDialog(true);
   };
 
+  const hideChangeStatusTenantDialog = () => {
+    setChangeStatusTenantDialog(false);
+  };
+
+  const confirmChangeStatusTenant = (tenant) => {
+    setTenant(tenant);
+    setChangeStatusTenantDialog(true);
+  };
 
   const actionsTenant = (rowData) => {
+    let icono = '';
+    let text = '';
+    if (rowData.status == '0') {
+      icono = "pi pi-eye";
+      text = "Activar Inquilino"
+    } else if (rowData.status == '1') {
+      icono = "pi pi-eye-slash";
+      text = "Inactivar Inquilino"
+
+    }
     return (
       <div className="actions">
-        <Button icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => confirmDeleteTenant(rowData)} />
+         <Button
+          icon={`${icono}`}
+          className="p-button-rounded p-button-warning mt-2 mx-2"
+          onClick={() => confirmChangeStatusTenant(rowData)}
+          title={`${text}`}
+        />
+        <Button icon="pi pi-trash" 
+        className="p-button-rounded p-button-danger mt-2 mx-2" 
+        onClick={() => confirmDeleteTenant(rowData)} />
       </div>
     );
   }
@@ -247,17 +331,35 @@ const Inquilinos = () => {
   const deleteTenantDialogFooter = (
     <>
       <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteTenantDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteTenant} />
+      <Button label="Sí" icon="pi pi-check" className="p-button-text" onClick={deleteTenant} />
     </>
   );
 
   const deleteTenantsDialogFooter = (
     <>
       <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteTenantsDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedTenants} />
+      <Button label="Sí" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedTenants} />
     </>
   );
 
+
+  const changeStatusTenantDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideChangeStatusTenantDialog}
+      />
+      <Button
+        label="Sí"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={cambiarStatusUser}
+      />
+    </>
+  );
+  
   const headerName = (
     <>
       <p> <FontAwesomeIcon icon={faUserAlt} style={{ color: "#C08135" }} />  Nombre</p>
@@ -296,7 +398,27 @@ const Inquilinos = () => {
     </>
   )
 
- 
+  const headerStatus = (
+    <>
+      <p> {' '}
+        <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+        Estado
+      </p>
+    </>
+  )
+
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <>
+        <span
+          className={`status status-${rowData.status}`}
+        >
+          {rowData.status_text}
+        </span>
+      </>
+    );
+  };
+
   return (
     <div className="grid">
       <div className="col-12">
@@ -317,7 +439,14 @@ const Inquilinos = () => {
             <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
             <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px', wordBreak: 'break-word' }}></Column>
             <Column field="number_house" sortable header={headerNumberHouse} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word', justifyContent: 'center' }}></Column>
-            <Column  style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsTenant}></Column>
+            <Column
+              field="status"
+              sortable
+              header={headerStatus}
+              body={statusBodyTemplate}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            </Column>
+            <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsTenant}></Column>
           </DataTable>
           <Dialog visible={deleteTenantDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteTenantDialogFooter} onHide={hideDeleteTenantDialog}>
             <div className="flex align-items-center justify-content-center">
@@ -328,7 +457,27 @@ const Inquilinos = () => {
           <Dialog visible={deleteTenantsDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteTenantsDialogFooter} onHide={hideDeleteTenantsDialog}>
             <div className="flex align-items-center justify-content-center">
               <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-              {selectedTentants && <span>¿Está seguro eliminar los Inquilinos seleccionados?</span>}
+              {selectedTentants && <span>¿Está seguro eliminar los inquilinos seleccionados?</span>}
+            </div>
+          </Dialog>
+          <Dialog
+            visible={changeStatusTenantDialog}
+            style={{ width: '450px' }}
+            header="Confirmar"
+            modal
+            footer={changeStatusTenantDialogFooter}
+            onHide={hideChangeStatusTenantDialog}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: '2rem' }}
+              />
+              {tenant && (
+                <span>
+                  ¿Estás seguro que desea cambiar estado a <b>{tenant.name}</b>?
+                </span>
+              )}
             </div>
           </Dialog>
         </div>
@@ -342,7 +491,7 @@ const Inquilinos = () => {
               <InputText type="text" className="form-control" id="nombre" />
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="apellidos">Apellidos</label>
+              <label htmlFor="apellidos">Apellido(s)</label>
               <InputText type="text" className="form-control" id="apellidos" />
             </div>
             <div className="field col-12 md:col-6">

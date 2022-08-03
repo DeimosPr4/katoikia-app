@@ -18,7 +18,7 @@ export class AppService {
     @Inject('SERVICIO_REPORTES') private readonly clientReportApp: ClientProxy,
     @Inject('SERVICIO_NOTIFICACIONES')
     private readonly clientNotificationtApp: ClientProxy,
-  ) {}
+  ) { }
 
   // ====================== USERS ===============================
 
@@ -79,7 +79,7 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  
+
   createAdminCommunity(dni: string, name: string, last_name: string, email: string, phone: number
     , user_type: string, status: string, date_entry: Date, community_id: string) {
     const pattern = { cmd: 'createAdminCommunity' };
@@ -128,7 +128,7 @@ export class AppService {
         map((message: string) => ({ message })),
       );
   }
-  
+
 
   //GET parameter from API
   findUser(paramUserDNI: string) {
@@ -179,17 +179,10 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
-  changeStatus(pId: string, pStatus: string) {
-    const pattern = { cmd: 'changeStatus' };
-    const payload = { id: pId, status: pStatus };
-    return this.clientCommunityApp
-      .send<string>(pattern, payload)
-      .pipe(map((message: string) => ({ message })));
-  }
 
 
-   //GET parameter from API
-   findUserById(id: string) {
+  //GET parameter from API
+  findUserById(id: string) {
     const pattern = { cmd: 'findById' };
     const payload = { id: id };
     return this.clientUserApp
@@ -197,8 +190,23 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  changeStatusUser(pId: string, pStatus: string) {
+    const pattern = { cmd: 'changeStatus' };
+    const payload = { id: pId, status: pStatus };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
 
   // ====================== COMMUNITIES ===============================
+  changeStatusCommunity(pId: string, pStatus: string) {
+    const pattern = { cmd: 'changeStatus' };
+    const payload = { id: pId, status: pStatus };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
 
   //POST parameter from API
   createCommunity(name: string, province: string, canton: string, district: string
@@ -285,8 +293,8 @@ export class AppService {
   }
 
 
-   //GET parameter from API
-   findByCommunity(paramCommunityId: string) {
+  //GET parameter from API
+  findByCommunity(paramCommunityId: string) {
     const pattern = { cmd: 'findByCommunity' };
     const payload = { community_id: paramCommunityId };
     return this.clientCommonAreaApp
@@ -295,14 +303,14 @@ export class AppService {
   }
 
 
-    //DELETE parameter from API
-    deleteCommonArea(paramCommonAreaId: string) {
-      const pattern = { cmd: 'removeCommonArea' };
-      const payload = { id: paramCommonAreaId };
-      return this.clientCommonAreaApp
-        .send<string>(pattern, payload)
-        .pipe(map((message: string) => ({ message })));
-    }
+  //DELETE parameter from API
+  deleteCommonArea(paramCommonAreaId: string) {
+    const pattern = { cmd: 'removeCommonArea' };
+    const payload = { id: paramCommonAreaId };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
 
   // ====================== GUESTS ===============================
 

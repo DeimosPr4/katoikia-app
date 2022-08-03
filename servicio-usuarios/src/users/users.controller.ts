@@ -6,7 +6,7 @@ import { MongoExceptionFilter } from 'src/MongoExceptionFilter';
 
 @Controller()
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly userService: UsersService) { }
 
   @MessagePattern({ cmd: 'createUser' })
   create(@Payload() user: UserDocument) {
@@ -117,6 +117,11 @@ export class UsersController {
     return this.userService.deleteAdminSystem(user['id']);
   }
 
-  
 
+  @MessagePattern({ cmd: 'changeStatus' })
+  changeStatus(@Payload() body: string) {
+    let pid = body['id'];
+    let pstatus = body['status'];
+    return this.userService.changeStatus(pid, pstatus);
+  }
 }

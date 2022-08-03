@@ -465,7 +465,7 @@ const GuardasSeguridad = () => {
                         onHide={hideGuardDialog}>
                         <div className='container text-center'>
                             <div className='row my-4'>
-                                <div className=" col-12 md:col-12">
+                                <div className=" col-4 md:col-4">
                                     <p>Nombre</p>
                                     <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
                                         <div className="p-inputgroup align-items-center justify-content-evenly">
@@ -474,9 +474,7 @@ const GuardasSeguridad = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className='row my-5'>
-                                <div className=" col-6 md:col-6">
+                                <div className=" col-4 md:col-4">
                                     <p>Apellido(s)</p>
                                     <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
                                         <div className="p-inputgroup align-items-center justify-content-evenly">
@@ -486,29 +484,23 @@ const GuardasSeguridad = () => {
 
                                     </div>
                                 </div>
-                                <div className=" col-6 md:col-6">
-                                    <p>Correo Electrónico</p>
-                                    <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
-                                        <div className="p-inputgroup align-items-center justify-content-evenly">
-                                            <i className="pi pi-mail icon-khaki"></i>
-                                            <p>{guarda.email}</p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='row my-5'>
                                 <div className=" col-4 col-md-4 md:col-4">
                                     <p>Identificación</p>
-                                    <div className="p-0 col-10 md:col-10">
+                                    <div className="p-0 col-10 md:col-10" style={{ margin: '0 auto' }}>
                                         <div className="p-inputgroup align-items-center justify-content-evenly">
-                                            <i className="pi pi-map-marker icon-khaki"></i>
+                                            <i className="pi pi-id-card icon-khaki"></i>
                                             <p>{guarda.dni}</p>
                                         </div>
 
                                     </div>
                                 </div>
+                            </div>
+                            <div className='row my-5 justify-content-center'>
+                                
+
+
+                            </div>
+                            <div className='row my-5 justify-content-center'>
                                 <div className=" col-4 md:col-4">
                                     <p>Teléfono</p>
                                     <div className="p-0 col-10 md:col-10">
@@ -519,8 +511,17 @@ const GuardasSeguridad = () => {
 
                                     </div>
                                 </div>
-                            </div>
+                                <div className=" col-6 md:col-6">
+                                    <p>Correo Electrónico</p>
+                                    <div className="p-0 col-10  md:col-10" style={{ margin: '0 auto' }}>
+                                        <div className="p-inputgroup align-items-center justify-content-evenly">
+                                            <i className="pi pi-envelope icon-khaki"></i>
+                                            <p>{guarda.email}</p>
+                                        </div>
 
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </Dialog>

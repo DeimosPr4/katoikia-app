@@ -95,11 +95,11 @@ const Inquilinos = () => {
               />
             </div>
             <div className='field col-12 md:col-6'>
-              <label htmlFor='identificacion'>Identificación</label>
+              <label htmlFor='password'>Password</label>
               <InputText
                 type='password'
                 className='form-control'
-                id='identificacion'
+                id='password'
               />
             </div>
             <Button label='Registrar' onClick={finalizarRegistro} />

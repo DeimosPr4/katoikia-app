@@ -99,7 +99,7 @@ const Inquilinos = () => {
   }))
 
   function registrarInquilino() {
-    let data = {
+    let newTenant = {
       _id: null,
       dni: '',
       name: '',
@@ -119,7 +119,7 @@ const Inquilinos = () => {
     fetch('http://localhost:3000/api/createUser', {
       method: 'POST',
       cache: 'no-cache',
-      body: JSON.stringify(data),
+      body: JSON.stringify(newTenant),
       headers: {
         'Content-Type': 'application/json',
       },

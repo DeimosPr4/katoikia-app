@@ -1,7 +1,6 @@
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
-import React, { useState, useRef } from 'react'
-import { Dropdown } from 'primereact/dropdown'
+import React, { useState } from 'react'
 
 import { useCookies } from 'react-cookie'
 

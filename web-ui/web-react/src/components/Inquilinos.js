@@ -103,10 +103,20 @@ const Inquilinos = () => {
 
   function registrarInquilino() {
     let data = {
-      email: document.getElementById('correo_electronico').value,
-      community_id: document.getElementById('numero_vivienda').value,
-      user_type: '3',
-      status: '1',
+      _id: null,
+      dni: "",
+      name: "",
+      last_name: "",
+      email: document.getElementById("correo_electronico").value,
+      phone: "",
+      password: "",
+      community_id: document.getElementById("numero_vivienda").value,
+      community_name: "",
+      number_house: "Sin número de vivienda",
+      date_entry: new Date(),
+      user_type: "3",
+      status: "1",
+      status_text: "",
     };
 
     fetch('http://localhost:3000/api/createUser', {

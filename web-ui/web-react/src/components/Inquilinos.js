@@ -56,7 +56,7 @@ const Inquilinos = () => {
   async function tenantsList() {
     await fetch(`http://localhost:4000/user/findTenants/${cookies.community_id}`, { method: 'GET' })
       .then((response) => response.json())
-      .then(data => data.message.filter)
+      .then(data => data.message)
       .then(data => {
         data = data.filter(
           (val) => val.status != -1,
@@ -181,25 +181,21 @@ const Inquilinos = () => {
         'Content-Type': 'application/json'
       }
     })
-      .then(
-        function (response) {
-          if (response.status != 201)
-            console.log('Ocurrió un error con el servicio: ' + response.status);
-          else
-            return response.json();
-        }
-      )
-      .then(
-        function (response) {
-          setChangeStatusTenantDialog(false);
-          toast.current.show({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Inquilino Actualizado',
-            life: 3000,
-          });
-        }
-      )
+      .then((response) => {
+        if(response.status != 201)
+          console.log('Ocurrió un error con el servicio: ' + response.status);
+        else
+          return response.json();
+      })
+      .then((response) => {
+        setChangeStatusTenantDialog(false);
+        toast.current.show({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Inquilino Actualizado',
+          life: 3000,
+        });
+      })
       .catch(
         err => console.log('Ocurrió un error con el fetch', err)
       );

@@ -56,7 +56,7 @@ const Inquilinos = () => {
   async function tenantsList() {
     await fetch(`http://localhost:4000/user/findTenants/${cookies.community_id}`, { method: 'GET' })
       .then((response) => response.json())
-      .then(data => data.message)
+      .then(data => data.message.filter)
       .then(data => {
         data = data.filter(
           (val) => val.status != -1,
@@ -132,38 +132,6 @@ const Inquilinos = () => {
   }
 
   const deleteTenant = () => {
-    /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
-           cache: 'no-cache',
-           method: 'DELETE',
-           headers: {
-               'Content-Type': 'application/json'
-           }
-       })
-           .then(
-               function (response) {
-                   if (response.status != 201)
-                       console.log('Ocurrió un error con el servicio: ' + response.status);
-                   else
-                       return response.json();
-               }
-           )
-           .then(
-               function (response) {
-                   
-                   let _community = communities.filter(val => val._id !== community._id);
-                   setCommunities(_community);
-                   setDeleteCommunityDialog(false);
-                   setCommunity(emptyCommunity);
-                   toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });
-               }
-           )
-           .catch(
-               err => {
-                   console.log('Ocurrió un error con el fetch', err)
-                   toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Comunidad de Viviendas no se pudo eliminar', life: 3000 });
-               }
-           ); 
-    */
     let _tenants = tenants.filter(
       (val) => val._id !== tenant._id,
     );
@@ -181,15 +149,6 @@ const Inquilinos = () => {
     let _tenants = tenants.filter(
       (val) => !selectedTentants.includes(val),
     );
-    /*  selectedCommunities.map((item) => {
-             fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
-                 cache: 'no-cache',
-                 method: 'DELETE',
-                 headers: {
-                     'Content-Type': 'application/json'
-                 }
-             })
-         })*/
     setTenants(_tenants);
     setDeleteTenantsDialog(false);
     setSelectedTenants(null);

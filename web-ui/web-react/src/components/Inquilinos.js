@@ -439,22 +439,6 @@ const Inquilinos = () => {
           <h5 className="card-header">Registrar Inquilino</h5>
           <div className="p-fluid formgrid grid">
             <div className="field col-12 md:col-6">
-              <label htmlFor="nombre">Nombre</label>
-              <InputText type="text" className="form-control" id="nombre" />
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="apellidos">Apellido(s)</label>
-              <InputText type="text" className="form-control" id="apellidos" />
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="identificacion">Identificación</label>
-              <InputText
-                type="text"
-                className="form-control"
-                id="identificacion"
-              />
-            </div>
-            <div className="field col-12 md:col-6">
               <label htmlFor="correo_electronico">Correo electrónico</label>
               <InputText
                 type="email"
@@ -465,14 +449,6 @@ const Inquilinos = () => {
             <div className="field col-12 md:col-6">
               <label htmlFor="numero_vivienda">Número de Vivienda</label>
               <Dropdown id="numero_vivienda" value={communityId} options={cList} />
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="identificacion">Identificación</label>
-              <InputText
-                type="password"
-                className="form-control"
-                id="identificacion"
-              />
             </div>
             <Button label="Registrar" onClick={registrarInquilino} />
           </div>

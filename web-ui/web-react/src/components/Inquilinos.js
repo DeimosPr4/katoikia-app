@@ -87,7 +87,7 @@ const Inquilinos = () => {
 
   useEffect(() => {
     tenantsList()
-  }, [])
+  }, [tenantsList])
 
   useEffect(() => {
     getCommunites()

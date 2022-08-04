@@ -1,19 +1,7 @@
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext'
-import React, { useEffect, useState, useRef } from 'react'
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+import React, { useState, useRef } from 'react'
 import { Dropdown } from 'primereact/dropdown';
-import { Toast } from 'primereact/toast';
-import { Dialog } from 'primereact/dialog';
-import { Toolbar } from 'primereact/toolbar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { faAt } from '@fortawesome/free-solid-svg-icons';
-import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
-import { faHashtag } from '@fortawesome/free-solid-svg-icons';
-import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 import { useCookies } from "react-cookie";
 

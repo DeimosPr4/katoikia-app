@@ -613,6 +613,7 @@ const Inquilinos = () => {
                 id='numero_vivienda'
                 value={communityId}
                 options={cList}
+                onChange={(e) => setCommunityId(e.value)}
               />
             </div>
             <Button label='Registrar' onClick={registrarInquilino} />

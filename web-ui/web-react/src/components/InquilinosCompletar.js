@@ -48,7 +48,7 @@ const Inquilinos = () => {
     }
 
     fetch('http://localhost:3000/api/createUser', {
-      method: 'POST',
+      method: 'PUT',
       cache: 'no-cache',
       body: JSON.stringify(data),
       headers: {

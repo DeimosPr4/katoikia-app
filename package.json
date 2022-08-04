@@ -1,0 +1,28 @@
+{
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "js-beautify": "^1.14.4",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1"
+  },
+  "scripts": {
+    "format": "npm run format:prettier && npm run format:html",
+    "format:prettier": "prettier --config .prettierrc \"**/src/**/*.{ts,css,less,scss,js}\" --write",
+    "format:html": "js-beautify --config .jsbeautifyrc --type 'html' --file '**/src/**/*.html' --replace"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,css,less,scss,js}": [
+      "prettier --config .prettierrc --write",
+      "git add"
+    ],
+    "*.html": [
+      "js-beautify --config .jsbeautifyrc --type 'html' --replace",
+      "git add"
+    ]
+  }
+}

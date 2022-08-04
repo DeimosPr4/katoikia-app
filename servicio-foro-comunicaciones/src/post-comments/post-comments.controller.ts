@@ -3,7 +3,6 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PostCommentsService } from './post-comments.service';
 import { Comment, CommentDocument } from '../schemas/post-comment.schema';
 
-
 @Controller()
 export class PostCommentsController {
   constructor(private readonly postCommentsService: PostCommentsService) {}
@@ -18,7 +17,7 @@ export class PostCommentsController {
     return this.postCommentsService.findAll();
   }
 
-  @MessagePattern({cmd: 'findOneComment'})
+  @MessagePattern({ cmd: 'findOneComment' })
   findOne(@Payload() id: string) {
     let _id = id['id'];
     return this.postCommentsService.findOne(_id);

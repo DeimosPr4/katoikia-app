@@ -7,7 +7,6 @@ import { Report, ReportDocument } from '../schemas/report.schema';
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
 
- 
   @MessagePattern({ cmd: 'createReport' })
   create(@Payload() report: ReportDocument) {
     return this.reportsService.create(report);

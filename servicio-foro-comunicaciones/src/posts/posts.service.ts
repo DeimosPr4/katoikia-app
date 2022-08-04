@@ -7,19 +7,16 @@ import { InjectModel } from '@nestjs/mongoose';
 export class PostsService {
   constructor(
     @InjectModel(Post.name) private readonly postModel: Model<PostDocument>,
-  ) { }
+  ) {}
 
   async create(post: PostDocument): Promise<Post> {
     return this.postModel.create(post);
   }
 
-  async findAll(): Promise<Post[]> { 
-    return this.postModel
-      .find() 
-      .setOptions({ sanitizeFilter: true }) 
-      .exec();
+  async findAll(): Promise<Post[]> {
+    return this.postModel.find().setOptions({ sanitizeFilter: true }).exec();
   }
-  
+
   async findOne(id: string): Promise<Post> {
     return this.postModel.findOne({ _id: id }).exec();
   }

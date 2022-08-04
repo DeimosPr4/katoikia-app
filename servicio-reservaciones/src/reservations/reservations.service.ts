@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Reservation, ReservationDocument} from '../schemas/reservation.schema';
+import {
+  Reservation,
+  ReservationDocument,
+} from '../schemas/reservation.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ReservationsService {
   constructor(
-    @InjectModel(Reservation.name) private readonly reservationModel: Model<ReservationDocument>,
+    @InjectModel(Reservation.name)
+    private readonly reservationModel: Model<ReservationDocument>,
   ) {}
 
   create(reservation: ReservationDocument) {
@@ -15,10 +19,10 @@ export class ReservationsService {
     return this.reservationModel.create(reservation);
   }
 
-  async findAll(): Promise<Reservation[]> { 
+  async findAll(): Promise<Reservation[]> {
     return this.reservationModel
-      .find() 
-      .setOptions({ sanitizeFilter: true }) 
+      .find()
+      .setOptions({ sanitizeFilter: true })
       .exec();
   }
 
@@ -37,6 +41,8 @@ export class ReservationsService {
   }
 
   async remove(id: string) {
-    return this.reservationModel.findByIdAndRemove({ _id: id }).exec();
+    return this.reservationModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
   }
 }

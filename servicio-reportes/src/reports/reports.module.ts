@@ -6,9 +6,9 @@ import { Report, ReportSchema } from '../schemas/report.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Report.name, schema:ReportSchema }]), 
+    MongooseModule.forFeature([{ name: Report.name, schema: ReportSchema }]),
   ],
   controllers: [ReportsController],
-  providers: [ReportsService]
+  providers: [ReportsService],
 })
 export class ReportsModule {}

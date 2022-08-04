@@ -46,5 +46,6 @@ jobs:
       - name: Test
         run: |
           cd ./web-ui/web-react/
+          npm install
           npm ci
           npm run build --if-present

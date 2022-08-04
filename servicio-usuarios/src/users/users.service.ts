@@ -101,13 +101,14 @@ export class UsersService {
           let passwordEncriptada = Md5.init(password);
           if (res[0].password == passwordEncriptada) {
             resolve(res[0]);
+            console.log(res[0])
           } else {
             resolve(null);
           }
         }
       });
     });
-
+    console.log(await userReturn);
     return userReturn;
   }
 

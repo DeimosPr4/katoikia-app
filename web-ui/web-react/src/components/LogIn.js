@@ -1,48 +1,99 @@
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
-const LogIn = () => {
+import PropTypes from 'prop-types';
 
-    const [email, setEmail] = useState(""); 
-    const [password, setPassword] = useState(""); 
+const LogIn = ({ setToken }) => {
+
+  let emptyLogin = {
+    _id: null,
+    name: '',
+    email: '',
+    password: '',
+    status: '1',
+    status_text: '',
+  }
 
 
-    const iniciarSesion = () =>{
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessages, setErrorMessages] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [login, setLogin] = useState(emptyLogin);
 
-    }
 
-    
+  async function loginUser(credentials) {
+    return fetch('http://localhost:4000/user/loginUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(credentials)
+    })
+    .then(data => data.json())
+    .then(data => console.log(data.message))
+  }
 
-    return (
-        <div className="grid">
-            <div className="col-12">
-                <div className="card">
-                    <h5>Iniciar Sesión</h5>
-                    <div className="p-fluid formgrid grid">
-                        <div className="field col-12">
-                            <label htmlFor="correo">Correo electrónico</label>
-                            <InputText id="correo" type="text" placeholder='Correo electrónico'/>
-                        </div>
-                        <div className="field col-12 ">
-                            <label htmlFor="contrasenna">Contraseña</label>
-                            <InputText id="contrasenna" type="text" placeholder='Contraseña'/>
-                        </div>
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const token = await loginUser({
+      email: email,
+      password: password
+    });
+    setToken(await token);
+  }
 
-                        {/* <Button label="Registrar" onClick={registrarAdmin}></Button> */}
-                    </div>
-                </div>
+  const renderErrorMessage = (name) =>
+    name === errorMessages.name && (
+      <div className="error">{errorMessages.message}</div>
+    );
+
+  const errors = {
+    email: "coreo requerido",
+    pass: "contraseña requerida"
+  };
+
+  return (
+    <div className="login-wrapper">
+
+      <div className="grid form justify-content-center my-5">
+        <div className="col-5">
+          <form className="card">
+            <h5>Iniciar Sesión</h5>
+            <div className="p-fluid formgrid grid">
+              <div className="field col-12">
+                <label htmlFor="email">Correo electrónico</label>
+                <InputText id="email"
+                  type="email"
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder='Correo electrónico' />
+                {renderErrorMessage("email")}
+              </div>
+              <div className="field col-12 ">
+                <label htmlFor="password">Contraseña</label>
+                <InputText id="password"
+                  type="text"
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder='Contraseña'
+                />
+                {renderErrorMessage("password")}
+              </div>
+
+              <Button label="Iniciar sesión" type="submit" onClick={ handleSubmit}></Button>
             </div>
-            <div className="field col-12 ">
-              <label htmlFor="apellidos">Contraseña</label>
-              <InputText id="apellidos" type="text" />
-            </div>
-
-            {/* <Button label="Registrar" onClick={registrarAdmin}></Button> */}
-          </div>
+          </form>
         </div>
+
+
+        {/* <Button label="Registrar" onClick={registrarAdmin}></Button> */}
       </div>
     </div>
   );
 };
+
+LogIn.propTypes = {
+  setToken: PropTypes.func.isRequired
+}
 
 export default LogIn

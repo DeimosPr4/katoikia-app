@@ -39,6 +39,9 @@ export class User {
 
   @Prop()
   number_house?: string;
+
+  @Prop()
+  token?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

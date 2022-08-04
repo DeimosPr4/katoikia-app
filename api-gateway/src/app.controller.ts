@@ -80,8 +80,8 @@ export class AppController {
     );
   }
 
-  @Put('user/updateUser/:dni')
-  updateUser(@Param('dni') dni: string) {
+  @Put('user/updateUser')
+  updateUser(
     @Body('dni') dni: string,
     @Body('name') name: string,
     @Body('last_name') last_name: string,
@@ -93,7 +93,7 @@ export class AppController {
     @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
   ) {
-    return this.appService.createUser(
+    return this.appService.updateUser(
       dni,
       name,
       last_name,

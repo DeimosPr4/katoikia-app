@@ -8,12 +8,10 @@ import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 

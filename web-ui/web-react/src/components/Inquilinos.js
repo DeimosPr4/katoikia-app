@@ -14,7 +14,6 @@ import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
-
 import { useCookies } from "react-cookie";
 
 

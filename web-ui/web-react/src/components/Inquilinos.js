@@ -184,7 +184,7 @@ const Inquilinos = () => {
           return response.json()
         }
       })
-      .then((response) => {
+      .then(() => {
         setChangeStatusTenantDialog(false)
         toast.current.show({
           severity: 'success',

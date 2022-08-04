@@ -58,15 +58,15 @@ const Inquilinos = () => {
       .then((response) => response.json())
       .then((data) => data.message)
       .then((data) => {
-        data = data.filter((val) => val.status != -1)
+        data = data.filter((val) => val.status !== -1)
         data.map((item) => {
-          if (item.status == '1') {
+          if (item.status === '1') {
             item.status_text = 'Activo'
-          } else if (item.status == '0') {
+          } else if (item.status === '0') {
             item.status_text = 'Inactivo'
           }
 
-          if (item.number_house == '') {
+          if (item.number_house === '') {
             item.number_house = 'Sin vivienda asignada'
           }
         })
@@ -81,7 +81,7 @@ const Inquilinos = () => {
     )
     let resList = await response.json()
     let list = await resList.message
-    list = await list.filter((val) => val.status != -1)
+    list = await list.filter((val) => val.status !== -1)
     setCommunitiesList(await list)
   }
 
@@ -158,10 +158,10 @@ const Inquilinos = () => {
   }
 
   const cambiarStatusUser = () => {
-    if (tenant.status == '1') {
+    if (tenant.status === '1') {
       tenant.status = '0'
       tenant.status_text = 'Inactivo'
-    } else if (tenant.status == '0') {
+    } else if (tenant.status === '0') {
       tenant.status = '1'
       tenant.status_text = 'Activo'
     }
@@ -178,7 +178,7 @@ const Inquilinos = () => {
       },
     })
       .then((response) => {
-        if (response.status != 201) {
+        if (response.status !== 201) {
           console.log('Ocurrió un error con el servicio: ' + response.status)
         } else {
           return response.json()
@@ -225,10 +225,10 @@ const Inquilinos = () => {
   const actionsTenant = (rowData) => {
     let icono = ''
     let text = ''
-    if (rowData.status == '0') {
+    if (rowData.status === '0') {
       icono = 'pi pi-eye'
       text = 'Activar Inquilino'
-    } else if (rowData.status == '1') {
+    } else if (rowData.status === '1') {
       icono = 'pi pi-eye-slash'
       text = 'Inactivar Inquilino'
     }

@@ -602,6 +602,7 @@ const Inquilinos = () => {
             <div className='field col-12 md:col-6'>
               <label htmlFor='correo_electronico'>Correo electrónico</label>
               <InputText
+                required
                 type='email'
                 className='form-control'
                 id='correo_electronico'
@@ -610,6 +611,7 @@ const Inquilinos = () => {
             <div className='field col-12 md:col-6'>
               <label htmlFor='numero_vivienda'>Número de Vivienda</label>
               <Dropdown
+                required
                 id='numero_vivienda'
                 value={communityId}
                 options={cList}

@@ -44,8 +44,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - name: Test
+        env:
+          NODE_OPTIONS: '--openssl-legacy-provider'
         run: |
           cd ./web-ui/web-react/
-          npm install
           npm ci
           npm run build --if-present

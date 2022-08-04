@@ -103,13 +103,8 @@ const Inquilinos = () => {
 
   function registrarInquilino() {
     let data = {
-      dni: document.getElementById('identificacion').value,
-      name: document.getElementById('nombre').value,
-      last_name: document.getElementById('apellidos').value,
-      phone: document.getElementById('telefono').value,
       email: document.getElementById('correo_electronico').value,
       community_id: document.getElementById('numero_vivienda').value,
-      password: document.getElementById('password').value,
       user_type: '3',
       status: '1',
     };

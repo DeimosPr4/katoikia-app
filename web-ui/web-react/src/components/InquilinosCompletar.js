@@ -68,7 +68,7 @@ const Inquilinos = () => {
     <div className='grid'>
       <div className='col-12'>
         <div className='card'>
-          <h5 className='card-header'>Registrar Inquilino</h5>
+          <h5 className='card-header'>Finalizar Registro</h5>
           <div className='p-fluid formgrid grid'>
             <div className='field col-12 md:col-6'>
               <label htmlFor='nombre'>Nombre</label>

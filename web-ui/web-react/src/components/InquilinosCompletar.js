@@ -31,7 +31,6 @@ const Inquilinos = () => {
   const [communitiesList, setCommunitiesList] = useState([])
   const [communityId, setCommunityId] = useState(null)
   const [submitted, setSubmitted] = useState(false)
-
   const [cookies, setCookie] = useCookies()
   const [changeStatusTenantDialog, setChangeStatusTenantDialog] =
     useState(false)
@@ -93,14 +92,6 @@ const Inquilinos = () => {
                 type='email'
                 className='form-control'
                 id='correo_electronico'
-              />
-            </div>
-            <div className='field col-12 md:col-6'>
-              <label htmlFor='numero_vivienda'>Número de Vivienda</label>
-              <Dropdown
-                id='numero_vivienda'
-                value={communityId}
-                options={cList}
               />
             </div>
             <div className='field col-12 md:col-6'>

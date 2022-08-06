@@ -4,7 +4,21 @@ import { Button } from 'primereact/button';
 
 import PropTypes from 'prop-types';
 
-const LogIn = ({ setToken }) => {
+
+async function loginUser(credentials) {
+  return fetch('http://localhost:4000/user/loginUser', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+  .then(data => data.json())
+  .then(data => data.message);
+}
+
+
+export default function LogIn({ setToken }) {
 
   let emptyLogin = {
     _id: null,
@@ -16,30 +30,20 @@ const LogIn = ({ setToken }) => {
   }
 
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [login, setLogin] = useState(emptyLogin);
 
 
-  async function loginUser(credentials) {
-    return fetch('http://localhost:4000/user/loginUser', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    })
-    .then(data => data.json())
-    .then(data => console.log(data.message))
-  }
+  
 
   const handleSubmit = async e => {
     e.preventDefault();
     const token = await loginUser({
-      email: email,
-      password: password
+      email,
+      password
     });
     setToken(await token);
   }
@@ -50,8 +54,8 @@ const LogIn = ({ setToken }) => {
     );
 
   const errors = {
-    email: "coreo requerido",
-    pass: "contraseña requerida"
+    email: "correo requerido",
+    password: "contraseña requerida"
   };
 
   return (
@@ -59,9 +63,9 @@ const LogIn = ({ setToken }) => {
 
       <div className="grid form justify-content-center my-5">
         <div className="col-5">
-          <form className="card">
+          <div className="card" >
             <h5>Iniciar Sesión</h5>
-            <div className="p-fluid formgrid grid">
+            <form className="p-fluid formgrid grid" onSubmit={handleSubmit}>
               <div className="field col-12">
                 <label htmlFor="email">Correo electrónico</label>
                 <InputText id="email"
@@ -73,16 +77,16 @@ const LogIn = ({ setToken }) => {
               <div className="field col-12 ">
                 <label htmlFor="password">Contraseña</label>
                 <InputText id="password"
-                  type="text"
+                  type="password"
                   onChange={e => setPassword(e.target.value)}
                   placeholder='Contraseña'
                 />
                 {renderErrorMessage("password")}
               </div>
 
-              <Button label="Iniciar sesión" type="submit" onClick={ handleSubmit}></Button>
-            </div>
-          </form>
+              <Button label="Iniciar sesión" type="submit"></Button>
+            </form>
+          </div>
         </div>
 
 
@@ -95,5 +99,3 @@ const LogIn = ({ setToken }) => {
 LogIn.propTypes = {
   setToken: PropTypes.func.isRequired
 }
-
-export default LogIn

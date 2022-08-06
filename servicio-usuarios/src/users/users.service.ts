@@ -29,7 +29,7 @@ export class UsersService {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
 
-    this.userModel.create(user)
+    this.userModel.create(user);
 
 
     let community = await this.findCommunity(user.community_id);
@@ -98,10 +98,12 @@ export class UsersService {
         if (err) {
           reject(err);
         } else {
+          console.log(res);
+          console.log(Md5.init(password));
           let passwordEncriptada = Md5.init(password);
           if (res[0].password == passwordEncriptada) {
             resolve(res[0]);
-            console.log(res[0])
+            res[0].token = '1234';
           } else {
             resolve(null);
           }

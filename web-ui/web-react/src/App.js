@@ -53,6 +53,17 @@ import './App.scss';
 import LogIn from './components/LogIn';
 import { PrimeIcons } from 'primereact/api';
 import AreasComunes from './components/AreasComunes';
+import { Cookies } from 'react-cookie';
+import useToken from './components/useToken';
+
+function setToken(userToken) {
+  sessionStorage.setItem('token', JSON.stringify(userToken.token));
+}
+function getToken() {
+  const tokenString = sessionStorage.getItem('token');
+  const userToken = JSON.parse(tokenString);
+  return userToken?.token
+}
 
 
 const App = () => {
@@ -66,6 +77,9 @@ const App = () => {
   const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
   const copyTooltipRef = useRef();
   const location = useLocation();
+  
+
+  const { token, setToken } = useToken();
 
   PrimeReact.ripple = true;
 
@@ -351,7 +365,6 @@ const App = () => {
   });
 
 
-  const [token, setToken] = useState();
 
   if(!token) {
     return <LogIn setToken={setToken} />
@@ -364,9 +377,104 @@ const App = () => {
       <h1>Application</h1>
       <BrowserRouter>
         <Switch>
-          <Route path="/dashboard">
-            <Dashboard colorMode={layoutColorMode} location={location} />
-          </Route>
+        <div className={wrapperClass} onClick={onWrapperClick}>
+      <Tooltip
+        ref={copyTooltipRef}
+        target=".block-action-copy"
+        position="bottom"
+        content="Copied to clipboard"
+        event="focus"
+      />
+
+      <AppTopbar
+        onToggleMenuClick={onToggleMenuClick}
+        layoutColorMode={layoutColorMode}
+        mobileTopbarMenuActive={mobileTopbarMenuActive}
+        onMobileTopbarMenuClick={onMobileTopbarMenuClick}
+        onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick}
+      />
+
+      <div className="layout-sidebar" onClick={onSidebarClick}>
+        <AppMenu
+          model={menu}
+          onMenuItemClick={onMenuItemClick}
+          layoutColorMode={layoutColorMode}
+        />
+      </div>
+
+      <div className="layout-main-container">
+        <div className="layout-main">
+          <Route
+            path="/"
+            exact
+            render={() => (
+              <Dashboard colorMode={layoutColorMode} location={location} />
+            )}
+          />
+          <Route path="/formlayout" component={FormLayoutDemo} />
+          <Route path="/input" component={InputDemo} />
+          <Route path="/floatlabel" component={FloatLabelDemo} />
+          <Route path="/invalidstate" component={InvalidStateDemo} />
+          <Route path="/button" component={ButtonDemo} />
+          <Route path="/table" component={TableDemo} />
+          <Route path="/list" component={ListDemo} />
+          <Route path="/tree" component={TreeDemo} />
+          <Route path="/panel" component={PanelDemo} />
+          <Route path="/overlay" component={OverlayDemo} />
+          <Route path="/media" component={MediaDemo} />
+          <Route path="/menu" component={MenuDemo} />
+          <Route path="/messages" component={MessagesDemo} />
+          <Route path="/blocks" component={BlocksDemo} />
+          <Route path="/icons" component={IconsDemo} />
+          <Route path="/file" component={FileDemo} />
+          <Route
+            path="/chart"
+            render={() => (
+              <ChartDemo colorMode={layoutColorMode} location={location} />
+            )}
+          />
+          <Route path="/misc" component={MiscDemo} />
+          <Route path="/timeline" component={TimelineDemo} />
+          <Route path="/crud" component={Crud} />
+          <Route path="/empty" component={EmptyPage} />
+          <Route path="/documentation" component={Documentation} />
+          <Route
+            path="/administradoresSistema"
+            component={AdministradoresSistema}
+          />
+          <Route
+            path="/administradoresComunidad"
+            component={AdministradoresComunidad}
+          />
+          <Route path="/guardasSeguridad" component={GuardasSeguridad} />
+          <Route path="/comunidadesViviendas" component={Communities} />
+          <Route path="/inquilinos" component={Inquilinos} />
+          <Route path="/areasComunes" component={AreasComunes} />
+        </div>
+
+        <AppFooter layoutColorMode={layoutColorMode} />
+      </div>
+
+      <AppConfig
+        rippleEffect={ripple}
+        onRippleEffect={onRipple}
+        inputStyle={inputStyle}
+        onInputStyleChange={onInputStyleChange}
+        layoutMode={layoutMode}
+        onLayoutModeChange={onLayoutModeChange}
+        layoutColorMode={layoutColorMode}
+        onColorModeChange={onColorModeChange}
+      />
+
+      <CSSTransition
+        classNames="layout-mask"
+        timeout={{ enter: 200, exit: 200 }}
+        in={mobileMenuActive}
+        unmountOnExit
+      >
+        <div className="layout-mask p-component-overlay"></div>
+      </CSSTransition>
+            </div> 
           
         </Switch>
       </BrowserRouter>

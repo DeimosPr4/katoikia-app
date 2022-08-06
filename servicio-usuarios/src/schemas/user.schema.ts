@@ -10,7 +10,7 @@ export class User {
   @Prop({index: true})
   dni!: string;
 
-  @Prop({required: true})
+  @Prop()
   name: string;
 
   @Prop({required: true})

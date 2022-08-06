@@ -18,6 +18,7 @@ import {
 } from "native-base";
 import NativeBaseIcon from "./components/NativeBaseIcon";
 import { Platform } from "react-native";
+import logo from "./assets/logo-katoikia.png"
 
 // Define the config
 const config = {
@@ -31,17 +32,18 @@ colors: {
   brown: "#D7A86E"
 } });
 
-//const logo = require('./assets/')
+// const logo = require('./assets/logo-katoikia.png')
+
 
 export default function App() {
   return (
     <NativeBaseProvider>
       <Center w="100%">
         <Box safeArea p="2" py="8" w="90%" maxW="290">
-        {/* <Image source={{
-      uri: logo.default.src
-    }} width={500} height={500}
-    alt="Katoikia logo" size="xl" /> */}
+        <Image source={
+          logo
+        } width={500} height={550}
+    alt="Katoikia logo" size="xl" justifyContent="center" />
 
           <Heading
             size="lg"
@@ -90,27 +92,7 @@ export default function App() {
             >
               <Text>Continuar</Text>
             </Button>
-            <HStack mt="6" justifyContent="center">
-              {/* <Text
-                fontSize="sm"
-                color="coolGray.600"
-                _dark={{
-                  color: "warmGray.200",
-                }}
-              >
-                I'm a new user.
-              </Text> */}
-              <Link
-                _text={{
-                  color: "warning.300",
-                  fontWeight: "medium",
-                  fontSize: "sm",
-                }}
-                href="#"
-              >
-                 Regístrese aquí
-              </Link>
-            </HStack>
+           
           </VStack>
         </Box>
       </Center>

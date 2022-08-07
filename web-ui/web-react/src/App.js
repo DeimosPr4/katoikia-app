@@ -33,6 +33,7 @@ import AdministradoresComunidad from './components/AdministradoresComunidad';
 import GuardasSeguridad from './components/GuardasSeguridad';
 import Communities from './components/ComunidadViviendas';
 import Inquilinos from './components/Inquilinos';
+import InquilinosCompletar from "./components/InquilinosCompletar.js";
 
 import Crud from './pages/Crud';
 import EmptyPage from './pages/EmptyPage';
@@ -421,6 +422,7 @@ const App = () => {
           <Route path="/guardasSeguridad" component={GuardasSeguridad} />
           <Route path="/comunidadesViviendas" component={Communities} />
           <Route path="/inquilinos" component={Inquilinos} />
+          <Route path="/InquilinosCompletar" component={InquilinosCompletar} />
           <Route path="/areasComunes" component={AreasComunes} />
           <Route path="/logIn" component={LogIn} />
         </div>

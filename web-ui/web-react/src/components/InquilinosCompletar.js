@@ -122,4 +122,4 @@ const Inquilinos = () => {
   )
 }
 
-export default React.memo(Inquilinos)
+export default React.memo(InquilinosCompletar)

@@ -5,6 +5,11 @@ class InfoDialog extends React.Component {
     super(props)
     this.state = {
       openInfoDialog: false,
+      footer: (
+        <>
+          <Button label='Cerrar' icon='pi pi-times' onClick={this.onClose} />
+        </>
+      ),
     }
   }
   render() {
@@ -15,7 +20,7 @@ class InfoDialog extends React.Component {
         modal
         className='p-fluid'
         header={this.props.header}
-        footer={this.props.footer}
+        footer={this.state.footer}
       >
         <div className='container text-center'>
           <div className='row my-4'>

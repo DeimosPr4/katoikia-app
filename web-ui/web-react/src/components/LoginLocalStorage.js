@@ -2,6 +2,7 @@ import DashboardAdmin from "./DashboardAdmin";
 import React, { Component, Fragment } from 'react';
 import Cookies from 'universal-cookie';
 import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
 const baseUrl = "http://localhost:4000/user/loginUser";
 const cookies = new Cookies();
@@ -10,9 +11,10 @@ const cookies = new Cookies();
 class LoginLocalStorage extends Component {
     state = {
         form: {
-            username: '',
+            email: '',
             password: ''
-        }
+        }, 
+        errorMessages:{}
     }
 
     handleChange = async e => {
@@ -29,6 +31,8 @@ class LoginLocalStorage extends Component {
             email: this.state.form.email,
             password: this.state.form.password
         }
+
+        console.log(data);
 
         await fetch(baseUrl, {
             cache: 'no-cache',
@@ -47,7 +51,7 @@ class LoginLocalStorage extends Component {
                     const user = response.message;
                     cookies.set('id', user._id, { path: "/" });
                     cookies.set('name', user.name, { path: "/" });
-                    cookies.set('email', user.username, { path: "/" });
+                    cookies.set('email', user.email, { path: "/" });
                     alert(`Bienvenido ${user.name}`);
                     window.location.href = "./menu";
                 } else {
@@ -68,31 +72,54 @@ class LoginLocalStorage extends Component {
         }
     }
 
+    renderErrorMessage = (name) =>
+    name === this.state.errorMessages.name && (
+      <div className="error">{this.state.errorMessages.message}</div>
+    );
+
+  errors = {
+    email: "Correo requerido",
+    pass: "Contraseña requerida"
+  };
 
     render() {
         return (
 
             <Fragment>
-                <div className="grid">
-                    <div className="col-12">
-                        <div className="card">
-                            <h5>Iniciar Sesión</h5>
-                            <div className="p-fluid formgrid grid">
-                                <div className="field col-12">
-                                    <label htmlFor="correo">Correo electrónico</label>
-                                    <InputText id="correo" type="email" placeholder='Correo electrónico' onChange={this.handleChange} />
-                                </div>
-                                <div className="field col-12 ">
-                                    <label htmlFor="contrasenna">Contraseña</label>
-                                    <InputText id="contrasenna" type="password" placeholder='Contraseña' onChange={this.handleChange} />
-                                </div>
+              
+                <div className="login-wrapper">
 
-                                <button className="btn btn-primary" onClick={() => this.iniciarSesion()}>Iniciar Sesión</button>
+                    <div className="grid form justify-content-center my-5">
+                        <div className="col-5">
+                            <div className="card">
+                                <h5>Iniciar Sesión</h5>
+                                <div className="p-fluid formgrid grid">
+                                    <div className="field col-12">
+                                        <label htmlFor="email">Correo electrónico</label>
+                                        <InputText id="email"
+                                            type="email"
+                                            name="email"
+                                            onChange={this.handleChange}
+                                            placeholder='Correo electrónico' />
+                                        {this.renderErrorMessage("email")}
+                                    </div>
+                                    <div className="field col-12 ">
+                                        <label htmlFor="password">Contraseña</label>
+                                        <InputText id="password"
+                                            type="text"
+                                            name="password"
+                                            onChange={this.handleChange}
+                                            placeholder='Contraseña'
+                                        />
+                                        {this.renderErrorMessage("password")}
+                                    </div>
+
+                                    <Button label="Iniciar sesión" type="button" onClick={() => this.iniciarSesion()}></Button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </Fragment>
 
 

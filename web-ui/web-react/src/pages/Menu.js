@@ -6,8 +6,8 @@ const cookies = new Cookies();
 class Menu extends Component {
     cerrarSesion=()=>{
         cookies.remove('id', {path: "/"});
-        cookies.remove('name', {path: "/"});
         cookies.remove('email', {path: "/"});
+        cookies.remove('name', {path: "/"});
         window.location.href='/';
     }
 

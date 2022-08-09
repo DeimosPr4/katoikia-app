@@ -11,7 +11,7 @@ function Routes() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/login" component={LoginLocalStorage}/>
-        <Route exact path="/" component={Menu}/>
+        <Route exact path="/" component={MenuAdmin}/>
       </Switch>
     </BrowserRouter>
   );

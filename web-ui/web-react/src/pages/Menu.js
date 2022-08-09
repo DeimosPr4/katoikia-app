@@ -13,7 +13,7 @@ class Menu extends Component {
 
     componentDidMount() {
         if(!cookies.get('email')){
-            window.location.href="./";
+            window.location.href="./login";
         }
     }
 

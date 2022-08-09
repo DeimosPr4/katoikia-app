@@ -5,8 +5,9 @@ import AdministradoresSistema from '../components/AdministradoresSistema';
 import Communities from '../components/ComunidadViviendas';
 import Dashboard from '../templates/Dashboard';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-const cookies = new Cookies();
+import { AppMenu } from '../AppMenu';
 
+const cookies = new Cookies();
 
 const menu = [
     {
@@ -16,39 +17,55 @@ const menu = [
             { label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema' },
             { label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresComunidad' },
             { label: 'Comunidadades', icon: 'pi pi-fw pi-id-card', to: '/comunidadesViviendas' },
-            { label: 'Log out', icon: 'pi pi-fw pi-id-card', to: '/logOut' }
         ]
     },
 ];
 
-
-const handleLogout = () => {
-    cookies.remove('id', { path: "/" });
-    cookies.remove('email', { path: "/" });
-    cookies.remove('name', { path: "/" });
-    window.location.href = '/';
-}
-
 class MenuAdmin extends Component {
 
-    state = {
-        layoutColorMode: 'light',
-        layoutMode: 'static',
+    constructor(){
+        super()
+        this.state = {
+            layoutColorMode: 'light',
+            layoutMode: 'static',
+            menuClick: false, 
+            mobileTopbarMenuClick: false,
+            overlayMenuActive: false,
+            mobileMenuActive: false
+        }
+    
+    }
+   
+    onSidebarClick = () => {
+        this.setState({
+            menuClick: true
+        })
 
     }
 
+    onMenuItemClick = (event) => {
+        if (!event.item.items) {
+            this.state.overlayMenuActive = false;
+            this.state.mobileMenuActive = false;  
+            this.setState({
+                overlayMenuActive: true,
+                mobileMenuActive:false
+            })
+        
+        }
+    }
 
     cerrarSesion = () => {
         cookies.remove('id', { path: "/" });
         cookies.remove('email', { path: "/" });
         cookies.remove('name', { path: "/" });
-        window.location.href = '/';
+        window.location.href = '/login';
     }
 
     componentDidMount() {
         if (!cookies.get('email')) {
-            window.location.href = "./";
-        }
+            window.location.href = "/login";
+        } 
     }
 
     render() {
@@ -56,8 +73,10 @@ class MenuAdmin extends Component {
         return (
             <div>
                 Menu Principal
-                <div className="layout-sidebar" onClick={onSidebarClick}>
-                    <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
+                <div className="layout-sidebar" onClick={this.onSidebarClick}>
+                    <AppMenu model={menu} onMenuItemClick={this.onMenuItemClick} layoutColorMode={this.state.layoutColorMode} />
+                    <button type="button" onClick={() => this.cerrarSesion()}>Logout</button>
+
                 </div>
 
                 <div className="layout-main-container">
@@ -66,12 +85,10 @@ class MenuAdmin extends Component {
                         <Route exact path="/administradoresSistema" component={AdministradoresSistema} />
                         <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
                         <Route path="/comunidadesViviendas" component={Communities} />
-                        <button onClick={this.cerrarSesion}>Logout</button>
                     </div>
 
                 </div>
                 <br />
-                <button onClick={() => this.cerrarSesion()}>Cerrar Sesión</button>
             </div>
         );
     }

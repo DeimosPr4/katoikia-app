@@ -53,7 +53,7 @@ class LoginLocalStorage extends Component {
                     cookies.set('name', user.name, { path: "/" });
                     cookies.set('email', user.email, { path: "/" });
                     alert(`Bienvenido ${user.name}`);
-                    window.location.href = "./";
+                    window.location.href = "/";
                 } else {
                     alert('El usuario o la contraseña no son correctos');
                 }
@@ -68,7 +68,7 @@ class LoginLocalStorage extends Component {
 
     componentDidMount() {
         if (cookies.get('email')) {
-            window.location.href = "./";
+            window.location.href = "/";
         }
     }
 
@@ -106,7 +106,7 @@ class LoginLocalStorage extends Component {
                                     <div className="field col-12 ">
                                         <label htmlFor="password">Contraseña</label>
                                         <InputText id="password"
-                                            type="text"
+                                            type="password"
                                             name="password"
                                             onChange={this.handleChange}
                                             placeholder='Contraseña'

@@ -35,6 +35,15 @@ class InfoDialog extends React.Component {
                 </div>
               </div>
             </div>
+            <div className='col-4 md:col-4'>
+              <p>Identificación</p>
+              <div className='p-0 col-2 md:col-2' style={{ margin: '0 auto' }}>
+                <div className='p-inputgroup align-items-center justify-content-evenly'>
+                  <i className='pi pi-user icon-khaki' />
+                  <p>{this.props.info.dni}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Dialog>

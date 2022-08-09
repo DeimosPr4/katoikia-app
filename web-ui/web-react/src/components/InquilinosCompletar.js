@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 
 import { useCookies } from 'react-cookie'
 
-const Inquilinos = () => {
+const InquilinosCompletar = () => {
   let emptyTenant = {
     _id: null,
     dni: '',

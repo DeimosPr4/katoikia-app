@@ -4,13 +4,13 @@ class InfoDialog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false,
+      openInfoDialog: false,
     }
   }
   render() {
     return (
       <Dialog
-        visible={this.state.open}
+        visible={this.state.openInfoDialog}
         style={{ width: '650px' }}
         modal
         className='p-fluid'

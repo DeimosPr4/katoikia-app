@@ -7,4 +7,15 @@ class InfoDialog extends React.Component {
       open: false,
     }
   }
+  render() {
+    return (
+      <Dialog
+        visible={this.state.open}
+        style={{ width: '650px' }}
+        modal
+        className='p-fluid'
+        header='Información'
+      ></Dialog>
+    )
+  }
 }

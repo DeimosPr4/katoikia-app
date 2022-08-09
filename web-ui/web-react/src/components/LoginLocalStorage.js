@@ -53,7 +53,7 @@ class LoginLocalStorage extends Component {
                     cookies.set('name', user.name, { path: "/" });
                     cookies.set('email', user.email, { path: "/" });
                     alert(`Bienvenido ${user.name}`);
-                    window.location.href = "./menu";
+                    window.location.href = "./";
                 } else {
                     alert('El usuario o la contraseña no son correctos');
                 }
@@ -68,7 +68,7 @@ class LoginLocalStorage extends Component {
 
     componentDidMount() {
         if (cookies.get('email')) {
-            window.location.href = "./menu";
+            window.location.href = "./";
         }
     }
 

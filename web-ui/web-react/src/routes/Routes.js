@@ -2,6 +2,7 @@ import React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import App from '../App';
 import LoginLocalStorage from '../components/LoginLocalStorage';
+import MenuAdmin from '../components/MenuAdmin';
 import Menu from '../pages/Menu';
 function Routes() {
 
@@ -9,8 +10,8 @@ function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={LoginLocalStorage}/>
-        <Route exact path="/menu" component={Menu}/>
+        <Route exact path="/login" component={LoginLocalStorage}/>
+        <Route exact path="/" component={Menu}/>
       </Switch>
     </BrowserRouter>
   );

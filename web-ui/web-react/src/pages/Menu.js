@@ -8,7 +8,7 @@ class Menu extends Component {
         cookies.remove('id', {path: "/"});
         cookies.remove('email', {path: "/"});
         cookies.remove('name', {path: "/"});
-        window.location.href='/';
+        window.location.href='/login';
     }
 
     componentDidMount() {

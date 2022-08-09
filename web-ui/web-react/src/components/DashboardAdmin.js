@@ -1,43 +1,42 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { Route, useLocation, BrowserRouter} from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import Routes from './routes/Routes'
 
-import { AppTopbar } from './AppTopbar';
-import { AppFooter } from './AppFooter';
-import { AppMenu } from './AppMenu';
-import { AppConfig } from './AppConfig';
+import { AppTopbar } from '../AppTopbar';
+import { AppFooter } from '../AppFooter';
+import { AppMenu } from '../AppMenu';
+import { AppConfig } from '../AppConfig';
 
-import Dashboard from './templates/Dashboard';
-import ButtonDemo from './templates/ButtonDemo';
-import ChartDemo from './templates/ChartDemo';
-import Documentation from './templates/Documentation';
-import FileDemo from './templates/FileDemo';
-import FloatLabelDemo from './templates/FloatLabelDemo';
-import FormLayoutDemo from './templates/FormLayoutDemo';
-import InputDemo from './templates/InputDemo';
-import ListDemo from './templates/ListDemo';
-import MenuDemo from './templates/MenuDemo';
-import MessagesDemo from './templates/MessagesDemo';
-import MiscDemo from './templates/MiscDemo';
-import OverlayDemo from './templates/OverlayDemo';
-import MediaDemo from './templates/MediaDemo';
-import PanelDemo from './templates/PanelDemo';
-import TableDemo from './templates/TableDemo';
-import TreeDemo from './templates/TreeDemo';
-import InvalidStateDemo from './templates/InvalidStateDemo';
-import BlocksDemo from './templates/BlocksDemo';
-import IconsDemo from './templates/IconsDemo';
-import AdministradoresSistema from './components/AdministradoresSistema';
-import AdministradoresComunidad from './components/AdministradoresComunidad';
-import GuardasSeguridad from './components/GuardasSeguridad';
-import Communities from './components/ComunidadViviendas';
-import Inquilinos from './components/Inquilinos';
+import Dashboard from '../templates/Dashboard';
+import ButtonDemo from '../templates/ButtonDemo';
+import ChartDemo from '../templates/ChartDemo';
+import Documentation from '../templates/Documentation';
+import FileDemo from '../templates/FileDemo';
+import FloatLabelDemo from '../templates/FloatLabelDemo';
+import FormLayoutDemo from '../templates/FormLayoutDemo';
+import InputDemo from '../templates/InputDemo';
+import ListDemo from '../templates/ListDemo';
+import MenuDemo from '../templates/MenuDemo';
+import MessagesDemo from '../templates/MessagesDemo';
+import MiscDemo from '../templates/MiscDemo';
+import OverlayDemo from '../templates/OverlayDemo';
+import MediaDemo from '../templates/MediaDemo';
+import PanelDemo from '../templates/PanelDemo';
+import TableDemo from '../templates/TableDemo';
+import TreeDemo from '../templates/TreeDemo';
+import InvalidStateDemo from '../templates/InvalidStateDemo';
+import BlocksDemo from '../templates/BlocksDemo';
+import IconsDemo from '../templates/IconsDemo';
+import AdministradoresSistema from '../components/AdministradoresSistema';
+import AdministradoresComunidad from '../components/AdministradoresComunidad';
+import GuardasSeguridad from '../components/GuardasSeguridad';
+import Communities from '../components/ComunidadViviendas';
+import Inquilinos from '../components/Inquilinos';
 
-import Crud from './pages/Crud';
-import EmptyPage from './pages/EmptyPage';
-import TimelineDemo from './pages/TimelineDemo';
+import Crud from '../pages/Crud';
+import EmptyPage from '../pages/EmptyPage';
+import TimelineDemo from '../pages/TimelineDemo';
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -46,14 +45,14 @@ import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import 'prismjs/themes/prism-coy.css';
-import './assets/demo/flags/flags.css';
-import './assets/demo/Demos.scss';
-import './assets/layout/layout.scss';
-import './App.scss';
-import LogIn from './components/LogIn';
-import LoginLocalStorage from './components/LoginLocalStorage';
+import '../assets/demo/flags/flags.css';
+import '../assets/demo/Demos.scss';
+import '../assets/layout/layout.scss';
+import '../App.scss';
+import LogIn from '../components/LogIn';
+import LoginLocalStorage from '../components/LoginLocalStorage';
 
-const App = () => {
+const DashboardAdmin = () => {
     const [layoutMode, setLayoutMode] = useState('static');
     const [layoutColorMode, setLayoutColorMode] = useState('light')
     const [inputStyle, setInputStyle] = useState('outlined');
@@ -69,10 +68,6 @@ const App = () => {
         localStorage.clear();
         window.location.reload();
     }
-
-
-
-    
 
     PrimeReact.ripple = true;
 
@@ -301,13 +296,65 @@ const App = () => {
     });
 
     return (
-        <div>
-        <BrowserRouter>
-               <Routes />
-        </BrowserRouter>
-    </div>        
+        <div className={wrapperClass} onClick={onWrapperClick}>
+            <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
+
+            <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
+                mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+
+            <div className="layout-sidebar" onClick={onSidebarClick}>
+                <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
+            </div>
+
+            <div className="layout-main-container">
+                <div className="layout-main">
+                    <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+                    <Route path="/formlayout" component={FormLayoutDemo} />
+                    <Route path="/input" component={InputDemo} />
+                    <Route path="/floatlabel" component={FloatLabelDemo} />
+                    <Route path="/invalidstate" component={InvalidStateDemo} />
+                    <Route path="/button" component={ButtonDemo} />
+                    <Route path="/table" component={TableDemo} />
+                    <Route path="/list" component={ListDemo} />
+                    <Route path="/tree" component={TreeDemo} />
+                    <Route path="/panel" component={PanelDemo} />
+                    <Route path="/overlay" component={OverlayDemo} />
+                    <Route path="/media" component={MediaDemo} />
+                    <Route path="/menu" component={MenuDemo} />
+                    <Route path="/messages" component={MessagesDemo} />
+                    <Route path="/blocks" component={BlocksDemo} />
+                    <Route path="/icons" component={IconsDemo} />
+                    <Route path="/file" component={FileDemo} />
+                    <Route path="/chart" render={() => <ChartDemo colorMode={layoutColorMode} location={location} />} />
+                    <Route path="/misc" component={MiscDemo} />
+                    <Route path="/timeline" component={TimelineDemo} />
+                    <Route path="/crud" component={Crud} />
+                    <Route path="/empty" component={EmptyPage} />
+                    <Route path="/documentation" component={Documentation} />
+                    <Route path="/administradoresSistema" component={AdministradoresSistema} />
+                    <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
+                    <Route path="/guardasSeguridad" component={GuardasSeguridad} />
+                    <Route path="/comunidadesViviendas" component={Communities} />
+                    <Route path="/inquilinos" component={Inquilinos} />
+                    <Route path="/logIn" component={LoginLocalStorage} />
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
+
+                <AppFooter layoutColorMode={layoutColorMode} />
+            </div>
+
+            <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
+                layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
+
+            <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
+                <div className="layout-mask p-component-overlay"></div>
+            </CSSTransition>
+
+
+        </div>
+        
     );
 
 }
 
-export default App;
+export default DashboardAdmin;

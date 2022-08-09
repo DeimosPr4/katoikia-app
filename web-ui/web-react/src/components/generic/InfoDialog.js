@@ -14,7 +14,8 @@ class InfoDialog extends React.Component {
         style={{ width: '650px' }}
         modal
         className='p-fluid'
-        header='Información'
+        header={this.props.header}
+        footer={this.props.footer}
       >
         <div className='container text-center'>
           <div className='row my-4'>

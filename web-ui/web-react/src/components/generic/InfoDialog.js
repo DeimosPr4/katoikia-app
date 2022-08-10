@@ -12,6 +12,7 @@ class InfoDialog extends React.Component {
       ),
     }
   }
+  onClose = () => this.setState({ openInfoDialog: false })
   render() {
     return (
       <Dialog

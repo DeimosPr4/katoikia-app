@@ -6,12 +6,7 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 export const AppTopbar = (props) => {
-  return (
-    <div className="layout-topbar">
-      <Link to="/" className="layout-topbar-logo">
-        <img src={'assets/layout/images/logo-dark.svg'} alt="logo" />
-        <span>KATOIKIA</span>
-      </Link>
+ 
 
      function cerrarSesion()  {
         cookies.remove('id', { path: "/" });

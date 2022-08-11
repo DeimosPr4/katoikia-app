@@ -39,9 +39,6 @@ const LogIn = () => {
 
             {/* <Button label="Registrar" onClick={registrarAdmin}></Button> */}
           </div>
-        </div>
-      </div>
-    </div>
   );
 };
 

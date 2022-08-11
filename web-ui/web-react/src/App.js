@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
 import { AppTopbar } from './AppTopbar';
@@ -50,6 +50,10 @@ import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
 import LogIn from './components/LogIn';
+import { useCookies } from "react-cookie";
+import LoginLocalStorage from './components/LoginLocalStorage';
+
+
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState('static');
@@ -62,8 +66,9 @@ const App = () => {
     const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
     const copyTooltipRef = useRef();
     const location = useLocation();
+    const [cookies, setCookies] = useCookies();
 
-    const handleLogout=()=>{
+    const handleLogout = () => {
         localStorage.clear();
         window.location.reload();
     }
@@ -117,24 +122,6 @@ const App = () => {
     }
 
     const onToggleMenuClick = (event) => {
-        menuClick = true;
-
-        if (isDesktop()) {
-            if (layoutMode === 'overlay') {
-                if (mobileMenuActive === true) {
-                    setOverlayMenuActive(true);
-                }
-
-                setOverlayMenuActive((prevState) => !prevState);
-                setMobileMenuActive(false);
-            }
-            else if (layoutMode === 'static') {
-                setStaticMenuInactive((prevState) => !prevState);
-            }
-        }
-        else {
-            setMobileMenuActive((prevState) => !prevState);
-        }
 
         event.preventDefault();
     }
@@ -166,18 +153,50 @@ const App = () => {
         return window.innerWidth >= 992;
     }
 
+    const menu2 = [
+        {
+            label: 'Home',
+            items: [
+                { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+                { label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema' },
+                { label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresComunidad' },
+                { label: 'Comunidadades', icon: 'pi pi-fw pi-id-card', to: '/comunidadesViviendas' },
+            ]
+        }
+    ]
+
+
+    const menu3 = [
+        {
+            label: 'Home',
+            items: [
+                { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+                { label: 'Inquilinos', icon: 'pi pi-fw pi-id-card', to: '/inquilinos' },
+                { label: 'Guardas de seguridad', icon: 'pi pi-fw pi-id-card', to: '/guardasSeguridad' },
+            ]
+        },
+    ]
+
+    function menu4() {
+        if (cookies.type == '1') {
+            return menu2;
+        } else if (cookies.type == '2') {
+            return menu3;
+        }
+    }
+
     const menu = [
         {
             label: 'Home',
             items: [
-                {label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'},
-                {label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema'}, 
-                {label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresComunidad'}, 
-                {label: 'Guardas de seguridad', icon: 'pi pi-fw pi-id-card', to: '/guardasSeguridad'}, 
-                {label: 'Comunidadades', icon: 'pi pi-fw pi-id-card', to: '/comunidadesViviendas'}, 
-                {label: 'Inquilinos', icon: 'pi pi-fw pi-id-card', to: '/inquilinos'},
-                {label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn'},
-                {label: 'Log out', icon: 'pi pi-fw pi-id-card', to: '/logOut'}
+                { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+                { label: 'Administradores del sistema', icon: 'pi pi-fw pi-id-card', to: '/administradoresSistema' },
+                { label: 'Administradores de comunidad', icon: 'pi pi-fw pi-id-card', to: '/administradoresComunidad' },
+                { label: 'Guardas de seguridad', icon: 'pi pi-fw pi-id-card', to: '/guardasSeguridad' },
+                { label: 'Comunidadades', icon: 'pi pi-fw pi-id-card', to: '/comunidadesViviendas' },
+                { label: 'Inquilinos', icon: 'pi pi-fw pi-id-card', to: '/inquilinos' },
+                { label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn' },
+                { label: 'Log out', icon: 'pi pi-fw pi-id-card', to: '/logOut' }
             ]
         },
         {
@@ -282,7 +301,6 @@ const App = () => {
         else
             element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
     }
-
     const wrapperClass = classNames('layout-wrapper', {
         'layout-overlay': layoutMode === 'overlay',
         'layout-static': layoutMode === 'static',
@@ -295,60 +313,69 @@ const App = () => {
     });
 
     return (
-        <div className={wrapperClass} onClick={onWrapperClick}>
-            <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
-            <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
-                mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/login" component={LoginLocalStorage} />
 
-            <div className="layout-sidebar" onClick={onSidebarClick}>
-                <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
-            </div>
+                <div className={wrapperClass} onClick={onWrapperClick}>
+                    <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
-            <div className="layout-main-container">
-                <div className="layout-main">
-                    <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
-                    <Route path="/formlayout" component={FormLayoutDemo} />
-                    <Route path="/input" component={InputDemo} />
-                    <Route path="/floatlabel" component={FloatLabelDemo} />
-                    <Route path="/invalidstate" component={InvalidStateDemo} />
-                    <Route path="/button" component={ButtonDemo} />
-                    <Route path="/table" component={TableDemo} />
-                    <Route path="/list" component={ListDemo} />
-                    <Route path="/tree" component={TreeDemo} />
-                    <Route path="/panel" component={PanelDemo} />
-                    <Route path="/overlay" component={OverlayDemo} />
-                    <Route path="/media" component={MediaDemo} />
-                    <Route path="/menu" component={MenuDemo} />
-                    <Route path="/messages" component={MessagesDemo} />
-                    <Route path="/blocks" component={BlocksDemo} />
-                    <Route path="/icons" component={IconsDemo} />
-                    <Route path="/file" component={FileDemo} />
-                    <Route path="/chart" render={() => <ChartDemo colorMode={layoutColorMode} location={location} />} />
-                    <Route path="/misc" component={MiscDemo} />
-                    <Route path="/timeline" component={TimelineDemo} />
-                    <Route path="/crud" component={Crud} />
-                    <Route path="/empty" component={EmptyPage} />
-                    <Route path="/documentation" component={Documentation} />
-                    <Route path="/administradoresSistema" component={AdministradoresSistema} />
-                    <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
-                    <Route path="/guardasSeguridad" component={GuardasSeguridad} />
-                    <Route path="/comunidadesViviendas" component={Communities} />
-                    <Route path="/inquilinos" component={Inquilinos} />
-                    <Route path="/logIn" component={LogIn} />
-                    <button onClick={handleLogout}>Logout</button>
+                    <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
+                        mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+
+                    <div className="layout-sidebar" onClick={onSidebarClick}>
+                        <AppMenu model={menu4()} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
+                    </div>
+
+                    <div className="layout-main-container">
+                        <div className="layout-main">
+
+                            <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+                            <Route path="/formlayout" component={FormLayoutDemo} />
+                            <Route path="/input" component={InputDemo} />
+                            <Route path="/floatlabel" component={FloatLabelDemo} />
+                            <Route path="/invalidstate" component={InvalidStateDemo} />
+                            <Route path="/button" component={ButtonDemo} />
+                            <Route path="/table" component={TableDemo} />
+                            <Route path="/list" component={ListDemo} />
+                            <Route path="/tree" component={TreeDemo} />
+                            <Route path="/panel" component={PanelDemo} />
+                            <Route path="/overlay" component={OverlayDemo} />
+                            <Route path="/media" component={MediaDemo} />
+                            <Route path="/menu" component={MenuDemo} />
+                            <Route path="/messages" component={MessagesDemo} />
+                            {/*<Route path="/blocks" component={BlocksDemo} />*/}
+                            <Route path="/icons" component={IconsDemo} />
+                            <Route path="/file" component={FileDemo} />
+                            <Route path="/chart" render={() => <ChartDemo colorMode={layoutColorMode} location={location} />} />
+                            <Route path="/misc" component={MiscDemo} />
+                            <Route path="/timeline" component={TimelineDemo} />
+                            <Route path="/crud" component={Crud} />
+                            <Route path="/empty" component={EmptyPage} />
+                            <Route path="/documentation" component={Documentation} />
+                            <Route path="/administradoresSistema" component={AdministradoresSistema} />
+                            <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
+                            <Route path="/guardasSeguridad" component={GuardasSeguridad} />
+                            <Route path="/comunidadesViviendas" component={Communities} />
+                            <Route path="/inquilinos" component={Inquilinos} />
+                            <Route path="/login" component={LoginLocalStorage} />
+
+                        </div>
+
+                        <AppFooter layoutColorMode={layoutColorMode} />
+                    </div>
+
+                    <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
+                        layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
+
+                    <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
+                        <div className="layout-mask p-component-overlay"></div>
+                    </CSSTransition>
                 </div>
+            </Switch>
+        </BrowserRouter>
 
-                <AppFooter layoutColorMode={layoutColorMode} />
-            </div>
-
-            <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
-                layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
-
-            <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
-                <div className="layout-mask p-component-overlay"></div>
-            </CSSTransition>
-        </div>
     );
 
 }

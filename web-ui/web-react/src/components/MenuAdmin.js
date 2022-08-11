@@ -6,6 +6,7 @@ import Communities from '../components/ComunidadViviendas';
 import Dashboard from '../templates/Dashboard';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { AppMenu } from '../AppMenu';
+import { CSSTransition } from 'react-transition-group';
 
 const cookies = new Cookies();
 
@@ -59,6 +60,7 @@ class MenuAdmin extends Component {
         cookies.remove('id', { path: "/" });
         cookies.remove('email', { path: "/" });
         cookies.remove('name', { path: "/" });
+        cookies.remove('type', { path: "/" });
         window.location.href = '/login';
     }
 
@@ -89,6 +91,9 @@ class MenuAdmin extends Component {
 
                 </div>
                 <br />
+                <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={this.state.mobileMenuActive} unmountOnExit>
+                <div className="layout-mask p-component-overlay"></div>
+            </CSSTransition>
             </div>
         );
     }

@@ -52,6 +52,10 @@ class LoginLocalStorage extends Component {
                     cookies.set('id', user._id, { path: "/" });
                     cookies.set('name', user.name, { path: "/" });
                     cookies.set('email', user.email, { path: "/" });
+                    cookies.set('type', user.user_type, { path: "/" });
+                    if(user.user_type != '1') {
+                        cookies.set('community_id', user.community_id, { path: "/" });
+                    }
                     alert(`Bienvenido ${user.name}`);
                     window.location.href = "/";
                 } else {

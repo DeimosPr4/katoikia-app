@@ -89,8 +89,8 @@
 }
 
 .p-icon-input-khaki {
-    border-top-right-radius: 0!important;
-    border-bottom-right-radius: 0!important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
     border-color: #C08135;
 }
 
@@ -7117,6 +7117,45 @@
 
 .p-button.p-button-danger:enabled:focus {
     box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #f7a2a2, 0 1px 2px 0 black;
+}
+
+
+.icon-khaki {
+    color: var(--primary-color);
+}
+
+.row {
+    display: flex;
+}
+
+
+.status {
+    border-radius: var(--border-radius);
+    padding: 0.25em 0.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+}
+
+.status.status-1 {
+    background: #c8e6c9!important;
+    color: #256029!important;
+}
+
+.status.status-0 {
+    background: #ffcdd2;
+    color: #c63737;
+}
+
+.status.status-2 {
+    background: #feedaf;
+    color: #8a5340;
+}
+
+.status.status--1 {
+    background: #565656;
+    color: #f7f9f7;
 }
 
 

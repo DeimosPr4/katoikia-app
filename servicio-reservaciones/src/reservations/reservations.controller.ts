@@ -1,11 +1,14 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { ReservationsService } from './reservations.service';
-import { Reservation, ReservationDocument } from '../schemas/reservation.schema';
+import {
+  Reservation,
+  ReservationDocument,
+} from '../schemas/reservation.schema';
 
 @Controller()
 export class ReservationsController {
-  constructor(private readonly reservationsService: ReservationsService) { }
+  constructor(private readonly reservationsService: ReservationsService) {}
 
   @MessagePattern({ cmd: 'createReservation' })
   create(@Payload() reservation: ReservationDocument) {

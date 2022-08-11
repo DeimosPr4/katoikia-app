@@ -7,30 +7,36 @@ import { CommonAreasService } from './common_areas.service';
 export class CommonAreasController {
   constructor(private readonly commonAreasService: CommonAreasService) {}
 
-  @MessagePattern({cmd: 'createCommonArea'})
+  @MessagePattern({ cmd: 'createCommonArea' })
   create(@Payload() commonArea: CommonAreaDocument) {
     return this.commonAreasService.create(commonArea);
   }
 
-  @MessagePattern({cmd: 'findAllCommonAreas'})
+  @MessagePattern({ cmd: 'findAllCommonAreas' })
   findAll() {
     return this.commonAreasService.findAll();
   }
 
-  @MessagePattern({cmd: 'findOneCommonArea'})
+  @MessagePattern({ cmd: 'findOneCommonArea' })
   findOne(@Payload() id: string) {
     let _id = id['_id'];
     return this.commonAreasService.findOne(_id);
   }
 
-  @MessagePattern({cmd: 'updateCommonArea'})
+  @MessagePattern({ cmd: 'updateCommonArea' })
   update(@Payload() commonArea: CommonAreaDocument) {
     return this.commonAreasService.update(commonArea.id, commonArea);
   }
 
-  @MessagePattern({cmd: 'removeCommonArea'})
+  @MessagePattern({ cmd: 'removeCommonArea' })
   remove(@Payload() id: string) {
-    let _id = id['_id'];
+    let _id = id['id'];
     return this.commonAreasService.remove(_id);
+  }
+
+  @MessagePattern({ cmd: 'findByCommunity' })
+  findByCommunity(@Payload() id: string) {
+    let _community_id = id['community_id'];
+    return this.commonAreasService.findByCommunity(_community_id);
   }
 }

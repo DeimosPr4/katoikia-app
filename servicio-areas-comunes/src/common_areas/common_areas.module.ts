@@ -6,9 +6,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CommonArea, CommonAreaSchema } from '../schemas/common_area.schema';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: CommonArea.name, schema: CommonAreaSchema }]), 
+    MongooseModule.forFeature([
+      { name: CommonArea.name, schema: CommonAreaSchema },
+    ]),
   ],
   controllers: [CommonAreasController],
-  providers: [CommonAreasService]
+  providers: [CommonAreasService],
 })
 export class CommonAreasModule {}

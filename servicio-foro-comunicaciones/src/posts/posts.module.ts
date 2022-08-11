@@ -6,9 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]), 
+    MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),
   ],
   controllers: [PostsController],
-  providers: [PostsService]
+  providers: [PostsService],
 })
 export class PostsModule {}

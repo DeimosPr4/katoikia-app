@@ -32,8 +32,17 @@ const LogIn = () => {
                     </div>
                 </div>
             </div>
+            <div className="field col-12 ">
+              <label htmlFor="apellidos">Contraseña</label>
+              <InputText id="apellidos" type="text" />
+            </div>
+
+            {/* <Button label="Registrar" onClick={registrarAdmin}></Button> */}
+          </div>
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
 export default LogIn

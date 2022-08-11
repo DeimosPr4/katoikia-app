@@ -1,12 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-
-
 export class CreateBookDto {
-  @ApiProperty({ 
+  @ApiProperty({
     example: 'Nest.js: A Progressive Node.js Framework (English Edition)',
   })
-  readonly title: string; 
+  readonly title: string;
 
   @ApiProperty({ example: 'Web Development' })
   readonly genre: string;
@@ -28,6 +26,6 @@ export class CreateBookDto {
   })
   readonly image_url: string;
 
-  @ApiProperty({ example: ['NestJS', 'REST API'] }) 
+  @ApiProperty({ example: ['NestJS', 'REST API'] })
   readonly keywords: string[];
 }

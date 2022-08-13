@@ -53,8 +53,8 @@ import './App.scss';
 import { PrimeIcons } from 'primereact/api';
 import AreasComunes from './components/AreasComunes';
 import { useCookies } from "react-cookie";
-import Login from './components/Login';
-
+import LogInUser from './components/LogInUser';
+import Page404 from './components/Page404'
 
 
 const App = () => {
@@ -69,6 +69,7 @@ const App = () => {
     const copyTooltipRef = useRef();
     const location = useLocation();
     const [cookies, setCookies] = useCookies();
+    const [logged, setLogged] = useState()
 
     PrimeReact.ripple = true;
 
@@ -88,6 +89,12 @@ const App = () => {
             copyTooltipRef.current &&
             copyTooltipRef.current.updateTargetEvents();
     }, [location]);
+
+
+
+
+
+
 
     const onInputStyleChange = (inputStyle) => {
         setInputStyle(inputStyle);
@@ -405,6 +412,9 @@ const App = () => {
         'layout-theme-light': layoutColorMode === 'light',
     });
 
+
+
+
     return (
 
         <BrowserRouter>
@@ -424,43 +434,89 @@ const App = () => {
 
                     <div className="layout-main-container">
                         <div className="layout-main">
-                            <Route path="/login" exact component={Login} />
-                            <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+                            {(() => {
+                                if (!cookies.email) {
+                                    return (
+                                        <>
 
-                            <Route path="/formlayout" component={FormLayoutDemo} />
-                            <Route path="/input" component={InputDemo} />
-                            <Route path="/floatlabel" component={FloatLabelDemo} />
-                            <Route path="/invalidstate" component={InvalidStateDemo} />
-                            <Route path="/button" component={ButtonDemo} />
-                            <Route path="/table" component={TableDemo} />
-                            <Route path="/list" component={ListDemo} />
-                            <Route path="/tree" component={TreeDemo} />
-                            <Route path="/panel" component={PanelDemo} />
-                            <Route path="/overlay" component={OverlayDemo} />
-                            <Route path="/media" component={MediaDemo} />
-                            <Route path="/menu" component={MenuDemo} />
-                            <Route path="/messages" component={MessagesDemo} />
-                            {/*<Route path="/blocks" component={BlocksDemo} />*/}
-                            <Route path="/icons" component={IconsDemo} />
-                            <Route path="/file" component={FileDemo} />
-                            <Route path="/chart" render={() => <ChartDemo colorMode={layoutColorMode} location={location} />} />
-                            <Route path="/misc" component={MiscDemo} />
-                            <Route path="/timeline" component={TimelineDemo} />
-                            <Route path="/crud" component={Crud} />
-                            <Route path="/empty" component={EmptyPage} />
-                            <Route path="/documentation" component={Documentation} />
-                            <Route path="/administradoresSistema" component={AdministradoresSistema} />
-                            <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
-                            <Route path="/guardasSeguridad" component={GuardasSeguridad} />
-                            <Route path="/comunidadesViviendas" component={Communities} />
-                            <Route path="/inquilinos" component={Inquilinos} />
-                            <Route path="/areasComunes" component={AreasComunes} />
+                                            <Route path="/login" exact component={LogInUser} />
+
+                                        </>
+
+                                    )
+                                } else {
+
+                                    if (cookies.type == '1') {
+                                        return (
+                                            <>
+                                                <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+                                                <Route path="/administradoresSistema" component={AdministradoresSistema} />
+                                                <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
+                                                <Route path="/comunidadesViviendas" component={Communities} />
+                                                <Route to="*" exact component={Page404} />
+                                            </>
+
+                                        )
+
+                                    } else if (cookies.type == '2') {
+                                        return (
+                                            <>
+                                                <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+                                                <Route path="/guardasSeguridad" component={GuardasSeguridad} />
+                                                <Route path="/inquilinos" component={Inquilinos} />
+                                                <Route path="/areasComunes" component={AreasComunes} />
+                                                <Route to="*" exact component={Page404} />
+
+                                            </>
+                                        )
+                                    } else {
+                                        return (
+                                            <Route path="/page404" exact component={Page404} />
+                                        )
+                                    }
+
+
+                                    return (
+                                        <>
+                                            <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+
+                                            <Route path="/formlayout" component={FormLayoutDemo} />
+                                            <Route path="/input" component={InputDemo} />
+                                            <Route path="/floatlabel" component={FloatLabelDemo} />
+                                            <Route path="/invalidstate" component={InvalidStateDemo} />
+                                            <Route path="/button" component={ButtonDemo} />
+                                            <Route path="/table" component={TableDemo} />
+                                            <Route path="/list" component={ListDemo} />
+                                            <Route path="/tree" component={TreeDemo} />
+                                            <Route path="/panel" component={PanelDemo} />
+                                            <Route path="/overlay" component={OverlayDemo} />
+                                            <Route path="/media" component={MediaDemo} />
+                                            <Route path="/menu" component={MenuDemo} />
+                                            <Route path="/messages" component={MessagesDemo} />
+                                            {/*<Route path="/blocks" component={BlocksDemo} />*/}
+                                            <Route path="/icons" component={IconsDemo} />
+                                            <Route path="/file" component={FileDemo} />
+                                            <Route path="/chart" render={() => <ChartDemo colorMode={layoutColorMode} location={location} />} />
+                                            <Route path="/misc" component={MiscDemo} />
+                                            <Route path="/timeline" component={TimelineDemo} />
+                                            <Route path="/crud" component={Crud} />
+                                            <Route path="/empty" component={EmptyPage} />
+                                            <Route path="/documentation" component={Documentation} />
+
+
+                                        </>
+
+                                    )
+
+                                }
+                            })()}
+
                         </div>
 
                         <AppFooter layoutColorMode={layoutColorMode} />
                     </div>
 
-                    <AppConfig   />
+                    <AppConfig />
 
                     <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
                         <div className="layout-mask p-component-overlay"></div>

@@ -2,11 +2,12 @@ import React, { Component, Fragment, useRef } from 'react';
 import Cookies from 'universal-cookie';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
 
 const baseUrl = "http://localhost:4000/user/loginUser";
 const cookies = new Cookies();
 
-class Login extends Component {
+class LogInUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +31,7 @@ class Login extends Component {
     }
 
     validaciones = (data) => {
-        let error = true;
+        let error = false;
         if (data.email == '') {
             this.setState({
                 errorEmail: true
@@ -87,20 +88,26 @@ class Login extends Component {
 
                     if (response.message) {
                         const user = response.message;
-                        cookies.set('id', user._id, { path: "/" });
-                        cookies.set('name', user.name, { path: "/" });
-                        cookies.set('email', user.email, { path: "/" });
-                        cookies.set('type', user.user_type, { path: "/" });
-                        if (user.user_type != '1') {
-                            cookies.set('community_id', user.community_id, { path: "/" });
+
+                        if(user.user_type == '1' || user.user_type == '2'){
+                            cookies.set('id', user._id, { path: "/" });
+                            cookies.set('name', user.name, { path: "/" });
+                            cookies.set('email', user.email, { path: "/" });
+                            cookies.set('type', user.user_type, { path: "/" });
+                            if (user.user_type != '1') {
+                                cookies.set('community_id', user.community_id, { path: "/" });
+                            }
+                            // alert(`Bienvenido ${user.name}`);
+                            document.getElementById('notification').hidden = true;
+                            document.getElementById('notification2').hidden = false;
+    
+                            document.getElementById("message2").innerHTML = `Bienvenido ${user.name}`;
+    
+                            window.location.href = "/";
                         }
-                        // alert(`Bienvenido ${user.name}`);
-                        document.getElementById('notification').hidden = true;
-                        document.getElementById('notification2').hidden = false;
+                        window.location.href = "/page404";
 
-                        document.getElementById("message2").innerHTML = `Bienvenido ${user.name}`;
-
-                        window.location.href = "/";
+                       
                     } else {
                         document.getElementById('notification2').hidden = true;
                         document.getElementById('notification').hidden = false;
@@ -216,4 +223,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default LogInUser;

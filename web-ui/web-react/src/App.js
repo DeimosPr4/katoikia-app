@@ -50,11 +50,10 @@ import './assets/demo/flags/flags.css';
 import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
-import LogIn from './components/LogIn';
 import { PrimeIcons } from 'primereact/api';
 import AreasComunes from './components/AreasComunes';
 import { useCookies } from "react-cookie";
-import LoginLocalStorage from './components/LoginLocalStorage';
+import Login from './components/Login';
 
 
 
@@ -425,7 +424,7 @@ const App = () => {
 
                     <div className="layout-main-container">
                         <div className="layout-main">
-                            <Route  path="/login" exact component={LoginLocalStorage} />
+                            <Route path="/login" exact component={Login} />
                             <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
 
                             <Route path="/formlayout" component={FormLayoutDemo} />

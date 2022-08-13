@@ -7157,3 +7157,10 @@
     background: #565656;
     color: #f7f9f7;
 }
+
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

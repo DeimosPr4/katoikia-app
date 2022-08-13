@@ -174,7 +174,7 @@ const App = () => {
             label: 'Inicio',
             items: [
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
-                { label: 'Administradores del sistema',icon: PrimeIcons.USERS, to: '/administradoresSistema' },
+                { label: 'Administradores del sistema', icon: PrimeIcons.USERS, to: '/administradoresSistema' },
                 { label: 'Administradores de comunidad', icon: PrimeIcons.USERS, to: '/administradoresComunidad' },
                 { label: 'Comunidades', icon: PrimeIcons.BUILDING, to: '/comunidadesViviendas' },
             ]
@@ -198,11 +198,26 @@ const App = () => {
         },
     ]
 
+    const menuLogin = [
+        {
+            label: 'Inicio',
+            items: [
+                {
+                    label: 'Inicio de sesion',
+                    icon: PrimeIcons.BUILDING,
+                    to: '/login'
+                },
+            ]
+        },
+    ]
+
     function menu4() {
         if (cookies.type == '1') {
             return menu2;
         } else if (cookies.type == '2') {
             return menu3;
+        } else {
+            return menuLogin;
         }
     }
 
@@ -210,39 +225,39 @@ const App = () => {
         {
             label: 'Inicio',
             items:
-            [
-                {
-                    label: 'Administradores del sistema',
-                    icon: PrimeIcons.USERS,
-                    to: '/administradoresSistema',
-                },
-                {
-                    label: 'Administradores de comunidad',
-                    icon: PrimeIcons.USERS,
-                    to: '/administradoresComunidad',
-                },
-                {
-                    label: 'Guardas de seguridad',
-                    icon: PrimeIcons.LOCK,
-                    to: '/guardasSeguridad',
-                },
-                {
-                    label: 'Comunidades',
-                    icon: PrimeIcons.BUILDING,
-                    to: '/comunidadesViviendas',
-                },
-                {
-                    label: 'Inquilinos',
-                    icon: PrimeIcons.USER,
-                    to: '/inquilinos'
-                },
-                {
-                    label: 'Áreas Comunes de Comunidad',
-                    icon: PrimeIcons.BUILDING,
-                    to: '/areasComunes',
-                },
-                { label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn' },
-            ],
+                [
+                    {
+                        label: 'Administradores del sistema',
+                        icon: PrimeIcons.USERS,
+                        to: '/administradoresSistema',
+                    },
+                    {
+                        label: 'Administradores de comunidad',
+                        icon: PrimeIcons.USERS,
+                        to: '/administradoresComunidad',
+                    },
+                    {
+                        label: 'Guardas de seguridad',
+                        icon: PrimeIcons.LOCK,
+                        to: '/guardasSeguridad',
+                    },
+                    {
+                        label: 'Comunidades',
+                        icon: PrimeIcons.BUILDING,
+                        to: '/comunidadesViviendas',
+                    },
+                    {
+                        label: 'Inquilinos',
+                        icon: PrimeIcons.USER,
+                        to: '/inquilinos'
+                    },
+                    {
+                        label: 'Áreas Comunes de Comunidad',
+                        icon: PrimeIcons.BUILDING,
+                        to: '/areasComunes',
+                    },
+                    { label: 'Log in', icon: 'pi pi-fw pi-id-card', to: '/logIn' },
+                ],
         },
         {
             label: 'UI Components',
@@ -395,9 +410,10 @@ const App = () => {
 
         <BrowserRouter>
             <Switch>
-                <Route exact path="/login" component={LoginLocalStorage} />
 
                 <div className={wrapperClass} onClick={onWrapperClick}>
+
+
                     <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
                     <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
@@ -409,8 +425,9 @@ const App = () => {
 
                     <div className="layout-main-container">
                         <div className="layout-main">
-
+                            <Route  path="/login" exact component={LoginLocalStorage} />
                             <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+
                             <Route path="/formlayout" component={FormLayoutDemo} />
                             <Route path="/input" component={InputDemo} />
                             <Route path="/floatlabel" component={FloatLabelDemo} />
@@ -439,15 +456,12 @@ const App = () => {
                             <Route path="/comunidadesViviendas" component={Communities} />
                             <Route path="/inquilinos" component={Inquilinos} />
                             <Route path="/areasComunes" component={AreasComunes} />
-                            <Route path="/login" component={LoginLocalStorage} />
-
                         </div>
 
                         <AppFooter layoutColorMode={layoutColorMode} />
                     </div>
 
-                    <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
-                        layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
+                    <AppConfig   />
 
                     <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
                         <div className="layout-mask p-component-overlay"></div>

@@ -2,7 +2,6 @@ import React from "react";
 import {
     Text,
     HStack,
-    NativeBaseProvider,
     IconButton,
     Box,
     StatusBar,
@@ -14,10 +13,10 @@ import {
 export default function Home(){
 
     return (
-        <Center w="100%">
+        <Center width={"100%"} marginTop={"auto"}>
              <StatusBar bg="#D7A86E" barStyle="light-content" />
       <Box safeAreaTop bg="#D7A86E" />
-      <HStack bg="#6200ee" px="1" py="3" justifyContent="space-between" alignItems="center" w="100%" maxW="350">
+      <HStack bg="#D7A86E" px="2" py="4" justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
         <HStack alignItems="center">
           <IconButton icon={<Icon size="sm" as={MaterialIcons} name="menu" color="white" />} />
           <Text color="white" fontSize="20" fontWeight="bold">

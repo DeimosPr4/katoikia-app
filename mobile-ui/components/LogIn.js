@@ -2,22 +2,20 @@ import React from "react";
 import {
   Text,
   Link,
-  HStack,
+  View,
   Center,
   Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
   VStack,
   Box,
   FormControl,
   Input,
   Button,
-  Image
+  Image, 
+  TextInput
 } from "native-base";
 import logo from "../assets/logo-katoikia.png";
-
+import { Entypo } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 export default function LogIn({navigation}) {
   return (
@@ -54,12 +52,20 @@ export default function LogIn({navigation}) {
 
           <VStack space={3} mt="5">
             <FormControl>
-              <FormControl.Label> Correo Electrónico</FormControl.Label>
-              <Input />
+              <FormControl.Label> Correo Electrónico </FormControl.Label>
+
+              <View> 
+              <Entypo name="email" size={20} color="grey" />
+              <Input type="text" />
+              </View>
+              
             </FormControl>
             <FormControl>
-              <FormControl.Label> Contraseña </FormControl.Label>
-              <Input type="password" />
+            <FormControl.Label> Contraseña </FormControl.Label>
+                <View> 
+                <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" />
+                <Input type="password" />
+                </View>
               <Link
                 _text={{
                   fontSize: "xs",
@@ -69,7 +75,9 @@ export default function LogIn({navigation}) {
                 alignSelf="flex-end"
                 mt="1"
                 onPress={() => navigation.navigate('Password')}
+                
               >
+             
                   Recuperar contraseña
                
               </Link>
@@ -82,7 +90,5 @@ export default function LogIn({navigation}) {
           </VStack>
         </Box>
       </Center>
-    
-    
   );
 }

@@ -2,7 +2,6 @@ import React from "react";
 import {
   Text,
   Link,
-  View,
   Center,
   Heading,
   VStack,
@@ -10,12 +9,40 @@ import {
   FormControl,
   Input,
   Button,
-  Image, 
-  TextInput
+  Image
 } from "native-base";
 import logo from "../assets/logo-katoikia.png";
 import { Entypo } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { View, TextInput, StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 10,
+    borderWidth: 0.5,
+    padding: 5,
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    marginTop: 50, 
+    marginBottom: 10
+  }, 
+
+  iconStyle: {
+    padding: 10, 
+  }, 
+
+  viewSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 5
+  }
+})
 
 export default function LogIn({navigation}) {
   return (
@@ -54,17 +81,17 @@ export default function LogIn({navigation}) {
             <FormControl>
               <FormControl.Label> Correo Electrónico </FormControl.Label>
 
-              <View> 
-              <Entypo name="email" size={20} color="grey" />
-              <Input type="text" />
+              <View style={styles.viewSection}> 
+              <Entypo name="email" size={20} color="grey" style={styles.iconStyle} />
+              <TextInput type="text" style={styles.input} />
               </View>
               
             </FormControl>
             <FormControl>
             <FormControl.Label> Contraseña </FormControl.Label>
-                <View> 
-                <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" />
-                <Input type="password" />
+                <View style={styles.viewSection}> 
+                <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" style={styles.iconStyle}/>
+                <TextInput type="password" style={styles.input} />
                 </View>
               <Link
                 _text={{
@@ -91,4 +118,7 @@ export default function LogIn({navigation}) {
         </Box>
       </Center>
   );
+
+
+ 
 }

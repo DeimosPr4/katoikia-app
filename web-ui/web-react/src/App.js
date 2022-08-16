@@ -453,7 +453,6 @@ const App = () => {
                                                 <Route path="/administradoresSistema" component={AdministradoresSistema} />
                                                 <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
                                                 <Route path="/comunidadesViviendas" component={Communities} />
-                                                <Route to="*" exact component={Page404} />
                                             </>
 
                                         )
@@ -465,7 +464,6 @@ const App = () => {
                                                 <Route path="/guardasSeguridad" component={GuardasSeguridad} />
                                                 <Route path="/inquilinos" component={Inquilinos} />
                                                 <Route path="/areasComunes" component={AreasComunes} />
-                                                <Route to="*" exact component={Page404} />
 
                                             </>
                                         )

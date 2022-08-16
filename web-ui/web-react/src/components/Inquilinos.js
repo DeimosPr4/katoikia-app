@@ -92,11 +92,8 @@ const Inquilinos = () => {
       `http://localhost:4000/community/findHousesCommunity/${cookies.community_id}`,
       { method: 'GET' },
     )
-    .then(res => res.json())
-    .then(res => console.log())
     let resList = await response.json()
-    let list = await resList.message
-    setHousesList(await list)
+    setHousesList(await resList)
   }
 
   useEffect(() => {

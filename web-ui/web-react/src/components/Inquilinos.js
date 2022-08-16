@@ -45,7 +45,8 @@ const Inquilinos = () => {
   const [submitted, setSubmitted] = useState(false)
   const toast = useRef(null)
   const dt = useRef(null)
-
+  const [housesList, setHousesList] = useState([])
+  const [houseId, setHouseId] = useState(null)
   const [cookies, setCookie] = useCookies()
   const [changeStatusTenantDialog, setChangeStatusTenantDialog] =
     useState(false)
@@ -85,9 +86,26 @@ const Inquilinos = () => {
     setCommunitiesList(await list)
   }
 
+
+  async function getHouses() {
+    let response = await fetch(
+      `http://localhost:4000/community/findHousesCommunity/${cookies.community_id}`,
+      { method: 'GET' },
+    )
+    .then(res => res.json())
+    .then(res => console.log())
+    let resList = await response.json()
+    let list = await resList.message
+    setHousesList(await list)
+  }
+
   useEffect(() => {
     tenantsList()
   }, [tenantsList])
+
+  useEffect(() => {
+    getHouses()
+  }, [])
 
   useEffect(() => {
     getCommunites()
@@ -97,6 +115,13 @@ const Inquilinos = () => {
     label: item.name,
     value: item._id,
   }))
+
+  const hList = housesList.map((item) => ({
+    label: item.number_house,
+    value: item._id,
+  }))
+
+
 
   function registrarInquilino() {
     let newTenant = {
@@ -613,9 +638,9 @@ const Inquilinos = () => {
               <Dropdown
                 required
                 id='numero_vivienda'
-                value={communityId}
-                options={cList}
-                onChange={(e) => setCommunityId(e.value)}
+                value={houseId}
+                options={hList}
+                onChange={(e) => setHouseId(e.value)}
               />
             </div>
             <Button label='Registrar' onClick={registrarInquilino} />

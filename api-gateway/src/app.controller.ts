@@ -215,6 +215,14 @@ export class AppController {
   ) {
     return this.appService.changeStatusCommunity(pId, pStatus);
   }
+
+  @Get('community/findHousesCommunity/:id')
+  findHousesCommunity(
+    @Param('id') community_id: string,
+  ) {
+    return this.appService.findHousesCommunity(community_id);
+  }
+
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(

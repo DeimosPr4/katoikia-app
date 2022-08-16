@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { map } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AppService {
@@ -283,6 +284,24 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+
+  async findHousesCommunity(community_id: string) {
+    const pattern = { cmd: 'findOneCommunity' }
+    const payload = { _id: community_id }
+
+    let callback = await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+    const finalValue = await lastValueFrom(callback);
+    const response = finalValue['response'];
+    const houses = response['houses'];
+    
+    return houses;
+  }
+
+  
   // ====================== COMMON AREAS ===============================
   //POST parameter from API
   createCommonArea(

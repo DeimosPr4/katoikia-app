@@ -154,7 +154,6 @@ export class UsersService {
       })
   }
 
-
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
@@ -227,6 +226,23 @@ export class UsersService {
     return this.userModel.findOneAndUpdate({ _id: id }, {status: status}, {
       new: true,
     });  
+  }
+
+
+  async findHousesCommunity(community_id: string) {
+    const pattern = { cmd: 'findOneCommunity' }
+    const payload = { _id: community_id }
+
+    let callback = await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+    const finalValue = await lastValueFrom(callback);
+    const response = finalValue['response'];
+    const houses = response['houses'];
+    
+    return houses;
   }
 }
 

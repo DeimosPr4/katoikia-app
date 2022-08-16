@@ -9,7 +9,8 @@ import {
   FormControl,
   Input,
   Button,
-  Image
+  Image,
+  Container
 } from "native-base";
 import logo from "../assets/logo-katoikia.png";
 import { Entypo } from '@expo/vector-icons'; 
@@ -40,7 +41,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 5
+    margin: 10
+  },
+
+  container: {
+
   }
 })
 
@@ -77,7 +82,8 @@ export default function LogIn({navigation}) {
              Su app de comunidad de confianza
           </Heading>
 
-          <VStack space={3} mt="5">
+<View style={styles.container}>
+  <VStack space={3} mt="5">
             <FormControl>
               <FormControl.Label> Correo Electrónico </FormControl.Label>
 
@@ -114,7 +120,8 @@ export default function LogIn({navigation}) {
               <Text>Continuar</Text>
             </Button>
            
-          </VStack>
+          </VStack></View>
+          
         </Box>
       </Center>
   );

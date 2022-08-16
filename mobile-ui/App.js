@@ -18,7 +18,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="LogIn">
         <Stack.Screen name="Inicio" component={LogIn} />
         <Stack.Screen name="Home" component={Home} />
-       <Stack.Screen name="Password" component={RecoverPassword} />
+        <Stack.Screen name="Password" component={RecoverPassword} />
       </Stack.Navigator>
     </NavigationContainer>
       

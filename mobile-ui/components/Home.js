@@ -1,35 +1,60 @@
-import React from "react";
+import React from 'react';
 import {
     Text,
     HStack,
-    IconButton,
     Box,
-    StatusBar,
     Icon, 
     MaterialIcons,
-    Center
+    Center, 
+    Pressable
   } from "native-base";
 
-export default function Home(){
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+export default function Home({navigation}){
+
+  const [selected, setSelected] = React.useState(1);
 
     return (
-        <Center width={"100%"} marginTop={"auto"}>
-             <StatusBar bg="#D7A86E" barStyle="light-content" />
-      <Box safeAreaTop bg="#D7A86E" />
-      <HStack bg="#D7A86E" px="2" py="4" justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
-        <HStack alignItems="center">
-          <IconButton icon={<Icon size="sm" as={MaterialIcons} name="menu" color="white" />} />
-          <Text color="white" fontSize="20" fontWeight="bold">
-            Home
-          </Text>
+      
+   <Box flex={1} bg="white" safeAreaTop width="100%" maxW="300px" alignSelf="center">
+        <Center flex={1}></Center>
+        <HStack bg="indigo.600" alignItems="center" safeAreaBottom shadow={6}>
+          <Pressable opacity={selected === 0 ? 1 : 0.5} py="3" flex={1} onPress={() => setSelected(0)}>
+            <Center>
+              <Icon mb="1" as={<MaterialCommunityIcons name={selected === 0 ? 'home' : 'home-outline'} />} color="white" size="sm" />
+              <Text color="white" fontSize="12">
+                Inicio
+              </Text>
+            </Center>
+          </Pressable>
+          <Pressable opacity={selected === 1 ? 1 : 0.5} py="2" flex={1} onPress={() => setSelected(1)}>
+            <Center>
+              <Icon mb="1" as={<MaterialIcons name="search" />} color="white" size="sm" />
+              <Text color="white" fontSize="12">
+                 Comunicados
+              </Text>
+            </Center>
+          </Pressable>
+          <Pressable opacity={selected === 2 ? 1 : 0.6} py="2" flex={1} onPress={() => setSelected(2)}>
+            <Center>
+              <Icon mb="1" as={<MaterialCommunityIcons name={selected === 2 ? 'cart' : 'cart-outline'} />} color="white" size="sm" />
+              <Text color="white" fontSize="12">
+                Reservas
+              </Text>
+            </Center>
+          </Pressable>
+          <Pressable opacity={selected === 3 ? 1 : 0.5} py="2" flex={1} onPress={() => setSelected(3)}>
+            <Center>
+              <Icon mb="1" as={<MaterialCommunityIcons name={selected === 3 ? 'account' : 'account-outline'} />} color="white" size="sm" />
+              <Text color="white" fontSize="12">
+                Perfil
+              </Text>
+            </Center>
+          </Pressable>
         </HStack>
-        <HStack>
-          <IconButton icon={<Icon as={MaterialIcons} name="favorite" size="sm" color="white" />} />
-          <IconButton icon={<Icon as={MaterialIcons} name="search" size="sm" color="white" />} />
-          <IconButton icon={<Icon as={MaterialIcons} name="more-vert" size="sm" color="white" />} />
-        </HStack>
-      </HStack>
-      </Center>
+      </Box>
+   
        
-    )
+    );
 }

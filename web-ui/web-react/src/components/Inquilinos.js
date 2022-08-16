@@ -15,6 +15,7 @@ import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons'
 import { faHashtag } from '@fortawesome/free-solid-svg-icons'
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import { useCookies } from 'react-cookie'
+import InfoDialog from './generic/InfoDialog'
 
 const Inquilinos = () => {
   let emptyTenant = {
@@ -43,6 +44,7 @@ const Inquilinos = () => {
   const [communitiesList, setCommunitiesList] = useState([])
   const [communityId, setCommunityId] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  let [openInfoDialog] = useState(false)
   const toast = useRef(null)
   const dt = useRef(null)
 
@@ -142,6 +144,10 @@ const Inquilinos = () => {
       summary: 'Inquilino Eliminado',
       life: 3000,
     })
+  }
+
+  function openDialog() {
+    openInfoDialog = true
   }
 
   const deleteSelectedTenants = () => {
@@ -418,6 +424,13 @@ const Inquilinos = () => {
     )
   }
 
+  const testInquilino = {
+    name: 'Juan', // Nombre
+    last_name: 'Pérez', // Apellidos
+    email: 'jperez@gmail.com',
+    phone: '+57 300 1234567', // Teléfono
+  }
+
   return (
     <div className='grid'>
       <div className='col-12'>
@@ -619,6 +632,7 @@ const Inquilinos = () => {
               />
             </div>
             <Button label='Registrar' onClick={registrarInquilino} />
+            <Button label='testDialog' onClick={openDialog} />
           </div>
         </div>
       </div>

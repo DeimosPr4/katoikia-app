@@ -129,16 +129,16 @@ const Inquilinos = () => {
       email: document.getElementById('correo_electronico').value,
       phone: '',
       password: '',
-      community_id: document.getElementById('numero_vivienda').value,
+      community_id: cookies.community_id,
       community_name: '',
-      number_house: 'Sin número de vivienda',
+      number_house: document.getElementById('numero_vivienda').value,
       date_entry: new Date(),
       user_type: '3',
       status: '1',
       status_text: '',
     }
 
-    fetch('http://localhost:3000/api/createUser', {
+    fetch('http://localhost:4000/user/createUser', {
       method: 'POST',
       cache: 'no-cache',
       body: JSON.stringify(newTenant),
@@ -147,11 +147,31 @@ const Inquilinos = () => {
       },
     }).then((response) => {
       if (response.ok) {
-        alert('Inquilino registrado correctamente')
+        return response.json()
       } else {
         alert('Error al registrar inquilino')
       }
     })
+     /* .then(res => {
+        console.log(data.message)
+        let data = {
+          community_id: cookies.community_id,
+          number_house: document.getElementById('numero_vivienda').value,
+          tenant_id: data.message._id
+        }
+        return fetch('http://localhost:4000/community/saveTenant',
+          {
+            method: 'POST',
+            cache: 'no-cache',
+            body: JSON.stringify(data),
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        ).then(res => alert('Inquilino registrado correctamente'))
+          .catch(error => alert('Error al registrar inquilino'))
+      })
+      .catch(error => alert('Error al registrar inquilino'))*/
   }
 
   const deleteTenant = () => {

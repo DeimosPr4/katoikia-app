@@ -13,7 +13,7 @@ export class CommunitiesService {
     @InjectModel(Community.name)
     private readonly communityModel: Model<CommunityDocument>,
     @Inject('SERVICIO_USUARIOS') private readonly clientUserApp: ClientProxy,
-  ) {}
+  ) { }
 
   async create(community: CommunityDocument): Promise<Community> {
     return this.communityModel.create(community);
@@ -56,15 +56,15 @@ export class CommunitiesService {
   }
 
   async remove(id: string) {
-    return this.communityModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+    return this.communityModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
       new: true,
-    });  
+    });
   }
 
   async changeStatus(id: string, status: string) {
-    return this.communityModel.findOneAndUpdate({ _id: id }, {status: status}, {
+    return this.communityModel.findOneAndUpdate({ _id: id }, { status: status }, {
       new: true,
-    });  
+    });
   }
 
   async findCommunityAdmin(community: string, user_type: string) {
@@ -77,5 +77,24 @@ export class CommunitiesService {
 
     const finalValue = await lastValueFrom(callback);
     return finalValue['response'];
+  }
+
+
+  async saveTenant(id: string, number_house: string, tenant_id: string) {
+
+    let community = await this.findOne(id);
+
+    await community.houses.map(house => {
+      if(house.number_house == number_house){
+        house.tenants.tenant_id = tenant_id
+      }
+      return house;
+    })
+
+    console.log(community.houses)
+
+   return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
+      new: true,
+    });
   }
 }

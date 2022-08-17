@@ -229,20 +229,15 @@ export class UsersService {
   }
 
 
-  async findHousesCommunity(community_id: string) {
-    const pattern = { cmd: 'findOneCommunity' }
-    const payload = { _id: community_id }
+  async saveTenantNumHouse(community_id: string, number_house:string, tenant_id: string) {
+    const pattern = { cmd: 'saveTenant' }
+    const payload = { _id: community_id, number_house: number_house,  tenant_id: tenant_id }
 
-    let callback = await this.clientCommunityApp
+    return await this.clientCommunityApp
       .send<string>(pattern, payload)
       .pipe(
         map((response: string) => ({ response }))
       )
-    const finalValue = await lastValueFrom(callback);
-    const response = finalValue['response'];
-    const houses = response['houses'];
-    
-    return houses;
   }
 }
 

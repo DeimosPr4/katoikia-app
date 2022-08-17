@@ -301,6 +301,13 @@ export class AppService {
     return houses;
   }
 
+  saveTenant(id: string, number_house: string, tenant_id: string) {
+    const pattern = { cmd: 'saveTenant' };
+    const payload = { _id: id, number_house: number_house, tenant_id: tenant_id };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
   
   // ====================== COMMON AREAS ===============================
   //POST parameter from API

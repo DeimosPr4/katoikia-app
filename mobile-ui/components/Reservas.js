@@ -133,12 +133,12 @@ export default function Reservas({navigation}) {
       </Box>
     </Box>
 
-    <Box height="200" w="300" shadow="2" rounded="lg" _dark={{
+    <Box height="200" w="300" shadow="2" rounded="lg" m='5' ml='9' _dark={{
       bg: "coolGray.200:alpha.20"
     }} _light={{
       bg: "coolGray.200:alpha.20"
     }}>
-        <Fab renderInPortal={false} shadow={2} size="sm" icon={<Icon color="white" as={AntDesign} name="plus" size="sm" />} />
+        <Fab renderInPortal={false} shadow={2} size="sm" icon={<Icon mb="0.5" as={<MaterialCommunityIcons name={'plus'} />} color="white" size="sm" />} onPress={() => navigation.navigate('area')}/>
       </Box>
     </ScrollView>
   );

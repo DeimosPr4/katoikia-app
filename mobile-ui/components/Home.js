@@ -6,8 +6,6 @@ import {
     Box,
 Pressable,
     Spacer, 
-    Flex,
-    Center
   } from "native-base";
   import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 export default function Home(){

@@ -10,7 +10,7 @@ import {
     Center
   } from "native-base";
 
-export default function Profile({navigation}){
+export default function AreaComun({navigation}){
 
     return (
         <Center>
@@ -23,31 +23,27 @@ export default function Profile({navigation}){
         <Heading mt="1" color="coolGray.600" _dark={{
         color: "warmGray.200"
       }} fontWeight="medium" size="xs">
-          Modifique sus datos
+         Reserve su área común 
         </Heading>
         <VStack space={3} mt="5">
           <FormControl>
-            <FormControl.Label>Nombre</FormControl.Label>
+            <FormControl.Label>Hora de inicio</FormControl.Label>
             <Input type="text"/>
           </FormControl>
           <FormControl>
-            <FormControl.Label>Correo Electrónico</FormControl.Label>
+            <FormControl.Label>Hora de finalización</FormControl.Label>
             <Input type="text" />
           </FormControl>
           <FormControl>
-            <FormControl.Label>Teléfono</FormControl.Label>
+            <FormControl.Label>Lugar</FormControl.Label>
             <Input type="text" />
           </FormControl>
-          <FormControl>
-            <FormControl.Label>Contraseña actual</FormControl.Label>
-            <Input type="password" />
-          </FormControl>
-          
+        
           <Button mt="2" backgroundColor="orange.300">
-            Actualizar
+            Reservar
           </Button>
-          <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Inicio')}>
-            Cerrar sesión
+          <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Comunicados')}>
+            Cancelar
           </Button>
         </VStack>
       </Box>

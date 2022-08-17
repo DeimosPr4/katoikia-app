@@ -12,6 +12,7 @@ import RecoverPassword from "./components/RecoverPassword";
 import Reservas from "./components/Reservas";
 import Profile from "./components/Profile"; 
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import AreaComun from "./components/AreaComun";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator(); 
@@ -47,6 +48,7 @@ export default function App() {
     }}} />
         <Stack.Screen name="Comunicados" component={HomeTab} options={{headerShown: false}} />
         <Stack.Screen name="Password" component={RecoverPassword} />
+        <Stack.Screen name="area" component={AreaComun} />
       </Stack.Navigator>
 
     

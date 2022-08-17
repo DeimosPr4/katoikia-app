@@ -1,60 +1,103 @@
-import React from 'react';
+import React from "react";
 import {
     Text,
     HStack,
+    Badge,
     Box,
-    Icon, 
-    MaterialIcons,
-    Center, 
-    Pressable
+Pressable,
+    Spacer, 
+    Flex,
+    Center
   } from "native-base";
+  import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+export default function Home(){
 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-export default function Home({navigation}){
-
-  const [selected, setSelected] = React.useState(1);
-
+  const [selected, setSelected] = React.useState(0);
     return (
+
+      <Box alignItems="center">
+      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5" marginTop="4">
+        <Box>
+          <HStack alignItems="center">
+            <Badge colorScheme="darkBlue" _text={{
+            color: "white"
+          }} variant="solid" rounded="4">
+              Comunicado
+            </Badge>
+            <Spacer />
+            <Text fontSize={10} color="coolGray.800">
+              1 month ago
+            </Text>
+          </HStack>
+          <Text color="coolGray.800" mt="3" fontWeight="medium" fontSize="xl">
+            Administrador de Comunidad
+          </Text>
+          <Text mt="2" fontSize="sm" color="coolGray.700">
+            Notificacion sobre la aplicacion
+          </Text>
+         
+        </Box>
+      </Pressable>
+      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5" marginTop="4">
+        <Box>
+          <HStack alignItems="center">
+            <Badge colorScheme="darkBlue" _text={{
+            color: "white"
+          }} variant="solid" rounded="4">
+              Comunicado
+            </Badge>
+            <Spacer />
+            <Text fontSize={10} color="coolGray.800">
+              1 month ago
+            </Text>
+          </HStack>
+          <Text color="coolGray.800" mt="3" fontWeight="medium" fontSize="xl">
+            Administrador General
+          </Text>
+          <Text mt="2" fontSize="sm" color="coolGray.700">
+            Notificacion sobre la aplicacion
+          </Text>
+         
+        </Box>
+      </Pressable>
+    </Box>
+      //   <Center width={"100%"} marginTop={"auto"}>
+           
+      // <Box safeAreaTop bg="#D7A86E" flex={1} />
+      // <HStack bg="#D7A86E" px="2" py="4" justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+
+      //   <Pressable opacity={selected === 0 ? 1 : 0.5} py="3" flex={1} onPress={() => setSelected(0) && navigation.navigate('Home')}>
+      //       <Center>
+      //         <Icon mb="2" as={<MaterialCommunityIcons name={selected === 0 ? 'home' : 'home-outline'} />} color="white" size="md" />
+      //         <Text color="white" fontSize="15">
+      //           Inicio
+      //         </Text>
+      //       </Center>
+      //     </Pressable>
       
-   <Box flex={1} bg="white" safeAreaTop width="100%" maxW="300px" alignSelf="center">
-        <Center flex={1}></Center>
-        <HStack bg="indigo.600" alignItems="center" safeAreaBottom shadow={6}>
-          <Pressable opacity={selected === 0 ? 1 : 0.5} py="3" flex={1} onPress={() => setSelected(0)}>
-            <Center>
-              <Icon mb="1" as={<MaterialCommunityIcons name={selected === 0 ? 'home' : 'home-outline'} />} color="white" size="sm" />
-              <Text color="white" fontSize="12">
-                Inicio
-              </Text>
-            </Center>
-          </Pressable>
-          <Pressable opacity={selected === 1 ? 1 : 0.5} py="2" flex={1} onPress={() => setSelected(1)}>
-            <Center>
-              <Icon mb="1" as={<MaterialIcons name="search" />} color="white" size="sm" />
-              <Text color="white" fontSize="12">
-                 Comunicados
-              </Text>
-            </Center>
-          </Pressable>
-          <Pressable opacity={selected === 2 ? 1 : 0.6} py="2" flex={1} onPress={() => setSelected(2)}>
-            <Center>
-              <Icon mb="1" as={<MaterialCommunityIcons name={selected === 2 ? 'cart' : 'cart-outline'} />} color="white" size="sm" />
-              <Text color="white" fontSize="12">
-                Reservas
-              </Text>
-            </Center>
-          </Pressable>
-          <Pressable opacity={selected === 3 ? 1 : 0.5} py="2" flex={1} onPress={() => setSelected(3)}>
-            <Center>
-              <Icon mb="1" as={<MaterialCommunityIcons name={selected === 3 ? 'account' : 'account-outline'} />} color="white" size="sm" />
-              <Text color="white" fontSize="12">
-                Perfil
-              </Text>
-            </Center>
-          </Pressable>
-        </HStack>
-      </Box>
-   
+        
+      //   <Pressable opacity={selected === 1 ? 1 : 0.5} py="3" flex={1} onPress={() => setSelected(1) && ( () => navigation.navigate('Reservas'))}>
+      //       <Center>
+      //         <Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'tree' : 'tree-outline'} />} color="white" size="md" />
+      //         <Text color="white" fontSize="15">
+      //           Reservas
+      //         </Text>
+      //       </Center>
+      //     </Pressable>
+      
        
-    );
+      //   <Pressable opacity={selected === 2 ? 1 : 0.5} py="3" flex={1} onPress={() => setSelected(2)}>
+      //       <Center>
+      //         <Icon mb="2" as={<MaterialCommunityIcons name={selected === 2 ? 'account' : 'account-outline'} />} color="white" size="md" />
+      //         <Text color="white" fontSize="15">
+      //           Perfil
+      //         </Text>
+      //       </Center>
+      //     </Pressable>
+     
+        
+      // </HStack>
+      // </Center>
+       
+    )
 }

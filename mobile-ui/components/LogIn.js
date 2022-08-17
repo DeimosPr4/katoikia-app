@@ -7,10 +7,8 @@ import {
   VStack,
   Box,
   FormControl,
-  Input,
   Button,
-  Image,
-  Container
+  Image
 } from "native-base";
 import logo from "../assets/logo-katoikia.png";
 import { Entypo } from '@expo/vector-icons'; 
@@ -115,7 +113,7 @@ export default function LogIn({navigation}) {
                
               </Link>
             </FormControl>
-            <Button  mt="2" colorScheme="primary" onPress={() => navigation.navigate('Home')}
+            <Button  mt="2" colorScheme="primary" onPress={() => navigation.navigate('Comunicados')}
             >
               <Text>Continuar</Text>
             </Button>

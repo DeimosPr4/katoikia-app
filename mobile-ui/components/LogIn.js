@@ -113,7 +113,7 @@ export default function LogIn({navigation}) {
                
               </Link>
             </FormControl>
-            <Button  mt="2" colorScheme="primary" onPress={() => navigation.navigate('Comunicados')}
+            <Button  mt="2" backgroundColor="#D7A86E" onPress={() => navigation.navigate('Comunicados')}
             >
               <Text>Continuar</Text>
             </Button>

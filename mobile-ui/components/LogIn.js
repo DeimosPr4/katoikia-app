@@ -1,4 +1,5 @@
 import React from "react";
+import Cookies from 'universal-cookie';
 import {
   Text,
   Link,
@@ -14,6 +15,9 @@ import logo from "../assets/logo-katoikia.png";
 import { Entypo } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { View, TextInput, StyleSheet } from "react-native";
+
+const baseURL = "http://localhost:4000/user/loginUser"; 
+const cookies = new Cookies(); 
 
 const styles = StyleSheet.create({
   input: {
@@ -47,17 +51,58 @@ const styles = StyleSheet.create({
   }
 })
 
+const iniciarSesion = async()  => {
+
+  try {
+
+    await fetch(baseURL, {
+      cache: 'no-cache', 
+      method: 'POST', 
+      body: JSON.stringify(), 
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.status != 201){
+        console.log('ocurrio un error ');
+      }else{
+        return response.json(); 
+      }
+    })
+    .then( response => {
+       const user = response.message
+
+        if(user.user_type == '3'){
+          cookies.set('id',user._id, {path: "/"} )
+          cookies.set('name',user.name, {path: "/"} )
+          cookies.set('email',user.email, {path: "/"} )
+          cookies.set('type',user.user_type, {path: "/"} )
+        }
+    })
+    
+  } catch (error) {
+    
+  }
+
+   
+}
+
 export default function LogIn({navigation}) {
   return (
   
       
       <Center w="100%">
         <Box safeArea p="2" py="8" w="90%" maxW="290">
-        <Image source={
+
+          <Center> 
+          <Image  source={
           logo
-        } width={500} height={550}
+        } width={500} height={550} m='2'
     alt="Katoikia logo" size="xl" justifyContent="center" />
 
+          </Center>
+      
           <Heading
             size="lg"
             fontWeight="600"
@@ -102,6 +147,7 @@ export default function LogIn({navigation}) {
                   fontSize: "xs",
                   fontWeight: "500",
                   color: "indigo.500",
+                  marginTop: "10"
                 }}
                 alignSelf="flex-end"
                 mt="1"

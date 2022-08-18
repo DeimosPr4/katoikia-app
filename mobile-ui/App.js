@@ -48,7 +48,9 @@ export default function App() {
     }}} />
         <Stack.Screen name="Comunicados" component={HomeTab} options={{headerShown: false}} />
         <Stack.Screen name="Password" component={RecoverPassword} />
-        <Stack.Screen name="area" component={AreaComun} />
+        <Stack.Screen name="area" component={AreaComun} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }}} />
       </Stack.Navigator>
 
     

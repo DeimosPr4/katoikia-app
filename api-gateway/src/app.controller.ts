@@ -155,6 +155,12 @@ export class AppController {
     return this.appService.deleteAdminSystem(id);
   }
 
+  @Delete('user/deleteAdminCommunity/:id')
+  deleteAdminCommunity(@Param('id') id: string) {
+    return this.appService.deleteAdminCommunity(id);
+  }
+
+
   @Post('user/changeStatus')
   changeStatusUser(
     @Body('id') pId: string,

@@ -1,138 +1,60 @@
-import React from "react";
+import React,{useState} from "react";
 import {
-  Text,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  VStack,
-  Box,
-  FormControl,
-  Input,
-  Button,
-  Image
+  NativeBaseProvider, 
+  Icon
 } from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
-import { Platform } from "react-native";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import LogIn from "./components/LogIn";
+import Home from "./components/Home";
+import RecoverPassword from "./components/RecoverPassword";
+import Reservas from "./components/Reservas";
+import Profile from "./components/Profile"; 
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import AreaComun from "./components/AreaComun";
 
-// Define the config
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: "dark",
-};
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator(); 
 
-// extend the theme
-export const theme = extendTheme({ config,
-colors: {
-  brown: "#D7A86E"
-} });
 
-//const logo = require('./assets/')
 
+function HomeTab() {
+
+const [selected, setSelected] = useState(0);
+
+  return (
+    <Tab.Navigator initialRouteName="Comunicados" > 
+    <Tab.Screen  name="Comunicados" component={Home} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 0 ? 'home' : 'home-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(0)} /> 
+    <Tab.Screen  name="Reservas" component={Reservas } options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'tree' : 'tree-outline'} />} color="#D7A86E" size="md" />)} } onclick={() => setSelected(1)}  /> 
+    <Tab.Screen  name="Perfil" component={Profile} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 2 ? 'account' : 'account-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(2)} /> 
+  </Tab.Navigator>
+  )
+}
 export default function App() {
   return (
     <NativeBaseProvider>
-      <Center w="100%">
-        <Box safeArea p="2" py="8" w="90%" maxW="290">
-        {/* <Image source={{
-      uri: logo.default.src
-    }} width={500} height={500}
-    alt="Katoikia logo" size="xl" /> */}
 
-          <Heading
-            size="lg"
-            fontWeight="600"
-            color="coolGray.800"
-            _dark={{
-              color: "warmGray.50",
-            }}
-          >
-            Bienvenido a Katoikia 
-          </Heading>
-          <Heading
-            mt="1"
-            _dark={{
-              color: "warmGray.200",
-            }}
-            color="coolGray.600"
-            fontWeight="medium"
-            size="xs"
-          >
-             Su app de comunidad de confianza
-          </Heading>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="LogIn">
+        <Stack.Screen name="Inicio" component={LogIn} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }}} />
+        <Stack.Screen name="Comunicados" component={HomeTab} options={{headerShown: false}} />
+        <Stack.Screen name="Password" component={RecoverPassword} />
+        <Stack.Screen name="area" component={AreaComun} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }}} />
+      </Stack.Navigator>
 
-          <VStack space={3} mt="5">
-            <FormControl>
-              <FormControl.Label> Correo Electrónico</FormControl.Label>
-              <Input />
-            </FormControl>
-            <FormControl>
-              <FormControl.Label> Contraseña </FormControl.Label>
-              <Input type="password" />
-              <Link
-                _text={{
-                  fontSize: "xs",
-                  fontWeight: "500",
-                  color: "indigo.500",
-                }}
-                alignSelf="flex-end"
-                mt="1"
-              >
-                  Recuperar contraseña
-               
-              </Link>
-            </FormControl>
-            <Button mt="2" colorScheme="primary"
-            >
-              <Text>Continuar</Text>
-            </Button>
-            <HStack mt="6" justifyContent="center">
-              {/* <Text
-                fontSize="sm"
-                color="coolGray.600"
-                _dark={{
-                  color: "warmGray.200",
-                }}
-              >
-                I'm a new user.
-              </Text> */}
-              <Link
-                _text={{
-                  color: "warning.300",
-                  fontWeight: "medium",
-                  fontSize: "sm",
-                }}
-                href="#"
-              >
-                 Regístrese aquí
-              </Link>
-            </HStack>
-          </VStack>
-        </Box>
-      </Center>
-      
+    
+    </NavigationContainer>
     </NativeBaseProvider>
-  );
-}
-
-// Color Switch Component
-function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  return (
-    <HStack space={2} alignItems="center">
-      <Text>Dark</Text>
-      <Switch
-        isChecked={colorMode === "light"}
-        onToggle={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-        }
-      />
-      <Text>Light</Text>
-    </HStack>
   );
 }

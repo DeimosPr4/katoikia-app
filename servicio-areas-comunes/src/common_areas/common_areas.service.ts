@@ -41,4 +41,10 @@ export class CommonAreasService {
     return this.commonAreaModel.find({ community_id: community_id }).exec();
   }
 
+  async changeStatus(id: string, status: string) {
+    return this.commonAreaModel.findOneAndUpdate({ _id: id }, {status: status}, {
+      new: true,
+    });  
+  }
+
 }

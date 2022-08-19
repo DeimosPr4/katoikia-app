@@ -343,6 +343,15 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  changeStatusCommonArea(pId: string, pStatus: string) {
+    const pattern = { cmd: 'changeStatus' };
+    const payload = { id: pId, status: pStatus };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+
   // ====================== GUESTS ===============================
 
   //POST parameter from API

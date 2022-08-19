@@ -31,11 +31,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 0,
     marginTop: 50, 
-    marginBottom: 10
+    marginBottom: 10, 
+    borderRadius: 4
   }, 
 
   iconStyle: {
-    padding: 10, 
+    paddingBottom: 20,
+    marginTop: 3, 
+    paddingTop: 35
   }, 
 
   viewSection: {
@@ -43,7 +46,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10
+
+    marginBottom: 28
   },
 
   container: {
@@ -52,6 +56,9 @@ const styles = StyleSheet.create({
 })
 
 const iniciarSesion = async()  => {
+
+  const userData = FormControl.toString;
+  console.log(userData);
 
   try {
 
@@ -145,7 +152,7 @@ export default function LogIn({navigation}) {
             <FormControl.Label> Contraseña </FormControl.Label>
                 <View style={styles.viewSection}> 
                 <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" style={styles.iconStyle}/>
-                <TextInput type="password" style={styles.input} placeholder='Contraseña'/>
+                <TextInput type="password" style={styles.input} placeholder='Contraseña' />
                 </View>
               <Link
                 _text={{

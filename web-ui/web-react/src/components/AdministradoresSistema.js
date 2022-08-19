@@ -44,7 +44,6 @@ const AdministradoresSistema = () => {
     status_text: '',
   };
 
-
   async function fetchP() {
     let nombres = await fetch(urlFetch, { method: 'GET' });
     let adminRes = await nombres.json();
@@ -60,10 +59,10 @@ const AdministradoresSistema = () => {
     })
     setAdministrators(await data);
   }
+
   useEffect(() => {
     fetchP();
   }, [])
-
 
   function registrarAdmin() {
     var data = {

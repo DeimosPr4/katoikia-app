@@ -708,7 +708,11 @@ const Communities = () => {
 
   const tenantsBodyTemplate = (rowData) => {
     let tenants = rowData.tenants;
-    let name = findNameTenant(tenants.tenant_id);
+    let name = 'Sin inquilino';
+    if (rowData.tenants) {
+      name = findNameTenant(tenants.tenant_id);
+    }
+
     return (
       <>
         {name}

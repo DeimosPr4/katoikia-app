@@ -117,64 +117,56 @@ const AdministradoresComunidad = () => {
 
 
     const deleteAdminCommunity = () => {
-        /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
-               cache: 'no-cache',
-               method: 'DELETE',
-               headers: {
-                   'Content-Type': 'application/json'
-               }
-           })
-               .then(
-                   function (response) {
-                       if (response.status != 201)
-                           console.log('Ocurrió un error con el servicio: ' + response.status);
-                       else
-                           return response.json();
-                   }
-               )
-               .then(
-                   function (response) {
-                       
-                       let _community = communities.filter(val => val._id !== community._id);
-                       setCommunities(_community);
-                       setDeleteCommunityDialog(false);
-                       setCommunity(emptyCommunity);
-                       toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });
-                   }
-               )
-               .catch(
-                   err => {
-                       console.log('Ocurrió un error con el fetch', err)
-                       toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Comunidad de Viviendas no se pudo eliminar', life: 3000 });
-                   }
-               ); 
-        */
-        let _administrators = listaAdmins.filter(
-            (val) => val._id !== adminCommunity._id,
-        );
-        setListaAdmins(_administrators);
-        setDeleteAdminCommunityDialog(false);
-        setAdminCommunity(emptyAdminCommunity);
-        toast.current.show({
-            severity: 'success',
-            summary: 'Administrador de Comunidad Eliminada',
-            life: 3000,
-        });
+        fetch('http://localhost:4000/user/deleteAdminCommunity/' + adminCommunity._id, {
+            cache: 'no-cache',
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else
+                        return response.json();
+                }
+            )
+            .then(
+                function (response) {
+
+                    let _administrators = listaAdmins.filter(
+                        (val) => val._id !== adminCommunity._id,
+                    );
+                    setListaAdmins(_administrators);
+                    setDeleteAdminCommunityDialog(false);
+                    setAdminCommunity(emptyAdminCommunity);
+                    toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador Comunidad Eliminada', life: 3000 });
+                }
+            )
+            .catch(
+                err => {
+                    console.log('Ocurrió un error con el fetch', err)
+                    toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador Comunidad no se pudo eliminar', life: 3000 });
+                }
+            );
+
+       
     };
 
     const deleteSelectedAdminsCommunity = () => {
         let _admins = listaAdmins.filter(
             (val) => !selectedAdminsCommunities.includes(val),
         );
-        /*  selectedCommunities.map((item) => {
-                 fetch('http://localhost:4000/user/deleteCommunity/' + item._id, {
+         selectedAdminsCommunities.map((item) => {
+                 fetch('http://localhost:4000/user/deleteAdminCommunity/' + item._id, {
                      cache: 'no-cache',
                      method: 'DELETE',
                      headers: {
                          'Content-Type': 'application/json'
                      }
                  })
-             })*/
+             })
         setListaAdmins(_admins);
         setDeleteAdminsCommunitiesDialog(false);
         setSelectedAdminsCommunities(null);

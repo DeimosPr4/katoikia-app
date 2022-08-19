@@ -11,7 +11,7 @@ import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'primereact/dropdown';
 import classNames from 'classnames';
@@ -31,7 +31,8 @@ const AdministradoresComunidad = () => {
         community_name: '',
         user_type: '2',
         date_entry: new Date(),
-        status: '1'
+        status: '1',
+        status_text: '',
     };
 
     const [listaAdmins, setListaAdmins] = useState([]);
@@ -47,12 +48,23 @@ const AdministradoresComunidad = () => {
     const toast = useRef(null);
     const dt = useRef(null);
 
+    const [changeStatusAdminCommunityDialog, setChangeStatusAdminCommunityDialog] = useState(false);
+
 
     async function listaAdmin() {
-        let nombres = await fetch('http://localhost:4000/user/findAdminComunidad/', { method: 'GET' })
+        await fetch('http://localhost:4000/user/findAdminComunidad/', { method: 'GET' })
             .then((response) => response.json())
             .then((data) => {
                 return Promise.all(data.message.map(item => {
+
+
+                    if (item.status == '1') {
+                        item.status_text = 'Activo';
+                    } else if (item.status == '0') {
+                        item.status_text = 'Inactivo';
+                    } else {
+                        item.status_text = 'Eliminado';
+                    }
                     //item.full_name returns the repositorie name
                     return fetch(`http://localhost:4000/community/findCommunityName/${item.community_id}`, { method: 'GET' })
                         .then((response2) => response2.json())
@@ -63,7 +75,13 @@ const AdministradoresComunidad = () => {
                         })
                 }));
             })
-            .then(data => setListaAdmins(data));
+            .then(data => {
+                data = data.filter(
+                    (val) => val.status != -1,
+                );
+                console.log(data)
+                setListaAdmins(data);
+            });
 
     }
 
@@ -72,11 +90,16 @@ const AdministradoresComunidad = () => {
 
 
     async function getCommunites() {
-        let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' });
-        let resList = await response.json();
-        let list = await resList.message;
+        let response = await fetch('http://localhost:4000/community/allCommunities', { method: 'GET' })
+            .then((response) => response.json())
+            .then(data => data.message)
+            .then(data => {
+                data = data.filter(
+                    (val) => val.status != -1,
+                )
+                setCommunitiesList(data);
 
-        setCommunitiesList(await list);
+            })
     }
 
     useEffect(() => {
@@ -85,7 +108,7 @@ const AdministradoresComunidad = () => {
 
     useEffect(() => {
         getCommunites();
-    },[])
+    }, [])
 
     const cList = communitiesList.map((item) => ({
         label: item.name,
@@ -163,6 +186,52 @@ const AdministradoresComunidad = () => {
         });
     };
 
+
+    const cambiarStatusAdminCommuniy = () => {
+        if (adminCommunity.status == '1') {
+            adminCommunity.status = '0';
+            adminCommunity.status_text = 'Inactivo';
+
+        } else if (adminCommunity.status == '0') {
+            adminCommunity.status = '1';
+            adminCommunity.status_text = 'Activo';
+        }
+        var data = {
+            id: adminCommunity._id,
+            status: adminCommunity.status,
+        };
+        fetch('http://localhost:4000/user/changeStatus', {
+            cache: 'no-cache',
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else
+                        return response.json();
+                }
+            )
+            .then(
+                function (response) {
+                    setChangeStatusAdminCommunityDialog(false);
+                    toast.current.show({
+                        severity: 'success',
+                        summary: 'Éxito',
+                        detail: 'Administrador de Comunidad Actualizado',
+                        life: 3000,
+                    });
+                }
+            )
+            .catch(
+                err => console.log('Ocurrió un error con el fetch', err)
+            );
+    }
+
     const saveAdminCommunity = () => {
         if (adminCommunity.name && adminCommunity.dni && adminCommunity.last_name && adminCommunity.email && adminCommunity.phone) {
 
@@ -228,11 +297,33 @@ const AdministradoresComunidad = () => {
         setDeleteAdminsCommunitiesDialog(true);
     };
 
+    const hideChangeStatusAdmimCommunityDialog = () => {
+        setChangeStatusAdminCommunityDialog(false);
+    };
 
+    const confirmChangeStatuAdminCommunity = (adminCommunity) => {
+        setAdminCommunity(adminCommunity);
+        setChangeStatusAdminCommunityDialog(true);
+    };
 
     const actionsAdminCommunity = (rowData) => {
+        let icono = '';
+        let text = '';
+        if (rowData.status == '0') {
+            icono = "pi pi-eye";
+            text = "Activar Administrador de Comunidad"
+        } else if (rowData.status == '1') {
+            icono = "pi pi-eye-slash";
+            text = "Inactivar Administrador de Comunidad"
+        }
         return (
             <div className="actions">
+                <Button
+                    icon={`${icono}`}
+                    className="p-button-rounded p-button-warning mt-2 mx-2"
+                    onClick={() => confirmChangeStatuAdminCommunity(rowData)}
+                    title={`${text}`}
+                />
                 <Button
                     icon="pi pi-trash"
                     className="p-button-rounded p-button-danger mt-2"
@@ -257,6 +348,22 @@ const AdministradoresComunidad = () => {
         </>
     );
 
+    const changeStatusAdminCommunityDialogFooter = (
+        <>
+            <Button
+                label="No"
+                icon="pi pi-times"
+                className="p-button-text"
+                onClick={hideChangeStatusAdmimCommunityDialog}
+            />
+            <Button
+                label="Yes"
+                icon="pi pi-check"
+                className="p-button-text"
+                onClick={cambiarStatusAdminCommuniy}
+            />
+        </>
+    );
 
     const leftToolbarTemplate = () => {
         return (
@@ -344,7 +451,16 @@ const AdministradoresComunidad = () => {
         </>
     )
 
-  
+    const headerStatus = (
+        <>
+            <p> {' '}
+                <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#C08135" }} />{' '}
+                Estado
+            </p>
+        </>
+    )
+
+
 
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
@@ -359,6 +475,18 @@ const AdministradoresComunidad = () => {
         setCommunityId(getCommunityValue);
         console.log(getCommunityValue)
     }
+
+    const statusBodyTemplate = (rowData) => {
+        return (
+            <>
+                <span
+                    className={`status status-${rowData.status}`}
+                >
+                    {rowData.status_text}
+                </span>
+            </>
+        );
+    };
 
     return (
 
@@ -380,9 +508,10 @@ const AdministradoresComunidad = () => {
                         <Column field="dni" sortable header={headerDNI} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
                         </Column>
                         <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column field="phone"  header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="community_name" sortable header={headerCommuntiy} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column  style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdminCommunity}></Column>
+                        <Column field="status" sortable header={headerStatus} body={statusBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+                        <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdminCommunity}></Column>
                     </DataTable>
                     <Dialog visible={deleteAdminCommunityDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminCommunityDialogFooter} onHide={hideDeleteAdminCommunityDialog}>
                         <div className="flex align-items-center justify-content-center">
@@ -394,6 +523,26 @@ const AdministradoresComunidad = () => {
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {selectedAdminsCommunities && <span>¿Está seguro eliminar los administradores de las comunidades de viviendas seleccionados?</span>}
+                        </div>
+                    </Dialog>
+                    <Dialog
+                        visible={changeStatusAdminCommunityDialog}
+                        style={{ width: '450px' }}
+                        header="Confirmar"
+                        modal
+                        footer={changeStatusAdminCommunityDialogFooter}
+                        onHide={hideChangeStatusAdmimCommunityDialog}
+                    >
+                        <div className="flex align-items-center justify-content-center">
+                            <i
+                                className="pi pi-exclamation-triangle mr-3"
+                                style={{ fontSize: '2rem' }}
+                            />
+                            {adminCommunity && (
+                                <span>
+                                    ¿Estás seguro que desea cambiar estado a <b>{adminCommunity.name}</b>?
+                                </span>
+                            )}
                         </div>
                     </Dialog>
                 </div>

@@ -2,3 +2,8 @@
 [[commands]]
 package = "devshell.cli"
 help = "Per project developer environments"
+
+[[commands]]
+package = "nodejs"
+help = "Node.js"
+

@@ -73,11 +73,16 @@ const iniciarSesion = async()  => {
     .then( response => {
        const user = response.message
 
+       cookies.set('id',user._id, {path: "/"} )
+       cookies.set('name',user.name, {path: "/"} )
+       cookies.set('email',user.email, {path: "/"} )
+       cookies.set('type',user.user_type, {path: "/"} )
         if(user.user_type == '3'){
-          cookies.set('id',user._id, {path: "/"} )
-          cookies.set('name',user.name, {path: "/"} )
-          cookies.set('email',user.email, {path: "/"} )
-          cookies.set('type',user.user_type, {path: "/"} )
+          
+
+          navigation.navigate('Comunicados')
+        }else if(user.user_type == '4'){
+
         }
     })
     
@@ -127,20 +132,20 @@ export default function LogIn({navigation}) {
 
 <View style={styles.container}>
   <VStack space={3} mt="5">
-            <FormControl>
+            <FormControl isRequired>
               <FormControl.Label> Correo Electrónico </FormControl.Label>
 
               <View style={styles.viewSection}> 
               <Entypo name="email" size={20} color="grey" style={styles.iconStyle} />
-              <TextInput type="text" style={styles.input} />
+              <TextInput type="text" style={styles.input} placeholder='Correo Electrónico' />
               </View>
               
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
             <FormControl.Label> Contraseña </FormControl.Label>
                 <View style={styles.viewSection}> 
                 <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" style={styles.iconStyle}/>
-                <TextInput type="password" style={styles.input} />
+                <TextInput type="password" style={styles.input} placeholder='Contraseña'/>
                 </View>
               <Link
                 _text={{

@@ -43,6 +43,7 @@ const AreasComunes = () => {
     const dt = useRef(null);
 
     const [cookies, setCookie] = useCookies();
+    const [changeStatusAreaDialog, setChangeStatusAreaDialog] = useState(false);
 
 
 
@@ -220,6 +221,51 @@ const AreasComunes = () => {
         });
     };
 
+    const cambiarStatuscommonArea = () => {
+        if (commonArea.status == '1') {
+            commonArea.status = '0';
+            commonArea.status_text = 'Inactivo';
+
+        } else if (commonArea.status == '0') {
+            commonArea.status = '1';
+            commonArea.status_text = 'Activo';
+        }
+        var data = {
+            id: commonArea._id,
+            status: commonArea.status,
+        };
+        fetch('http://localhost:4000/commonArea/changeStatus', {
+            cache: 'no-cache',
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else
+                        return response.json();
+                }
+            )
+            .then(
+                function (response) {
+                    setChangeStatusAreaDialog(false);
+                    toast.current.show({
+                        severity: 'success',
+                        summary: 'Éxito',
+                        detail: 'Área Común Actualizada',
+                        life: 3000,
+                    });
+                }
+            )
+            .catch(
+                err => console.log('Ocurrió un error con el fetch', err)
+            );
+    }
+
     const hideDeleteCommonAreaDialog = () => {
         setDeleteCommonAreaDialog(false);
     }
@@ -237,9 +283,36 @@ const AreasComunes = () => {
         setDeleteCommonAreasDialog(true);
     };
 
+
+
+    const hideChangeStatusAreaDialog = () => {
+        setChangeStatusAreaDialog(false);
+    };
+
+    const confirmChangeStatusArea = (commonArea) => {
+        setCommonArea(commonArea);
+        setChangeStatusAreaDialog(true);
+    };
+
     const actionsCommonArea = (rowData) => {
+        let icono = '';
+        let text = '';
+        if (rowData.status == '0') {
+            icono = "pi pi-eye";
+            text = "Activar Área Común"
+        } else if (rowData.status == '1') {
+            icono = "pi pi-eye-slash";
+            text = "Inactivar Área Común"
+        }
+
         return (
             <div className="actions">
+                <Button
+                    icon={`${icono}`}
+                    className="p-button-rounded p-button-warning mt-2 mx-2"
+                    onClick={() => confirmChangeStatusArea(rowData)}
+                    title={`${text}`}
+                />
                 <Button
                     icon="pi pi-trash"
                     className="p-button-rounded p-button-danger mt-2"
@@ -276,6 +349,22 @@ const AreasComunes = () => {
         </>
     );
 
+    const changeStatusAreaDialogFooter = (
+        <>
+            <Button
+                label="No"
+                icon="pi pi-times"
+                className="p-button-text"
+                onClick={hideChangeStatusAreaDialog}
+            />
+            <Button
+                label="Yes"
+                icon="pi pi-check"
+                className="p-button-text"
+                onClick={cambiarStatuscommonArea}
+            />
+        </>
+    );
 
     const leftToolbarTemplate = () => {
         return (
@@ -431,6 +520,26 @@ const AreasComunes = () => {
                             {selectedCommonAreas && <span>¿Está seguro eliminar las áreas comunes seleccionadas?</span>}
                         </div>
                     </Dialog>
+                    <Dialog
+                        visible={changeStatusAreaDialog}
+                        style={{ width: '450px' }}
+                        header="Confirmar"
+                        modal
+                        footer={changeStatusAreaDialogFooter}
+                        onHide={hideChangeStatusAreaDialog}
+                    >
+                        <div className="flex align-items-center justify-content-center">
+                            <i
+                                className="pi pi-exclamation-triangle mr-3"
+                                style={{ fontSize: '2rem' }}
+                            />
+                            {commonArea && (
+                                <span>
+                                    ¿Estás seguro que desea cambiar estado a <b>{commonArea.name}</b>?
+                                </span>
+                            )}
+                        </div>
+                    </Dialog>
                 </div>
             </div>
             <div className="col-12">
@@ -513,7 +622,7 @@ const AreasComunes = () => {
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="bookable">¿Necesita Reservación?</label>
-                            <div className="formgrid grid align-items-end" style={{marginTop: '12px', width: '300px'}}>
+                            <div className="formgrid grid align-items-end" style={{ marginTop: '12px', width: '300px' }}>
                                 <div className="field-radiobutton col-6">
 
                                     <RadioButton

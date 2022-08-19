@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
 const iniciarSesion = async()  => {
 
-  const userData = FormControl.toString;
+  const userData = JSON.stringify(FormControl.toString);
   console.log(userData);
 
   try {
@@ -139,7 +139,7 @@ export default function LogIn({navigation}) {
 
 <View style={styles.container}>
   <VStack space={3} mt="5">
-            <FormControl isRequired>
+            <FormControl isRequired >
               <FormControl.Label> Correo Electrónico </FormControl.Label>
 
               <View style={styles.viewSection}> 
@@ -171,7 +171,7 @@ export default function LogIn({navigation}) {
                
               </Link>
             </FormControl>
-            <Button  mt="2" backgroundColor="#D7A86E" onPress={() => navigation.navigate('Comunicados')}
+            <Button  mt="2" backgroundColor="#D7A86E" onPress={() => iniciarSesion()}
             >
               <Text>Continuar</Text>
             </Button>

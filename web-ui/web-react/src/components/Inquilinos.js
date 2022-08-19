@@ -116,7 +116,7 @@ const Inquilinos = () => {
       status_text: '',
     }
 
-    fetch('http://localhost:3000/api/createUser', {
+    fetch('http://localhost:4000/api/createUser', {
       method: 'POST',
       cache: 'no-cache',
       body: JSON.stringify(newTenant),

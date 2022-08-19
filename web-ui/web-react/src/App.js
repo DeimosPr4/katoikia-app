@@ -34,6 +34,8 @@ import GuardasSeguridad from './components/GuardasSeguridad';
 import Communities from './components/ComunidadViviendas';
 import Inquilinos from './components/Inquilinos';
 import InquilinosCompletar from "./components/InquilinosCompletar.js";
+import RegistroComunicado from './components/RegistroComunicado';
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 import Crud from './pages/Crud';
 import EmptyPage from './pages/EmptyPage';
@@ -200,6 +202,9 @@ const App = () => {
                     icon: PrimeIcons.BUILDING,
                     to: '/areasComunes',
                 },
+                
+                { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado'},
+    
             ]
         },
     ]
@@ -440,7 +445,6 @@ const App = () => {
                                         <>
 
                                             <Route path="/login" exact component={LogInUser} />
-
                                         </>
 
                                     )
@@ -453,7 +457,6 @@ const App = () => {
                                                 <Route path="/administradoresSistema" component={AdministradoresSistema} />
                                                 <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
                                                 <Route path="/comunidadesViviendas" component={Communities} />
-                                                <Route to="*" exact component={Page404} />
                                             </>
 
                                         )
@@ -465,8 +468,7 @@ const App = () => {
                                                 <Route path="/guardasSeguridad" component={GuardasSeguridad} />
                                                 <Route path="/inquilinos" component={Inquilinos} />
                                                 <Route path="/areasComunes" component={AreasComunes} />
-                                                <Route to="*" exact component={Page404} />
-
+                                                <Route path="/registroComunicado" component={RegistroComunicado} />
                                             </>
                                         )
                                     } else {
@@ -479,7 +481,6 @@ const App = () => {
                                     return (
                                         <>
                                             <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
-
                                             <Route path="/formlayout" component={FormLayoutDemo} />
                                             <Route path="/input" component={InputDemo} />
                                             <Route path="/floatlabel" component={FloatLabelDemo} />
@@ -502,8 +503,6 @@ const App = () => {
                                             <Route path="/crud" component={Crud} />
                                             <Route path="/empty" component={EmptyPage} />
                                             <Route path="/documentation" component={Documentation} />
-
-
                                         </>
 
                                     )

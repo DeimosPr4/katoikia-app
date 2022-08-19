@@ -457,7 +457,6 @@ const App = () => {
                                                 <Route path="/administradoresSistema" component={AdministradoresSistema} />
                                                 <Route path="/administradoresComunidad" component={AdministradoresComunidad} />
                                                 <Route path="/comunidadesViviendas" component={Communities} />
-                                                <Route to="*" exact component={Page404} />
                                             </>
 
                                         )
@@ -470,8 +469,6 @@ const App = () => {
                                                 <Route path="/inquilinos" component={Inquilinos} />
                                                 <Route path="/areasComunes" component={AreasComunes} />
                                                 <Route path="/registroComunicado" component={RegistroComunicado} />
-                                                <Route to="*" exact component={Page404} />
-
                                             </>
                                         )
                                     } else {
@@ -484,7 +481,6 @@ const App = () => {
                                     return (
                                         <>
                                             <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
-
                                             <Route path="/formlayout" component={FormLayoutDemo} />
                                             <Route path="/input" component={InputDemo} />
                                             <Route path="/floatlabel" component={FloatLabelDemo} />
@@ -507,8 +503,6 @@ const App = () => {
                                             <Route path="/crud" component={Crud} />
                                             <Route path="/empty" component={EmptyPage} />
                                             <Route path="/documentation" component={Documentation} />
-
-
                                         </>
 
                                     )

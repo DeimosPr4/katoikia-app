@@ -98,38 +98,39 @@ const Inquilinos = () => {
     value: item._id,
   }))
 
-  function registrarInquilino() {
-    let newTenant = {
-      _id: null,
-      dni: '',
-      name: '',
-      last_name: '',
-      email: document.getElementById('correo_electronico').value,
-      phone: '',
-      password: '',
-      community_id: document.getElementById('numero_vivienda').value,
-      community_name: '',
-      number_house: 'Sin número de vivienda',
-      date_entry: new Date(),
-      user_type: '3',
-      status: '1',
-      status_text: '',
-    }
+  const saveTenant = () => {
+    if (tenant.email && tenant.number_house) {
+      let _tenants = [...tenants]
+      let _tenant = { ...tenant }
+      _tenant.community_id = communityId
+      console.log(_tenant)
 
-    fetch('http://localhost:4000/api/createUser', {
-      method: 'POST',
-      cache: 'no-cache',
-      body: JSON.stringify(newTenant),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => {
-      if (response.ok) {
-        alert('Inquilino registrado correctamente')
-      } else {
-        alert('Error al registrar inquilino')
-      }
-    })
+      fetch(`http://localhost:4000/user/createUser`, {
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify(tenant),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          if (response.status !== 201)
+            console.log(`Hubo un error en el servicio: ${response.status}`)
+          else return response.json()
+        })
+        .then(() => {
+          _tenants.push(_tenant)
+          toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Inquilino creado',
+            life: 3000,
+          })
+          setTenants(_tenants)
+          setTenant(emptyTenant)
+        })
+        .catch((error) => console.log(`Ocurrió un error: ${error}`))
+    } else setSubmitted(true)
   }
 
   const deleteTenant = () => {
@@ -418,6 +419,13 @@ const Inquilinos = () => {
     )
   }
 
+  const onInputChange = (e) => {
+    const value = (e.target && e.target.value) || ''
+    let _tenant = { ...tenant }
+    _tenant[`${name}`] = value
+    setTenant(_tenant)
+  }
+
   return (
     <div className='grid'>
       <div className='col-12'>
@@ -618,7 +626,7 @@ const Inquilinos = () => {
                 onChange={(e) => setCommunityId(e.value)}
               />
             </div>
-            <Button label='Registrar' onClick={registrarInquilino} />
+            <Button label='Registrar' onClick={saveTenant} />
           </div>
         </div>
       </div>

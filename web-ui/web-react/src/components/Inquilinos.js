@@ -614,6 +614,7 @@ const Inquilinos = () => {
                 type='email'
                 className='form-control'
                 id='correo_electronico'
+                onChange={(e) => onInputChange(e, 'email')}
               />
             </div>
             <div className='field col-12 md:col-6'>
@@ -623,7 +624,7 @@ const Inquilinos = () => {
                 id='numero_vivienda'
                 value={communityId}
                 options={cList}
-                onChange={(e) => setCommunityId(e.value)}
+                onChange={(e) => onInputChange(e, 'community_id')}
               />
             </div>
             <Button label='Registrar' onClick={saveTenant} />

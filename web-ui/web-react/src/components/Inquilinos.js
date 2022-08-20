@@ -17,7 +17,7 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import { useCookies } from 'react-cookie'
 
 const Inquilinos = () => {
-  let emptyTenant = {
+  const emptyTenant = {
     _id: null,
     dni: '',
     name: '',

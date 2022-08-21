@@ -218,7 +218,7 @@ export class UsersService {
     });
   }
 
-  async findNumHouseTenant(community_id: string, tenant_id: string) {
+  async findNumHouseTenant(community_id: string, tenant_id: string): Promise<string> {
     const pattern = { cmd: 'findOneCommunity' }
     const payload = { _id: community_id }
 
@@ -229,7 +229,7 @@ export class UsersService {
     const response = finalValue['response'];
     const houses = response['houses'];
     let num_house = "";
-    await houses.forEach(async house => {
+    await houses.forEach(async (house: { [x: string]: string; }) => {
       if (house['tenant_id'] !== undefined) {
         if (house['tenant_id'] === tenant_id) {
           num_house = house['number_house'];

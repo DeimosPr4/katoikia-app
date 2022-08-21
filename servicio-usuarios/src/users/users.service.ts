@@ -197,7 +197,7 @@ export class UsersService {
 
   async deleteTenant(id: string) {
     return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
-    new: true,
+      new: true,
     });
   }
 
@@ -223,8 +223,8 @@ export class UsersService {
     const payload = { _id: community_id }
 
     let callback = this.clientCommunityApp
-        .send<string>(pattern, payload)
-        .pipe( map((response: string) => ({ response })))
+      .send<string>(pattern, payload)
+      .pipe(map((response: string) => ({ response })))
     const finalValue = await lastValueFrom(callback);
     const response = finalValue['response'];
     const houses = response['houses'];

@@ -222,11 +222,9 @@ export class UsersService {
     const pattern = { cmd: 'findOneCommunity' }
     const payload = { _id: community_id }
 
-    let callback = await this.clientCommunityApp
-      .send<string>(pattern, payload)
-      .pipe(
-        map((response: string) => ({ response }))
-      )
+    let callback = this.clientCommunityApp
+        .send<string>(pattern, payload)
+        .pipe( map((response: string) => ({ response })))
     const finalValue = await lastValueFrom(callback);
     const response = finalValue['response'];
     const houses = response['houses'];

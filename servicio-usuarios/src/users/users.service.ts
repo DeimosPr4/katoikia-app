@@ -189,7 +189,6 @@ export class UsersService {
     });
   }
 
-
   deleteAdminCommunity(id: string) {
     return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
       new: true,

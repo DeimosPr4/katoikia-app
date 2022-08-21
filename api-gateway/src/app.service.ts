@@ -54,8 +54,8 @@ export class AppService {
   }
 
   updateUser(
-    dni: string, 
-    name: string, 
+    dni: string,
+    name: string,
     last_name: string,
     email: string,
     phone: number,
@@ -195,6 +195,14 @@ export class AppService {
 
   deleteAdminCommunity(id: string) {
     const pattern = { cmd: 'deleteAdminCommunity' };
+    const payload = { id: id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  deleteTenant(id: string) {
+    const pattern = { cmd: 'deleteTenant' };
     const payload = { id: id };
     return this.clientUserApp
       .send<string>(pattern, payload)

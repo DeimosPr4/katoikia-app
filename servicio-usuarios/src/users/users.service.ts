@@ -196,6 +196,12 @@ export class UsersService {
     });
   }
 
+  async deleteTenant(id: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+    new: true,
+    });
+  }
+
   async validateEmail(email: string) {
     let repo1 = this.userModel;
     return new Promise<User>((resolve, reject) => {

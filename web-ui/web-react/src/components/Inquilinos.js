@@ -105,6 +105,7 @@ const Inquilinos = () => {
       let _tenants = [...tenants]
       let _tenant = { ...tenant }
       _tenant.community_id = cookies.community_id;
+      _tenant.number_house = houseNumber;
       _tenant.password = _tenant.email;
       console.log(_tenant)
 

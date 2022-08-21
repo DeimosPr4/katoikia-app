@@ -160,6 +160,10 @@ export class AppController {
     return this.appService.deleteAdminCommunity(id);
   }
 
+  @Delete('user/deleteTenant/:id')
+  deleteTenant(@Param('id') id: string) {
+    return this.appService.deleteTenant(id);
+  }
 
   @Post('user/changeStatus')
   changeStatusUser(

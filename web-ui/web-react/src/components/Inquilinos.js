@@ -15,9 +15,10 @@ import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons'
 import { faHashtag } from '@fortawesome/free-solid-svg-icons'
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import { useCookies } from 'react-cookie'
+import classNames from 'classnames';
 
 const Inquilinos = () => {
-  let emptyTenant = {
+  const emptyTenant = {
     _id: null,
     dni: '',
     name: '',
@@ -40,15 +41,14 @@ const Inquilinos = () => {
   const [globalFilter, setGlobalFilter] = useState(null)
   const [deleteTenantDialog, setDeleteTenantDialog] = useState(false)
   const [deleteTenantsDialog, setDeleteTenantsDialog] = useState(false)
-  const [communitiesList, setCommunitiesList] = useState([])
-  const [communityId, setCommunityId] = useState(null)
+  const [community, setCommunity] = useState([])
+  const [houseNumber, setHouseNumber] = useState([])
+  const [housesList, setHousesList] = useState([])
   const [submitted, setSubmitted] = useState(false)
   const toast = useRef(null)
   const dt = useRef(null)
-
-  const [cookies, setCookie] = useCookies()
-  const [changeStatusTenantDialog, setChangeStatusTenantDialog] =
-    useState(false)
+  const [cookies] = useCookies()
+  const [changeStatusTenantDialog, setChangeStatusTenantDialog] = useState(false)
 
   async function tenantsList() {
     await fetch(
@@ -74,15 +74,21 @@ const Inquilinos = () => {
       })
   }
 
-  async function getCommunites() {
+  async function getCommunity() {
     let response = await fetch(
-      'http://localhost:4000/community/allCommunities',
+      `http://localhost:4000/community/findCommunityName/${cookies.community_id}`,
       { method: 'GET' },
     )
-    let resList = await response.json()
-    let list = await resList.message
-    list = await list.filter((val) => val.status !== -1)
-    setCommunitiesList(await list)
+    const responseJson = await response.json()
+    const result = await responseJson.message
+    setCommunity(await result)
+    const houses = await result.houses.filter((house) =>
+      house.state === "desocupada"
+    )
+    setHousesList(houses.map((house) => ({
+      label: house.number_house, value: house.number_house
+    }))
+    )
   }
 
   useEffect(() => {
@@ -90,46 +96,45 @@ const Inquilinos = () => {
   }, [tenantsList])
 
   useEffect(() => {
-    getCommunites()
+    getCommunity()
   }, [])
 
-  const cList = communitiesList.map((item) => ({
-    label: item.name,
-    value: item._id,
-  }))
+  const saveTenant = () => {
+    if (tenant.email && tenant.number_house && tenant.dni
+      && tenant.name && tenant.last_name && tenant.phone) {
+      let _tenants = [...tenants]
+      let _tenant = { ...tenant }
+      _tenant.community_id = cookies.community_id;
+      _tenant.number_house = houseNumber;
+      _tenant.password = _tenant.email;
+      console.log(_tenant)
 
-  function registrarInquilino() {
-    let newTenant = {
-      _id: null,
-      dni: '',
-      name: '',
-      last_name: '',
-      email: document.getElementById('correo_electronico').value,
-      phone: '',
-      password: '',
-      community_id: document.getElementById('numero_vivienda').value,
-      community_name: '',
-      number_house: 'Sin número de vivienda',
-      date_entry: new Date(),
-      user_type: '3',
-      status: '1',
-      status_text: '',
-    }
-
-    fetch('http://localhost:3000/api/createUser', {
-      method: 'POST',
-      cache: 'no-cache',
-      body: JSON.stringify(newTenant),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => {
-      if (response.ok) {
-        alert('Inquilino registrado correctamente')
-      } else {
-        alert('Error al registrar inquilino')
-      }
-    })
+      fetch(`http://localhost:4000/user/createUser`, {
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify(_tenant),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          if (response.status !== 201)
+            console.log(`Hubo un error en el servicio: ${response.status}`)
+          else return response.json()
+        })
+        .then(() => {
+          _tenants.push(_tenant)
+          toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Inquilino creado',
+            life: 3000,
+          })
+          setTenants(_tenants)
+          setTenant(emptyTenant)
+        })
+        .catch((error) => console.log(`Ocurrió un error: ${error}`))
+    } else setSubmitted(true)
   }
 
   const deleteTenant = () => {
@@ -418,6 +423,19 @@ const Inquilinos = () => {
     )
   }
 
+  const onInputChange = (e, name) => {
+    const value = (e.target && e.target.value) || ''
+    let _tenant = { ...tenant }
+    _tenant[`${name}`] = value
+    setTenant(_tenant)
+  }
+
+  const handleHouses = (e) => {
+    const getHouseNumber = e.target.value;
+    setHouseNumber(getHouseNumber);
+    console.log(getHouseNumber);
+  }
+
   return (
     <div className='grid'>
       <div className='col-12'>
@@ -595,30 +613,96 @@ const Inquilinos = () => {
           </Dialog>
         </div>
       </div>
-      <div className='col-12'>
-        <div className='card'>
-          <h5 className='card-header'>Registrar Inquilino</h5>
-          <div className='p-fluid formgrid grid'>
-            <div className='field col-12 md:col-6'>
-              <label htmlFor='correo_electronico'>Correo electrónico</label>
-              <InputText
-                required
-                type='email'
-                className='form-control'
-                id='correo_electronico'
-              />
+      <div className="col-12">
+        <div className="card">
+          <h5>Registro de un administrador de una comunidad de viviendas</h5>
+          <div className="p-fluid formgrid grid">
+            <div className="field col-12 md:col-6">
+              <label htmlFor="name">Nombre</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type="text" id="name" value={tenant.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.name === '' })} />
+                </div>
+                {submitted && tenant.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
+              </div>
             </div>
-            <div className='field col-12 md:col-6'>
-              <label htmlFor='numero_vivienda'>Número de Vivienda</label>
-              <Dropdown
-                required
-                id='numero_vivienda'
-                value={communityId}
-                options={cList}
-                onChange={(e) => setCommunityId(e.value)}
-              />
+            <div className="field col-12 md:col-6">
+              <label htmlFor="name">Apellido(s)</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type="text" id="last_name" value={tenant.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.last_name === '' })} />
+                </div>
+                {submitted && tenant.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
+              </div>
             </div>
-            <Button label='Registrar' onClick={registrarInquilino} />
+            <div className="field col-12 md:col-6">
+              <label htmlFor="name">Correo Electrónico</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type='email' id="email" value={tenant.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.email === '' })} />
+                </div>
+                {submitted && tenant.email === '' && <small className="p-invalid">Correo electrónico es requerido.</small>}
+              </div>
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="dni">Identificación</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText id="dni" value={tenant.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.dni === '' })} />
+                </div>
+                {submitted && tenant.email === '' && <small className="p-invalid">Identificación es requerida.</small>}
+              </div>
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="phone">Número de teléfono</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-phone"></i>
+                  </span>
+                  <InputText id="phone" value={tenant.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && tenant.phone === '' })} />
+                </div>
+                {submitted
+                  && tenant.phone === ''
+                  && <small className="p-invalid">Número de teléfono es requerido.</small>}
+              </div>
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="number_house">Casa a asignar: </label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <Dropdown
+                    placeholder="--Seleccione la Casa a Asignar--"
+                    id="number_house"
+                    value={houseNumber}
+                    options={housesList}
+                    onChange={handleHouses}
+                    required autoFocus
+                    className={
+                      classNames({ 'p-invalid': submitted && !houseNumber })}
+                  />
+                </div>
+                {submitted
+                  && !houseNumber
+                  && <small className="p-invalid">Casa es requerida.</small>}
+              </div>
+            </div>
+            <Button label="Registrar" onClick={saveTenant} />
           </div>
         </div>
       </div>

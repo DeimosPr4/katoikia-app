@@ -155,6 +155,16 @@ export class AppController {
     return this.appService.deleteAdminSystem(id);
   }
 
+  @Delete('user/deleteAdminCommunity/:id')
+  deleteAdminCommunity(@Param('id') id: string) {
+    return this.appService.deleteAdminCommunity(id);
+  }
+
+  @Delete('user/deleteTenant/:id')
+  deleteTenant(@Param('id') id: string) {
+    return this.appService.deleteTenant(id);
+  }
+
   @Post('user/changeStatus')
   changeStatusUser(
     @Body('id') pId: string,
@@ -215,6 +225,8 @@ export class AppController {
   ) {
     return this.appService.changeStatusCommunity(pId, pStatus);
   }
+
+  
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(
@@ -252,6 +264,14 @@ export class AppController {
   @Delete('commonArea/deleteCommonArea/:id')
   deleteCommonArea(@Param('id') id: string) {
     return this.appService.deleteCommonArea(id);
+  }
+
+  @Post('commonArea/changeStatus')
+  changeStatusCommonArea(
+    @Body('id') pId: string,
+    @Body('status') pStatus: string,
+  ) {
+    return this.appService.changeStatusCommonArea(pId, pStatus);
   }
 
   // #==== API GUEST

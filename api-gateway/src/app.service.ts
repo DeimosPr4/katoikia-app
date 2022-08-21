@@ -54,8 +54,8 @@ export class AppService {
   }
 
   updateUser(
-    dni: string, 
-    name: string, 
+    dni: string,
+    name: string,
     last_name: string,
     email: string,
     phone: number,
@@ -187,6 +187,22 @@ export class AppService {
 
   deleteAdminSystem(id: string) {
     const pattern = { cmd: 'deleteAdminSystem' };
+    const payload = { id: id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  deleteAdminCommunity(id: string) {
+    const pattern = { cmd: 'deleteAdminCommunity' };
+    const payload = { id: id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  deleteTenant(id: string) {
+    const pattern = { cmd: 'deleteTenant' };
     const payload = { id: id };
     return this.clientUserApp
       .send<string>(pattern, payload)
@@ -342,6 +358,15 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
+
+  changeStatusCommonArea(pId: string, pStatus: string) {
+    const pattern = { cmd: 'changeStatus' };
+    const payload = { id: pId, status: pStatus };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
 
   // ====================== GUESTS ===============================
 

@@ -197,7 +197,7 @@ export class UsersService {
 
   async deleteTenant(id: string) {
     return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
-    new: true,
+      new: true,
     });
   }
 
@@ -218,22 +218,22 @@ export class UsersService {
     });
   }
 
-  async findNumHouseTenant(community_id: string, tenant_id: string) {
+  async findNumHouseTenant(community_id: string, tenant_id: string): Promise<string> {
     const pattern = { cmd: 'findOneCommunity' }
     const payload = { _id: community_id }
 
-    let callback = await this.clientCommunityApp
+    let callback = this.clientCommunityApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((response: string) => ({ response }))
-      )
+      .pipe(map((response: string) => ({ response })))
     const finalValue = await lastValueFrom(callback);
     const response = finalValue['response'];
     const houses = response['houses'];
     let num_house = "";
-    await houses.forEach(async house => {
-      if (tenant_id == house.tenants.tenant_id) {
-        num_house = house.number_house;
+    await houses.forEach(async (house: { [x: string]: string; }) => {
+      if (house['tenant_id'] !== undefined) {
+        if (house['tenant_id'] === tenant_id) {
+          num_house = house['number_house'];
+        }
       }
     })
     return num_house;

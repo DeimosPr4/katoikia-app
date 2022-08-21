@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Cookies from 'universal-cookie';
 import {
   Text,
@@ -19,88 +19,75 @@ import { View, TextInput, StyleSheet } from "react-native";
 const baseURL = "http://localhost:4000/user/loginUser"; 
 const cookies = new Cookies(); 
 
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 10,
-    borderWidth: 0.5,
-    padding: 5,
-    flex: 1,
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    paddingLeft: 0,
-    marginTop: 50, 
-    marginBottom: 10, 
-    borderRadius: 4
-  }, 
+// const handleChange = (value) => {
+// console.log(value);
 
-  iconStyle: {
-    paddingBottom: 20,
-    marginTop: 3, 
-    paddingTop: 35
-  }, 
-
-  viewSection: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    marginBottom: 28
-  },
-
-  container: {
-
-  }
-})
-
-const iniciarSesion = async()  => {
-
-  const userData = JSON.stringify(FormControl.toString);
-  console.log(userData);
-
-  try {
-
-    await fetch(baseURL, {
-      cache: 'no-cache', 
-      method: 'POST', 
-      body: JSON.stringify(), 
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
-      if (response.status != 201){
-        console.log('ocurrio un error ');
-      }else{
-        return response.json(); 
-      }
-    })
-    .then( response => {
-       const user = response.message
-
-       cookies.set('id',user._id, {path: "/"} )
-       cookies.set('name',user.name, {path: "/"} )
-       cookies.set('email',user.email, {path: "/"} )
-       cookies.set('type',user.user_type, {path: "/"} )
-        if(user.user_type == '3'){
-          
-
-          navigation.navigate('Comunicados')
-        }else if(user.user_type == '4'){
-
-        }
-    })
-    
-  } catch (error) {
-    
-  }
-
-   
-}
+// }
 
 export default function LogIn({navigation}) {
+
+  const [email, setEmail] = useState(); 
+  const [password, setPassword] = useState();
+  // const [inputs, setInputs] = useState();
+
+  const iniciarSesion = async ()  => {
+
+    console.log(email);
+
+    const userData = {
+      email: "lalo@lalo.com", 
+      password: '65bbb27d640914c507e5af778eccf3d1'
+    }
+  
+    console.log(userData);
+    // const userData = JSON.stringify(FormControl.toString);
+    // console.log(userData);
+  
+    try {
+  
+      await fetch(baseURL, {
+        cache: 'no-cache', 
+        method: 'POST', 
+        body: JSON.stringify(userData), 
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.status != 201){
+          console.log('ocurrio un error ');
+        }else{
+          return response.json(); 
+        }
+      })
+      .then( response => {
+
+        // inqulino 4 y guarda 63
+         const user = response.message
+  
+         cookies.set('id',user._id, {path: "/"} )
+         cookies.set('name',user.name, {path: "/"} )
+         cookies.set('email',user.email, {path: "/"} )
+         cookies.set('type',user.user_type, {path: "/"} )
+          if(user.user_type == '4'){
+
+
+            
+            
+  
+            navigation.navigate('Comunicados')
+          }else if(user.user_type == '3'){
+  
+          }
+      })
+      
+    } catch (error) {
+      console.log("ERROR: " +error);
+    }
+  
+     
+  }
+
   return (
   
       
@@ -144,15 +131,15 @@ export default function LogIn({navigation}) {
 
               <View style={styles.viewSection}> 
               <Entypo name="email" size={20} color="grey" style={styles.iconStyle} />
-              <TextInput type="text" style={styles.input} placeholder='Correo Electrónico' />
+              <TextInput name='email' type="text" style={styles.input} placeholder='Correo electrónico' onChangeText={(value) => setEmail(value) } />
               </View>
               
             </FormControl>
             <FormControl isRequired>
-            <FormControl.Label> Contraseña </FormControl.Label>
+            <FormControl.Label Text='bold'> Contraseña </FormControl.Label>
                 <View style={styles.viewSection}> 
                 <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" style={styles.iconStyle}/>
-                <TextInput type="password" style={styles.input} placeholder='Contraseña' />
+                <TextInput name='password' type="password" style={styles.input} placeholder='Contraseña' onChangeText={(value) => setPassword(value)} />
                 </View>
               <Link
                 _text={{
@@ -181,7 +168,41 @@ export default function LogIn({navigation}) {
         </Box>
       </Center>
   );
-
-
  
 }
+
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 10,
+    borderWidth: 0.5,
+    padding: 5,
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    marginTop: 50, 
+    marginBottom: 10, 
+    borderRadius: 4
+  }, 
+
+  iconStyle: {
+    paddingBottom: 20,
+    marginTop: 3, 
+    paddingTop: 35
+  }, 
+
+  viewSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    marginBottom: 28
+  },
+
+  container: {
+
+  }
+})

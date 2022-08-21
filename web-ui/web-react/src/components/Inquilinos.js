@@ -107,7 +107,6 @@ const Inquilinos = () => {
       _tenant.community_id = cookies.community_id;
       _tenant.number_house = houseNumber;
       _tenant.password = _tenant.email;
-      console.log(_tenant)
 
       fetch(`http://localhost:4000/user/createUser`, {
         cache: 'no-cache',
@@ -433,7 +432,6 @@ const Inquilinos = () => {
   const handleHouses = (e) => {
     const getHouseNumber = e.target.value;
     setHouseNumber(getHouseNumber);
-    console.log(getHouseNumber);
   }
 
   return (

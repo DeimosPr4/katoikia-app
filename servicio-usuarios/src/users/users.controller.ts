@@ -112,10 +112,15 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'deleteAdminSystem' })
   deleteAdminSystem(@Payload() user: any) {
-    console.log('entró');
-
     return this.userService.deleteAdminSystem(user['id']);
   }
+
+  
+  @MessagePattern({ cmd: 'deleteAdminCommunity' })
+  deleteAdminCommunity(@Payload() user: any) {
+    return this.userService.deleteAdminCommunity(user['id']);
+  }
+
 
 
   @MessagePattern({ cmd: 'changeStatus' })

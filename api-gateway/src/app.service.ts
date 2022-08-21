@@ -193,6 +193,14 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  deleteAdminCommunity(id: string) {
+    const pattern = { cmd: 'deleteAdminCommunity' };
+    const payload = { id: id };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   inicioSesion(pEmail: string, pPassword: string) {
     const pattern = { cmd: 'loginUser' };
     const payload = { email: pEmail, password: pPassword };
@@ -342,6 +350,15 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
+
+  changeStatusCommonArea(pId: string, pStatus: string) {
+    const pattern = { cmd: 'changeStatus' };
+    const payload = { id: pId, status: pStatus };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
 
   // ====================== GUESTS ===============================
 

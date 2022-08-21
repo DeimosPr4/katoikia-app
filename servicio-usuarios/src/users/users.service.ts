@@ -230,8 +230,10 @@ export class UsersService {
     const houses = response['houses'];
     let num_house = "";
     await houses.forEach(async house => {
-      if (tenant_id == house.tenants.tenant_id) {
-        num_house = house.number_house;
+      if (house['tenant_id'] !== undefined) {
+        if (house['tenant_id'] === tenant_id) {
+          num_house = house['number_house'];
+        }
       }
     })
     return num_house;

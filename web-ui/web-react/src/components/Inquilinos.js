@@ -15,6 +15,7 @@ import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons'
 import { faHashtag } from '@fortawesome/free-solid-svg-icons'
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import { useCookies } from 'react-cookie'
+import classNames from 'classnames';
 
 const Inquilinos = () => {
   const emptyTenant = {
@@ -603,31 +604,85 @@ const Inquilinos = () => {
           </Dialog>
         </div>
       </div>
-      <div className='col-12'>
-        <div className='card'>
-          <h5 className='card-header'>Registrar Inquilino</h5>
-          <div className='p-fluid formgrid grid'>
-            <div className='field col-12 md:col-6'>
-              <label htmlFor='correo_electronico'>Correo electrónico</label>
-              <InputText
-                required
-                type='email'
-                className='form-control'
-                id='correo_electronico'
-                onChange={(e) => onInputChange(e, 'email')}
-              />
+      <div className="col-12">
+        <div className="card">
+          <h5>Registro de un administrador de una comunidad de viviendas</h5>
+          <div className="p-fluid formgrid grid">
+            <div className="field col-12 md:col-6">
+              <label htmlFor="name">Nombre</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText id="name" value={tenant.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.name === '' })} />
+                </div>
+                {submitted && tenant.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
+              </div>
             </div>
-            <div className='field col-12 md:col-6'>
-              <label htmlFor='numero_vivienda'>Número de Vivienda</label>
-              <Dropdown
-                required
-                id='numero_vivienda'
-                value={communityId}
-                options={cList}
-                onChange={(e) => onInputChange(e, 'community_id')}
-              />
+            <div className="field col-12 md:col-6">
+              <label htmlFor="name">Apellido(s)</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText id="last_name" value={tenant.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.last_name === '' })} />
+                </div>
+                {submitted && tenant.last_name === '' && <small className="p-invalid">Apellidos es requerido.</small>}
+              </div>
             </div>
-            <Button label='Registrar' onClick={saveTenant} />
+            <div className="field col-12 md:col-6">
+              <label htmlFor="name">Correo Electrónico</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText id="email" value={tenant.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.email === '' })} />
+                </div>
+                {submitted && tenant.email === '' && <small className="p-invalid">Correo electrónico
+                                    es requerido.</small>}
+              </div>
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="name">Identificación</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText id="dni" value={tenant.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.dni === '' })} />
+                </div>
+                {submitted && tenant.email === '' && <small className="p-invalid">Identificación es requerida.</small>}
+              </div>
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="name">Número de teléfono</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-phone"></i>
+                  </span>
+                  <InputText id="phone" value={tenant.phone} onChange={(e) => onInputChange(e, 'phone')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.phone === '' })} />
+                </div>
+                {submitted && tenant.phone === '' && <small className="p-invalid">Número de teléfono es requerido.</small>}
+              </div>
+            </div>
+            <div className="field col-12 md:col-6">
+              <label htmlFor="administrator">Comunidad a asignar: </label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <Dropdown placeholder="--Seleccione la Casa a Asignar--" id="administrator" value={communityId} options={cList}
+                    onChange={handleCommunities} required autoFocus className={classNames({ 'p-invalid': submitted && !communityId })} />
+                </div>
+                {submitted && !communityId && <small className="p-invalid">Comunidad es requerida.</small>}
+              </div>
+            </div>
+            <Button label="Registrar" onClick={saveTenant} />
           </div>
         </div>
       </div>

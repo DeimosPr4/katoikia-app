@@ -41,15 +41,14 @@ const Inquilinos = () => {
   const [globalFilter, setGlobalFilter] = useState(null)
   const [deleteTenantDialog, setDeleteTenantDialog] = useState(false)
   const [deleteTenantsDialog, setDeleteTenantsDialog] = useState(false)
-  const [communitiesList, setCommunitiesList] = useState([])
-  const [communityId, setCommunityId] = useState(null)
+  const [community, setCommunity] = useState([])
+  const [houseNumber, setHouseNumber] = useState([])
+  const [housesList, setHousesList] = useState([])
   const [submitted, setSubmitted] = useState(false)
   const toast = useRef(null)
   const dt = useRef(null)
-
-  const [cookies, setCookie] = useCookies()
-  const [changeStatusTenantDialog, setChangeStatusTenantDialog] =
-    useState(false)
+  const [cookies] = useCookies()
+  const [changeStatusTenantDialog, setChangeStatusTenantDialog] = useState(false)
 
   async function tenantsList() {
     await fetch(
@@ -75,15 +74,21 @@ const Inquilinos = () => {
       })
   }
 
-  async function getCommunites() {
+  async function getCommunity() {
     let response = await fetch(
-      'http://localhost:4000/community/allCommunities',
+      `http://localhost:4000/community/findCommunityName/${cookies.community_id}`,
       { method: 'GET' },
     )
-    let resList = await response.json()
-    let list = await resList.message
-    list = await list.filter((val) => val.status !== -1)
-    setCommunitiesList(await list)
+    const responseJson = await response.json()
+    const result = await responseJson.message
+    setCommunity(await result)
+    const houses = await result.houses.filter((house) =>
+      house.state === "desocupada"
+    )
+    setHousesList(houses.map((house) => ({
+      label: house.number_house, value: house.number_house
+    }))
+    )
   }
 
   useEffect(() => {
@@ -91,20 +96,15 @@ const Inquilinos = () => {
   }, [tenantsList])
 
   useEffect(() => {
-    getCommunites()
+    getCommunity()
   }, [])
 
-  const cList = communitiesList.map((item) => ({
-    label: item.name,
-    value: item._id,
-  }))
-
   const saveTenant = () => {
-    if (tenant.email && tenant.community_id && tenant.dni
-    && tenant.name && tenant.last_name && tenant.phone) {
+    if (tenant.email && tenant.number_house && tenant.dni
+      && tenant.name && tenant.last_name && tenant.phone) {
       let _tenants = [...tenants]
       let _tenant = { ...tenant }
-      _tenant.community_id = communityId;
+      _tenant.community_id = cookies.community_id;
       _tenant.password = _tenant.email;
       console.log(_tenant)
 
@@ -429,6 +429,12 @@ const Inquilinos = () => {
     setTenant(_tenant)
   }
 
+  const handleHouses = (e) => {
+    const getHouseNumber = e.target.value;
+    setHouseNumber(getHouseNumber);
+    console.log(getHouseNumber);
+  }
+
   return (
     <div className='grid'>
       <div className='col-12'>
@@ -667,20 +673,32 @@ const Inquilinos = () => {
                   </span>
                   <InputText id="phone" value={tenant.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && tenant.phone === '' })} />
                 </div>
-                {submitted && tenant.phone === '' && <small className="p-invalid">Número de teléfono es requerido.</small>}
+                {submitted
+                  && tenant.phone === ''
+                  && <small className="p-invalid">Número de teléfono es requerido.</small>}
               </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="community_id">Comunidad a asignar: </label>
+              <label htmlFor="number_house">Casa a asignar: </label>
               <div className="p-0 col-12 md:col-12">
                 <div className="p-inputgroup">
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-home"></i>
                   </span>
-                  <Dropdown placeholder="--Seleccione la Casa a Asignar--" id="community_id" value={communityId} options={cList}
-                    onChange={(e) => onInputChange(e, 'community_id')} required autoFocus className={classNames({ 'p-invalid': submitted && !communityId })} />
+                  <Dropdown
+                    placeholder="--Seleccione la Casa a Asignar--"
+                    id="number_house"
+                    value={houseNumber}
+                    options={housesList}
+                    onChange={handleHouses}
+                    required autoFocus
+                    className={
+                      classNames({ 'p-invalid': submitted && !houseNumber })}
+                  />
                 </div>
-                {submitted && !communityId && <small className="p-invalid">Comunidad es requerida.</small>}
+                {submitted
+                  && !houseNumber
+                  && <small className="p-invalid">Casa es requerida.</small>}
               </div>
             </div>
             <Button label="Registrar" onClick={saveTenant} />

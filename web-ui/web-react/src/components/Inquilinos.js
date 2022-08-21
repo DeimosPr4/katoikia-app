@@ -615,7 +615,7 @@ const Inquilinos = () => {
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-home"></i>
                   </span>
-                  <InputText id="name" value={tenant.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.name === '' })} />
+                  <InputText type="text" id="name" value={tenant.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.name === '' })} />
                 </div>
                 {submitted && tenant.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
               </div>
@@ -627,9 +627,9 @@ const Inquilinos = () => {
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-home"></i>
                   </span>
-                  <InputText id="last_name" value={tenant.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.last_name === '' })} />
+                  <InputText type="text" id="last_name" value={tenant.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.last_name === '' })} />
                 </div>
-                {submitted && tenant.last_name === '' && <small className="p-invalid">Apellidos es requerido.</small>}
+                {submitted && tenant.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
               </div>
             </div>
             <div className="field col-12 md:col-6">
@@ -639,14 +639,13 @@ const Inquilinos = () => {
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-home"></i>
                   </span>
-                  <InputText id="email" value={tenant.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.email === '' })} />
+                  <InputText type='email' id="email" value={tenant.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.email === '' })} />
                 </div>
-                {submitted && tenant.email === '' && <small className="p-invalid">Correo electrónico
-                                    es requerido.</small>}
+                {submitted && tenant.email === '' && <small className="p-invalid">Correo electrónico es requerido.</small>}
               </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="name">Identificación</label>
+              <label htmlFor="dni">Identificación</label>
               <div className="p-0 col-12 md:col-12">
                 <div className="p-inputgroup">
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
@@ -658,26 +657,26 @@ const Inquilinos = () => {
               </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="name">Número de teléfono</label>
+              <label htmlFor="phone">Número de teléfono</label>
               <div className="p-0 col-12 md:col-12">
                 <div className="p-inputgroup">
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-phone"></i>
                   </span>
-                  <InputText id="phone" value={tenant.phone} onChange={(e) => onInputChange(e, 'phone')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.phone === '' })} />
+                  <InputText id="phone" value={tenant.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && tenant.phone === '' })} />
                 </div>
                 {submitted && tenant.phone === '' && <small className="p-invalid">Número de teléfono es requerido.</small>}
               </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="administrator">Comunidad a asignar: </label>
+              <label htmlFor="community_id">Comunidad a asignar: </label>
               <div className="p-0 col-12 md:col-12">
                 <div className="p-inputgroup">
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-home"></i>
                   </span>
-                  <Dropdown placeholder="--Seleccione la Casa a Asignar--" id="administrator" value={communityId} options={cList}
-                    onChange={handleCommunities} required autoFocus className={classNames({ 'p-invalid': submitted && !communityId })} />
+                  <Dropdown placeholder="--Seleccione la Casa a Asignar--" id="community_id" value={communityId} options={cList}
+                    onChange={(e) => onInputChange(e, 'community_id')} required autoFocus className={classNames({ 'p-invalid': submitted && !communityId })} />
                 </div>
                 {submitted && !communityId && <small className="p-invalid">Comunidad es requerida.</small>}
               </div>

@@ -99,9 +99,12 @@ export class UsersService {
           reject(err);
         } else {
           let passwordEncriptada = Md5.init(password);
+          if (res.length > 0) {
           if (res[0].password == passwordEncriptada) {
             resolve(res[0]);
           } else {
+            resolve(null);
+            }}else{
             resolve(null);
           }
         }

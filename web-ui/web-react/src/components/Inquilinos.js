@@ -100,16 +100,18 @@ const Inquilinos = () => {
   }))
 
   const saveTenant = () => {
-    if (tenant.email && tenant.number_house) {
+    if (tenant.email && tenant.community_id && tenant.dni
+    && tenant.name && tenant.last_name && tenant.phone) {
       let _tenants = [...tenants]
       let _tenant = { ...tenant }
-      _tenant.community_id = communityId
+      _tenant.community_id = communityId;
+      _tenant.password = _tenant.email;
       console.log(_tenant)
 
       fetch(`http://localhost:4000/user/createUser`, {
         cache: 'no-cache',
         method: 'POST',
-        body: JSON.stringify(tenant),
+        body: JSON.stringify(_tenant),
         headers: {
           'Content-Type': 'application/json',
         },

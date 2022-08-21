@@ -33,7 +33,6 @@ import AdministradoresComunidad from './components/AdministradoresComunidad';
 import GuardasSeguridad from './components/GuardasSeguridad';
 import Communities from './components/ComunidadViviendas';
 import Inquilinos from './components/Inquilinos';
-import InquilinosCompletar from "./components/InquilinosCompletar.js";
 import RegistroComunicado from './components/RegistroComunicado';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 

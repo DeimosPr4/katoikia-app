@@ -419,7 +419,7 @@ const Inquilinos = () => {
     )
   }
 
-  const onInputChange = (e) => {
+  const onInputChange = (e, name) => {
     const value = (e.target && e.target.value) || ''
     let _tenant = { ...tenant }
     _tenant[`${name}`] = value

@@ -11,12 +11,7 @@ import { Toolbar } from 'primereact/toolbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faCommentAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { faAt } from '@fortawesome/free-solid-svg-icons';
-import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
-import { Dropdown } from 'primereact/dropdown';
 import classNames from 'classnames';
 
 const RegistroComunicado = () => {

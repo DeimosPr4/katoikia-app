@@ -56,6 +56,37 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  createTenant(
+    dni: string,
+    name: string,
+    last_name: string,
+    email: string,
+    phone: number,
+    user_type: string,
+    status: string,
+    date_entry: Date,
+    community_id: string,
+    number_house: string,
+  ) {
+    const pattern = { cmd: 'createTenant' };
+    const payload = {
+      dni: dni,
+      name: name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
+      password: this.generatePassword(),
+      user_type: user_type,
+      status: status,
+      date_entry: date_entry,
+      community_id: community_id,
+      number_house: number_house,
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   updateUser(
     _id: string,
     dni: string,

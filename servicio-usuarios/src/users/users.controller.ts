@@ -29,6 +29,12 @@ export class UsersController {
     return this.userService.createAdminCommunity(user);
   }
 
+  @MessagePattern({ cmd: 'createTenant' })
+  createTenant(@Payload() user: UserDocument) {
+    return this.userService.createTenant(user);
+  }
+
+
   @MessagePattern({ cmd: 'findAllUsers' })
   findAll() {
     return this.userService.findAll();

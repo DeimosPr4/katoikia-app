@@ -30,6 +30,7 @@ const RegistroComunicado = () => {
   const [comunicado, setComunicado] = useState(emptyComunicado);
   const [comunicados, setComunicados] = useState([]);
   const [comunicadoId, setComunicadoId] = useState(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const toast = useRef(null);
   const dt = useRef(null);
@@ -107,6 +108,24 @@ const RegistroComunicado = () => {
     )
   }
 
+  const actions = (rowData) => {
+    return (
+      <div className="actions">
+        <Button
+          icon='pi pi-trash'
+          className='p-button-rounded p-button-danger mt-2 mx-2'
+          onClick={() => confirmDelete(rowData)}
+          title='Eliminar Inquilino'
+        />
+      </div>
+    )
+  }
+
+  const confirmDelete = (post) => {
+    setComunicado(post);
+    setShowDeleteDialog(true);
+  }
+
   return (
     <div className="grid">
       <div className="col-12">
@@ -121,6 +140,13 @@ const RegistroComunicado = () => {
             globalFilter={globalFilter} emptyMessage="No hay administradores de comunidades registrados.">
             <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
             <Column field="post" sortable header={headerPost} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+            <Column
+              style={{
+                flexGrow: 1,
+                flexBasis: '80px',
+                minWidth: '80px'
+              }}
+              body={actions} />
           </DataTable>
         </div>
       </div>

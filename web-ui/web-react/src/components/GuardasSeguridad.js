@@ -15,8 +15,23 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { useCookies } from "react-cookie";
 
 const GuardasSeguridad = () => {
+
+    let emptyGuarda = {
+        _id: null,
+        dni: '',
+        name: '',
+        last_name: '',
+        email: '',
+        phone: '',
+        password: '',
+        user_type: '1',
+        status: '1',
+        status_text: '',
+    };
+
+
     const [listaGuardas, setListaGuardas] = useState([]);
-    const [urlFetch, setUrlFetch] = useState('http://localhost:4000/user/findGuards/62be68215692582bbfd77134');
+    const [urlFetch, setUrlFetch] = useState('http://localhost:4000/user/findGuards/');
     const [guarda, setGuarda] = useState(emptyGuarda);
     const [selectedGuardas, setSelectedGuardas] = useState(null);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -28,23 +43,12 @@ const GuardasSeguridad = () => {
     const [cookies, setCookie] = useCookies();
     const [changeStatusGuardDialog, setChangeStatusGuardDialog] = useState(false);
 
-    let emptyGuarda = {
-        _id: null,
-        dni: '',
-        name: '',
-        last_name: '',
-        email: '',
-        phone: '',
-        password: '',
-        user_type: '1',
-        status: '',
-        status_text: '',
-    };
-
+    const [guardDialog, setGuardDialog] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
 
     async function listaGuardasF() {
-        let nombres = await fetch(urlFetch, { method: 'GET' });
+        let nombres = await fetch((urlFetch + cookies.community_id), { method: 'GET' });
         let listaGuardasRes = await nombres.json();
         let data = await listaGuardasRes.message.filter(
             (val) => val.status != -1,
@@ -58,6 +62,7 @@ const GuardasSeguridad = () => {
         })
         setListaGuardas(await data);
     }
+
     useEffect(() => {
         listaGuardasF();
     }, [])
@@ -236,8 +241,18 @@ const GuardasSeguridad = () => {
         setChangeStatusGuardDialog(true);
     };
 
+    const hideGuardDialog = () => {
+        setSubmitted(false);
+        setGuardDialog(false);
+    };
 
-    const actionsAdmin = (rowData) => {
+    const infoGuard = (guard) => {
+        setGuarda(guard);
+        setGuardDialog(true);
+    };
+
+
+    const actionsGuard = (rowData) => {
         let icono = '';
         let text = '';
         if (rowData.status == '0') {
@@ -250,6 +265,11 @@ const GuardasSeguridad = () => {
         }
         return (
             <div className="actions">
+                <Button
+                    icon="pi pi-exclamation-circle"
+                    className="p-button-rounded p-button-info mt-2 mx-2"
+                    onClick={() => infoGuard(rowData)}
+                />
                 <Button
                     icon={`${icono}`}
                     className="p-button-rounded p-button-warning mt-2 mx-2"
@@ -327,6 +347,19 @@ const GuardasSeguridad = () => {
             />
         </>
     );
+
+    const guardDialogFooter = (
+        <>
+            <Button
+                label="Cerrar"
+                icon="pi pi-times"
+                className="p-button-text"
+                onClick={hideGuardDialog}
+            />
+
+        </>
+    );
+
 
     const headerName = (
         <>
@@ -420,8 +453,78 @@ const GuardasSeguridad = () => {
                             body={statusBodyTemplate}
                             style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
                         </Column>
-                        <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsAdmin}></Column>
+                        <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsGuard}></Column>
                     </DataTable>
+                    <Dialog
+                        visible={guardDialog}
+                        style={{ width: '650px' }}
+                        header="Información del Guarda de Seguridad"
+                        modal
+                        className="p-fluid"
+                        footer={guardDialogFooter}
+                        onHide={hideGuardDialog}>
+                        <div className='container text-center'>
+                            <div className='row my-4'>
+                                <div className=" col-4 md:col-4">
+                                    <p>Nombre</p>
+                                    <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
+                                        <div className="p-inputgroup align-items-center justify-content-evenly">
+                                            <i className="pi pi-user icon-khaki"></i>
+                                            <p>{guarda.name}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className=" col-4 md:col-4">
+                                    <p>Apellido(s)</p>
+                                    <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
+                                        <div className="p-inputgroup align-items-center justify-content-evenly">
+                                            <i className="pi pi-user icon-khaki"></i>
+                                            <p>{guarda.last_name}</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div className=" col-4 col-md-4 md:col-4">
+                                    <p>Identificación</p>
+                                    <div className="p-0 col-10 md:col-10" style={{ margin: '0 auto' }}>
+                                        <div className="p-inputgroup align-items-center justify-content-evenly">
+                                            <i className="pi pi-id-card icon-khaki"></i>
+                                            <p>{guarda.dni}</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='row my-5 justify-content-center'>
+                                
+
+
+                            </div>
+                            <div className='row my-5 justify-content-center'>
+                                <div className=" col-4 md:col-4">
+                                    <p>Teléfono</p>
+                                    <div className="p-0 col-10 md:col-10">
+                                        <div className="p-inputgroup align-items-center justify-content-evenly">
+                                            <i className="pi pi-phone icon-khaki"></i>
+                                            <p>{guarda.phone}</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div className=" col-6 md:col-6">
+                                    <p>Correo Electrónico</p>
+                                    <div className="p-0 col-10  md:col-10" style={{ margin: '0 auto' }}>
+                                        <div className="p-inputgroup align-items-center justify-content-evenly">
+                                            <i className="pi pi-envelope icon-khaki"></i>
+                                            <p>{guarda.email}</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </Dialog>
                     <Dialog visible={deleteGuardaDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminSystemDialogFooter} onHide={hideDeleteGuardaDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />

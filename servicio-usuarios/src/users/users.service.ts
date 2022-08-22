@@ -14,8 +14,8 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
     @Inject('SERVICIO_COMUNIDADES') private readonly clientCommunityApp: ClientProxy,
-
   ) { }
+
   private publicKey: string;
   async create(user: UserDocument): Promise<User> {
     let passwordEncriptada = Md5.init(user.password);
@@ -78,14 +78,14 @@ export class UsersService {
     });
   }
 
- /* async remove(id: string) {
-    return this.userModel.findByIdAndRemove({ _id: id }).exec();
-  }*/
+  /* async remove(id: string) {
+     return this.userModel.findByIdAndRemove({ _id: id }).exec();
+   }*/
 
   async remove(id: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
       new: true,
-    });  
+    });
   }
 
   //inicio de sesion
@@ -99,8 +99,12 @@ export class UsersService {
           reject(err);
         } else {
           let passwordEncriptada = Md5.init(password);
-          if (res[0].password == passwordEncriptada) {
-            resolve(res[0]);
+          if (res.length > 0) {
+            if (res[0].password == passwordEncriptada) {
+              resolve(res[0]);
+            } else {
+              resolve(null);
+            }
           } else {
             resolve(null);
           }
@@ -180,9 +184,21 @@ export class UsersService {
   }
 
   async deleteAdminSystem(id: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
       new: true,
-    });  
+    });
+  }
+
+  deleteAdminCommunity(id: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+      new: true,
+    });
+  }
+
+  async deleteTenant(id: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+      new: true,
+    });
   }
 
   async validateEmail(email: string) {
@@ -202,31 +218,31 @@ export class UsersService {
     });
   }
 
-  async findNumHouseTenant(community_id: string, tenant_id: string) {
+  async findNumHouseTenant(community_id: string, tenant_id: string): Promise<string> {
     const pattern = { cmd: 'findOneCommunity' }
     const payload = { _id: community_id }
 
-    let callback = await this.clientCommunityApp
+    let callback = this.clientCommunityApp
       .send<string>(pattern, payload)
-      .pipe(
-        map((response: string) => ({ response }))
-      )
+      .pipe(map((response: string) => ({ response })))
     const finalValue = await lastValueFrom(callback);
     const response = finalValue['response'];
     const houses = response['houses'];
     let num_house = "";
-    await houses.forEach(async house => {
-        if (tenant_id == house.tenants.tenant_id) {
-          num_house = house.number_house;
+    await houses.forEach(async (house: { [x: string]: string; }) => {
+      if (house['tenant_id'] !== undefined) {
+        if (house['tenant_id'] === tenant_id) {
+          num_house = house['number_house'];
         }
+      }
     })
     return num_house;
   }
 
   async changeStatus(id: string, status: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, {status: status}, {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: status }, {
       new: true,
-    });  
+    });
   }
 }
 

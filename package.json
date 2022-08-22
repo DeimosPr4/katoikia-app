@@ -24,5 +24,8 @@
       "js-beautify --config .jsbeautifyrc --type 'html' --replace",
       "git add"
     ]
+  },
+  "dependencies": {
+    "@react-navigation/native": "^6.0.11"
   }
 }

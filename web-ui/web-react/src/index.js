@@ -7,6 +7,8 @@ import { HashRouter } from 'react-router-dom';
 import ScrollToTop from './ScrollToTop';
 import { CookiesProvider } from "react-cookie";
 
+
+
 ReactDOM.render(
   <HashRouter>
     <ScrollToTop>

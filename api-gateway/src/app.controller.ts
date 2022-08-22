@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Delete } from '@nestjs/common';
 import { AppService } from './app.service';
 @Controller()
 export class AppController {
@@ -80,6 +80,33 @@ export class AppController {
     );
   }
 
+  @Put('user/updateUser')
+  updateUser(
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('password') password: string,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updateUser(
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      password,
+      user_type,
+      status,
+      date_entry,
+      community_id,
+    );
+  }
+
   @Get('user/allUsers')
   allUsers() {
     return this.appService.allUsers();
@@ -126,6 +153,16 @@ export class AppController {
   @Delete('user/deleteAdminSystem/:id')
   deleteAdminSystem(@Param('id') id: string) {
     return this.appService.deleteAdminSystem(id);
+  }
+
+  @Delete('user/deleteAdminCommunity/:id')
+  deleteAdminCommunity(@Param('id') id: string) {
+    return this.appService.deleteAdminCommunity(id);
+  }
+
+  @Delete('user/deleteTenant/:id')
+  deleteTenant(@Param('id') id: string) {
+    return this.appService.deleteTenant(id);
   }
 
   @Post('user/changeStatus')
@@ -188,6 +225,8 @@ export class AppController {
   ) {
     return this.appService.changeStatusCommunity(pId, pStatus);
   }
+
+  
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(
@@ -225,6 +264,14 @@ export class AppController {
   @Delete('commonArea/deleteCommonArea/:id')
   deleteCommonArea(@Param('id') id: string) {
     return this.appService.deleteCommonArea(id);
+  }
+
+  @Post('commonArea/changeStatus')
+  changeStatusCommonArea(
+    @Body('id') pId: string,
+    @Body('status') pStatus: string,
+  ) {
+    return this.appService.changeStatusCommonArea(pId, pStatus);
   }
 
   // #==== API GUEST

@@ -39,4 +39,12 @@ export class CommonAreasController {
     let _community_id = id['community_id'];
     return this.commonAreasService.findByCommunity(_community_id);
   }
+
+   //cambiar de estado
+   @MessagePattern({ cmd: 'changeStatus' })
+   changeStatus(@Payload() body: string) {
+     let pid = body['id'];
+     let pstatus = body['status'];
+     return this.commonAreasService.changeStatus(pid,pstatus);
+   }
 }

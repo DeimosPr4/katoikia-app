@@ -15,22 +15,22 @@ import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { useCookies } from "react-cookie";
-
+import { RadioButton } from 'primereact/radiobutton';
 
 const AreasComunes = () => {
 
     let emptyCommonArea = {
         _id: null,
-        dni: '',
         name: '',
-        hourMin: '',
-        hourMax: '',
+        hourMin: '00:00',
+        hourMax: '01:00',
         community_id: '',
         bookable: '1',
         bookable_text: '',
         status: '1',
         status_text: '',
     };
+
 
     const [commonAreaList, setCommonAreaList] = useState([]);
     const [commonArea, setCommonArea] = useState(emptyCommonArea);
@@ -43,6 +43,9 @@ const AreasComunes = () => {
     const dt = useRef(null);
 
     const [cookies, setCookie] = useCookies();
+    const [changeStatusAreaDialog, setChangeStatusAreaDialog] = useState(false);
+
+
 
     async function getCommonAreas() {
         await fetch(`http://localhost:4000/commonArea/findByCommunity/${cookies.community_id}`, { method: 'GET' })
@@ -77,6 +80,74 @@ const AreasComunes = () => {
     useEffect(() => {
         getCommonAreas();
     }, []);
+
+    const saveCommonArea = () => {
+        if (
+            commonArea.name &&
+            commonArea.hourMin < commonArea.hourMax
+        ) {
+            let _common_areas = [...commonAreaList];
+            let _common_area = { ...commonArea };
+            _common_area.community_id = cookies.community_id;
+
+            // console.log(houses)
+            fetch('http://localhost:4000/commonArea/createCommonArea', {
+                cache: 'no-cache',
+                method: 'POST',
+                body: JSON.stringify(_common_area),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(function (response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else return response.json();
+                })
+                .then(function (data) {
+                    return data.message;
+                })
+                .then((data) => {
+                    if (data) {
+                        if (data.bookable == '1') {
+                            data.bookable_text = 'Necesaria';
+                        } else {
+                            data.bookable_text = 'No es necesaria';
+                        }
+
+                        if (data.status == '1') {
+                            data.status_text = 'Activo';
+                        } else if (data.status == '0') {
+                            data.status_text = 'Inactivo';
+                        } else {
+                            data.status_text = 'Eliminado';
+                        }
+                    }
+                    _common_areas.push(data);
+
+                    toast.current.show({
+                        severity: 'success',
+                        summary: 'Registro exitoso',
+                        detail: 'Área Común Creada',
+                        life: 3000,
+                    });
+                    setCommonAreaList(_common_areas);
+                    setCommonArea(emptyCommonArea);
+                })
+                .catch((err) => {
+                    console.log('Ocurrió un error con el fetch', err);
+                    toast.current.show({
+                        severity: 'danger',
+                        summary: 'Error',
+                        detail: 'No se pudo registrar el área común',
+                        life: 3000
+                    });
+
+                });
+        } else {
+            setSubmitted(true);
+        }
+    };
 
 
     const deleteCommonArea = () => {
@@ -150,6 +221,51 @@ const AreasComunes = () => {
         });
     };
 
+    const cambiarStatuscommonArea = () => {
+        if (commonArea.status == '1') {
+            commonArea.status = '0';
+            commonArea.status_text = 'Inactivo';
+
+        } else if (commonArea.status == '0') {
+            commonArea.status = '1';
+            commonArea.status_text = 'Activo';
+        }
+        var data = {
+            id: commonArea._id,
+            status: commonArea.status,
+        };
+        fetch('http://localhost:4000/commonArea/changeStatus', {
+            cache: 'no-cache',
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else
+                        return response.json();
+                }
+            )
+            .then(
+                function (response) {
+                    setChangeStatusAreaDialog(false);
+                    toast.current.show({
+                        severity: 'success',
+                        summary: 'Éxito',
+                        detail: 'Área Común Actualizada',
+                        life: 3000,
+                    });
+                }
+            )
+            .catch(
+                err => console.log('Ocurrió un error con el fetch', err)
+            );
+    }
+
     const hideDeleteCommonAreaDialog = () => {
         setDeleteCommonAreaDialog(false);
     }
@@ -169,9 +285,34 @@ const AreasComunes = () => {
 
 
 
+    const hideChangeStatusAreaDialog = () => {
+        setChangeStatusAreaDialog(false);
+    };
+
+    const confirmChangeStatusArea = (commonArea) => {
+        setCommonArea(commonArea);
+        setChangeStatusAreaDialog(true);
+    };
+
     const actionsCommonArea = (rowData) => {
+        let icono = '';
+        let text = '';
+        if (rowData.status == '0') {
+            icono = "pi pi-eye";
+            text = "Activar Área Común"
+        } else if (rowData.status == '1') {
+            icono = "pi pi-eye-slash";
+            text = "Inactivar Área Común"
+        }
+
         return (
             <div className="actions">
+                <Button
+                    icon={`${icono}`}
+                    className="p-button-rounded p-button-warning mt-2 mx-2"
+                    onClick={() => confirmChangeStatusArea(rowData)}
+                    title={`${text}`}
+                />
                 <Button
                     icon="pi pi-trash"
                     className="p-button-rounded p-button-danger mt-2"
@@ -181,6 +322,18 @@ const AreasComunes = () => {
         );
     };
 
+    const onBookableChange = (e) => {
+        let _commonArea = { ...commonArea };
+        _commonArea['bookable'] = e.value;
+        setCommonArea(_commonArea);
+    };
+
+    const onInputChange = (e, name) => {
+        const val = (e.target && e.target.value) || '';
+        let _commonArea = { ...commonArea };
+        _commonArea[`${name}`] = val;
+        setCommonArea(_commonArea);
+    };
 
     const deleteCommonAreaDialogFooter = (
         <>
@@ -196,6 +349,22 @@ const AreasComunes = () => {
         </>
     );
 
+    const changeStatusAreaDialogFooter = (
+        <>
+            <Button
+                label="No"
+                icon="pi pi-times"
+                className="p-button-text"
+                onClick={hideChangeStatusAreaDialog}
+            />
+            <Button
+                label="Yes"
+                icon="pi pi-check"
+                className="p-button-text"
+                onClick={cambiarStatuscommonArea}
+            />
+        </>
+    );
 
     const leftToolbarTemplate = () => {
         return (
@@ -278,7 +447,7 @@ const AreasComunes = () => {
 
     const bookableBodyTemplate = (rowData) => {
         let class_color = '';
-        if(rowData.bookable == '1') {
+        if (rowData.bookable == '1') {
             class_color = '0';
         } else {
             class_color = '1';
@@ -306,6 +475,18 @@ const AreasComunes = () => {
             </>
         );
     };
+
+
+    function compareTimesMinRequired(hour1, hour2) {
+        var timeFormat1 = Number(hour1.replace(/[:]/g, ''));
+        var timeFormat2 = Number(hour2.replace(/[:]/g, ''));
+        if (timeFormat1 <= timeFormat2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     return (
         <div className="grid">
@@ -339,8 +520,146 @@ const AreasComunes = () => {
                             {selectedCommonAreas && <span>¿Está seguro eliminar las áreas comunes seleccionadas?</span>}
                         </div>
                     </Dialog>
+                    <Dialog
+                        visible={changeStatusAreaDialog}
+                        style={{ width: '450px' }}
+                        header="Confirmar"
+                        modal
+                        footer={changeStatusAreaDialogFooter}
+                        onHide={hideChangeStatusAreaDialog}
+                    >
+                        <div className="flex align-items-center justify-content-center">
+                            <i
+                                className="pi pi-exclamation-triangle mr-3"
+                                style={{ fontSize: '2rem' }}
+                            />
+                            {commonArea && (
+                                <span>
+                                    ¿Estás seguro que desea cambiar estado a <b>{commonArea.name}</b>?
+                                </span>
+                            )}
+                        </div>
+                    </Dialog>
                 </div>
             </div>
+            <div className="col-12">
+                <div className="card">
+                    <h5>Registro de área común</h5>
+                    <div className="p-fluid formgrid grid">
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="name">Nombre</label>
+                            <div className="p-0 col-12 md:col-12">
+
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="name"
+                                        type="text"
+                                        onChange={(e) => onInputChange(e, 'name')}
+                                        value={commonArea.name}
+                                        required
+                                        autoFocus
+                                        className={classNames({
+                                            'p-invalid': submitted && commonArea.name === '',
+                                        })}
+                                    />
+                                </div>
+                                {submitted && commonArea.name === '' && (
+                                    <small className="p-invalid">Nombre es requirido.</small>
+                                )}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="hourMin">Hora apertura</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="hourMin"
+                                        type="time"
+                                        min="00:00" max="23:59"
+                                        step="3600000"
+                                        onChange={(e) => onInputChange(e, 'hourMin')}
+                                        value={commonArea.hourMin}
+                                        required
+                                        autoFocus
+                                        className={classNames({
+                                            'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
+                                        })}
+                                    />
+                                </div>
+                                {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
+                                    <small className="p-invalid">La hora de apertura debe ser menor que la hora de cierre.</small>
+                                )}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="hourMax">Hora de cierre</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText id="hourMax"
+                                        type="time"
+                                        min="00:00" max="23:59"
+                                        step="3600000"
+                                        onChange={(e) => onInputChange(e, 'hourMax')}
+                                        value={commonArea.hourMax}
+                                        required
+                                        autoFocus
+                                        className={classNames({
+                                            'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
+                                        })}
+                                    />
+                                </div>
+                                {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
+                                    <small className="p-invalid">La hora de cierre debe ser mayor que la hora de apertura</small>
+                                )}
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="bookable">¿Necesita Reservación?</label>
+                            <div className="formgrid grid align-items-end" style={{ marginTop: '12px', width: '300px' }}>
+                                <div className="field-radiobutton col-6">
+
+                                    <RadioButton
+                                        inputId="bookable1"
+                                        name="bookable"
+                                        value="1"
+                                        onChange={onBookableChange}
+                                        checked={commonArea.bookable === '1'}
+                                    />
+                                    <label htmlFor="bookable1">
+                                        <span className="p-icon-input-khaki">
+                                            <i className="pi pi-check status status-1"></i> Sí
+                                        </span>
+                                    </label>
+                                </div>
+                                <div className="field-radiobutton col-6">
+                                    <RadioButton
+                                        inputId="bookable2"
+                                        name="bookable"
+                                        value="0"
+                                        onChange={onBookableChange}
+                                        checked={commonArea.bookable === '0'}
+                                    />
+                                    <label htmlFor="bookable2">
+                                        <span className="p-icon-input-khaki">
+                                            <i className="pi pi-times status status-0"></i> No
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <Button label="Registrar" onClick={saveCommonArea}></Button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     );
 

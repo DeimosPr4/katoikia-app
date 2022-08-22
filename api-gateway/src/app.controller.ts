@@ -65,8 +65,39 @@ export class AppController {
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
   ) {
     return this.appService.createUser(
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      password,
+      user_type,
+      status,
+      date_entry,
+      community_id,
+      number_house,
+    );
+  }
+
+  @Put('user/updateGuard/:id')
+  updateGuard(
+    @Param('id') id: string,
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('password') password: string,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updateGuard(
+      id,
       dni,
       name,
       last_name,
@@ -80,8 +111,9 @@ export class AppController {
     );
   }
 
-  @Put('user/updateUser')
+  @Put('user/updateUser/:id')
   updateUser(
+    @Param('id') id: string,
     @Body('dni') dni: string,
     @Body('name') name: string,
     @Body('last_name') last_name: string,
@@ -92,8 +124,10 @@ export class AppController {
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
   ) {
     return this.appService.updateUser(
+      id,
       dni,
       name,
       last_name,
@@ -104,6 +138,7 @@ export class AppController {
       status,
       date_entry,
       community_id,
+      number_house,
     );
   }
 

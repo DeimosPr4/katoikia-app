@@ -12,6 +12,7 @@ import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames';
 
 const AdministradoresSistema = () => {
   const [administrators, setAdministrators] = useState([]);
@@ -30,6 +31,11 @@ const AdministradoresSistema = () => {
   const [changeStatusAdminSystemDialog, setChangeStatusAdminSystemDialog] = useState(false);
   const [changeStatusAdminsSystemDialog, setChangeStatusAdminsSystemDialog] =
     useState(false);
+  const [adminDialog, setAdminDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const [editAdminDialog, setEditAdminDialog] = useState(false);
+
 
   let emptySysAdmin = {
     _id: null,
@@ -55,7 +61,7 @@ const AdministradoresSistema = () => {
         item.status_text = 'Activo';
       } else if (item.status == '0') {
         item.status_text = 'Inactivo';
-      } 
+      }
     })
     setAdministrators(await data);
   }
@@ -177,6 +183,28 @@ const AdministradoresSistema = () => {
     setChangeStatusAdminSystemDialog(true);
   };
 
+  const hideAdminDialog = () => {
+    setSubmitted(false);
+    setAdminDialog(false);
+    setSysAdmin(emptySysAdmin);
+
+  };
+
+  const infoAdmin = (sysadmin) => {
+    setSysAdmin({ ...sysadmin });
+    setAdminDialog(true);
+  };
+
+  const hideEditAdminDialog = () => {
+    setSubmitted(false);
+    setEditAdminDialog(false);
+  };
+
+  const editAdmin = (sysadmin) => {
+    setSysAdmin({ ...sysadmin });
+    setEditAdminDialog(true);
+  };
+
   const deleteSysAdmin = () => {
     fetch('http://localhost:4000/user/deleteAdminSystem/' + sysadmin._id, {
       cache: 'no-cache',
@@ -259,6 +287,21 @@ const AdministradoresSistema = () => {
 
     return (
       <div className="actions">
+        <Button
+          icon="pi pi-exclamation-circle"
+          className="p-button-rounded p-button-info mt-2 mx-2"
+          onClick={() => infoAdmin(rowData)}
+          title="Ver información del Administrador"
+
+        />
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success mt-2 mx-2"
+          onClick={() => editAdmin(rowData)}
+          title="Editar Administrador"
+
+        />
+        
         <Button
           icon={`${icono}`}
           className="p-button-rounded p-button-warning mt-2 mx-2"
@@ -370,6 +413,36 @@ const AdministradoresSistema = () => {
     </>
   );
 
+
+  const editAdminDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideChangeStatusAdminDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={editAdmin}
+      />
+    </>
+  );
+
+  const adminDialogFooter = (
+    <>
+      <Button
+        label="Cerrar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideAdminDialog}
+      />
+
+    </>
+  );
+
   const headerName = (
     <>
       <p>
@@ -418,7 +491,7 @@ const AdministradoresSistema = () => {
       </p>
     </>
   );
-  
+
   const headerStatus = (
     <>
       <p> {' '}
@@ -438,6 +511,23 @@ const AdministradoresSistema = () => {
         </span>
       </>
     );
+  };
+
+
+  const onInputChange = (e, name) => {
+    const val = (e.target && e.target.value) || '';
+    let _admin = { ...sysadmin };
+    _admin[`${name}`] = val;
+
+    setSysAdmin(_admin);
+  };
+
+  const onInputNumberChange = (e, name) => {
+    const val = e.value || 0;
+    let _admin = { ...sysadmin };
+    _admin[`${name}`] = val;
+
+    setSysAdmin(_admin);
   };
 
   return (
@@ -542,6 +632,84 @@ const AdministradoresSistema = () => {
             ></Column>
           </DataTable>
           <Dialog
+            visible={adminDialog}
+            style={{ width: '650px' }}
+            header="Información del Admin del Sistema"
+            modal
+            className="p-fluid"
+            footer={adminDialogFooter}
+            onHide={hideAdminDialog}
+          >
+            {sysadmin && (
+              <div className='container text-center'>
+                <div className='row my-4'>
+                  <div className=" col-12 md:col-12">
+                    <h3>Información Básica</h3>
+                  </div>
+                  <div className=" col-6 md:col-6">
+                    <i className="pi pi-user icon-khaki"></i>
+                    <p><strong>Nombre</strong></p>
+                    <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
+                      <div className="p-inputgroup align-items-center justify-content-evenly">
+                        <p>{sysadmin.name}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className=" col-6 md:col-6">
+                    <i className="pi pi-user icon-khaki"></i>
+                    <p><strong>Apellido(s)</strong></p>
+                    <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
+
+                      <div className="p-inputgroup align-items-center justify-content-evenly">
+
+                        <p>{sysadmin.last_name}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className='row my-5'>
+                  <div className=" col-12 md:col-12">
+                    <i className="pi pi-id-card icon-khaki"></i>
+                    <p><strong>Identificación</strong></p>
+                    <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
+                      <div className="p-inputgroup align-items-center justify-content-evenly">
+                        <p>{sysadmin.dni}</p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div className='row my-5'>
+                  <div className=" col-12 md:col-12">
+                    <h3>Contacto</h3>
+                  </div>
+                  <div className=" col-6 col-md-6 md:col-6">
+                    <i className="pi pi-at icon-khaki"></i>
+                    <p><strong>Correo electrónico</strong></p>
+                    <div className="p-0 col-12 md:col-12">
+                      <div className="p-inputgroup align-items-center justify-content-evenly">
+                        <p>{sysadmin.email}</p>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div className=" col-6 md:col-6">
+                    <i className="pi pi-phone icon-khaki"></i>
+                    <p><strong>Teléfono</strong></p>
+                    <div className="p-0 col-12 md:col-12">
+                      <div className="p-inputgroup align-items-center justify-content-evenly">
+                        <p>{sysadmin.phone}</p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Dialog>
+
+          <Dialog
             visible={deleteAdminSystemDialog}
             style={{ width: '450px' }}
             header="Confirmar"
@@ -601,6 +769,51 @@ const AdministradoresSistema = () => {
                 </span>
               )}
             </div>
+          </Dialog>
+          <Dialog
+            visible={editAdminDialog}
+            style={{ width: '450px' }}
+            header="Product Details"
+            modal
+            className="p-fluid"
+            footer={editAdminDialogFooter}
+            onHide={hideEditAdminDialog}
+          >
+            <h5>Editar administrador del sistema</h5>
+            {sysadmin && (<div className="p-fluid formgrid grid">
+              <div className="field col-12 md:col-6">
+                <label htmlFor="nombre">Nombre</label>
+                <InputText id="nombre" value={sysadmin.name}
+                  onChange={(e) => onInputChange(e, 'name')}
+                  required
+                  autoFocus
+                  className={classNames({
+                    'p-invalid': submitted && !sysadmin.name,
+                  })}
+                />
+                {submitted && !sysadmin.name && (
+                  <small className="p-invalid">Nombre es requerido.</small>
+                )}
+              </div>
+              <div className="field col-12 md:col-6">
+                <label htmlFor="apellidos">Apellido(s)</label>
+                <InputText id="apellidos" type="text" />
+              </div>
+              <div className="field col-12 md:col-6">
+                <label htmlFor="correo_electronico">Correo electrónico</label>
+                <InputText id="correo_electronico" type="email" />
+              </div>
+              <div className="field col-12 md:col-6">
+                <label htmlFor="identificacion">Identificación</label>
+                <InputText id="identificacion" type="text" />
+              </div>
+              <div className="field col-12">
+                <label htmlFor="telefono">Teléfono</label>
+                <InputText type="tel" id="telefono" pattern="[0-9]{8}" />
+              </div>
+              <Button label="Registrar" onClick={registrarAdmin}></Button>
+            </div>
+            )}
           </Dialog>
         </div>
       </div>

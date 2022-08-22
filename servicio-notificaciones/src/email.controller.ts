@@ -12,7 +12,7 @@ export class EmailController {
   sendMail(@Payload() toEmail: string) {
     var response = this.mailService.sendMail({
       to: toEmail['email'],
-      from: 'mbonilla.guti@gmail.com',
+      from: 'katoikiap4@gmail.com',
       subject: 'Plain Text Email ✔',
       text: 'Welcome NestJS Email Sending Tutorial',
     });
@@ -25,7 +25,7 @@ export class EmailController {
         const image = "images/email.png";
         var response = await this.mailService.sendMail({
             to: user["email"],
-            from: "mbonilla.guti@gmail.com",
+            from: "katoikiap4@gmail.com",
             subject: 'HTML Dynamic Template',
             template: 'templateEmail',
             context: {
@@ -51,7 +51,7 @@ export class EmailController {
         const logo = "images/Logo Katoikia.png";
         var response = await this.mailService.sendMail({
             to: user["email"],
-            from: "mbonilla.guti@gmail.com",
+            from: "katoikiap4@gmail.com",
             subject: 'Usuario registrado',
             template: 'emailCreateUserAdminCommunity',
             context: {
@@ -86,7 +86,7 @@ export class EmailController {
         const logo = "images/Logo Katoikia.png";
         var response = await this.mailService.sendMail({
             to: user["email"],
-            from: "mbonilla.guti@gmail.com",
+            from: "katoikiap4@gmail.com",
             subject: 'Usuario registrado',
             template: 'emailCreateUserTenant',
             context: {
@@ -95,7 +95,7 @@ export class EmailController {
                 date_entry: user["date_entry"],
                 email: user["email"],
                 community_name: user['community_name'],
-                url
+                number_house: user['number_house']
             },
             attachments: [
                 {

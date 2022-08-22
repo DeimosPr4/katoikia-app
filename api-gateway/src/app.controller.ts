@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Body, Param, Delete } from '@nestjs/common'
 import { AppService } from './app.service';
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
   // #==== API Users
   @Post('user/createAdminSystem')
   createAdminSystem(
@@ -15,8 +15,8 @@ export class AppController {
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
   ) {
-    return this.appService.createAdminSystem(dni, name, last_name, email, phone, 
-            user_type, status, date_entry);
+    return this.appService.createAdminSystem(dni, name, last_name, email, phone,
+      user_type, status, date_entry);
   }
 
   @Post('user/createGuard')
@@ -33,7 +33,7 @@ export class AppController {
     @Body('community_id') community_id: string,
   ) {
     return this.appService.createGuard(dni, name, last_name, email, phone,
-      user_type, status, date_entry,community_id);
+      user_type, status, date_entry, community_id);
   }
 
   @Post('user/createAdminCommunity')
@@ -47,10 +47,10 @@ export class AppController {
     @Body('user_type') user_type: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
-    @Body('community_id') community_id:string
+    @Body('community_id') community_id: string
   ) {
     return this.appService.createAdminCommunity(dni, name, last_name, email, phone,
-      user_type, status, date_entry,community_id);
+      user_type, status, date_entry, community_id);
   }
 
   @Post('user/createUser')
@@ -81,6 +81,35 @@ export class AppController {
       number_house,
     );
   }
+
+
+  @Post('user/createTenant')
+  createTenant(
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
+  ) {
+    return this.appService.createTenant(
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      user_type,
+      status,
+      date_entry,
+      community_id,
+      number_house,
+    );
+  }
+
 
   @Put('user/updateGuard/:id')
   updateGuard(
@@ -174,7 +203,7 @@ export class AppController {
   allUsersTenants(@Param('community_id') paramCommunity_id: string) {
     return this.appService.findTenantsCommunity(paramCommunity_id);
   }
-  
+
   @Get('user/find/:dni')
   findUser(@Param('dni') paramUserDNI: string) {
     return this.appService.findUser(paramUserDNI);
@@ -195,9 +224,13 @@ export class AppController {
     return this.appService.deleteAdminCommunity(id);
   }
 
-  @Delete('user/deleteTenant/:id')
-  deleteTenant(@Param('id') id: string) {
-    return this.appService.deleteTenant(id);
+  @Put('user/deleteTenant/:id')
+  deleteTenant(
+    @Param('id') id: string,
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string
+  ) {
+    return this.appService.deleteTenant(id, community_id, number_house);
   }
 
   @Post('user/changeStatus')
@@ -296,8 +329,6 @@ export class AppController {
   ) {
     return this.appService.saveTenant(community_id, number_house, tenant_id);
   }
-
-
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(

@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { map } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AppService {
@@ -44,6 +45,37 @@ export class AppService {
       email: email,
       phone: phone,
       password: password,
+      user_type: user_type,
+      status: status,
+      date_entry: date_entry,
+      community_id: community_id,
+      number_house: number_house,
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  createTenant(
+    dni: string,
+    name: string,
+    last_name: string,
+    email: string,
+    phone: number,
+    user_type: string,
+    status: string,
+    date_entry: Date,
+    community_id: string,
+    number_house: string,
+  ) {
+    const pattern = { cmd: 'createTenant' };
+    const payload = {
+      dni: dni,
+      name: name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
+      password: this.generatePassword(),
       user_type: user_type,
       status: status,
       date_entry: date_entry,
@@ -261,9 +293,9 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  deleteTenant(id: string) {
+  deleteTenant(id: string, community_id: string, number_house: string) {
     const pattern = { cmd: 'deleteTenant' };
-    const payload = { id: id };
+    const payload = { _id: id, community_id: community_id, number_house: number_house };
     return this.clientUserApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
@@ -354,6 +386,31 @@ export class AppService {
   findCommunityName(paramCommunityId: string) {
     const pattern = { cmd: 'findCommunityName' };
     const payload = { id: paramCommunityId };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+
+  async findHousesCommunity(community_id: string) {
+    const pattern = { cmd: 'findOneCommunity' }
+    const payload = { _id: community_id }
+
+    let callback = await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+    const finalValue = await lastValueFrom(callback);
+    const response = finalValue['response'];
+    const houses = response['houses'];
+
+    return houses;
+  }
+
+  saveTenant(id: string, number_house: string, tenant_id: string) {
+    const pattern = { cmd: 'saveTenant' };
+    const payload = { _id: id, number_house: number_house, tenant_id: tenant_id };
     return this.clientCommunityApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));

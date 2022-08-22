@@ -87,6 +87,29 @@ export class CommunitiesService {
     await community.houses.map(house => {
       if(house.number_house == number_house){
         house.tenants.tenant_id = tenant_id
+        house.state = "ocupada"
+      }
+      return house;
+    })
+
+    console.log(community.houses)
+
+   return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
+      new: true,
+    });
+  }
+
+
+  async deleteTenant(id: string, number_house: string, tenant_id: string) {
+
+    let community = await this.findOne(id);
+
+    await community.houses.map(house => {
+      if(house.number_house == number_house && 
+        house.tenants.tenant_id == tenant_id){
+          house.tenants = null;
+          house.state = "desocupada"
+
       }
       return house;
     })

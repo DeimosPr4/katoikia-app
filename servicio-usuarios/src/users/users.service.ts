@@ -268,5 +268,17 @@ export class UsersService {
         map((response: string) => ({ response }))
       )
   }
+
+
+  async deleteTenantNumHouse(community_id: string, number_house:string, tenant_id: string) {
+    const pattern = { cmd: 'deleteTenant' }
+    const payload = { _id: community_id, number_house: number_house,  tenant_id: tenant_id }
+
+    return await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+  }
 }
 

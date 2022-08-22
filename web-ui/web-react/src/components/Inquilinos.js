@@ -122,7 +122,7 @@ const Inquilinos = () => {
         _tenant.password = _tenant.email;
       console.log(`Registrando nuevo inquilino: ${_tenant}`)
 
-        fetch(`http://localhost:4000/user/createUser`, {
+        fetch(`http://localhost:4000/user/createTenant`, {
           cache: 'no-cache',
           method: 'POST',
           body: JSON.stringify(_tenant),
@@ -136,6 +136,13 @@ const Inquilinos = () => {
             else return response.json()
           })
           .then(() => {
+            if (_tenant.status === '1') {
+              _tenant.status = '0'
+              _tenant.status_text = 'Inactivo'
+            } else if (_tenant.status === '0') {
+              _tenant.status = '1'
+              _tenant.status_text = 'Activo'
+            }
             _tenants.push(_tenant)
             toast.current.show({
               severity: 'success',
@@ -143,6 +150,7 @@ const Inquilinos = () => {
               detail: 'Inquilino creado',
               life: 3000,
             })
+            
             setTenants(_tenants)
             setTenant(emptyTenant)
             setHouseNumber('')

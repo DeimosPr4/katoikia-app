@@ -82,6 +82,35 @@ export class AppController {
     );
   }
 
+  
+  @Post('user/createTenant')
+  createTenant(
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
+  ) {
+    return this.appService.createTenant(
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      user_type,
+      status,
+      date_entry,
+      community_id,
+      number_house,
+    );
+  }
+
+
   @Put('user/updateGuard/:id')
   updateGuard(
     @Param('id') id: string,

@@ -645,7 +645,6 @@ const Inquilinos = () => {
                 {submitted && tenant.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
               </div>
             </div>
-            <Button label='Registrar' onClick={saveTenant} />
             <Button label='testDialog' onClick={openDialog} />
             <div className="field col-12 md:col-6">
               <label htmlFor="name">Correo Electrónico</label>

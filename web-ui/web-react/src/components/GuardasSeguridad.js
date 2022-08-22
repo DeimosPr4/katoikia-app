@@ -28,6 +28,7 @@ const GuardasSeguridad = () => {
     user_type: '1',
     status: '1',
     status_text: '',
+    date_entry: Date.now(),
     community_id: '',
   };
 
@@ -77,6 +78,7 @@ const GuardasSeguridad = () => {
       password: document.getElementById('email').value,
       user_type: "4", //4 es guarda
       status: "1",
+      date_entry: Date.now(),
       community_id: cookies.community_id
     };
     if (guarda._id === null) {

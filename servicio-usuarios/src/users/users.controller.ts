@@ -69,6 +69,11 @@ export class UsersController {
     return this.userService.update(user.id, user);
   }
 
+  @MessagePattern({ cmd: 'updateGuard' })
+  updateGuard(@Payload() guard: UserDocument) {
+    return this.userService.update(guard.id, guard);
+  }
+
   @MessagePattern({ cmd: 'removeUser' })
   remove(@Payload() id: string) {
     let dni = id['dni'];

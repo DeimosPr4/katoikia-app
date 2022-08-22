@@ -27,13 +27,13 @@ const RegistroComunicado = () => {
         community_id: ''
     };
 
-    useEffect(()=>{
-      listaComunis();
-    },[])
+    useEffect(() => {
+        listaComunis();
+    }, [])
 
 
     const [comunicado, setComunicado] = useState(emptyComunicado);
-    const [comunicados,setComuicados]=useState([]);
+    const [comunicados, setComuicados] = useState([]);
     const [comunicadoId, setComunicadoId] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
@@ -42,103 +42,103 @@ const RegistroComunicado = () => {
     const [globalFilter, setGlobalFilter] = useState(null);
 
     async function listaComunis() {
-      let comunicadosA=await fetch('http://localhost:4000/post/allPosts', {method:'GET'});
-      let comunicadosRes= await comunicadosA.json();
-      setComuicados(comunicadosRes.message);
-      console.log(comunicadosRes.message);
-     }
+        let comunicadosA = await fetch('http://localhost:4000/post/allPosts', { method: 'GET' });
+        let comunicadosRes = await comunicadosA.json();
+        setComuicados(comunicadosRes.message);
+        console.log(comunicadosRes.message);
+    }
 
-  
+
     const saveComunicado = () => {
         var data = {
             post: document.getElementById('txt_comunicado').value,
             user_id: cookies.id,
             community_id: cookies.community_id
-          };
-      
-          fetch('http://localhost:4000/post/createPost', {
+        };
+
+        fetch('http://localhost:4000/post/createPost', {
             cache: 'no-cache',
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             }
-          })
+        })
             .then(
-              function (response) {
-                if (response.status != 201)
-                  console.log('Ocurrió un error con el servicio: ' + response.status);
-                else
-                  return response.json();
-              }
+                function(response) {
+                    if (response.status != 201)
+                        console.log('Ocurrió un error con el servicio: ' + response.status);
+                    else
+                        return response.json();
+                }
             )
             .then(
-              function (response) {
-                
-              }
+                function(response) {
+
+                }
             )
             .catch(
-              err => console.log('Ocurrió un error con el fetch', err)
+                err => console.log('Ocurrió un error con el fetch', err)
             );
     }
 
     const header = (
-      <React.Fragment>
-
-          <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-              <h5 className="m-0">Comunicados de la comunidad</h5>
-              <span className="block mt-2 md:mt-0 p-input-icon-left">
-                  <i className="pi pi-search" />
-                  <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
-              </span>
-          </div>
-      </React.Fragment>
-  );
-  const headerPost = (
-    <>
-        <p>
-            {' '}
-            <FontAwesomeIcon icon={faCommentAlt} style={{ color: "#D7A86E" }} />{' '}
-            Descripción comunicado</p>
-    </>
-  )
-
-  const leftToolbarTemplate = () => {
-    return (
         <React.Fragment>
-            <div className="my-2">
-                <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" />
+
+            <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 className="m-0">Comunicados de la comunidad</h5>
+                <span className="block mt-2 md:mt-0 p-input-icon-left">
+                    <i className="pi pi-search" />
+                    <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+                </span>
             </div>
         </React.Fragment>
+    );
+    const headerPost = (
+        <>
+            <p>
+                {' '}
+                <FontAwesomeIcon icon={faCommentAlt} style={{ color: "#D7A86E" }} />{' '}
+            Descripción comunicado</p>
+        </>
     )
-}
 
-const rightToolbarTemplate = () => {
-    return (
-        <React.Fragment>
-            <Button label="Exportar" icon="pi pi-upload" className="p-button-help" />
-        </React.Fragment>
-    )
-}
+    const leftToolbarTemplate = () => {
+        return (
+            <React.Fragment>
+                <div className="my-2">
+                    <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" />
+                </div>
+            </React.Fragment>
+        )
+    }
+
+    const rightToolbarTemplate = () => {
+        return (
+            <React.Fragment>
+                <Button label="Exportar" icon="pi pi-upload" className="p-button-help" />
+            </React.Fragment>
+        )
+    }
 
     return (
         <div className="grid">
             <div className="col-12">
-                  <Toast ref={toast} />
-                  <div className="card">
-                      <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-                      <DataTable ref={dt} value={comunicados} dataKey="_id" paginator rows={5}
-                          scrollable scrollHeight="400px" scrollDirection="both" header={header}
-                          rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
-                          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} administradores de comunidades de viviendas"
-                          globalFilter={globalFilter} emptyMessage="No hay administradores de comunidades registrados.">
-                          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-                          <Column field="post" sortable header={headerPost} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-        
-                      </DataTable>
-                  </div>
-              </div>
+                <Toast ref={toast} />
+                <div className="card">
+                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                    <DataTable ref={dt} value={comunicados} dataKey="_id" paginator rows={5}
+                        scrollable scrollHeight="400px" scrollDirection="both" header={header}
+                        rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
+                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} administradores de comunidades de viviendas"
+                        globalFilter={globalFilter} emptyMessage="No hay administradores de comunidades registrados.">
+                        <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+                        <Column field="post" sortable header={headerPost} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+
+                    </DataTable>
+                </div>
+            </div>
             <div className="col-12">
                 <div className="card">
                     <h5>Registro de un comunicado para la comunidad</h5>
@@ -150,7 +150,7 @@ const rightToolbarTemplate = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-pencil"></i>
                                     </span>
-                                    <InputTextarea id="txt_comunicado" rows="4"/>
+                                    <InputTextarea id="txt_comunicado" rows="4" />
                                 </div>
                             </div>
                         </div>

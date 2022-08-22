@@ -43,28 +43,7 @@ export default function Home(){
          
         </Box>
       </Pressable>
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5" marginTop="4">
-        <Box>
-          <HStack alignItems="center">
-            <Badge colorScheme="darkBlue" _text={{
-            color: "white"
-          }} variant="solid" rounded="4">
-              Comunicado
-            </Badge>
-            <Spacer />
-            <Text fontSize={10} color="coolGray.800">
-              1 month ago
-            </Text>
-          </HStack>
-          <Text color="coolGray.800" mt="3" fontWeight="medium" fontSize="xl">
-            Administrador General
-          </Text>
-          <Text mt="2" fontSize="sm" color="coolGray.700">
-            Notificacion sobre la aplicacion
-          </Text>
-         
-        </Box>
-      </Pressable>
+      
       </ScrollView>
     </Box>
       //   <Center width={"100%"} marginTop={"auto"}>

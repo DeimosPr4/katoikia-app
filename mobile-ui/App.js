@@ -27,7 +27,7 @@ const user = route.params;
 // console.log(user);
 
   return (
-    <Tab.Navigator params={user} initialRouteName="Comunicados" > 
+    <Tab.Navigator initialParams={user} initialRouteName="Comunicados" > 
     <Tab.Screen  name="Comunicados" component={Home}  initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 0 ? 'home' : 'home-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(0)}

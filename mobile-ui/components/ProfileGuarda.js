@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
     Box, 
@@ -15,8 +15,17 @@ import {
 export default function ProfileGuarda({route, navigation}){
 
   const userData = JSON.parse(JSON.stringify(route.params));
+  const [name, setName] = useState(); 
+  const [apellido, setApellido] =useState(); 
+  const [email, setEmail] = useState(); 
+  const [password, setPassword] = useState();
 
   console.log(userData.user);
+
+
+  const updateInfo = async() => {
+
+  }
     return (
         <Center>
 
@@ -39,23 +48,23 @@ export default function ProfileGuarda({route, navigation}){
         <VStack space={3} mt="5">
         <FormControl>
             <FormControl.Label>DNI</FormControl.Label>
-            <TextInput type="text" defaultValue={userData.user.dni} editable='false'/>
+            <TextInput type="text" defaultValue={userData.user.dni} editable='false' />
           </FormControl>
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={userData.user.name}/>
+            <TextInput style={styles.input} type="text" defaultValue={userData.user.name} onChangeText={(value) => setName(value) }/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Apellido</FormControl.Label>
-            <TextInput style={styles.input} type="text"defaultValue={userData.user.last_name} />
+            <TextInput style={styles.input} type="text"defaultValue={userData.user.last_name} onChangeText={(value) => setApellido(value) } />
           </FormControl>
           <FormControl>
             <FormControl.Label>Correo electrónico</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={userData.user.email}/>
+            <TextInput style={styles.input} type="text" defaultValue={userData.user.email} onChangeText={(value) => setEmail(value) }/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Contraseña actual</FormControl.Label>
-            <TextInput style={styles.input} type="password" defaultValue=""/>
+            <TextInput style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) }/>
           </FormControl>
           
           <Button mt="2" backgroundColor="orange.300">

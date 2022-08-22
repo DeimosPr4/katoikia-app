@@ -73,7 +73,7 @@ export default function LogIn({navigation}) {
          cookies.set('type',user.user_type, {path: "/"} )
           if(user.user_type == '4'){
 
-           
+            navigation.navigate('Comunicados', {user})
           }else if(user.user_type == '3'){
             navigation.navigate('Comunicados', {user})
           }
@@ -125,7 +125,7 @@ export default function LogIn({navigation}) {
 <View style={styles.container}>
   <VStack space={3} mt="5">
             <FormControl isRequired >
-              <FormControl.Label> Correo Electrónico </FormControl.Label>
+              <FormControl.Label Text='bold'> Correo Electrónico </FormControl.Label>
 
               <View style={styles.viewSection}> 
               <Entypo name="email" size={20} color="grey" style={styles.iconStyle} />

@@ -9,7 +9,7 @@ Pressable,
     ScrollView
   } from "native-base";
   import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-export default function Home(){
+export default function Home({route}){
 
   const [selected, setSelected] = React.useState(0);
     return (

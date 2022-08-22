@@ -246,7 +246,7 @@ const Inquilinos = () => {
       text = 'Activar Inquilino'
     } else if (rowData.status === '1') {
       icono = 'pi pi-eye-slash'
-      text = 'Inactivar Inquilino'
+      text = 'Desactivar Inquilino'
     }
     return (
       <div className='actions'>
@@ -254,6 +254,7 @@ const Inquilinos = () => {
           icon="pi pi-exclamation-circle"
           className="p-button-rounded p-button-info mt-2 mx-2"
           onClick={() => infoTenant(rowData)}
+          title="Ver Información"
         />
         <Button
           icon={`${icono}`}
@@ -265,6 +266,7 @@ const Inquilinos = () => {
           icon='pi pi-trash'
           className='p-button-rounded p-button-danger mt-2 mx-2'
           onClick={() => confirmDeleteTenant(rowData)}
+          title='Eliminar Inquilino'
         />
       </div>
     )

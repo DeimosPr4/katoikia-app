@@ -51,6 +51,7 @@ const AdministradoresSistema = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const [editAdminDialog, setEditAdminDialog] = useState(false);
+  const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
 
 
   async function fetchP() {
@@ -276,16 +277,16 @@ const AdministradoresSistema = () => {
 
   };
 
-  const hideEditAdminDialog = () => {
-    setSubmitted(false);
-    setEditAdminDialog(false);
-    setSysAdmin(emptySysAdmin);
 
-  };
+  const cancelEdit = () => {
+    setSaveButtonTitle('Registrar');
+    setSubmitted(false);
+    setSysAdmin(emptySysAdmin);
+  }
 
   const editAdmin = (sysadmin) => {
     setSysAdmin({ ...sysadmin });
-    setEditAdminDialog(true);
+    setSaveButtonTitle('Actualizar');
   };
 
   const deleteSysAdmin = () => {
@@ -853,138 +854,12 @@ const AdministradoresSistema = () => {
               )}
             </div>
           </Dialog>
-          <Dialog
-            visible={editAdminDialog}
-            style={{ width: '850px' }}
-            header="Editar administrador del sistema"
-            modal
-            className="p-fluid"
-            footer={editAdminDialogFooter}
-            onHide={hideEditAdminDialog}
-          >
-            {sysadmin && (<div className="p-fluid formgrid grid">
-              <div className="field col-12 md:col-6">
-                <label htmlFor="nombre">Nombre</label>
 
-                <div className="p-0 col-12 md:col-12">
-                  <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                      <i className="pi pi-user"></i>
-                    </span>
-                    <InputText id="nombre" value={sysadmin.name}
-                      onChange={(e) => onInputChange(e, 'name')}
-                      required
-                      autoFocus
-                      className={classNames({
-                        'p-invalid': submitted && sysadmin.name === '',
-                      })}
-                    />
-                  </div>
-                  {submitted && sysadmin.name === '' &&
-                    <small className="p-invalid">Nombre es requirido.</small>}
-
-                </div>
-              </div>
-              <div className="field col-6 md:col-6">
-                <label htmlFor="apellidos">Apellido(s)</label>
-                <div className="p-0 col-12 md:col-12">
-                  <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                      <i className="pi pi-user"></i>
-                    </span>
-                    <InputText id="last_name" value={sysadmin.last_name}
-                      onChange={(e) => onInputChange(e, 'last_name')}
-                      required
-                      autoFocus
-                      className={classNames({
-                        'p-invalid': submitted && sysadmin.last_name === '',
-                      })}
-                    />
-                  </div>
-                  {submitted && sysadmin.last_name === '' && (
-                    <small className="p-invalid">Apellido(s) es requerido.</small>
-                  )}
-                </div>
-              </div>
-              <div className="field col-12 md:col-6">
-                <label htmlFor="correo_electronico">Correo electrónico</label>
-                <div className="p-0 col-12 md:col-12">
-                  <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                      <i className="pi pi-at"></i>
-                    </span>
-                    <InputText type="email" id="correo_electronico" value={sysadmin.email}
-                      onChange={(e) => onInputChange(e, 'email')}
-                      required
-                      autoFocus
-                      className={classNames({
-                        'p-invalid': submitted && (sysadmin.email === '' || findRepeated('email', sysadmin.email) > 0),
-                      })}
-                    />
-                  </div>
-                  {submitted && sysadmin.email === '' && (
-                    <small className="p-invalid">Correo electrónico es requerido.</small>
-                  )}
-                  {submitted && findRepeated('email', sysadmin.email) > 0 &&
-                    <small className="p-invalid">Correo electrónico se encuentra repetido.</small>
-                  }
-                </div>
-              </div>
-              <div className="field col-12 md:col-6">
-                <label htmlFor="identificacion">Identificación</label>
-                <div className="p-0 col-12 md:col-12">
-                  <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                      <i className="pi pi-id-card"></i>
-                    </span>
-                    <InputText type="text" id="identificacion" value={sysadmin.dni}
-                      onChange={(e) => onInputChange(e, 'dni')}
-                      required
-                      autoFocus
-                      className={classNames({
-                        'p-invalid': submitted && (sysadmin.dni === '' || findRepeated('dni', sysadmin.dni)),
-                      })}
-                    />
-                  </div>
-                  {submitted && sysadmin.dni === '' && (
-                    <small className="p-invalid">Identificación es requerida.</small>
-                  )}
-                  {submitted && findRepeated('dni', sysadmin.dni) > 0 &&
-                    <small className="p-invalid">Identificación se encuentra repetida.</small>
-                  }
-                </div>
-              </div>
-              <div className="field col-12">
-                <label htmlFor="telefono">Teléfono</label>
-                <div className="p-0 col-12 md:col-12">
-                  <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                      <i className="pi pi-phone"></i>
-                    </span>
-                    <InputText type="tel" id="telefono" pattern="[0-9]{8}"
-                      value={sysadmin.phone}
-                      onChange={(e) => onInputChange(e, 'phone')}
-                      required
-                      autoFocus
-                      className={classNames({
-                        'p-invalid': submitted && sysadmin.phone === '',
-                      })}
-                    />
-                  </div>
-                  {submitted && sysadmin.phone === '' && (
-                    <small className="p-invalid">Teléfono es requerido.</small>
-                  )}
-                </div>
-              </div>
-              <Button label="Guardar cambios" onClick={guardarAdmin}></Button>
-            </div>
-            )}
-          </Dialog>
         </div>
       </div>
       <div className="col-12">
         <div className="card">
-          <h5>Registro de un administrador del sistema</h5>
+          <h5>Mantenimiento Administrador del Sistema</h5>
           <div className="p-fluid formgrid grid">
             <div className="field col-6 md:col-6">
               <label htmlFor="name">Nombre</label>
@@ -1098,7 +973,22 @@ const AdministradoresSistema = () => {
                 )}
               </div>
             </div>
-            <Button label="Guardar cambios" onClick={guardarAdmin}></Button>
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              width: "100%"
+            }}>
+              <Button
+                label={`${saveButtonTitle}`}
+                onClick={guardarAdmin}
+              />
+              {saveButtonTitle === 'Actualizar' && (
+                <Button
+                  label="Cancelar"
+                  onClick={cancelEdit}
+                  className="p-button-danger" />)}
+            </div>
 
           </div>
 

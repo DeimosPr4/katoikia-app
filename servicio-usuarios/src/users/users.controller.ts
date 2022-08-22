@@ -74,6 +74,11 @@ export class UsersController {
     return this.userService.update(guard.id, guard);
   }
 
+  @MessagePattern({ cmd: 'updateAdminCommunity' })
+  updateAdminCommunity(@Payload() user: UserDocument) {
+    return this.userService.update(user._id, user);
+  }
+
   @MessagePattern({ cmd: 'removeUser' })
   remove(@Payload() id: string) {
     let dni = id['dni'];

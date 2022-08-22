@@ -18,6 +18,7 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'primereact/dropdown';
 import classNames from 'classnames';
+
 const RegistroComunicado = () => {
 
     let emptyComunicado = {
@@ -33,7 +34,7 @@ const RegistroComunicado = () => {
 
 
     const [comunicado, setComunicado] = useState(emptyComunicado);
-    const [comunicados, setComuicados] = useState([]);
+    const [comunicados, setComunicados] = useState([]);
     const [comunicadoId, setComunicadoId] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
@@ -44,7 +45,7 @@ const RegistroComunicado = () => {
     async function listaComunis() {
         let comunicadosA = await fetch('http://localhost:4000/post/allPosts', { method: 'GET' });
         let comunicadosRes = await comunicadosA.json();
-        setComuicados(comunicadosRes.message);
+        setComunicados(comunicadosRes.message);
         console.log(comunicadosRes.message);
     }
 

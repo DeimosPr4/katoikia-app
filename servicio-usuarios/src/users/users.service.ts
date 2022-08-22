@@ -78,6 +78,15 @@ export class UsersService {
     });
   }
 
+  async updateAdminSystem(id: string, user: UserDocument) {
+    return this.userModel.findOneAndUpdate({ _id: id }, {
+      name: user['name'], last_name: user['last_name'],
+      dni:user['dni'], email: user['email'], phone: user['phone']
+  }, {
+      new: true,
+    });
+  }
+
   /* async remove(id: string) {
      return this.userModel.findByIdAndRemove({ _id: id }).exec();
    }*/

@@ -182,7 +182,7 @@ export class AppController {
 
   @Post('user/updateAdminSystem')
   updateAdminSystem(
-    //Nombre, Apellidos, Correo electrónico, Cédula, Teléfono, Contraseña
+    //Nombre, Apellidos, Correo electrónico, Cédula, Teléfono
     @Body('_id') _id: string,
     @Body('dni') dni: string,
     @Body('name') name: string,

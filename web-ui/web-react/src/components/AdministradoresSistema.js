@@ -70,46 +70,73 @@ const AdministradoresSistema = () => {
     fetchP();
   }, [])
 
-  function registrarAdmin() {
-    var data = {
-      dni: document.getElementById('identificacion').value,
-      name: document.getElementById('nombre').value,
-      last_name: document.getElementById('apellidos').value,
-      email: document.getElementById('correo_electronico').value,
-      phone: document.getElementById('telefono').value,
-      password: document.getElementById('correo_electronico').value,
-      user_type: "1", //1 es admin
-      status: "1"
-    };
-    setSysAdmin(data)
-
-    fetch('http://localhost:4000/user/createAdminSystem/', {
-      cache: 'no-cache',
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
+  const findIndexById = (id) => {
+    let index = -1;
+    for (let i = 0; i < administrators.length; i++) {
+      if (administrators[i]._id === id) {
+        index = i;
+        break;
       }
-    })
-      .then(
-        function (response) {
-          if (response.status != 201)
-            console.log('Ocurrió un error con el servicio: ' + response.status);
-          else
-            return response.json();
+    }
+    return index;
+
+  }
+
+  function guardarAdmin() {
+    let _administrators = [...administrators];
+    let _admin = { ...sysadmin };
+    if (sysadmin._id) {
+      const index = findIndexById(sysadmin._id);
+
+      _administrators[index] = _admin;
+      toast.current.show({
+        severity: 'success',
+        summary: 'Exito',
+        detail: 'Administrador Actualizado',
+        life: 3000,
+      });
+      setAdministrators(_administrators)
+      setEditAdminDialog(false);
+      setSysAdmin(emptySysAdmin);
+    } else {
+      var data = {
+        dni: document.getElementById('identificacion').value,
+        name: document.getElementById('nombre').value,
+        last_name: document.getElementById('apellidos').value,
+        email: document.getElementById('correo_electronico').value,
+        phone: document.getElementById('telefono').value,
+        password: document.getElementById('correo_electronico').value,
+        user_type: "1", //1 es admin
+        status: "1"
+      };
+      setSysAdmin(data)
+
+      fetch('http://localhost:4000/user/createAdminSystem/', {
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
         }
-      )
-      .then(
-        function (response) {
-          let _administrators = [...administrators];
-          let _admin = { ...sysadmin };
-          _administrators.push(_admin);
-          setAdministrators(_administrators)
-        }
-      )
-      .catch(
-        err => console.log('Ocurrió un error con el fetch', err)
-      );
+      })
+        .then(
+          function (response) {
+            if (response.status != 201)
+              console.log('Ocurrió un error con el servicio: ' + response.status);
+            else
+              return response.json();
+          }
+        )
+        .then(
+          function (response) {
+            _administrators.push(_admin);
+            setAdministrators(_administrators)
+          }
+        )
+        .catch(
+          err => console.log('Ocurrió un error con el fetch', err)
+        );
+    }
   }
 
   const cambiarStatusUser = () => {
@@ -301,7 +328,7 @@ const AdministradoresSistema = () => {
           title="Editar Administrador"
 
         />
-        
+
         <Button
           icon={`${icono}`}
           className="p-button-rounded p-button-warning mt-2 mx-2"
@@ -772,46 +799,121 @@ const AdministradoresSistema = () => {
           </Dialog>
           <Dialog
             visible={editAdminDialog}
-            style={{ width: '450px' }}
-            header="Product Details"
+            style={{ width: '850px' }}
+            header="Editar administrador del sistema"
             modal
             className="p-fluid"
             footer={editAdminDialogFooter}
             onHide={hideEditAdminDialog}
           >
-            <h5>Editar administrador del sistema</h5>
             {sysadmin && (<div className="p-fluid formgrid grid">
               <div className="field col-12 md:col-6">
                 <label htmlFor="nombre">Nombre</label>
-                <InputText id="nombre" value={sysadmin.name}
-                  onChange={(e) => onInputChange(e, 'name')}
-                  required
-                  autoFocus
-                  className={classNames({
-                    'p-invalid': submitted && !sysadmin.name,
-                  })}
-                />
-                {submitted && !sysadmin.name && (
-                  <small className="p-invalid">Nombre es requerido.</small>
-                )}
+
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-user"></i>
+                    </span>
+                    <InputText id="nombre" value={sysadmin.name}
+                      onChange={(e) => onInputChange(e, 'name')}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && sysadmin.name === '',
+                      })}
+                    />
+                  </div>
+                  {submitted && sysadmin.name === '' &&
+                    <small className="p-invalid">Nombre es requirido.</small>}
+                </div>
               </div>
               <div className="field col-12 md:col-6">
                 <label htmlFor="apellidos">Apellido(s)</label>
-                <InputText id="apellidos" type="text" />
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-user"></i>
+                    </span>
+                    <InputText id="last_name" value={sysadmin.last_name}
+                      onChange={(e) => onInputChange(e, 'last_name')}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && sysadmin.last_name === '',
+                      })}
+                    />
+                  </div>
+                  {submitted && sysadmin.last_name === '' && (
+                    <small className="p-invalid">Apellido(s) es requerido.</small>
+                  )}
+                </div>
               </div>
               <div className="field col-12 md:col-6">
                 <label htmlFor="correo_electronico">Correo electrónico</label>
-                <InputText id="correo_electronico" type="email" />
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-at"></i>
+                    </span>
+                    <InputText type="email" id="correo_electronico" value={sysadmin.email}
+                      onChange={(e) => onInputChange(e, 'email')}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && sysadmin.email === '',
+                      })}
+                    />
+                  </div>
+                  {submitted && sysadmin.email === '' && (
+                    <small className="p-invalid">Correo electrónico es requerido.</small>
+                  )}
+                </div>
               </div>
               <div className="field col-12 md:col-6">
                 <label htmlFor="identificacion">Identificación</label>
-                <InputText id="identificacion" type="text" />
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-id-card"></i>
+                    </span>
+                    <InputText type="text" id="identificacion" value={sysadmin.dni}
+                      onChange={(e) => onInputChange(e, 'dni')}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && sysadmin.dni === '',
+                      })}
+                    />
+                  </div>
+                  {submitted && sysadmin.dni === '' && (
+                    <small className="p-invalid">Identificación es requerida.</small>
+                  )}
+                </div>
               </div>
               <div className="field col-12">
                 <label htmlFor="telefono">Teléfono</label>
-                <InputText type="tel" id="telefono" pattern="[0-9]{8}" />
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-phone"></i>
+                    </span>
+                    <InputText type="tel" id="telefono" pattern="[0-9]{8}"
+                      value={sysadmin.phone}
+                      onChange={(e) => onInputChange(e, 'phone')}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && sysadmin.phone === '',
+                      })}
+                    />
+                  </div>
+                  {submitted && sysadmin.phone === '' && (
+                    <small className="p-invalid">Teléfono es requerido.</small>
+                  )}
+                </div>
               </div>
-              <Button label="Registrar" onClick={registrarAdmin}></Button>
+              <Button label="Guardar cambios" onClick={guardarAdmin}></Button>
             </div>
             )}
           </Dialog>
@@ -841,7 +943,7 @@ const AdministradoresSistema = () => {
               <label htmlFor="telefono">Teléfono</label>
               <InputText type="tel" id="telefono" pattern="[0-9]{8}" />
             </div>
-            <Button label="Registrar" onClick={registrarAdmin}></Button>
+            <Button label="Registrar" onClick={guardarAdmin}></Button>
           </div>
         </div>
       </div>

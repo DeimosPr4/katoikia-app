@@ -195,7 +195,7 @@ export class UsersService {
   }
 
   async deleteAdminSystem(id: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1', number_house:'' }, {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1'}, {
       new: true,
     });
   }
@@ -209,7 +209,7 @@ export class UsersService {
   async deleteTenant(tenant_id: string, community_id: string, number_house: string) {
 
     try{
-      this.userModel.findOneAndUpdate({ _id: tenant_id }, { status: '-1' }, {
+       await this.userModel.findOneAndUpdate({ _id: tenant_id }, { status: '-1', number_house:''}, {
         new: true,
       });
   

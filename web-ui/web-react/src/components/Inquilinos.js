@@ -60,7 +60,7 @@ const Inquilinos = () => {
       .then((response) => response.json())
       .then((data) => data.message)
       .then((data) => {
-        data = data.filter((val) => val.status !== -1)
+        data = data.filter((val) => val.status != -1)
         data.map((item) => {
           if (item.status === '1') {
             item.status_text = 'Activo'
@@ -120,7 +120,7 @@ const Inquilinos = () => {
         _tenant.community_id = cookies.community_id;
         _tenant.number_house = houseNumber;
         _tenant.password = _tenant.email;
-      console.log(`Registrando nuevo inquilino: ${_tenant}`)
+        console.log(`Registrando nuevo inquilino: ${_tenant}`)
 
         fetch(`http://localhost:4000/user/createTenant`, {
           cache: 'no-cache',
@@ -135,7 +135,7 @@ const Inquilinos = () => {
               console.log(`Hubo un error en el servicio: ${response.status}`)
             else return response.json()
           })
-          .then(() => {
+          .then((data) => {
             if (_tenant.status === '1') {
               _tenant.status_text = 'Activo'
             } else if (_tenant.status === '0') {
@@ -184,7 +184,7 @@ const Inquilinos = () => {
   }
 
   const deleteTenant = () => {
-    
+
     let _tenant = {
       community_id: tenant.community_id,
       number_house: tenant.number_house
@@ -195,38 +195,39 @@ const Inquilinos = () => {
       method: 'PUT',
       body: JSON.stringify(_tenant),
       headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       }
-  })
+    })
       .then(
-          function (response) {
-              if (response.status != 201)
-                  console.log('Ocurrió un error con el servicio: ' + response.status);
-              else
-                  return response.json();
-          }
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
       )
       .then(
-          function (response) {
+        function (response) {
 
-              let _tenants = tenants.filter((val) => val._id !== tenant._id)
-              setTenants(_tenants)
-              setDeleteTenantDialog(false)
-              setTenant(emptyTenant)
-              toast.current.show({
-                severity: 'success',
-                summary: 'Inquilino Eliminado',
-                life: 3000,
-              })          }
+          let _tenants = tenants.filter((val) => val._id !== tenant._id)
+          setTenants(_tenants)
+          setDeleteTenantDialog(false)
+          setTenant(emptyTenant)
+          toast.current.show({
+            severity: 'success',
+            summary: 'Inquilino Eliminado',
+            life: 3000,
+          })
+        }
       )
       .catch(
-          err => {
-              console.log('Ocurrió un error con el fetch', err)
-              toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Inquilino no se pudo eliminar', life: 3000 });
-          }
+        err => {
+          console.log('Ocurrió un error con el fetch', err)
+          toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Inquilino no se pudo eliminar', life: 3000 });
+        }
       );
-    
-   
+
+
   }
 
   const deleteSelectedTenants = () => {

@@ -42,10 +42,12 @@ const Inquilinos = () => {
   const [deleteTenantDialog, setDeleteTenantDialog] = useState(false)
   const [deleteTenantsDialog, setDeleteTenantsDialog] = useState(false)
   const [community, setCommunity] = useState([])
+  const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
   const [houseNumber, setHouseNumber] = useState([])
   const [housesList, setHousesList] = useState([])
   const [submitted, setSubmitted] = useState(false)
   const [infoDialogVisible, setShowInfoDialog] = useState(false)
+  const [cancelSaveButtonVisible, setCancelSaveButtonVisible] = useState(false)
   const toast = useRef(null)
   const dt = useRef(null)
   const [cookies] = useCookies()
@@ -101,40 +103,69 @@ const Inquilinos = () => {
   }, [])
 
   const saveTenant = () => {
-    if (tenant.email && tenant.number_house && tenant.dni
-      && tenant.name && tenant.last_name && tenant.phone) {
-      let _tenants = [...tenants]
-      let _tenant = { ...tenant }
-      _tenant.community_id = cookies.community_id;
-      _tenant.number_house = houseNumber;
-      _tenant.password = _tenant.email;
+    if (tenant._id === null) {
+      if (tenant.email && tenant.number_house && tenant.dni
+        && tenant.name && tenant.last_name && tenant.phone) {
+        let _tenants = [...tenants]
+        let _tenant = { ...tenant }
+        _tenant.community_id = cookies.community_id;
+        _tenant.number_house = houseNumber;
+        _tenant.password = _tenant.email;
+      console.log(`Registrando nuevo inquilino: ${_tenant}`)
 
-      fetch(`http://localhost:4000/user/createUser`, {
+        fetch(`http://localhost:4000/user/createUser`, {
+          cache: 'no-cache',
+          method: 'POST',
+          body: JSON.stringify(_tenant),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => {
+            if (response.status !== 200)
+              console.log(`Hubo un error en el servicio: ${response.status}`)
+            else return response.json()
+          })
+          .then(() => {
+            _tenants.push(_tenant)
+            toast.current.show({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Inquilino creado',
+              life: 3000,
+            })
+            setTenants(_tenants)
+            setTenant(emptyTenant)
+            setHouseNumber('')
+          })
+          .catch((error) => console.log(`Ocurrió un error: ${error}`))
+      } else setSubmitted(true)
+    } else {
+      let _tenant = { ..._tenant, number_house: houseNumber };
+      console.log(`Actualizando inquilino: ${_tenant}`)
+      fetch(`http://localhost:4000/user/updateUser/${tenant._id}`, {
         cache: 'no-cache',
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(_tenant),
         headers: {
           'Content-Type': 'application/json',
         },
+      }).then((response) => {
+        if (response.status !== 200)
+          console.log(`Hubo un error en el servicio: ${response.status}`)
+        else return response.json()
+      }).then(() => {
+        toast.current.show({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Inquilino editado',
+          life: 3000,
+        })
+        tenantsList()
+        setTenant(emptyTenant)
+        setHouseNumber('')
       })
-        .then((response) => {
-          if (response.status !== 201)
-            console.log(`Hubo un error en el servicio: ${response.status}`)
-          else return response.json()
-        })
-        .then(() => {
-          _tenants.push(_tenant)
-          toast.current.show({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Inquilino creado',
-            life: 3000,
-          })
-          setTenants(_tenants)
-          setTenant(emptyTenant)
-        })
-        .catch((error) => console.log(`Ocurrió un error: ${error}`))
-    } else setSubmitted(true)
+    }
   }
 
   const deleteTenant = () => {
@@ -238,6 +269,20 @@ const Inquilinos = () => {
     setShowInfoDialog(true);
   }
 
+  const editTenant = (tenant) => {
+    setTenant(tenant);
+    console.log(tenant);
+    setSaveButtonTitle('Actualizar');
+    setHouseNumber(tenant.number_house);
+  }
+
+  const cancelEdit = () => {
+    setTenant(emptyTenant);
+    setSaveButtonTitle('Registrar');
+    setCancelSaveButtonVisible(false);
+    setHouseNumber('');
+  }
+
   const actionsTenant = (rowData) => {
     let icono = ''
     let text = ''
@@ -250,6 +295,12 @@ const Inquilinos = () => {
     }
     return (
       <div className='actions'>
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success mt-2 mx-2"
+          onClick={() => editTenant(rowData)}
+          title="Editar"
+        />
         <Button
           icon="pi pi-exclamation-circle"
           className="p-button-rounded p-button-info mt-2 mx-2"
@@ -576,10 +627,7 @@ const Inquilinos = () => {
                 wordBreak: 'break-word',
               }}
             ></Column>
-            <Column
-              style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }}
-              body={actionsTenant}
-            ></Column>
+            <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsTenant}></Column>
           </DataTable>
           <Dialog
             visible={infoDialogVisible}
@@ -800,7 +848,22 @@ const Inquilinos = () => {
                   && <small className="p-invalid">Casa es requerida.</small>}
               </div>
             </div>
-            <Button label="Registrar" onClick={saveTenant} />
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              width: "100%"
+            }}>
+              <Button
+                label={`${saveButtonTitle}`}
+                onClick={saveTenant}
+              />
+              {saveButtonTitle === 'Actualizar' && (
+                <Button
+                  label="Cancel"
+                  onClick={cancelEdit}
+                  className="p-button-danger" />)}
+            </div>
           </div>
         </div>
       </div>

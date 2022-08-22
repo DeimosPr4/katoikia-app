@@ -143,19 +143,6 @@ export class UsersService {
 
 
     return await this.userModel.find({ community_id: pcommunity_id, user_type: 4 })
-      .then(async (users) => {
-        if (users) {
-          await Promise.all(
-            users.map(async (u) => {
-              //buscar al usuario con el id de la comunidad anexado
-              let number_house = await this.findNumHouseTenant(pcommunity_id, u['_id']);
-              u['number_house'] = number_house;
-              return u;
-            }),
-          )
-        }
-        return users;
-      })
   }
 
 

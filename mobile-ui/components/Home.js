@@ -14,7 +14,6 @@ export default function Home() {
   useEffect(() => {
 
     const onRequestCommentsData = async () => {
-      console.log("CALLED?")
       setIsRequesting(true);
 
       try {
@@ -26,8 +25,6 @@ export default function Home() {
         })
 
         const response = await jsonResponse.json();
-
-        console.log(response);
 
         setComments(response.message);
 

@@ -19,12 +19,6 @@ import { UserContext } from "../context/UserContext";
 import { API } from "../environment/api";
 
 const baseURL = `${API.BASE_URL}/user/loginUser`;
-const cookies = new Cookies();
-
-// const handleChange = (value) => {
-// console.log(value);
-
-// }
 
 export default function LogIn({ navigation }) {
 
@@ -39,7 +33,6 @@ export default function LogIn({ navigation }) {
   const onHandleChange = (name) => (value) => setCredentials(prev => ({ ...prev, [name]: value }))
 
   const iniciarSesion = async () => {
-    console.log(credentials)
     try {
   
       await fetch(baseURL, {

@@ -29,11 +29,7 @@ export class UsersService {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
     let userCreated = await this.userModel.create(user);
-    console.log(await userCreated);
-    let callback = await this.saveTenantNumHouse(user.community_id, user.number_house, userCreated['_id']);
-
-    const finalValue = await lastValueFrom(callback);
-    const response = await finalValue['response'];
+     await this.saveTenantNumHouse(user.community_id, user.number_house, userCreated['_id']);
 
     let community = await this.findCommunity(user.community_id);
     user.community_id = community['name'];

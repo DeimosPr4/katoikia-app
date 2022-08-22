@@ -83,29 +83,16 @@ export class CommunitiesService {
 
   async saveTenant(id: string, number_house: string, ptenant_id: string) {
     let community = await this.findOne(id);
-
-    console.log(ptenant_id)
-
     await community.houses.map(house => {
       if (house.number_house == number_house) {
         if (house.tenants) {
-          console.log(house.tenants.tenant_id + '1')
 
           house.tenants.tenant_id = ptenant_id
-          console.log(house.tenants.tenant_id + '1')
-          console.log(house.tenants + '1')
         } else {
           let tenant = new Tenant()
-
           tenant.tenant_id = ptenant_id;
-          console.log(tenant)
-
           house.tenants = tenant;
-          console.log(house.tenants + '2')
-
         }
-        console.log(house.tenants + '3')
-
         house.state = "ocupada"
       }
       return house;

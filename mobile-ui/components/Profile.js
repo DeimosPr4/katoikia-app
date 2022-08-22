@@ -22,23 +22,41 @@ export default function Profile({route, navigation}){
   const [apellido, setApellido] =useState(); 
   const [email, setEmail] = useState(); 
   const [password, setPassword] = useState();
+  const id = userData.user._id;
 
   console.log(userData.user);
 
 
   const updateInfo = async() => {
 
+    const data = {
+      "_id": "6301df20dac7dcf76dcecade",
+      "dni": "1234567890",
+      "name": name,
+      "last_name": apellido,
+      "email": email,
+      "phone": 12121212,
+      "password": "827ccb0eea8a706c4c34a16891f84e7b",
+      "user_type": "3",
+      "status": "1",
+      "date_entry": "2022-08-21T07:30:09.929Z",
+      "community_id": null,
+    }
+
     try {
 
-      await fetch(baseURL, {
+      await fetch(baseURL+':'+id, {
+
         cache: 'no-cache', 
         method: 'PUT', 
-        body: JSON.stringify(userData), 
+        body: JSON.stringify(data), 
         headers: {
           'Content-Type': 'application/json'
         }
       })
       .then(response => {
+
+        console.log(baseURL+'/:'+id);
         if (response.status != 201){
           console.log('ocurrio un error ');
         }else{

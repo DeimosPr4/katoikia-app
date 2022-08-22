@@ -133,7 +133,7 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'deleteTenant' })
   deleteTenant(@Payload() user: any) {
-    return this.userService.deleteTenant(user['id']);
+    return this.userService.deleteTenant(user['_id']);
   }
 
   @MessagePattern({ cmd: 'changeStatus' })

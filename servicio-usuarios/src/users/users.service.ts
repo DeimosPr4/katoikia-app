@@ -28,9 +28,12 @@ export class UsersService {
     let password = user.password;
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
-    this.userModel.create(user)
+    let userCreated = await this.userModel.create(user);
+    console.log(await userCreated);
+    let callback = await this.saveTenantNumHouse(user.community_id, user.number_house, userCreated['_id']);
 
-    await this.saveTenantNumHouse(user.community_id, user.number_house, user._id);
+    const finalValue = await lastValueFrom(callback);
+    const response = await finalValue['response'];
 
     let community = await this.findCommunity(user.community_id);
     user.community_id = community['name'];
@@ -39,7 +42,7 @@ export class UsersService {
     const payload = {
       email: user['email'], password: password, name: user['name'],
       date_entry: user['date_entry'], community_name: community['name'],
-      number_house:['number_house']
+      number_house: user['number_house']
     };
 
     return this.clientNotificationtApp

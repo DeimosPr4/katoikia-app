@@ -137,11 +137,9 @@ const Inquilinos = () => {
           })
           .then(() => {
             if (_tenant.status === '1') {
-              _tenant.status = '0'
-              _tenant.status_text = 'Inactivo'
-            } else if (_tenant.status === '0') {
-              _tenant.status = '1'
               _tenant.status_text = 'Activo'
+            } else if (_tenant.status === '0') {
+              _tenant.status_text = 'Inactivo'
             }
             _tenants.push(_tenant)
             toast.current.show({

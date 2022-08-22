@@ -6,6 +6,7 @@ import { RpcException, ClientProxy } from '@nestjs/microservices';
 import { from, lastValueFrom, map, scan, mergeMap } from 'rxjs';
 import { Admin } from 'src/schemas/admin.entity';
 import { appendFileSync } from 'fs';
+import { Tenant, TenantSchema } from 'src/schemas/tenant.schema';
 
 @Injectable()
 export class CommunitiesService {
@@ -80,21 +81,37 @@ export class CommunitiesService {
   }
 
 
-  async saveTenant(id: string, number_house: string, tenant_id: string) {
-
+  async saveTenant(id: string, number_house: string, ptenant_id: string) {
     let community = await this.findOne(id);
 
+    console.log(ptenant_id)
+
     await community.houses.map(house => {
-      if(house.number_house == number_house){
-        house.tenants.tenant_id = tenant_id
+      if (house.number_house == number_house) {
+        if (house.tenants) {
+          console.log(house.tenants.tenant_id + '1')
+
+          house.tenants.tenant_id = ptenant_id
+          console.log(house.tenants.tenant_id + '1')
+          console.log(house.tenants + '1')
+        } else {
+          let tenant = new Tenant()
+
+          tenant.tenant_id = ptenant_id;
+          console.log(tenant)
+
+          house.tenants = tenant;
+          console.log(house.tenants + '2')
+
+        }
+        console.log(house.tenants + '3')
+
         house.state = "ocupada"
       }
       return house;
     })
 
-    console.log(community.houses)
-
-   return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
+    return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
       new: true,
     });
   }
@@ -105,10 +122,10 @@ export class CommunitiesService {
     let community = await this.findOne(id);
 
     await community.houses.map(house => {
-      if(house.number_house == number_house && 
-        house.tenants.tenant_id == tenant_id){
-          house.tenants = null;
-          house.state = "desocupada"
+      if (house.number_house == number_house &&
+        house.tenants.tenant_id == tenant_id) {
+        house.tenants = null;
+        house.state = "desocupada"
 
       }
       return house;
@@ -116,7 +133,7 @@ export class CommunitiesService {
 
     console.log(community.houses)
 
-   return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
+    return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
       new: true,
     });
   }

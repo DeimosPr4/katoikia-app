@@ -29,7 +29,7 @@ export class UsersService {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
     let userCreated = await this.userModel.create(user);
-     await this.saveTenantNumHouse(user.community_id, user.number_house, userCreated['_id']);
+    await this.saveTenantNumHouse(user.community_id, user.number_house, userCreated['_id']);
 
     let community = await this.findCommunity(user.community_id);
     user.community_id = community['name'];
@@ -195,7 +195,7 @@ export class UsersService {
   }
 
   async deleteAdminSystem(id: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1', number_house:'' }, {
       new: true,
     });
   }
@@ -206,10 +206,18 @@ export class UsersService {
     });
   }
 
-  async deleteTenant(id: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
-      new: true,
-    });
+  async deleteTenant(tenant_id: string, community_id: string, number_house: string) {
+
+    try{
+      this.userModel.findOneAndUpdate({ _id: tenant_id }, { status: '-1' }, {
+        new: true,
+      });
+  
+      return await this.deleteTenantNumHouse(community_id, number_house, tenant_id);
+    } catch(error){
+      console.log(error)
+      return error;
+    }
   }
 
   async validateEmail(email: string) {
@@ -257,9 +265,9 @@ export class UsersService {
   }
 
 
-  async saveTenantNumHouse(community_id: string, number_house:string, tenant_id: string) {
+  async saveTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
     const pattern = { cmd: 'saveTenant' }
-    const payload = { _id: community_id, number_house: number_house,  tenant_id: tenant_id }
+    const payload = { _id: community_id, number_house: number_house, tenant_id: tenant_id }
 
     return await this.clientCommunityApp
       .send<string>(pattern, payload)
@@ -269,10 +277,9 @@ export class UsersService {
   }
 
 
-  async deleteTenantNumHouse(community_id: string, number_house:string, tenant_id: string) {
+  async deleteTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
     const pattern = { cmd: 'deleteTenant' }
-    const payload = { _id: community_id, number_house: number_house,  tenant_id: tenant_id }
-
+    const payload = { _id: community_id, number_house: number_house, tenant_id: tenant_id }
     return await this.clientCommunityApp
       .send<string>(pattern, payload)
       .pipe(

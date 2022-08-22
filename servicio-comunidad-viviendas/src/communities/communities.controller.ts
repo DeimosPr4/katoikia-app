@@ -66,7 +66,6 @@ export class CommunitiesController {
 
   @MessagePattern({ cmd: 'deleteTenant' })
   deleteTenant(@Payload() body: string) {
-
    let id = body['_id'];
    let tenant_id = body['tenant_id'];
    let number_house = body['number_house'];

@@ -184,15 +184,49 @@ const Inquilinos = () => {
   }
 
   const deleteTenant = () => {
-    let _tenants = tenants.filter((val) => val._id !== tenant._id)
-    setTenants(_tenants)
-    setDeleteTenantDialog(false)
-    setTenant(emptyTenant)
-    toast.current.show({
-      severity: 'success',
-      summary: 'Inquilino Eliminado',
-      life: 3000,
-    })
+    
+    let _tenant = {
+      community_id: tenant.community_id,
+      number_house: tenant.number_house
+    };
+
+    fetch('http://localhost:4000/user/deleteTenant/' + tenant._id, {
+      cache: 'no-cache',
+      method: 'PUT',
+      body: JSON.stringify(_tenant),
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  })
+      .then(
+          function (response) {
+              if (response.status != 201)
+                  console.log('Ocurrió un error con el servicio: ' + response.status);
+              else
+                  return response.json();
+          }
+      )
+      .then(
+          function (response) {
+
+              let _tenants = tenants.filter((val) => val._id !== tenant._id)
+              setTenants(_tenants)
+              setDeleteTenantDialog(false)
+              setTenant(emptyTenant)
+              toast.current.show({
+                severity: 'success',
+                summary: 'Inquilino Eliminado',
+                life: 3000,
+              })          }
+      )
+      .catch(
+          err => {
+              console.log('Ocurrió un error con el fetch', err)
+              toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Inquilino no se pudo eliminar', life: 3000 });
+          }
+      );
+    
+   
   }
 
   const deleteSelectedTenants = () => {

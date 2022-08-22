@@ -271,9 +271,9 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  deleteTenant(id: string) {
+  deleteTenant(id: string, community_id: string, number_house: string) {
     const pattern = { cmd: 'deleteTenant' };
-    const payload = { id: id };
+    const payload = { _id: id, community_id: community_id, number_house: number_house };
     return this.clientUserApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
@@ -382,7 +382,7 @@ export class AppService {
     const finalValue = await lastValueFrom(callback);
     const response = finalValue['response'];
     const houses = response['houses'];
-    
+
     return houses;
   }
 
@@ -393,7 +393,7 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
-  
+
   // ====================== COMMON AREAS ===============================
   //POST parameter from API
   createCommonArea(

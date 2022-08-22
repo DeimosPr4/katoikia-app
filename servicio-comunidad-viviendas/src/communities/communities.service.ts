@@ -105,12 +105,10 @@ export class CommunitiesService {
 
 
   async deleteTenant(id: string, number_house: string, tenant_id: string) {
-
     let community = await this.findOne(id);
 
     await community.houses.map(house => {
-      if (house.number_house == number_house &&
-        house.tenants.tenant_id == tenant_id) {
+      if (house.number_house === number_house) {
         house.tenants.tenant_id = "";
         house.state = "desocupada"
       }

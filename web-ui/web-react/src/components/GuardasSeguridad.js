@@ -125,6 +125,7 @@ const GuardasSeguridad = () => {
         listaGuardasF();
       })
     }
+    setSaveButtonTitle("Registrar");
   }
 
   const cambiarStatusUser = () => {

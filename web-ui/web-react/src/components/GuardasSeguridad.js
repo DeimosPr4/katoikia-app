@@ -27,6 +27,7 @@ const GuardasSeguridad = () => {
         user_type: '1',
         status: '1',
         status_text: '',
+        community_id: '',
     };
 
 
@@ -37,6 +38,7 @@ const GuardasSeguridad = () => {
     const [globalFilter, setGlobalFilter] = useState(null);
     const [deleteGuardaDialog, setDeleteGuardaDialog] = useState(false);
     const [deleteGuardasDialog, setDeleteGuardasDialog] = useState(false);
+    const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar");
     const toast = useRef(null);
     const dt = useRef(null);
 
@@ -90,7 +92,7 @@ const GuardasSeguridad = () => {
             }
         })
             .then(
-                function (response) {
+                function(response) {
                     if (response.status != 201)
                         console.log('Ocurrió un error con el servicio: ' + response.status);
                     else
@@ -98,7 +100,7 @@ const GuardasSeguridad = () => {
                 }
             )
             .then(
-                function (response) {
+                function(response) {
                     listaGuardasF();
                 }
             )
@@ -129,7 +131,7 @@ const GuardasSeguridad = () => {
             }
         })
             .then(
-                function (response) {
+                function(response) {
                     if (response.status != 201)
                         console.log('Ocurrió un error con el servicio: ' + response.status);
                     else
@@ -137,7 +139,7 @@ const GuardasSeguridad = () => {
                 }
             )
             .then(
-                function (response) {
+                function(response) {
                     setChangeStatusGuardDialog(false);
                     toast.current.show({
                         severity: 'success',
@@ -163,7 +165,7 @@ const GuardasSeguridad = () => {
             }
         })
             .then(
-                function (response) {
+                function(response) {
                     if (response.status != 201)
                         console.log('Ocurrió un error con el servicio: ' + response.status);
                     else
@@ -171,7 +173,7 @@ const GuardasSeguridad = () => {
                 }
             )
             .then(
-                function (response) {
+                function(response) {
                     let _guarda = listaGuardas.filter(val => val._id !== guarda._id);
                     setListaGuardas(_guarda);
                     setDeleteGuardaDialog(false);
@@ -240,6 +242,16 @@ const GuardasSeguridad = () => {
         setGuardDialog(true);
     };
 
+    const editGuard = (guard) => {
+        setGuarda(guard);
+        console.log(guard);
+        setSaveButtonTitle("Actualizar");
+    }
+
+    const cancelEdit = () => {
+        setGuarda(emptyGuarda);
+        setSaveButtonTitle("Registrar");
+    }
 
     const actionsGuard = (rowData) => {
         let icono = '';
@@ -254,6 +266,12 @@ const GuardasSeguridad = () => {
         }
         return (
             <div className="actions">
+                <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-success mt-2 mx-2"
+                    onClick={() => editGuard(rowData)}
+                    title="Editar"
+                />
                 <Button
                     icon="pi pi-exclamation-circle"
                     className="p-button-rounded p-button-info mt-2 mx-2"
@@ -485,7 +503,7 @@ const GuardasSeguridad = () => {
                                 </div>
                             </div>
                             <div className='row my-5 justify-content-center'>
-                                
+
 
 
                             </div>
@@ -554,25 +572,40 @@ const GuardasSeguridad = () => {
                     <div className="p-fluid formgrid grid">
                         <div className="field col-12 md:col-6">
                             <label htmlFor="nombre">Nombre</label>
-                            <InputText id="nombre" type="text" />
+                            <InputText id="nombre" value={guarda.name} type="text" />
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="apellidos">Apellido(s)</label>
-                            <InputText id="apellidos" type="text" />
+                            <InputText id="apellidos" value={guarda.last_name} type="text" />
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="correo_electronico">Correo electrónico</label>
-                            <InputText id="correo_electronico" type="email" />
+                            <InputText id="correo_electronico" value={guarda.email} type="email" />
                         </div>
                         <div className="field col-12 md:col-6">
                             <label htmlFor="identificacion">Identificación</label>
-                            <InputText id="identificacion" type="text" />
+                            <InputText id="identificacion" value={guarda.dni} type="text" />
                         </div>
                         <div className="field col-12">
                             <label htmlFor="telefono">Teléfono</label>
-                            <InputText id="telefono" type="tel" rows="4" />
+                            <InputText id="telefono" value={guarda.phone} type="tel" rows="4" />
                         </div>
-                        <Button label="Registrar" onClick={registrarGuarda}></Button>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            gap: "10px",
+                            width: "100%"
+                        }}>
+                            <Button
+                                label={`${saveButtonTitle}`}
+                                onClick={registrarGuarda}
+                            />
+                            {saveButtonTitle === 'Actualizar' && (
+                                <Button
+                                    label="Cancel"
+                                    onClick={cancelEdit}
+                                    className="p-button-danger" />)}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -65,6 +65,7 @@ export class AppController {
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
   ) {
     return this.appService.createUser(
       dni,
@@ -77,11 +78,13 @@ export class AppController {
       status,
       date_entry,
       community_id,
+      number_house,
     );
   }
 
-  @Put('user/updateUser')
+  @Put('user/updateUser/:id')
   updateUser(
+    @Param('id') id: string,
     @Body('dni') dni: string,
     @Body('name') name: string,
     @Body('last_name') last_name: string,
@@ -92,8 +95,10 @@ export class AppController {
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
   ) {
     return this.appService.updateUser(
+      id,
       dni,
       name,
       last_name,
@@ -104,6 +109,7 @@ export class AppController {
       status,
       date_entry,
       community_id,
+      number_house,
     );
   }
 

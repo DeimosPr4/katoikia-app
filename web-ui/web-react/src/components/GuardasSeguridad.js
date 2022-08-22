@@ -13,6 +13,7 @@ import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { useCookies } from "react-cookie";
+import classNames from 'classnames';
 
 const GuardasSeguridad = () => {
 
@@ -68,35 +69,60 @@ const GuardasSeguridad = () => {
 
   function registrarGuarda() {
     var data = {
-      dni: document.getElementById('identificacion').value,
-      name: document.getElementById('nombre').value,
-      last_name: document.getElementById('apellidos').value,
-      email: document.getElementById('correo_electronico').value,
-      phone: document.getElementById('telefono').value,
-      password: document.getElementById('correo_electronico').value,
+      dni: document.getElementById('dni').value,
+      name: document.getElementById('name').value,
+      last_name: document.getElementById('last_name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      password: document.getElementById('email').value,
       user_type: "4", //4 es guarda
       status: "1",
       community_id: cookies.community_id
     };
-    console.log('ssss');
-    fetch('http://localhost:4000/user/createGuard', {
-      cache: 'no-cache',
-      method: 'POST',
-      mode: 'cors',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((response) => {
-      if (response.status != 201)
-        console.log(`Ocurrió un error con el servicio: ${response.status}`);
-      else
-        return response.json();
-    }).then(() => {
-      listaGuardasF();
-    }).catch(
-      err => console.log('Ocurrió un error con el fetch', err)
-    );
+    if (guarda._id === null) {
+      console.log('ssss');
+      fetch('http://localhost:4000/user/createGuard', {
+        cache: 'no-cache',
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.status != 201)
+          console.log(`Ocurrió un error con el servicio: ${response.status}`);
+        else
+          return response.json();
+      }).then(() => {
+        listaGuardasF();
+      }).catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+    } else {
+      data._id = guarda._id;
+      console.log(`Actualizando guarda: ${data}`);
+      fetch(`http://localhost:4000/user/updateGuard/${guarda._id}`, {
+        cache: 'no-cache',
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((response) => {
+        if (response.status !== 200)
+          console.log(`Ocurrió un error con el servicio: ${response.status}`);
+        else return response.json();
+      }).then(() => {
+        toast.current.show({
+          severity: 'success',
+          summary: 'Guarda actualizada',
+          detail: 'Guarda actualizado correctamente'
+        });
+        setGuarda(emptyGuarda);
+        listaGuardasF();
+      })
+    }
   }
 
   const cambiarStatusUser = () => {
@@ -410,6 +436,13 @@ const GuardasSeguridad = () => {
     );
   };
 
+  const onInputChange = (e, name) => {
+    const value = (e.target && e.target.value) || ''
+    let _guarda = { ...guarda }
+    _guarda[`${name}`] = value
+    setGuarda(_guarda)
+  }
+
   return (
     <div className="grid">
       <div className="col-12">
@@ -541,27 +574,69 @@ const GuardasSeguridad = () => {
       </div>
       <div className="col-12">
         <div className="card">
-          <h5>Registro de un guarda de seguridad</h5>
+          <h5>Registro de un Guarda de Seguridad</h5>
           <div className="p-fluid formgrid grid">
             <div className="field col-12 md:col-6">
-              <label htmlFor="nombre">Nombre</label>
-              <InputText id="nombre" value={guarda.name} type="text" />
+              <label htmlFor="name">Nombre</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type="text" id="name" value={guarda.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.name === '' })} />
+                </div>
+                {submitted && guarda.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
+              </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="apellidos">Apellido(s)</label>
-              <InputText id="apellidos" value={guarda.last_name} type="text" />
+              <label htmlFor="name">Apellido(s)</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type="text" id="last_name" value={guarda.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.last_name === '' })} />
+                </div>
+                {submitted && guarda.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
+              </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="correo_electronico">Correo electrónico</label>
-              <InputText id="correo_electronico" value={guarda.email} type="email" />
+              <label htmlFor="name">Correo Electrónico</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type='email' id="email" value={guarda.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.email === '' })} />
+                </div>
+                {submitted && guarda.email === '' && <small className="p-invalid">Correo electrónico es requerido.</small>}
+              </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="identificacion">Identificación</label>
-              <InputText id="identificacion" value={guarda.dni} type="text" />
+              <label htmlFor="dni">Identificación</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText id="dni" value={guarda.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.dni === '' })} />
+                </div>
+                {submitted && guarda.email === '' && <small className="p-invalid">Identificación es requerida.</small>}
+              </div>
             </div>
-            <div className="field col-12">
-              <label htmlFor="telefono">Teléfono</label>
-              <InputText id="telefono" value={guarda.phone} type="tel" rows="4" />
+            <div className="field col-12 md:col-6">
+              <label htmlFor="phone">Número de teléfono</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-phone"></i>
+                  </span>
+                  <InputText id="phone" value={guarda.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && guarda.phone === '' })} />
+                </div>
+                {submitted
+                  && guarda.phone === ''
+                  && <small className="p-invalid">Número de teléfono es requerido.</small>}
+              </div>
             </div>
             <div style={{
               display: "flex",

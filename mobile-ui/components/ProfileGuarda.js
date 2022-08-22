@@ -10,11 +10,8 @@ import {
     Center
   } from "native-base";
 
-export default function Profile({route, navigation}){
+export default function ProfileGuarda({navigation}){
 
-  const user = route.params; 
-
-  console.log(user);
     return (
         <Center>
              <Box safeArea p="2" w="90%" maxW="290" py="8">

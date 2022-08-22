@@ -36,7 +36,7 @@ export default function LogIn({navigation}) {
 
     const userData = {
       email: "lalo@lalo.com", 
-      password: '65bbb27d640914c507e5af778eccf3d1'
+      password: '12345'
     }
   
     console.log(userData);
@@ -64,6 +64,8 @@ export default function LogIn({navigation}) {
 
         // inqulino 4 y guarda 63
          const user = response.message
+
+         //console.log(user);
   
          cookies.set('id',user._id, {path: "/"} )
          cookies.set('name',user.name, {path: "/"} )
@@ -71,13 +73,9 @@ export default function LogIn({navigation}) {
          cookies.set('type',user.user_type, {path: "/"} )
           if(user.user_type == '4'){
 
-
-            
-            
-  
-            navigation.navigate('Comunicados')
+           
           }else if(user.user_type == '3'){
-  
+            navigation.navigate('Comunicados', {user})
           }
       })
       

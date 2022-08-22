@@ -150,10 +150,6 @@ const Inquilinos = () => {
     })
   }
 
-  function openDialog() {
-    openInfoDialog = true
-  }
-
   const deleteSelectedTenants = () => {
     let _tenants = tenants.filter((val) => !selectedTentants.includes(val))
     setTenants(_tenants)

@@ -261,7 +261,21 @@ export class AppController {
     return this.appService.changeStatusCommunity(pId, pStatus);
   }
 
-  
+  @Get('community/findHousesCommunity/:id')
+  findHousesCommunity(
+    @Param('id') community_id: string,
+  ) {
+    return this.appService.findHousesCommunity(community_id);
+  }
+
+  @Post('community/saveTenant')
+  saveTenant(
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
+    @Body('tenant_id') tenant_id: string,
+  ) {
+    return this.appService.saveTenant(community_id, number_house, tenant_id);
+  }
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(

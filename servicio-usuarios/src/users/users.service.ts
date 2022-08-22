@@ -145,7 +145,6 @@ export class UsersService {
     return await this.userModel.find({ community_id: pcommunity_id, user_type: 4 })
   }
 
-
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
@@ -230,6 +229,18 @@ export class UsersService {
     return this.userModel.findOneAndUpdate({ _id: id }, { status: status }, {
       new: true,
     });
+  }
+
+
+  async saveTenantNumHouse(community_id: string, number_house:string, tenant_id: string) {
+    const pattern = { cmd: 'saveTenant' }
+    const payload = { _id: community_id, number_house: number_house,  tenant_id: tenant_id }
+
+    return await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
   }
 }
 

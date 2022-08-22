@@ -93,6 +93,16 @@ const Inquilinos = () => {
     )
   }
 
+
+  async function getHouses() {
+    let response = await fetch(
+      `http://localhost:4000/community/findHousesCommunity/${cookies.community_id}`,
+      { method: 'GET' },
+    )
+    let resList = await response.json()
+    setHousesList(await resList)
+  }
+
   useEffect(() => {
     tenantsList()
   }, [])

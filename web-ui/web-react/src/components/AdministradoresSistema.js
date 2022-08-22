@@ -15,6 +15,22 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 
 const AdministradoresSistema = () => {
+
+
+  let emptySysAdmin = {
+    _id: null,
+    dni: '',
+    name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    password: '',
+    user_type: '1',
+    status: '1',
+    status_text: '',
+  };
+
+
   const [administrators, setAdministrators] = useState([]);
   const [urlFetch, setUrlFetch] = useState(
     'http://localhost:4000/user/findAdminSistema/',
@@ -36,19 +52,6 @@ const AdministradoresSistema = () => {
 
   const [editAdminDialog, setEditAdminDialog] = useState(false);
 
-
-  let emptySysAdmin = {
-    _id: null,
-    dni: '',
-    name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-    password: '',
-    user_type: '1',
-    status: '1',
-    status_text: '',
-  };
 
   async function fetchP() {
     let nombres = await fetch(urlFetch, { method: 'GET' });
@@ -82,96 +85,110 @@ const AdministradoresSistema = () => {
 
   }
 
+  const findRepeated = (name, value) => {
+    let _administrators = [...administrators];
+    let value_filtered = _administrators.filter(item => item[`${name}`] === value);
+    return value_filtered.length
+  }
+
+
   function guardarAdmin() {
     let _administrators = [...administrators];
     let _admin = { ...sysadmin };
-    if (sysadmin._id) {
 
-      if (sysadmin.name && sysadmin.dni && sysadmin.last_name && sysadmin.email &&
-        sysadmin.phone) {
+    if (_admin.name && _admin.dni && _admin.last_name && _admin.email &&
+      _admin.phone) {
 
-        fetch('http://localhost:4000/user/updateAdminSystem/', {
-          cache: 'no-cache',
-          method: 'POST',
-          body: JSON.stringify(_admin),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(
-            function (response) {
-              if (response.status != 201)
-                console.log('Ocurrió un error con el servicio: ' + response.status);
-              else
-                return response.json();
-            }
-          )
-          .then(
-            function (response) {
-              const index = findIndexById(sysadmin._id);
 
-              _administrators[index] = _admin;
-              toast.current.show({
-                severity: 'success',
-                summary: 'Exito',
-                detail: 'Administrador Actualizado',
-                life: 3000,
-              });
-              setAdministrators(_administrators)
-              setEditAdminDialog(false);
-              setSysAdmin(emptySysAdmin);
-            }
-          )
-          .catch(
-            err => console.log('Ocurrió un error con el fetch', err)
-          );
 
-      } else {
+      if (findRepeated('email', _admin.email) || findRepeated('dni', _admin.dni)) {
         setSubmitted(true);
 
+      } else {
+        if (_admin._id) {
+
+
+
+          fetch('http://localhost:4000/user/updateAdminSystem/', {
+            cache: 'no-cache',
+            method: 'POST',
+            body: JSON.stringify(_admin),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(
+              function (response) {
+                if (response.status != 201)
+                  console.log('Ocurrió un error con el servicio: ' + response.status);
+                else
+                  return response.json();
+              }
+            )
+            .then(
+              function (response) {
+                const index = findIndexById(sysadmin._id);
+
+                _administrators[index] = _admin;
+                toast.current.show({
+                  severity: 'success',
+                  summary: 'Exito',
+                  detail: 'Administrador Actualizado',
+                  life: 3000,
+                });
+                setAdministrators(_administrators)
+                setEditAdminDialog(false);
+                setSysAdmin(emptySysAdmin);
+              }
+            )
+            .catch(
+              err => console.log('Ocurrió un error con el fetch', err)
+            );
+
+
+
+
+
+
+        } else {
+
+
+          fetch('http://localhost:4000/user/createAdminSystem/', {
+            cache: 'no-cache',
+            method: 'POST',
+            body: JSON.stringify(_admin),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(
+              function (response) {
+                if (response.status != 201)
+                  console.log('Ocurrió un error con el servicio: ' + response.status);
+                else
+                  return response.json();
+              }
+            )
+            .then(
+              function (response) {
+                _administrators.push(_admin);
+                setAdministrators(_administrators)
+              }
+            )
+            .catch(
+              err => console.log('Ocurrió un error con el fetch', err)
+            );
+        }
       }
 
 
 
 
-    } else {
-      var data = {
-        dni: document.getElementById('identificacion').value,
-        name: document.getElementById('nombre').value,
-        last_name: document.getElementById('apellidos').value,
-        email: document.getElementById('correo_electronico').value,
-        phone: document.getElementById('telefono').value,
-        password: document.getElementById('correo_electronico').value,
-        user_type: "1", //1 es admin
-        status: "1"
-      };
-      setSysAdmin(data)
 
-      fetch('http://localhost:4000/user/createAdminSystem/', {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(
-          function (response) {
-            if (response.status != 201)
-              console.log('Ocurrió un error con el servicio: ' + response.status);
-            else
-              return response.json();
-          }
-        )
-        .then(
-          function (response) {
-            _administrators.push(_admin);
-            setAdministrators(_administrators)
-          }
-        )
-        .catch(
-          err => console.log('Ocurrió un error con el fetch', err)
-        );
+
+    } else {
+      setSubmitted(true);
+
     }
   }
 
@@ -256,11 +273,14 @@ const AdministradoresSistema = () => {
   const infoAdmin = (sysadmin) => {
     setSysAdmin({ ...sysadmin });
     setAdminDialog(true);
+
   };
 
   const hideEditAdminDialog = () => {
     setSubmitted(false);
     setEditAdminDialog(false);
+    setSysAdmin(emptySysAdmin);
+
   };
 
   const editAdmin = (sysadmin) => {
@@ -862,9 +882,10 @@ const AdministradoresSistema = () => {
                   </div>
                   {submitted && sysadmin.name === '' &&
                     <small className="p-invalid">Nombre es requirido.</small>}
+
                 </div>
               </div>
-              <div className="field col-12 md:col-6">
+              <div className="field col-6 md:col-6">
                 <label htmlFor="apellidos">Apellido(s)</label>
                 <div className="p-0 col-12 md:col-12">
                   <div className="p-inputgroup">
@@ -897,13 +918,16 @@ const AdministradoresSistema = () => {
                       required
                       autoFocus
                       className={classNames({
-                        'p-invalid': submitted && sysadmin.email === '',
+                        'p-invalid': submitted && (sysadmin.email === '' || findRepeated('email', sysadmin.email) > 0),
                       })}
                     />
                   </div>
                   {submitted && sysadmin.email === '' && (
                     <small className="p-invalid">Correo electrónico es requerido.</small>
                   )}
+                  {submitted && findRepeated('email', sysadmin.email) > 0 &&
+                    <small className="p-invalid">Correo electrónico se encuentra repetido.</small>
+                  }
                 </div>
               </div>
               <div className="field col-12 md:col-6">
@@ -918,13 +942,16 @@ const AdministradoresSistema = () => {
                       required
                       autoFocus
                       className={classNames({
-                        'p-invalid': submitted && sysadmin.dni === '',
+                        'p-invalid': submitted && (sysadmin.dni === '' || findRepeated('dni', sysadmin.dni)),
                       })}
                     />
                   </div>
                   {submitted && sysadmin.dni === '' && (
                     <small className="p-invalid">Identificación es requerida.</small>
                   )}
+                  {submitted && findRepeated('dni', sysadmin.dni) > 0 &&
+                    <small className="p-invalid">Identificación se encuentra repetida.</small>
+                  }
                 </div>
               </div>
               <div className="field col-12">
@@ -959,29 +986,124 @@ const AdministradoresSistema = () => {
         <div className="card">
           <h5>Registro de un administrador del sistema</h5>
           <div className="p-fluid formgrid grid">
-            <div className="field col-12 md:col-6">
-              <label htmlFor="nombre">Nombre</label>
-              <InputText id="nombre" type="text" />
+            <div className="field col-6 md:col-6">
+              <label htmlFor="name">Nombre</label>
+
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText id="name" value={sysadmin.name}
+                    onChange={(e) => onInputChange(e, 'name')}
+                    required
+                    autoFocus
+                    className={classNames({
+                      'p-invalid': submitted && sysadmin.name === '',
+                    })}
+                  />
+                </div>
+                {submitted && sysadmin.name === '' &&
+                  <small className="p-invalid">Nombre es requirido.</small>}
+              </div>
             </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="apellidos">Apellido(s)</label>
-              <InputText id="apellidos" type="text" />
+            <div className="field col-6 md:col-6">
+              <label htmlFor="last_name">Apellido(s)</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText id="last_name" value={sysadmin.last_name}
+                    onChange={(e) => onInputChange(e, 'last_name')}
+                    required
+                    autoFocus
+                    className={classNames({
+                      'p-invalid': submitted && sysadmin.last_name === '',
+                    })}
+                  />
+                </div>
+                {submitted && sysadmin.last_name === '' && (
+                  <small className="p-invalid">Apellido(s) es requerido.</small>
+                )}
+              </div>
             </div>
-            <div className="field col-12 md:col-6">
+            <div className="field col-6 md:col-6">
               <label htmlFor="correo_electronico">Correo electrónico</label>
-              <InputText id="correo_electronico" type="email" />
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-at"></i>
+                  </span>
+                  <InputText type="email" id="correo_electronico" value={sysadmin.email}
+                    onChange={(e) => onInputChange(e, 'email')}
+                    required
+                    autoFocus
+                    className={classNames({
+                      'p-invalid': submitted && (sysadmin.email === '' || findRepeated('email', sysadmin.email) > 0),
+                    })}
+                  />
+                </div>
+                {submitted && sysadmin.email === '' && (
+                  <small className="p-invalid">Correo electrónico es requerido.</small>
+                )}
+                {submitted && findRepeated('email', sysadmin.email) > 0 &&
+                  <small className="p-invalid">Correo electrónico se encuentra repetido.</small>
+                }
+              </div>
             </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="identificacion">Identificación</label>
-              <InputText id="identificacion" type="text" />
+            <div className="field col-6 md:col-6">
+              <label htmlFor="dni">Identificación</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-id-card"></i>
+                  </span>
+                  <InputText type="text" id="dni" value={sysadmin.dni}
+                    onChange={(e) => onInputChange(e, 'dni')}
+                    required
+                    autoFocus
+                    className={classNames({
+                      'p-invalid': submitted && (sysadmin.dni === '' || findRepeated('dni', sysadmin.dni) > 0),
+                    })}
+                  />
+                </div>
+                {submitted && sysadmin.dni === '' && (
+                  <small className="p-invalid">Identificación es requerida.</small>
+                )}
+                {submitted && findRepeated('dni', sysadmin.dni) > 0 &&
+                  <small className="p-invalid">Identificación se encuentra repetida.</small>
+                }
+              </div>
             </div>
             <div className="field col-12">
-              <label htmlFor="telefono">Teléfono</label>
-              <InputText type="tel" id="telefono" pattern="[0-9]{8}" />
+              <label htmlFor="phone">Teléfono</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-phone"></i>
+                  </span>
+                  <InputText type="tel" id="phone" pattern="[0-9]{8}"
+                    value={sysadmin.phone}
+                    onChange={(e) => onInputChange(e, 'phone')}
+                    required
+                    autoFocus
+                    className={classNames({
+                      'p-invalid': submitted && sysadmin.phone === '',
+                    })}
+                  />
+                </div>
+                {submitted && sysadmin.phone === '' && (
+                  <small className="p-invalid">Teléfono es requerido.</small>
+                )}
+              </div>
             </div>
-            <Button label="Registrar" onClick={guardarAdmin}></Button>
+            <Button label="Guardar cambios" onClick={guardarAdmin}></Button>
+
           </div>
+
         </div>
+
       </div>
     </div>
   );

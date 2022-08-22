@@ -45,6 +45,7 @@ const Inquilinos = () => {
   const [houseNumber, setHouseNumber] = useState([])
   const [housesList, setHousesList] = useState([])
   const [submitted, setSubmitted] = useState(false)
+  const [infoDialogVisible, setShowInfoDialog] = useState(false)
   const toast = useRef(null)
   const dt = useRef(null)
   const [cookies] = useCookies()
@@ -93,7 +94,7 @@ const Inquilinos = () => {
 
   useEffect(() => {
     tenantsList()
-  }, [tenantsList])
+  }, [])
 
   useEffect(() => {
     getCommunity()
@@ -226,6 +227,17 @@ const Inquilinos = () => {
     setChangeStatusTenantDialog(true)
   }
 
+  const hideInfoDialog = () => {
+    setSubmitted(false);
+    setShowInfoDialog(false);
+    setTenant(emptyTenant);
+  }
+
+  const infoTenant = (tenant) => {
+    setTenant(tenant);
+    setShowInfoDialog(true);
+  }
+
   const actionsTenant = (rowData) => {
     let icono = ''
     let text = ''
@@ -238,6 +250,11 @@ const Inquilinos = () => {
     }
     return (
       <div className='actions'>
+        <Button
+          icon="pi pi-exclamation-circle"
+          className="p-button-rounded p-button-info mt-2 mx-2"
+          onClick={() => infoTenant(rowData)}
+        />
         <Button
           icon={`${icono}`}
           className='p-button-rounded p-button-warning mt-2 mx-2'
@@ -345,6 +362,17 @@ const Inquilinos = () => {
       />
     </>
   )
+
+  const infoDialogFooter = (
+    <>
+      <Button
+        label='Cerrar'
+        icon='pi pi-times'
+        className='p-button-text'
+        onClick={hideInfoDialog}
+      />
+    </>
+  );
 
   const headerName = (
     <>
@@ -551,6 +579,76 @@ const Inquilinos = () => {
               body={actionsTenant}
             ></Column>
           </DataTable>
+          <Dialog
+            visible={infoDialogVisible}
+            style={{ width: '650px' }}
+            header="Información del Inquilino"
+            modal
+            className="p-fluid"
+            footer={infoDialogFooter}
+            onHide={hideInfoDialog}>
+            <div className='container text-center'>
+              <div className='row my-4'>
+                <div className=" col-4 md:col-4">
+                  <p>Nombre</p>
+                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-user icon-khaki"></i>
+                      <p>{tenant.name}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className=" col-4 md:col-4">
+                  <p>Apellido(s)</p>
+                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-user icon-khaki"></i>
+                      <p>{tenant.last_name}</p>
+                    </div>
+
+                  </div>
+                </div>
+                <div className=" col-4 col-md-4 md:col-4">
+                  <p>Identificación</p>
+                  <div className="p-0 col-10 md:col-10" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-id-card icon-khaki"></i>
+                      <p>{tenant.dni}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div className='row my-5 justify-content-center'>
+
+
+
+              </div>
+              <div className='row my-5 justify-content-center'>
+                <div className=" col-4 md:col-4">
+                  <p>Teléfono</p>
+                  <div className="p-0 col-10 md:col-10">
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-phone icon-khaki"></i>
+                      <p>{tenant.phone}</p>
+                    </div>
+
+                  </div>
+                </div>
+                <div className=" col-6 md:col-6">
+                  <p>Correo Electrónico</p>
+                  <div className="p-0 col-10  md:col-10" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-envelope icon-khaki"></i>
+                      <p>{tenant.email}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </Dialog>
           <Dialog
             visible={deleteTenantDialog}
             style={{ width: '450px' }}

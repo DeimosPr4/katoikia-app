@@ -30,7 +30,6 @@ const GuardasSeguridad = () => {
     community_id: '',
   };
 
-
   const [listaGuardas, setListaGuardas] = useState([]);
   const [urlFetch, setUrlFetch] = useState('http://localhost:4000/user/findGuards/');
   const [guarda, setGuarda] = useState(emptyGuarda);
@@ -41,10 +40,8 @@ const GuardasSeguridad = () => {
   const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar");
   const toast = useRef(null);
   const dt = useRef(null);
-
   const [cookies, setCookie] = useCookies();
   const [changeStatusGuardDialog, setChangeStatusGuardDialog] = useState(false);
-
   const [guardDialog, setGuardDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -90,23 +87,16 @@ const GuardasSeguridad = () => {
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-      .then(
-        function(response) {
-          if (response.status != 201)
-            console.log('Ocurrió un error con el servicio: ' + response.status);
-          else
-            return response.json();
-        }
-      )
-      .then(
-        function(response) {
-          listaGuardasF();
-        }
-      )
-      .catch(
-        err => console.log('Ocurrió un error con el fetch', err)
-      );
+    }).then((response) => {
+      if (response.status != 201)
+        console.log('Ocurrió un error con el servicio: ' + response.status);
+      else
+        return response.json();
+    }).then(() => {
+      listaGuardasF();
+    }).catch(
+      err => console.log('Ocurrió un error con el fetch', err)
+    );
   }
 
   const cambiarStatusUser = () => {
@@ -129,64 +119,47 @@ const GuardasSeguridad = () => {
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-      .then(
-        function(response) {
-          if (response.status != 201)
-            console.log('Ocurrió un error con el servicio: ' + response.status);
-          else
-            return response.json();
-        }
-      )
-      .then(
-        function(response) {
-          setChangeStatusGuardDialog(false);
-          toast.current.show({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Guarda de Seguridad Actualizado',
-            life: 3000,
-          });
-        }
-      )
-      .catch(
-        err => console.log('Ocurrió un error con el fetch', err)
-      );
+    }).then((response) => {
+      if (response.status != 201)
+        console.log('Ocurrió un error con el servicio: ' + response.status);
+      else
+        return response.json();
+    }).then((response) => {
+      setChangeStatusGuardDialog(false);
+      toast.current.show({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Guarda de Seguridad Actualizado',
+        life: 3000,
+      });
+    }).catch(
+      err => console.log('Ocurrió un error con el fetch', err)
+    );
   }
 
 
   const deleteGuarda = () => {
-
-    fetch('http://localhost:4000/user/deleteAdminSystem/' + guarda._id, {
+    fetch(`http://localhost:4000/user/deleteAdminSystem/${guarda._id}`, {
       cache: 'no-cache',
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-      .then(
-        function(response) {
-          if (response.status != 201)
-            console.log('Ocurrió un error con el servicio: ' + response.status);
-          else
-            return response.json();
-        }
-      )
-      .then(
-        function(response) {
-          let _guarda = listaGuardas.filter(val => val._id !== guarda._id);
-          setListaGuardas(_guarda);
-          setDeleteGuardaDialog(false);
-          setGuarda(emptyGuarda);
-          toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Administrador del Sistema Eliminado', life: 3000 });
-        }
-      )
-      .catch(
-        err => {
-          console.log('Ocurrió un error con el fetch', err)
-          toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador del Sistema no se pudo Eliminar', life: 3000 });
-        }
-      );
+    }).then((response) => {
+      if (response.status != 201)
+        console.log('Ocurrió un error con el servicio: ' + response.status);
+      else
+        return response.json();
+    }).then(function() {
+      let _guarda = listaGuardas.filter(val => val._id !== guarda._id);
+      setListaGuardas(_guarda);
+      setDeleteGuardaDialog(false);
+      setGuarda(emptyGuarda);
+      toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Administrador del Sistema Eliminado', life: 3000 });
+    }).catch(err => {
+      console.log('Ocurrió un error con el fetch', err)
+      toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador del Sistema no se pudo Eliminar', life: 3000 });
+    });
   }
 
   const deleteSelectedGuardas = () => {
@@ -203,7 +176,12 @@ const GuardasSeguridad = () => {
     setListaGuardas(_guardas);
     setDeleteGuardasDialog(false);
     setSelectedGuardas(null);
-    toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Administradores del Sistema Eliminados', life: 3000 });
+    toast.current.show({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: 'Administradores del Sistema Eliminados',
+      life: 3000
+    });
   }
 
   const hideDeleteGuardaDialog = () => {
@@ -262,7 +240,6 @@ const GuardasSeguridad = () => {
     } else if (rowData.status == '1') {
       icono = "pi pi-eye-slash";
       text = "Inactivar Guarda de Seguridad"
-
     }
     return (
       <div className="actions">
@@ -363,7 +340,6 @@ const GuardasSeguridad = () => {
         className="p-button-text"
         onClick={hideGuardDialog}
       />
-
     </>
   );
 
@@ -503,9 +479,6 @@ const GuardasSeguridad = () => {
                 </div>
               </div>
               <div className='row my-5 justify-content-center'>
-
-
-
               </div>
               <div className='row my-5 justify-content-center'>
                 <div className=" col-4 md:col-4">

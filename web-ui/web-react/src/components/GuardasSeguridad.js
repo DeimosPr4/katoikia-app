@@ -89,7 +89,7 @@ const GuardasSeguridad = () => {
       }
     }).then((response) => {
       if (response.status != 201)
-        console.log('Ocurrió un error con el servicio: ' + response.status);
+        console.log(`Ocurrió un error con el servicio: ${response.status}`);
       else
         return response.json();
     }).then(() => {
@@ -121,10 +121,10 @@ const GuardasSeguridad = () => {
       }
     }).then((response) => {
       if (response.status != 201)
-        console.log('Ocurrió un error con el servicio: ' + response.status);
+        console.log(`Ocurrió un error con el servicio: ${response.status}`);
       else
         return response.json();
-    }).then((response) => {
+    }).then(() => {
       setChangeStatusGuardDialog(false);
       toast.current.show({
         severity: 'success',
@@ -147,7 +147,7 @@ const GuardasSeguridad = () => {
       }
     }).then((response) => {
       if (response.status != 201)
-        console.log('Ocurrió un error con el servicio: ' + response.status);
+        console.log(`Ocurrió un error con el servicio: ${response.status}`);
       else
         return response.json();
     }).then(function() {

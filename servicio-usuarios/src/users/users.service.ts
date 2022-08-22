@@ -4,6 +4,7 @@ import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Md5 } from 'md5-typescript';
 import { map } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 
 import { RpcException, ClientProxy } from '@nestjs/microservices';
 
@@ -11,14 +12,53 @@ import { RpcException, ClientProxy } from '@nestjs/microservices';
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    @Inject('SERVICIO_NOTIFICACIONES')
-    private readonly clientNotificationtApp: ClientProxy,
-  ) {}
+    @Inject('SERVICIO_NOTIFICACIONES') private readonly clientNotificationtApp: ClientProxy,
+    @Inject('SERVICIO_COMUNIDADES') private readonly clientCommunityApp: ClientProxy,
+  ) { }
+
   private publicKey: string;
   async create(user: UserDocument): Promise<User> {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
     return this.userModel.create(user);
+  }
+
+
+  async createAdminCommunity(user: UserDocument) {
+    let password = user.password;
+    let passwordEncriptada = Md5.init(user.password);
+    user.password = passwordEncriptada;
+
+    this.userModel.create(user)
+
+
+    let community = await this.findCommunity(user.community_id);
+    user.community_id = community['name'];
+
+    const pattern = { cmd: 'emailCreateUserAdminCommunity' };
+    const payload = {
+      email: user['email'], password: password, name: user['name'],
+      date_entry: user['date_entry'], community_name: community['name']
+    };
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+  async findCommunity(community_id: string) {
+    const pattern = { cmd: 'findOneCommunity' }
+    const payload = { _id: community_id }
+
+    let callback = await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+    const finalValue = await lastValueFrom(callback);
+    return finalValue['response'];
+
   }
 
   async findAll(): Promise<User[]> {
@@ -38,8 +78,14 @@ export class UsersService {
     });
   }
 
+  /* async remove(id: string) {
+     return this.userModel.findByIdAndRemove({ _id: id }).exec();
+   }*/
+
   async remove(id: string) {
-    return this.userModel.findByIdAndRemove({ _id: id }).exec();
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+      new: true,
+    });
   }
 
   //inicio de sesion
@@ -53,8 +99,12 @@ export class UsersService {
           reject(err);
         } else {
           let passwordEncriptada = Md5.init(password);
-          if (res[0].password == passwordEncriptada) {
-            resolve(res[0]);
+          if (res.length > 0) {
+            if (res[0].password == passwordEncriptada) {
+              resolve(res[0]);
+            } else {
+              resolve(null);
+            }
           } else {
             resolve(null);
           }
@@ -78,6 +128,23 @@ export class UsersService {
   async allUsersAdminComunidad(): Promise<User[]> {
     return this.userModel.find({ user_type: 2 }).exec();
   }
+
+
+  //find inquilinos
+  async findTenants(): Promise<User[]> {
+    return this.userModel.find({ user_type: 3 }).exec();
+  }
+
+
+  //find inquilinos
+  async findTenantsCommunity(pcommunity_id: string) {
+    //let tenants = await this.findCommunityTenants(pcommunity_id);
+
+
+
+    return await this.userModel.find({ community_id: pcommunity_id, user_type: 4 })
+  }
+
 
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);
@@ -104,6 +171,65 @@ export class UsersService {
   }
 
   async deleteAdminSystem(id: string) {
-    return this.userModel.deleteOne({ _id: id }).exec();
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+      new: true,
+    });
+  }
+
+  deleteAdminCommunity(id: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+      new: true,
+    });
+  }
+
+  async deleteTenant(id: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+      new: true,
+    });
+  }
+
+  async validateEmail(email: string) {
+    let repo1 = this.userModel;
+    return new Promise<User>((resolve, reject) => {
+      let repo = repo1;
+
+      repo.find({ email: email }).exec((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          if (res.length > 0) {
+            return res;
+          }
+        }
+      });
+    });
+  }
+
+  async findNumHouseTenant(community_id: string, tenant_id: string): Promise<string> {
+    const pattern = { cmd: 'findOneCommunity' }
+    const payload = { _id: community_id }
+
+    let callback = this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((response: string) => ({ response })))
+    const finalValue = await lastValueFrom(callback);
+    const response = finalValue['response'];
+    const houses = response['houses'];
+    let num_house = "";
+    await houses.forEach(async (house: { [x: string]: string; }) => {
+      if (house['tenant_id'] !== undefined) {
+        if (house['tenant_id'] === tenant_id) {
+          num_house = house['number_house'];
+        }
+      }
+    })
+    return num_house;
+  }
+
+  async changeStatus(id: string, status: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: status }, {
+      new: true,
+    });
   }
 }
+

@@ -9,9 +9,8 @@ import { map } from 'rxjs/operators';
 export class ReportsService {
   constructor(
     @InjectModel(Report.name)
-    private readonly reportModel: Model<ReportDocument>,
-  ) //
-  {}
+    private readonly reportModel: Model<ReportDocument>, //
+  ) {}
 
   async create(report: ReportDocument): Promise<Report> {
     return this.reportModel.create(report);
@@ -32,6 +31,9 @@ export class ReportsService {
   }
 
   async remove(id: string) {
-    return this.reportModel.findByIdAndRemove({ _id: id }).exec();
+    return this.reportModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+      new: true,
+    });  
+    
   }
 }

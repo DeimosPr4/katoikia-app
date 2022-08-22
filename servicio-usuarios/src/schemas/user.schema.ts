@@ -1,23 +1,25 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+var uniqueValidator = require('mongoose-unique-validator');
+import { IsEmail, IsNotEmpty, IsString, Validate } from 'class-validator';
 
 export type UserDocument = User & Document;
 
-@Schema({ collection: 'users' })
+@Schema({ collection: 'users'})
 export class User {
-  @Prop()
-  dni: string;
+  @Prop({index: true})
+  dni!: string;
 
-  @Prop()
+  @Prop({required: true})
   name: string;
 
-  @Prop()
+  @Prop({required: true})
   last_name: string;
 
-  @Prop()
-  email: string;
+  @Prop({required: true, unique: true})
+  email: string; 
 
-  @Prop()
+  @Prop({required: true, unique: true})
   phone: number;
 
   @Prop()
@@ -34,6 +36,10 @@ export class User {
 
   @Prop()
   community_id?: string;
+
+  @Prop()
+  number_house?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.plugin(uniqueValidator);

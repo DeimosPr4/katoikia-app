@@ -9,10 +9,11 @@ import classNames from 'classnames';
 import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 const Communities = () => {
   let emptyCommunity = {
@@ -23,7 +24,8 @@ const Communities = () => {
     district: districtId,
     phone: '',
     num_houses: 0,
-    status: 'activo',
+    status: '1',
+    status_text: '',
     date_entry: new Date(),
     houses: [],
   };
@@ -44,8 +46,18 @@ const Communities = () => {
   const [globalFilter, setGlobalFilter] = useState(null);
   const [deleteCommunityDialog, setDeleteCommunityDialog] = useState(false);
   const [deleteCommunitiesDialog, setDeleteCommunitiesDialog] = useState(false);
+  const [editCommunityDialog, setEditCommunityDialog] = useState(false);
   const toast = useRef(null);
   const dt = useRef(null);
+
+
+
+  //para el perfil de la comunidad
+  const [tenants, setTenants] = useState([]);
+
+  const [communityDialog, setCommunityDialog] = useState(false);
+
+
 
   const p = provincesList.map((item) => ({
     label: item.name,
@@ -64,17 +76,6 @@ const Communities = () => {
     parent: item.parentCode,
   }));
 
-  useEffect(() => {
-    fillProvinces();
-  }, []);
-
-  useEffect(() => {
-    fillCantons();
-  }, [provinciaId]);
-
-  useEffect(() => {
-    fillDistricts();
-  }, [cantonId]);
 
   async function getProvinces() {
     const response = await fetch('assets/demo/data/provincias.json', {
@@ -118,6 +119,20 @@ const Communities = () => {
     setDistrictsList(await districts);
   }
 
+
+  useEffect(() => {
+    fillProvinces();
+  }, []);
+
+  useEffect(() => {
+    fillCantons();
+  }, [provinciaId]);
+
+  useEffect(() => {
+    fillDistricts();
+  }, [cantonId]);
+
+
   const handleProvinces = (event) => {
     const getprovinciaId = event.target.value;
     setProvinciaId(getprovinciaId);
@@ -147,7 +162,17 @@ const Communities = () => {
     let pList = await getProvinces();
     let cList = await getCantons();
     let dList = await getDistricts();
-    await resJson.message.map((item) => {
+    let data = await resJson.message.filter(
+      (val) => val.status != -1,
+    )
+    await data.map((item) => {
+      if (item.status == '1') {
+        item.status_text = 'Activo';
+      } else if (item.status == '0') {
+        item.status_text = 'Inactivo';
+      } else {
+        item.status_text = 'Eliminado';
+      }
       item.province = pList.find((p) => p.code === item.province).name;
       item.canton = cList.find((p) => p.code === item.canton).name;
       item.district = dList.find((p) => p.code === item.district).name;
@@ -155,12 +180,29 @@ const Communities = () => {
         item.name_admin = 'Sin Administrador';
       }
     });
-    setCommunitiesList(await resJson.message);
+    setCommunitiesList(await data);
   }
 
   useEffect(() => {
     getCommunites();
   }, []);
+
+  async function tenantsList(id) {
+    await fetch(`http://localhost:4000/user/findTenants/${id}`, { method: 'GET' })
+      .then((response) => response.json())
+      .then(data => data.message)
+      .then(data => {
+        data = data.filter(
+          (val) => val.status != -1,
+        )
+        setTenants(data)
+      });
+  }
+
+  useEffect(() => {
+    tenantsList(community._id);
+  }, [])
+
 
   const saveCommunity = () => {
     if (
@@ -230,12 +272,30 @@ const Communities = () => {
     }
   };
 
+
+
+  function findNameTenant(tenant_id) {
+    let name = '';
+    if (tenant_id == '') {
+      name = 'Sin inquilino';
+    } else {
+      let tenant = tenants.find(t => t._id == tenant_id)
+      name = tenant['name'] + ' ' + tenant['last_name'];
+    }
+    return name;
+  }
+
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value) || '';
     let _community = { ...community };
     _community[`${name}`] = val;
 
     setCommunity(_community);
+  };
+
+  const hideCommunityDialog = () => {
+    setSubmitted(false);
+    setCommunityDialog(false);
   };
 
   const hideDeleteCommunityDialog = () => {
@@ -254,6 +314,75 @@ const Communities = () => {
   const confirmDeleteSelected = () => {
     setDeleteCommunitiesDialog(true);
   };
+
+
+  const infoCommunity = async (community) => {
+    await tenantsList(community._id);
+
+    setCommunity({ ...community });
+    setCommunityDialog(true);
+  };
+
+  const editCommunity = (community) => {
+    setCommunity({ ...community });
+    setEditCommunityDialog(true);
+  };
+
+  const hideEditCommunityDialog = () => {
+    setEditCommunityDialog(false);
+  };
+
+  const confirmEditCommunity = (community) => {
+    setCommunity(community);
+    setEditCommunityDialog(true);
+  };
+
+  //desactivar o activar una comunidad
+  const cambiarEstadoCommunity = () => {
+    if (community.status == '1') {
+      community.status = '0';
+      community.status_text = 'Inactivo';
+
+    } else if (community.status == '0') {
+      community.status = '1';
+      community.status_text = 'Activo';
+    }
+    var data = {
+      id: community._id,
+      status: community.status,
+    };
+    fetch('http://localhost:4000/community/changeStatus', {
+      cache: 'no-cache',
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+          setEditCommunityDialog(false);
+          toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Comunidad de Viviendas Actualizada',
+            life: 3000,
+          });
+        }
+      )
+      .catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+  }
+
 
   const deleteCommunity = () => {
     /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
@@ -288,8 +417,11 @@ const Communities = () => {
                    }
                ); 
         */
-    let _community = communitiesList.filter((val) => val._id !== community._id);
-    setCommunitiesList(_community);
+    let _communities = communitiesList.filter((val) => val._id !== community._id);
+    _communities = _communities.filter(
+      (val) => val.status != -1,
+    )
+    setCommunitiesList(_communities);
     setDeleteCommunityDialog(false);
     setCommunity(emptyCommunity);
     toast.current.show({
@@ -313,6 +445,9 @@ const Communities = () => {
                  }
              })
          })*/
+    _communities = _communities.filter(
+      (val) => val.status != -1,
+    )
     setCommunitiesList(_communities);
     setDeleteCommunitiesDialog(false);
     setSelectedCommunities(null);
@@ -325,11 +460,29 @@ const Communities = () => {
   };
 
   const actionsCommunity = (rowData) => {
+
+    let icono = '';
+    if (rowData.status == '0') {
+      icono = "pi pi-eye";
+    } else if (rowData.status == '1') {
+      icono = "pi pi-eye-slash";
+    }
+
     return (
       <div className="actions">
         <Button
+          icon="pi pi-exclamation-circle"
+          className="p-button-rounded p-button-info mt-2 mx-2"
+          onClick={() => infoCommunity(rowData)}
+        />
+        <Button
+          icon={`${icono}`}
+          className={`p-button-rounded p-button-warning mt-2 mx-2`}
+          onClick={() => confirmEditCommunity(rowData)}
+        />
+        <Button
           icon="pi pi-trash"
-          className="p-button-rounded p-button-danger mt-2"
+          className="p-button-rounded p-button-danger mt-2 mx-2"
           onClick={() => confirmDeleteCommunity(rowData)}
         />
       </div>
@@ -366,7 +519,7 @@ const Communities = () => {
 
   const header = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-      <h5 className="m-0">Comunidade de Viviendas</h5>
+      <h5 className="m-0">Comunidades de Viviendas</h5>
       <span className="block mt-2 md:mt-0 p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -376,6 +529,18 @@ const Communities = () => {
         />
       </span>
     </div>
+  );
+
+  const communityDialogFooter = (
+    <>
+      <Button
+        label="Cerrar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideCommunityDialog}
+      />
+
+    </>
   );
 
   const deleteCommunityDialogFooter = (
@@ -411,6 +576,24 @@ const Communities = () => {
       />
     </>
   );
+  const editEstadoCommunityDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideEditCommunityDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={cambiarEstadoCommunity}
+      />
+    </>
+  );
+
+
 
   const headerName = (
     <>
@@ -429,7 +612,7 @@ const Communities = () => {
           icon={faMapLocationDot}
           style={{ color: '#D7A86E' }}
         />{' '}
-        Pronvincia
+        Provincia
       </p>
     </>
   );
@@ -474,7 +657,7 @@ const Communities = () => {
     <>
       <p>
         {' '}
-        <FontAwesomeIcon icon={faPhoneAlt} style={{ color: '#D7A86E' }} />{' '}
+        <FontAwesomeIcon icon={faHashtag} style={{ color: '#D7A86E' }} />{' '}
         Número de viviendas
       </p>
     </>
@@ -490,14 +673,52 @@ const Communities = () => {
     </>
   );
 
-  const headerOptions = (
+  const headerStatus = (
     <>
-      <p>
-        Opciones{' '}
-        <FontAwesomeIcon icon={faEllipsis} style={{ color: '#D7A86E' }} />
+      <p> {' '}
+        <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+        Estado
       </p>
     </>
+  )
+
+  //ver perfil comunidad
+  const headerTenant = (
+    <>
+      <p>
+        {' '}
+        <FontAwesomeIcon icon={faUserAlt} style={{ color: '#C08135' }} />{' '}
+        Inquilinos
+      </p>
+
+    </>
   );
+
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <>
+        <span
+          className={`status status-${rowData.status}`}
+        >
+          {rowData.status_text}
+        </span>
+      </>
+    );
+  };
+
+  const tenantsBodyTemplate = (rowData) => {
+    let tenants = rowData.tenants;
+    let name = 'Sin inquilino';
+    if (rowData.tenants) {
+      name = findNameTenant(tenants.tenant_id);
+    }
+
+    return (
+      <>
+        {name}
+      </>
+    )
+  };
 
   return (
     <div className="grid">
@@ -534,21 +755,25 @@ const Communities = () => {
             ></Column>
             <Column
               field="name"
+              sortable
               header={headerName}
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
             <Column
               field="province"
+              sortable
               header={headerProvince}
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
             <Column
               field="canton"
+              sortable
               header={headerCanton}
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
             <Column
               field="district"
+              sortable
               header={headerDistrict}
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
@@ -559,16 +784,176 @@ const Communities = () => {
             ></Column>
             <Column
               field="num_houses"
+              sortable
               header={headerNumberHouses}
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
             <Column
               field="name_admin"
+              sortable
               header={headerAdministrator}
               style={{ flexGrow: 1, flexBasis: '180px' }}
             ></Column>
-            <Column header={headerOptions} body={actionsCommunity}></Column>
+            <Column
+              field="status"
+              sortable
+              header={headerStatus}
+              body={statusBodyTemplate}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            </Column>
+            <Column
+              body={actionsCommunity}
+              style={{ flexGrow: 1, flexBasis: '100px' }}
+            ></Column>
           </DataTable>
+
+
+          <Dialog
+            visible={communityDialog}
+            style={{ width: '650px' }}
+            header="Información de la Comunidad"
+            modal
+            className="p-fluid"
+            footer={communityDialogFooter}
+            onHide={hideCommunityDialog}>
+            <div className='container text-center'>
+              <div className='row my-4'>
+                <div className=" col-12 md:col-12">
+                  <p>Nombre</p>
+                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-home icon-khaki"></i>
+                      <p>{community.name}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className='row my-5'>
+                <div className=" col-6 md:col-6">
+                  <p>Administrador</p>
+                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-user icon-khaki"></i>
+                      <p>{community.name_admin}</p>
+                    </div>
+
+                  </div>
+                </div>
+                <div className=" col-6 md:col-6">
+                  <p>Teléfono Administrativo</p>
+                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-phone icon-khaki"></i>
+                      <p>{community.phone}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div className='row my-5'>
+                <div className=" col-4 col-md-4 md:col-4">
+                  <p>Provincia</p>
+                  <div className="p-0 col-10 md:col-10">
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-map-marker icon-khaki"></i>
+                      <p>{community.province}</p>
+                    </div>
+
+                  </div>
+                </div>
+                <div className=" col-4 md:col-4">
+                  <p>Cantón</p>
+                  <div className="p-0 col-10 md:col-10">
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-map-marker icon-khaki"></i>
+                      <p>{community.canton}</p>
+                    </div>
+
+                  </div>
+                </div>
+                <div className=" col-4 md:col-4">
+                  <p>Distrito</p>
+                  <div className="p-0 col-10 md:col-10">
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-map-marker icon-khaki"></i>
+                      <p>{community.district}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div className='row my-5'>
+                <div className=" col-12 md:col-12">
+                  <p>Número de Viviendas</p>
+                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup justify-content-evenly">
+                      <i className="pi pi-hashtag icon-khaki"></i>
+                      <p>{community.num_houses}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className='row my-5'>
+                <div className=" col-12 md:col-12">
+
+
+                  <p> <i className="pi pi-home icon-khaki"></i>  Viviendas</p>
+                  <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup justify-content-evenly">
+                      <DataTable
+                        value={community.houses}
+                        paginator
+                        rows={5}
+                        scrollable
+                        scrollHeight="200px"
+                        scrollDirection="both"
+                        rowsPerPageOptions={[5, 10, 25]}
+                        className="datatable-responsive mt-3"
+                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} viviendas"
+                        globalFilter={globalFilter}
+                      >
+                        <Column
+                          field="number_house"
+                          header={headerNumberHouses}
+                          style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }}
+                        ></Column>
+                        <Column
+                          field="tenants"
+                          header={headerTenant}
+                          body={tenantsBodyTemplate}
+                          style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }}
+                        ></Column>
+                      </DataTable>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </Dialog>
+
+          <Dialog
+            visible={editCommunityDialog}
+            style={{ width: '450px' }}
+            header="Confirmar"
+            modal
+            footer={editEstadoCommunityDialogFooter}
+            onHide={hideEditCommunityDialog}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: '2rem' }}
+              />
+              {community && (
+                <span>
+                  ¿Estás seguro que desea cambiar estado a <b>{community.name}</b>?
+                </span>
+              )}
+            </div>
+          </Dialog>
           <Dialog
             visible={deleteCommunityDialog}
             style={{ width: '450px' }}

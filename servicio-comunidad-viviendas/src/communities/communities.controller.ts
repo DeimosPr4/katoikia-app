@@ -45,4 +45,12 @@ export class CommunitiesController {
     let _id = id['_id'];
     return this.communitiesService.remove(_id);
   }
+
+   //cambiar de estado
+   @MessagePattern({ cmd: 'changeStatus' })
+   changeStatus(@Payload() body: string) {
+     let pid = body['id'];
+     let pstatus = body['status'];
+     return this.communitiesService.changeStatus(pid,pstatus);
+   }
 }

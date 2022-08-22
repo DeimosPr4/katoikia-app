@@ -1,135 +1,662 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
+import { Toolbar } from 'primereact/toolbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faAt } from '@fortawesome/free-solid-svg-icons';
+import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import { useCookies } from "react-cookie";
+import classNames from 'classnames';
 
 const GuardasSeguridad = () => {
-  const [pokemones, setPokemones] = useState([]);
-  const [urlFetch, setUrlFetch] = useState(
-    'http://localhost:4000/user/findGuards/62be68215692582bbfd77134',
-  );
-  async function fetchP() {
-    let nombres = await fetch(urlFetch, { method: 'GET' });
-    let pokemonesRes = await nombres.json();
-    setPokemones(pokemonesRes.message);
-    console.log(pokemones);
+
+  let emptyGuarda = {
+    _id: null,
+    dni: '',
+    name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    password: '',
+    user_type: '1',
+    status: '1',
+    status_text: '',
+    date_entry: Date.now(),
+    community_id: '',
+  };
+
+  const [listaGuardas, setListaGuardas] = useState([]);
+  const [urlFetch, setUrlFetch] = useState('http://localhost:4000/user/findGuards/');
+  const [guarda, setGuarda] = useState(emptyGuarda);
+  const [selectedGuardas, setSelectedGuardas] = useState(null);
+  const [globalFilter, setGlobalFilter] = useState(null);
+  const [deleteGuardaDialog, setDeleteGuardaDialog] = useState(false);
+  const [deleteGuardasDialog, setDeleteGuardasDialog] = useState(false);
+  const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar");
+  const toast = useRef(null);
+  const dt = useRef(null);
+  const [cookies, setCookie] = useCookies();
+  const [changeStatusGuardDialog, setChangeStatusGuardDialog] = useState(false);
+  const [guardDialog, setGuardDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+
+  async function listaGuardasF() {
+    let nombres = await fetch((urlFetch + cookies.community_id), { method: 'GET' });
+    let listaGuardasRes = await nombres.json();
+    let data = await listaGuardasRes.message.filter(
+      (val) => val.status != -1,
+    )
+    await data.map((item) => {
+      if (item.status == '1') {
+        item.status_text = 'Activo';
+      } else if (item.status == '0') {
+        item.status_text = 'Inactivo';
+      }
+    })
+    setListaGuardas(await data);
   }
+
   useEffect(() => {
-    fetchP();
-  }, []);
+    listaGuardasF();
+  }, [])
 
   function registrarGuarda() {
     var data = {
-      dni: document.getElementById('identificacion').value,
-      name: document.getElementById('nombre').value,
-      last_name: document.getElementById('apellidos').value,
-      email: document.getElementById('correo_electronico').value,
-      phone: document.getElementById('telefono').value,
-      password: document.getElementById('correo_electronico').value,
-      user_type: '4', //4 es guarda
-      status: '1',
-      community_id: '62be68215692582bbfd77134',
+      dni: document.getElementById('dni').value,
+      name: document.getElementById('name').value,
+      last_name: document.getElementById('last_name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      password: document.getElementById('email').value,
+      user_type: "4", //4 es guarda
+      status: "1",
+      date_entry: Date.now(),
+      community_id: cookies.community_id
     };
-    var data2 = {
-      dni: '98765',
-      name: 'Danielito',
-      last_name: 'Rodriguez',
-      email: 'danirodriguez@gmail.com',
-      phone: 84664515,
-      password: '1203',
-      user_type: '2',
-      status: '4',
-      community_id: '62be68215692582bbfd77134',
-    };
-    console.log(data2);
+    if (guarda._id === null) {
+      console.log('ssss');
+      fetch('http://localhost:4000/user/createGuard', {
+        cache: 'no-cache',
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.status != 201)
+          console.log(`Ocurrió un error con el servicio: ${response.status}`);
+        else
+          return response.json();
+      }).then(() => {
+        listaGuardasF();
+      }).catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+    } else {
+      data._id = guarda._id;
+      console.log(`Actualizando guarda: ${data}`);
+      fetch(`http://localhost:4000/user/updateGuard/${guarda._id}`, {
+        cache: 'no-cache',
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((response) => {
+        if (response.status !== 200)
+          console.log(`Ocurrió un error con el servicio: ${response.status}`);
+        else return response.json();
+      }).then(() => {
+        toast.current.show({
+          severity: 'success',
+          summary: 'Guarda actualizada',
+          detail: 'Guarda actualizado correctamente'
+        });
+        setGuarda(emptyGuarda);
+        listaGuardasF();
+      })
+    }
+    setSaveButtonTitle("Registrar");
+  }
 
-    fetch('http://localhost:4000/user/createGuard', {
+  const cambiarStatusUser = () => {
+    if (guarda.status == '1') {
+      guarda.status = '0';
+      guarda.status_text = 'Inactivo';
+
+    } else if (guarda.status == '0') {
+      guarda.status = '1';
+      guarda.status_text = 'Activo';
+    }
+    var data = {
+      id: guarda._id,
+      status: guarda.status,
+    };
+    fetch('http://localhost:4000/user/changeStatus', {
       cache: 'no-cache',
       method: 'POST',
-      mode: 'cors',
-      body: JSON.stringify(data2),
+      body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json',
-      },
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      if (response.status != 201)
+        console.log(`Ocurrió un error con el servicio: ${response.status}`);
+      else
+        return response.json();
+    }).then(() => {
+      setChangeStatusGuardDialog(false);
+      toast.current.show({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Guarda de Seguridad Actualizado',
+        life: 3000,
+      });
+    }).catch(
+      err => console.log('Ocurrió un error con el fetch', err)
+    );
+  }
+
+
+  const deleteGuarda = () => {
+    fetch(`http://localhost:4000/user/deleteAdminSystem/${guarda._id}`, {
+      cache: 'no-cache',
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      if (response.status != 201)
+        console.log(`Ocurrió un error con el servicio: ${response.status}`);
+      else
+        return response.json();
+    }).then(function() {
+      let _guarda = listaGuardas.filter(val => val._id !== guarda._id);
+      setListaGuardas(_guarda);
+      setDeleteGuardaDialog(false);
+      setGuarda(emptyGuarda);
+      toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Administrador del Sistema Eliminado', life: 3000 });
+    }).catch(err => {
+      console.log('Ocurrió un error con el fetch', err)
+      toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Administrador del Sistema no se pudo Eliminar', life: 3000 });
+    });
+  }
+
+  const deleteSelectedGuardas = () => {
+    let _guardas = listaGuardas.filter(val => !selectedGuardas.includes(val));
+    selectedGuardas.map((item) => {
+      fetch('http://localhost:4000/user/deleteAdminSystem/' + item._id, {
+        cache: 'no-cache',
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
     })
-      .then(function (response) {
-        if (response.status != 201)
-          console.log('Ocurrió un error con el servicio: ' + response.status);
-        else return response.json();
-      })
-      .then(function (response) {
-        fetchP();
-      })
-      .catch((err) => console.log('Ocurrió un error con el fetch', err));
+    setListaGuardas(_guardas);
+    setDeleteGuardasDialog(false);
+    setSelectedGuardas(null);
+    toast.current.show({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: 'Administradores del Sistema Eliminados',
+      life: 3000
+    });
+  }
+
+  const hideDeleteGuardaDialog = () => {
+    setDeleteGuardaDialog(false);
+  }
+
+  const hideDeleteGuardasDialog = () => {
+    setDeleteGuardasDialog(false);
+  }
+
+  const confirmDeleteGuarda = (guarda) => {
+    setGuarda(guarda);
+    setDeleteGuardaDialog(true);
+  }
+
+  const confirmDeleteSelected = () => {
+    setDeleteGuardasDialog(true);
+  }
+
+  const hideChangeStatusGuardDialog = () => {
+    setChangeStatusGuardDialog(false);
+  };
+
+  const confirmChangeStatusGuard = (guard) => {
+    setGuarda(guard);
+    setChangeStatusGuardDialog(true);
+  };
+
+  const hideGuardDialog = () => {
+    setSubmitted(false);
+    setGuardDialog(false);
+  };
+
+  const infoGuard = (guard) => {
+    setGuarda(guard);
+    setGuardDialog(true);
+  };
+
+  const editGuard = (guard) => {
+    setGuarda(guard);
+    console.log(guard);
+    setSaveButtonTitle("Actualizar");
+  }
+
+  const cancelEdit = () => {
+    setGuarda(emptyGuarda);
+    setSaveButtonTitle("Registrar");
+  }
+
+  const actionsGuard = (rowData) => {
+    let icono = '';
+    let text = '';
+    if (rowData.status == '0') {
+      icono = "pi pi-eye";
+      text = "Activar Guarda de Seguridad"
+    } else if (rowData.status == '1') {
+      icono = "pi pi-eye-slash";
+      text = "Inactivar Guarda de Seguridad"
+    }
+    return (
+      <div className="actions">
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success mt-2 mx-2"
+          onClick={() => editGuard(rowData)}
+          title="Editar"
+        />
+        <Button
+          icon="pi pi-exclamation-circle"
+          className="p-button-rounded p-button-info mt-2 mx-2"
+          onClick={() => infoGuard(rowData)}
+        />
+        <Button
+          icon={`${icono}`}
+          className="p-button-rounded p-button-warning mt-2 mx-2"
+          onClick={() => confirmChangeStatusGuard(rowData)}
+          title={`${text}`}
+        />
+        <Button icon="pi pi-trash"
+          className="p-button-rounded p-button-danger mt-2 mx-2"
+          onClick={() => confirmDeleteGuarda(rowData)} />
+      </div>
+    );
+  }
+
+  const leftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <div className="my-2">
+          <Button label="Eliminar"
+            icon="pi pi-trash"
+            className="p-button-danger"
+            onClick={confirmDeleteSelected}
+            disabled={!selectedGuardas || !selectedGuardas.length} />
+        </div>
+      </React.Fragment>
+    )
+  }
+
+  const rightToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Button label="Exportar"
+          icon="pi pi-upload"
+          className="p-button-help" />
+      </React.Fragment>
+    )
+  }
+
+  const header = (
+    <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+      <h5 className="m-0">Guardas de seguridad</h5>
+      <span className="block mt-2 md:mt-0 p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+      </span>
+    </div>
+  );
+
+  const deleteAdminSystemDialogFooter = (
+    <>
+      <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteGuardasDialog} />
+      <Button label="Sí" icon="pi pi-check" className="p-button-text" onClick={deleteGuarda} />
+    </>
+  );
+
+  const deleteAdminsSystemDialogFooter = (
+    <>
+      <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteGuardasDialog} />
+      <Button label="Sí" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedGuardas} />
+    </>
+  );
+
+  const changeStatusGuardDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideChangeStatusGuardDialog}
+      />
+      <Button
+        label="Sí"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={cambiarStatusUser}
+      />
+    </>
+  );
+
+  const guardDialogFooter = (
+    <>
+      <Button
+        label="Cerrar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideGuardDialog}
+      />
+    </>
+  );
+
+
+  const headerName = (
+    <>
+      <p>{' '}
+        <FontAwesomeIcon icon={faUserAlt} style={{ color: "#C08135" }} /> {' '}
+        Nombre
+      </p>
+    </>
+  )
+
+  const headerLastName = (
+    <>
+      <p>
+        {' '}
+        <FontAwesomeIcon icon={faUserAlt} style={{ color: "#D7A86E" }} />{' '}
+        Apellido(s)
+      </p>
+    </>
+  )
+
+  const headerDNI = (
+    <p> {' '}
+      <FontAwesomeIcon icon={faIdCardAlt} style={{ color: "#C08135" }} />{' '}
+      Identificación
+    </p>
+  )
+
+  const headerEmail = (
+    <>
+      <p> {' '}
+        <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />{' '}
+        Correo Electrónico
+      </p>
+    </>
+  )
+
+  const headerPhone = (
+    <>
+      <p>
+        {' '}
+        <FontAwesomeIcon icon={faPhoneAlt} style={{ color: '#C08135' }} />{' '}
+        Teléfono
+      </p>
+    </>
+  )
+
+  const headerStatus = (
+    <>
+      <p> {' '}
+        <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+        Estado
+      </p>
+    </>
+  )
+
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <>
+        <span
+          className={`status status-${rowData.status}`}
+        >
+          {rowData.status_text}
+        </span>
+      </>
+    );
+  };
+
+  const onInputChange = (e, name) => {
+    const value = (e.target && e.target.value) || ''
+    let _guarda = { ...guarda }
+    _guarda[`${name}`] = value
+    setGuarda(_guarda)
   }
 
   return (
     <div className="grid">
       <div className="col-12">
+        <Toast ref={toast} />
         <div className="card">
-          <h5>Guardas de seguridad</h5>
-          <DataTable
-            value={pokemones}
-            scrollable
-            scrollHeight="400px"
-            scrollDirection="both"
-            className="mt-3"
-          >
+          <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+          <DataTable ref={dt} value={listaGuardas} dataKey="_id" paginator rows={5} selection={selectedGuardas} onSelectionChange={(e) => setSelectedGuardas(e.value)}
+            responsiveLayout="scroll" header={header}
+            rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
+            globalFilter={globalFilter} emptyMessage="No hay guardas registrados.">
+            <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+            <Column field="name" sortable header={headerName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+            <Column field="last_name" sortable header={headerLastName} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }} alignFrozen="left"></Column>
+            <Column field="dni" sortable header={headerDNI} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            </Column>
+            <Column field="email" sortable header={headerEmail} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
+            <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
             <Column
-              field="name"
-              header="Nombre"
-              style={{ flexGrow: 1, flexBasis: '160px' }}
-            ></Column>
-            <Column
-              field="last_name"
-              header="Apellidos"
-              style={{ flexGrow: 1, flexBasis: '160px' }}
-              alignFrozen="left"
-            ></Column>
-            <Column
-              field="dni"
-              header="Identificación"
-              style={{ flexGrow: 1, flexBasis: '160px' }}
-            ></Column>
-            <Column
-              field="email"
-              header="Correo electrónico"
-              style={{ flexGrow: 1, flexBasis: '160px' }}
-            ></Column>
-            <Column
-              field="phone"
-              header="Telefóno"
-              style={{ flexGrow: 1, flexBasis: '160px' }}
-            ></Column>
+              field="status"
+              sortable
+              header={headerStatus}
+              body={statusBodyTemplate}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
+            </Column>
+            <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsGuard}></Column>
           </DataTable>
+          <Dialog
+            visible={guardDialog}
+            style={{ width: '650px' }}
+            header="Información del Guarda de Seguridad"
+            modal
+            className="p-fluid"
+            footer={guardDialogFooter}
+            onHide={hideGuardDialog}>
+            <div className='container text-center'>
+              <div className='row my-4'>
+                <div className=" col-4 md:col-4">
+                  <p>Nombre</p>
+                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-user icon-khaki"></i>
+                      <p>{guarda.name}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className=" col-4 md:col-4">
+                  <p>Apellido(s)</p>
+                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-user icon-khaki"></i>
+                      <p>{guarda.last_name}</p>
+                    </div>
+
+                  </div>
+                </div>
+                <div className=" col-4 col-md-4 md:col-4">
+                  <p>Identificación</p>
+                  <div className="p-0 col-10 md:col-10" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-id-card icon-khaki"></i>
+                      <p>{guarda.dni}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div className='row my-5 justify-content-center'>
+              </div>
+              <div className='row my-5 justify-content-center'>
+                <div className=" col-4 md:col-4">
+                  <p>Teléfono</p>
+                  <div className="p-0 col-10 md:col-10">
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-phone icon-khaki"></i>
+                      <p>{guarda.phone}</p>
+                    </div>
+
+                  </div>
+                </div>
+                <div className=" col-6 md:col-6">
+                  <p>Correo Electrónico</p>
+                  <div className="p-0 col-10  md:col-10" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <i className="pi pi-envelope icon-khaki"></i>
+                      <p>{guarda.email}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </Dialog>
+          <Dialog visible={deleteGuardaDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminSystemDialogFooter} onHide={hideDeleteGuardaDialog}>
+            <div className="flex align-items-center justify-content-center">
+              <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+              {guarda && <span>¿Estás seguro que desea eliminar a <b>{guarda.name}</b>?</span>}
+            </div>
+          </Dialog>
+          <Dialog visible={deleteGuardasDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminsSystemDialogFooter} onHide={hideDeleteGuardasDialog}>
+            <div className="flex align-items-center justify-content-center">
+              <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+              {selectedGuardas && <span>¿Está seguro eliminar los guardas de seguridad seleccionados?</span>}
+            </div>
+          </Dialog>
+          <Dialog
+            visible={changeStatusGuardDialog}
+            style={{ width: '450px' }}
+            header="Confirmar"
+            modal
+            footer={changeStatusGuardDialogFooter}
+            onHide={hideChangeStatusGuardDialog}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: '2rem' }}
+              />
+              {guarda && (
+                <span>
+                  ¿Estás seguro que desea cambiar estado a <b>{guarda.name}</b>?
+                </span>
+              )}
+            </div>
+          </Dialog>
         </div>
       </div>
       <div className="col-12">
         <div className="card">
-          <h5>Registro de un guarda de seguridad</h5>
+          <h5>Registro de un Guarda de Seguridad</h5>
           <div className="p-fluid formgrid grid">
             <div className="field col-12 md:col-6">
-              <label htmlFor="nombre">Nombre</label>
-              <InputText id="nombre" type="text" />
+              <label htmlFor="name">Nombre</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type="text" id="name" value={guarda.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.name === '' })} />
+                </div>
+                {submitted && guarda.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
+              </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="apellidos">Apellidos</label>
-              <InputText id="apellidos" type="text" />
+              <label htmlFor="name">Apellido(s)</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type="text" id="last_name" value={guarda.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.last_name === '' })} />
+                </div>
+                {submitted && guarda.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
+              </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="correo_electronico">Correo electrónico</label>
-              <InputText id="correo_electronico" type="text" />
+              <label htmlFor="name">Correo Electrónico</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText type='email' id="email" value={guarda.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.email === '' })} />
+                </div>
+                {submitted && guarda.email === '' && <small className="p-invalid">Correo electrónico es requerido.</small>}
+              </div>
             </div>
             <div className="field col-12 md:col-6">
-              <label htmlFor="identificacion">Identificación</label>
-              <InputText id="identificacion" type="text" />
+              <label htmlFor="dni">Identificación</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-home"></i>
+                  </span>
+                  <InputText id="dni" value={guarda.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.dni === '' })} />
+                </div>
+                {submitted && guarda.email === '' && <small className="p-invalid">Identificación es requerida.</small>}
+              </div>
             </div>
-            <div className="field col-12">
-              <label htmlFor="telefono">Teléfono</label>
-              <InputText id="telefono" type="number" rows="4" />
+            <div className="field col-12 md:col-6">
+              <label htmlFor="phone">Número de teléfono</label>
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-phone"></i>
+                  </span>
+                  <InputText id="phone" value={guarda.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && guarda.phone === '' })} />
+                </div>
+                {submitted
+                  && guarda.phone === ''
+                  && <small className="p-invalid">Número de teléfono es requerido.</small>}
+              </div>
             </div>
-            <Button label="Registrar" onClick={registrarGuarda}></Button>
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              width: "100%"
+            }}>
+              <Button
+                label={`${saveButtonTitle}`}
+                onClick={registrarGuarda}
+              />
+              {saveButtonTitle === 'Actualizar' && (
+                <Button
+                  label="Cancel"
+                  onClick={cancelEdit}
+                  className="p-button-danger" />)}
+            </div>
           </div>
         </div>
       </div>

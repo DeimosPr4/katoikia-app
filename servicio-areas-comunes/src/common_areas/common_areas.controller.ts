@@ -30,7 +30,21 @@ export class CommonAreasController {
 
   @MessagePattern({ cmd: 'removeCommonArea' })
   remove(@Payload() id: string) {
-    let _id = id['_id'];
+    let _id = id['id'];
     return this.commonAreasService.remove(_id);
   }
+
+  @MessagePattern({ cmd: 'findByCommunity' })
+  findByCommunity(@Payload() id: string) {
+    let _community_id = id['community_id'];
+    return this.commonAreasService.findByCommunity(_community_id);
+  }
+
+   //cambiar de estado
+   @MessagePattern({ cmd: 'changeStatus' })
+   changeStatus(@Payload() body: string) {
+     let pid = body['id'];
+     let pstatus = body['status'];
+     return this.commonAreasService.changeStatus(pid,pstatus);
+   }
 }

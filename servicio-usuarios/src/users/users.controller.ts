@@ -1,11 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseFilters } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { User, UserDocument } from '../schemas/user.schema';
 import { UsersService } from './users.service';
+import { MongoExceptionFilter } from 'src/MongoExceptionFilter';
 
 @Controller()
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly userService: UsersService) { }
 
   @MessagePattern({ cmd: 'createUser' })
   create(@Payload() user: UserDocument) {
@@ -13,6 +14,7 @@ export class UsersController {
   }
 
   @MessagePattern({ cmd: 'createAdminSystem' })
+  @UseFilters(MongoExceptionFilter)
   createUserAdmin(@Payload() user: UserDocument) {
     return this.userService.create(user);
   }
@@ -20,6 +22,11 @@ export class UsersController {
   @MessagePattern({ cmd: 'createGuard' })
   createGuard(@Payload() user: UserDocument) {
     return this.userService.create(user);
+  }
+
+  @MessagePattern({ cmd: 'createAdminCommunity' })
+  createAdminCommunity(@Payload() user: UserDocument) {
+    return this.userService.createAdminCommunity(user);
   }
 
   @MessagePattern({ cmd: 'findAllUsers' })
@@ -33,15 +40,38 @@ export class UsersController {
     return this.userService.findOneByDNI(dni);
   }
 
+  @MessagePattern({ cmd: 'findById' })
+  findById(@Payload() id: string) {
+    let _id = id['id'];
+    return this.userService.findOne(_id);
+  }
+
   @MessagePattern({ cmd: 'findGuardsCommunity' })
   findGuardsCommunity(@Payload() community_id: string) {
     let pcommunity_id = community_id['community_id'];
     return this.userService.findGuardsCommunity(pcommunity_id);
   }
 
+  @MessagePattern({ cmd: 'findTenantsCommunity' })
+  findTenantsCommunity(@Payload() community_id: string) {
+    let pcommunity_id = community_id['community_id'];
+    return this.userService.findTenantsCommunity(pcommunity_id);
+  }
+
+  @MessagePattern({ cmd: 'findTenants' })
+  findTenants() {
+    return this.userService.findTenants();
+  }
+
+
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
     return this.userService.update(user.id, user);
+  }
+
+  @MessagePattern({ cmd: 'updateGuard' })
+  updateGuard(@Payload() guard: UserDocument) {
+    return this.userService.update(guard.id, guard);
   }
 
   @MessagePattern({ cmd: 'removeUser' })
@@ -87,8 +117,23 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'deleteAdminSystem' })
   deleteAdminSystem(@Payload() user: any) {
-    console.log('entró');
-
     return this.userService.deleteAdminSystem(user['id']);
+  }
+
+  @MessagePattern({ cmd: 'deleteAdminCommunity' })
+  deleteAdminCommunity(@Payload() user: any) {
+    return this.userService.deleteAdminCommunity(user['id']);
+  }
+
+  @MessagePattern({ cmd: 'deleteTenant' })
+  deleteTenant(@Payload() user: any) {
+    return this.userService.deleteTenant(user['id']);
+  }
+
+  @MessagePattern({ cmd: 'changeStatus' })
+  changeStatus(@Payload() body: string) {
+    let pid = body['id'];
+    let pstatus = body['status'];
+    return this.userService.changeStatus(pid, pstatus);
   }
 }

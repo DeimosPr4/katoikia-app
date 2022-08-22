@@ -759,7 +759,7 @@ const Inquilinos = () => {
       </div>
       <div className="col-12">
         <div className="card">
-          <h5>Registro de un administrador de una comunidad de viviendas</h5>
+          <h5>Registro de un Inquilino</h5>
           <div className="p-fluid formgrid grid">
             <div className="field col-12 md:col-6">
               <label htmlFor="name">Nombre</label>

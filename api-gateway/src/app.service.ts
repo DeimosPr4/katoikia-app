@@ -120,7 +120,29 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
-
+  updateAdminCommunity(
+    _id: string,
+    dni: string,
+    name: string,
+    last_name: string,
+    email: string,
+    phone: number,
+    community_id: string,
+  ) {
+    const pattern = { cmd: 'updateAdminCommunity' };
+    const payload = {
+      id: _id,
+      dni: dni,
+      name: name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
+      community_id: community_id,
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
   //POST parameter from API
   createAdminSystem(dni: string, name: string, last_name: string, email: string, phone: number
     , user_type: string, status: string, date_entry: Date) {

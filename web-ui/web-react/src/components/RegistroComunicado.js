@@ -38,10 +38,13 @@ const RegistroComunicado = () => {
   const [globalFilter, setGlobalFilter] = useState(null);
 
   async function listaComunis() {
-    let comunicadosA = await fetch('http://localhost:4000/post/allPosts', { method: 'GET' });
-    let comunicadosRes = await comunicadosA.json();
-    setComunicados(comunicadosRes.message);
-    console.log(comunicadosRes.message);
+    let comunicadosResponse = await fetch('http://localhost:4000/post/allPosts', { method: 'GET' });
+    const comunicadosJson = await comunicadosResponse.json();
+    const comunicadosCommunity = comunicadosJson.message.filter((comunicado) => {
+      return comunicado.community_id === cookies.community_id;
+    })
+    setComunicados(comunicadosCommunity);
+    console.log(comunicadosCommunity);
   }
 
   const saveComunicado = () => {

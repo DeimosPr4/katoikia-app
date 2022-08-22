@@ -60,7 +60,7 @@ const Inquilinos = () => {
       .then((response) => response.json())
       .then((data) => data.message)
       .then((data) => {
-        data = data.filter((val) => val.status != -1)
+        data = data.filter((val) => val.status !== -1)
         data.map((item) => {
           if (item.status === '1') {
             item.status_text = 'Activo'

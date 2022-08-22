@@ -27,7 +27,6 @@ const RegistroComunicado = () => {
     listaComunis();
   }, [])
 
-
   const [comunicado, setComunicado] = useState(emptyComunicado);
   const [comunicados, setComunicados] = useState([]);
   const [comunicadoId, setComunicadoId] = useState(null);
@@ -44,7 +43,6 @@ const RegistroComunicado = () => {
     console.log(comunicadosRes.message);
   }
 
-
   const saveComunicado = () => {
     var data = {
       post: document.getElementById('txt_comunicado').value,
@@ -59,28 +57,20 @@ const RegistroComunicado = () => {
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-      .then(
-        function(response) {
-          if (response.status != 201)
-            console.log('Ocurrió un error con el servicio: ' + response.status);
-          else
-            return response.json();
-        }
-      )
-      .then(
-        function(response) {
+    }).then((response) => {
+      if (response.status != 201)
+        console.log('Ocurrió un error con el servicio: ' + response.status);
+      else
+        return response.json();
+    }).then((_response) => {
 
-        }
-      )
-      .catch(
-        err => console.log('Ocurrió un error con el fetch', err)
-      );
+    }).catch(
+      err => console.log('Ocurrió un error con el fetch', err)
+    );
   }
 
   const header = (
     <React.Fragment>
-
       <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
         <h5 className="m-0">Comunicados de la comunidad</h5>
         <span className="block mt-2 md:mt-0 p-input-icon-left">
@@ -131,7 +121,6 @@ const RegistroComunicado = () => {
             globalFilter={globalFilter} emptyMessage="No hay administradores de comunidades registrados.">
             <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
             <Column field="post" sortable header={headerPost} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-
           </DataTable>
         </div>
       </div>

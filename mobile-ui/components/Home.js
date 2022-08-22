@@ -6,6 +6,7 @@ import {
     Box,
 Pressable,
     Spacer, 
+    ScrollView
   } from "native-base";
   import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 export default function Home(){
@@ -14,6 +15,12 @@ export default function Home(){
     return (
 
       <Box alignItems="center">
+
+<ScrollView width='100%' h='550' ml='1' _contentContainerStyle={{
+      px: "20px",
+      mb: "4",
+      minW: "72"
+    }}>
       <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5" marginTop="4">
         <Box>
           <HStack alignItems="center">
@@ -58,6 +65,7 @@ export default function Home(){
          
         </Box>
       </Pressable>
+      </ScrollView>
     </Box>
       //   <Center width={"100%"} marginTop={"auto"}>
            

@@ -24,18 +24,18 @@ function HomeTab({route}) {
 const [selected, setSelected] = useState(0);
 const user = route.params;
 
-console.log(user);
+// console.log(user);
 
   return (
-    <Tab.Navigator initialRouteName="Comunicados" > 
-    <Tab.Screen  name="Comunicados" component={Home}  params={user} options={{headerStyle: {
+    <Tab.Navigator params={user} initialRouteName="Comunicados" > 
+    <Tab.Screen  name="Comunicados" component={Home}  initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 0 ? 'home' : 'home-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(0)}
      /> 
-    <Tab.Screen  name="Reservas" component={Reservas } params={user} options={{headerStyle: {
+    <Tab.Screen  name="Reservas" component={Reservas } initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'tree' : 'tree-outline'} />} color="#D7A86E" size="md" />)} } onclick={() => setSelected(1)}  /> 
-    <Tab.Screen  name="Perfil" component={Profile} params={user} options={{headerStyle: {
+    <Tab.Screen  name="Perfil" component={Profile} initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 2 ? 'account' : 'account-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(2)} /> 
   </Tab.Navigator>

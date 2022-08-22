@@ -66,7 +66,7 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
-    return this.userService.update(user.id, user);
+    return this.userService.update(user._id, user);
   }
 
   @MessagePattern({ cmd: 'removeUser' })
@@ -74,7 +74,11 @@ export class UsersController {
     let dni = id['dni'];
     return this.userService.remove(dni);
   }
-
+  
+  @MessagePattern({ cmd: 'updateAdminSystem' })
+  updateAdminSystem(@Payload() user: UserDocument) {
+    return this.userService.update(user._id, user);
+  }
   //inicio de sesion
   @MessagePattern({ cmd: 'loginUser' })
   findLogin(@Payload() body: string) {

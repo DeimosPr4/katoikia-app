@@ -223,6 +223,19 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  updateAdminSystem(_id: string, dni: string, name: string, 
+    last_name: string, email: string, phone: number
+    ) {
+    const pattern = { cmd: 'updateAdminSystem' };
+    const payload = {
+      _id: _id, dni: dni, name: name, last_name: last_name, 
+      email: email, phone: phone
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   //GET parameter from API
   findCommunityAdmin(community_id: string) {
     const pattern = { cmd: 'findCommunityAdmin' };

@@ -86,18 +86,54 @@ const AdministradoresSistema = () => {
     let _administrators = [...administrators];
     let _admin = { ...sysadmin };
     if (sysadmin._id) {
-      const index = findIndexById(sysadmin._id);
 
-      _administrators[index] = _admin;
-      toast.current.show({
-        severity: 'success',
-        summary: 'Exito',
-        detail: 'Administrador Actualizado',
-        life: 3000,
-      });
-      setAdministrators(_administrators)
-      setEditAdminDialog(false);
-      setSysAdmin(emptySysAdmin);
+      if (sysadmin.name && sysadmin.dni && sysadmin.last_name && sysadmin.email &&
+        sysadmin.phone) {
+
+        fetch('http://localhost:4000/user/updateAdminSystem/', {
+          cache: 'no-cache',
+          method: 'POST',
+          body: JSON.stringify(_admin),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(
+            function (response) {
+              if (response.status != 201)
+                console.log('Ocurrió un error con el servicio: ' + response.status);
+              else
+                return response.json();
+            }
+          )
+          .then(
+            function (response) {
+              const index = findIndexById(sysadmin._id);
+
+              _administrators[index] = _admin;
+              toast.current.show({
+                severity: 'success',
+                summary: 'Exito',
+                detail: 'Administrador Actualizado',
+                life: 3000,
+              });
+              setAdministrators(_administrators)
+              setEditAdminDialog(false);
+              setSysAdmin(emptySysAdmin);
+            }
+          )
+          .catch(
+            err => console.log('Ocurrió un error con el fetch', err)
+          );
+
+      } else {
+        setSubmitted(true);
+
+      }
+
+
+
+
     } else {
       var data = {
         dni: document.getElementById('identificacion').value,

@@ -46,7 +46,7 @@ const Inquilinos = () => {
   const [houseNumber, setHouseNumber] = useState([])
   const [housesList, setHousesList] = useState([])
   const [submitted, setSubmitted] = useState(false)
-  let [openInfoDialog] = useState(false)
+  const [showInfoDialog, setShowInfoDialog] = useState(false)
   const toast = useRef(null)
   const dt = useRef(null)
   const [cookies] = useCookies()

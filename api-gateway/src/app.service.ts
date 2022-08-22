@@ -89,6 +89,38 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  updateGuard(
+    _id: string,
+    dni: string,
+    name: string,
+    last_name: string,
+    email: string,
+    phone: number,
+    password: string,
+    user_type: string,
+    status: string,
+    date_entry: Date,
+    community_id: string,
+  ) {
+    const pattern = { cmd: 'updateGuard' };
+    const payload = {
+      id: _id,
+      dni: dni,
+      name: name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
+      password: password,
+      user_type: user_type,
+      status: status,
+      date_entry: date_entry,
+      community_id: community_id,
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   //POST parameter from API
   createAdminSystem(dni: string, name: string, last_name: string, email: string, phone: number
     , user_type: string, status: string, date_entry: Date) {

@@ -79,17 +79,6 @@ const GuardasSeguridad = () => {
             status: "1",
             community_id: cookies.community_id
         };
-        var data2 = {
-            dni: "11979037",
-            name: "Jorge",
-            last_name: "Soto",
-            email: "jorgesoto@gmail.com",
-            phone: 84664515,
-            password: "1203",
-            user_type: "2",
-            status: "1",
-            community_id: "62be68215692582bbfd77134"
-        }
         console.log('ssss');
         fetch('http://localhost:4000/user/createGuard', {
             cache: 'no-cache',

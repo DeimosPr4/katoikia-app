@@ -1,23 +1,19 @@
-import React, { useState } from "react";
+
+import React, { useContext, useState } from "react";
+
 
 import {
-    Box, 
-    Heading, 
-    VStack, 
-    FormControl,  
-    Button,
-    Center,
-    ScrollView
-  } from "native-base";
+  Box, Button,
+  Center, FormControl, Heading, ScrollView, VStack
+} from "native-base";
 
-  import { View, TextInput, StyleSheet } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
+import { UserContext } from "../context/UserContext";
 
-export default function Profile({route, navigation}){
-
-
+export default function Profile({ navigation }) {
 
   const baseURL = 'http://localhost:4000/user/updateUser'
-  const userData = JSON.parse(JSON.stringify(route.params));
+  //const userData = JSON.parse(JSON.stringify(route.params));
   const [name, setName] = useState(); 
   const [apellido, setApellido] =useState(); 
   const [email, setEmail] = useState(); 
@@ -25,6 +21,8 @@ export default function Profile({route, navigation}){
   const id = userData.user._id;
 
   console.log(userData.user);
+
+  const userData = useContext(UserContext)
 
 
   const updateInfo = async() => {
@@ -123,17 +121,17 @@ export default function Profile({route, navigation}){
       </Box>
 
       </ScrollView>
-        </Center>
-       
-    )
+    </Center>
 
-   
+  )
+
+
 }
 
 const styles = StyleSheet.create({
   input: {
     height: 10,
-    margin:3,
+    margin: 3,
     borderWidth: 0.5,
     padding: 5,
     flex: 1,
@@ -141,9 +139,9 @@ const styles = StyleSheet.create({
     paddingRight: 19,
     paddingBottom: 20,
     paddingLeft: 0,
-    marginTop: 6, 
-    marginBottom:6, 
+    marginTop: 6,
+    marginBottom: 6,
     borderRadius: 4
   }
-  })
+})
 

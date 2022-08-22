@@ -47,7 +47,6 @@ const Inquilinos = () => {
   const [housesList, setHousesList] = useState([])
   const [submitted, setSubmitted] = useState(false)
   const [infoDialogVisible, setShowInfoDialog] = useState(false)
-  const [cancelSaveButtonVisible, setCancelSaveButtonVisible] = useState(false)
   const toast = useRef(null)
   const dt = useRef(null)
   const [cookies] = useCookies()
@@ -279,7 +278,6 @@ const Inquilinos = () => {
   const cancelEdit = () => {
     setTenant(emptyTenant);
     setSaveButtonTitle('Registrar');
-    setCancelSaveButtonVisible(false);
     setHouseNumber('');
   }
 

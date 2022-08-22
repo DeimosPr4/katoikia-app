@@ -4,21 +4,32 @@ import {
     Box, 
     Heading, 
     VStack, 
-    FormControl, 
-    Input, 
+    FormControl,  
     Button,
-    Center
+    Center,
+    ScrollView
   } from "native-base";
 
-export default function ProfileGuarda({navigation}){
+  import { View, TextInput, StyleSheet } from "react-native";
 
+export default function ProfileGuarda({route, navigation}){
+
+  const userData = JSON.parse(JSON.stringify(route.params));
+
+  console.log(userData.user);
     return (
         <Center>
+
+          <ScrollView width='100%' h='550' ml='36' _contentContainerStyle={{
+      px: "20px",
+      mb: "4",
+      minW: "72"
+    }}>
              <Box safeArea p="2" w="90%" maxW="290" py="8">
         <Heading size="lg" color="coolGray.800" _dark={{
         color: "warmGray.50"
       }} fontWeight="semibold">
-          Katoikia
+          Bienvenido {userData.user.name}
         </Heading>
         <Heading mt="1" color="coolGray.600" _dark={{
         color: "warmGray.200"
@@ -26,21 +37,25 @@ export default function ProfileGuarda({navigation}){
           Modifique sus datos
         </Heading>
         <VStack space={3} mt="5">
+        <FormControl>
+            <FormControl.Label>DNI</FormControl.Label>
+            <TextInput type="text" defaultValue={userData.user.dni} editable='false'/>
+          </FormControl>
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
-            <Input type="text"/>
+            <TextInput style={styles.input} type="text" defaultValue={userData.user.name}/>
           </FormControl>
           <FormControl>
-            <FormControl.Label>Correo Electrónico</FormControl.Label>
-            <Input type="text" />
+            <FormControl.Label>Apellido</FormControl.Label>
+            <TextInput style={styles.input} type="text"defaultValue={userData.user.last_name} />
           </FormControl>
           <FormControl>
-            <FormControl.Label>Teléfono</FormControl.Label>
-            <Input type="text" />
+            <FormControl.Label>Correo electrónico</FormControl.Label>
+            <TextInput style={styles.input} type="text" defaultValue={userData.user.email}/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Contraseña actual</FormControl.Label>
-            <Input type="password" />
+            <TextInput style={styles.input} type="password" defaultValue=""/>
           </FormControl>
           
           <Button mt="2" backgroundColor="orange.300">
@@ -51,7 +66,29 @@ export default function ProfileGuarda({navigation}){
           </Button>
         </VStack>
       </Box>
+
+      </ScrollView>
         </Center>
        
     )
+
+   
 }
+
+const styles = StyleSheet.create({
+  input: {
+    height: 10,
+    margin:3,
+    borderWidth: 0.5,
+    padding: 5,
+    flex: 1,
+    paddingTop: 9,
+    paddingRight: 19,
+    paddingBottom: 20,
+    paddingLeft: 0,
+    marginTop: 6, 
+    marginBottom:6, 
+    borderRadius: 4
+  }
+  })
+

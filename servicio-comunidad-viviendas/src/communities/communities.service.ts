@@ -111,14 +111,11 @@ export class CommunitiesService {
     await community.houses.map(house => {
       if (house.number_house == number_house &&
         house.tenants.tenant_id == tenant_id) {
-        house.tenants = null;
+        house.tenants.tenant_id = "";
         house.state = "desocupada"
-
       }
       return house;
     })
-
-    console.log(community.houses)
 
     return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
       new: true,

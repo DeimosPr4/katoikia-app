@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AreaComun from "./components/AreaComun";
 import { UserContext, UserContextProvider } from "./context/UserContext";
 import AgregarInvitados from "./components/AgregarInvitados";
+import Invitados from "./components/Invitados"
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -33,7 +34,7 @@ function HomeTab({ route }) {
     <Tab.Screen  name="Reservas" component={Reservas } initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'tree' : 'tree-outline'} />} color="#D7A86E" size="md" />)} } onclick={() => setSelected(1)}  /> 
-        <Tab.Screen  name="Invitados" component={AgregarInvitados} initialParams={user} options={{headerStyle: {
+        <Tab.Screen  name="Invitados" component={Invitados} initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'contacts' : 'contacts-outline'} />} color="#D7A86E" size="md" />)} } onclick={() => setSelected(1)}  /> 
     <Tab.Screen  name="Perfil" component={Profile} initialParams={user} options={{headerStyle: {
@@ -57,6 +58,11 @@ export default function App() {
             <Stack.Screen name="Comunicados" component={HomeTab} options={{ headerShown: false }} />
             <Stack.Screen name="Password" component={RecoverPassword} />
             <Stack.Screen name="area" component={AreaComun} options={{
+              headerStyle: {
+                backgroundColor: "#D7A86E"
+              }
+            }} />
+             <Stack.Screen name="invitado" component={AgregarInvitados} options={{
               headerStyle: {
                 backgroundColor: "#D7A86E"
               }

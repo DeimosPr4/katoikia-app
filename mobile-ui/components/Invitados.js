@@ -10,12 +10,13 @@ import {
 export default function Invitados({navigation}) {
   const [isRequesting, setIsRequesting] = useState(false);
   const [invitados, setInvitados] = useState([]);
-  const id = "62ff074949eb1e993a9d0fda";
+  const { user } = useContext(UserContext);
+  const id = user._id;
 
 
   useEffect(() => {
 
-    const onRequestCommentsData = async () => {
+    const onRequestInvitadosData = async () => {
       setIsRequesting(true);
 
       try {
@@ -37,39 +38,10 @@ export default function Invitados({navigation}) {
       setIsRequesting(false)
     }
 
-    onRequestCommentsData()
+    onRequestInvitadosData()
 
   })
 
-
-
-
-  const data = [{
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    fullName: "Aafreen Khan",
-    timeStamp: "12:47 PM",
-    recentText: "Good Day!"
-    }, {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    fullName: "Sujitha Mathur",
-    timeStamp: "11:11 PM",
-    recentText: "Cheer up, there!"
-  }, {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    fullName: "Anci Barroco",
-    timeStamp: "6:22 PM",
-    recentText: "Good Day!"
-  }, {
-    id: "68694a0f-3da1-431f-bd56-142371e29d72",
-    fullName: "Aniket Kumar",
-    timeStamp: "8:56 PM",
-    recentText: "All the best"
-  }, {
-    id: "28694a0f-3da1-471f-bd96-142456e29d72",
-    fullName: "Kiara",
-    timeStamp: "12:47 PM",
-    recentText: "I will call today."
-    }];
   return (
   
        <Box>
@@ -78,11 +50,11 @@ export default function Invitados({navigation}) {
       </Heading>
       <FlatList data={invitados} renderItem={({
       item
-    }) => <Box borderBottomWidth="1" _dark={{
+    }) => <Box key={item._id} borderBottomWidth="1" _dark={{
       borderColor: "gray.600"
     }} borderColor="coolGray.200" pl="4" pr="5" py="2">
-            <HStack space={3} justifyContent="space-between">
-            <MaterialCommunityIcons name="account" size={48} color="green" />
+            <HStack space={3} justifyContent="space-between" >
+            <MaterialCommunityIcons name="account" size={48} color="#D7A86E" />
               <VStack>
                 <Text _dark={{
             color: "warmGray.50"
@@ -108,10 +80,18 @@ export default function Invitados({navigation}) {
               </Text>
             </HStack>
           </Box>} keyExtractor={item => item.id} />
+
+
+          <Button width='200'  mt="4" ml='85' backgroundColor='tertiary.600' onPress={() => navigation.navigate('invitado')}>
+        Agregar invitado
+       </Button>
+
     </Box>
-         
+      
+
   );
 
+  
 
  
 }

@@ -34,6 +34,7 @@ import GuardasSeguridad from './components/GuardasSeguridad';
 import Communities from './components/ComunidadViviendas';
 import Inquilinos from './components/Inquilinos';
 import RegistroComunicado from './components/RegistroComunicado';
+import InvitadosComunidad from './components/InvitadosComunidad';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 import Crud from './pages/Crud';
@@ -203,6 +204,7 @@ const App = () => {
                 },
                 
                 { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado'},
+                { label: 'Invitados', icon: PrimeIcons.USERS, to: '/invitadosComunidad' },
     
             ]
         },

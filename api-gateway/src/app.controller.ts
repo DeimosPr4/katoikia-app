@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Body, Param, Delete } from '@nestjs/common'
 import { AppService } from './app.service';
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
   // #==== API Users
   @Post('user/createAdminSystem')
   createAdminSystem(
@@ -15,8 +15,8 @@ export class AppController {
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
   ) {
-    return this.appService.createAdminSystem(dni, name, last_name, email, phone, 
-            user_type, status, date_entry);
+    return this.appService.createAdminSystem(dni, name, last_name, email, phone,
+      user_type, status, date_entry);
   }
 
   @Post('user/createGuard')
@@ -33,7 +33,7 @@ export class AppController {
     @Body('community_id') community_id: string,
   ) {
     return this.appService.createGuard(dni, name, last_name, email, phone,
-      user_type, status, date_entry,community_id);
+      user_type, status, date_entry, community_id);
   }
 
   @Post('user/createAdminCommunity')
@@ -47,10 +47,10 @@ export class AppController {
     @Body('user_type') user_type: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
-    @Body('community_id') community_id:string
+    @Body('community_id') community_id: string
   ) {
     return this.appService.createAdminCommunity(dni, name, last_name, email, phone,
-      user_type, status, date_entry,community_id);
+      user_type, status, date_entry, community_id);
   }
 
   @Post('user/createUser')
@@ -174,7 +174,7 @@ export class AppController {
   allUsersTenants(@Param('community_id') paramCommunity_id: string) {
     return this.appService.findTenantsCommunity(paramCommunity_id);
   }
-  
+
   @Get('user/find/:dni')
   findUser(@Param('dni') paramUserDNI: string) {
     return this.appService.findUser(paramUserDNI);
@@ -261,7 +261,7 @@ export class AppController {
     return this.appService.changeStatusCommunity(pId, pStatus);
   }
 
-  
+
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(
@@ -426,6 +426,11 @@ export class AppController {
   @Get('post/find/:id')
   findPost(@Param('id') paramPost: string) {
     return this.appService.findPost(paramPost);
+  }
+
+  @Delete('post/deletePost/:id')
+  deletePost(@Param('id') id: string) {
+    return this.appService.deletePost(id);
   }
 
   // #==== API Comment

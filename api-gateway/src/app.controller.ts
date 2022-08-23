@@ -489,6 +489,11 @@ export class AppController {
     return this.appService.findPost(paramPost);
   }
 
+  @Delete('post/deletePost/:id')
+  deletePost(@Param('id') id: string) {
+    return this.appService.deletePost(id);
+  }
+
   // #==== API Comment
 
   @Post('post/createComment')

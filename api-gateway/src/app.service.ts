@@ -618,6 +618,15 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  //DELETE
+  deletePost(paramPostId: string) {
+    const pattern = { cmd: 'removePost' };
+    const payload = { id: paramPostId };
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   // ====================== COMMNENT POSTS ===============================
 
   //Comment parameter from API

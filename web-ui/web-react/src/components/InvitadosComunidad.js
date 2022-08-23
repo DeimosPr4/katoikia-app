@@ -1,9 +1,11 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Button } from 'primereact/button'
+import { InputText } from 'primereact/inputtext'
 import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
 import { Toast } from 'primereact/toast'
 import { Toolbar } from 'primereact/toolbar'
 import { useCookies } from 'react-cookie';
-import { useState, useRef } from 'react';
 
 const InvitadosComunidad = () => {
   const [cookies] = useCookies();
@@ -11,7 +13,8 @@ const InvitadosComunidad = () => {
   const [invitados, setInvitados] = useState([]);
   const [selectedInvitados, setSelectedInvitados] = useState([]);
   const tableRef = useRef(null);
-  const toast = useRef(null);
+  const toastRef = useRef(null);
+
   
   const headerTemplate = (
     <div className='flex flex-column md:flex-row md:justify-content-between md:align-items-center'>

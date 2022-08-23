@@ -53,4 +53,22 @@ export class CommunitiesController {
      let pstatus = body['status'];
      return this.communitiesService.changeStatus(pid,pstatus);
    }
+
+
+   @MessagePattern({ cmd: 'saveTenant' })
+   saveTenant(@Payload() body: string) {
+
+    let id = body['_id'];
+    let tenant_id = body['tenant_id'];
+    let number_house = body['number_house'];
+    return this.communitiesService.saveTenant(id, number_house, tenant_id);
+  }
+
+  @MessagePattern({ cmd: 'deleteTenant' })
+  deleteTenant(@Payload() body: string) {
+   let id = body['_id'];
+   let tenant_id = body['tenant_id'];
+   let number_house = body['number_house'];
+   return this.communitiesService.deleteTenant(id, number_house, tenant_id);
+ }
 }

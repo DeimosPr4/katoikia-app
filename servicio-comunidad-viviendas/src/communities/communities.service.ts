@@ -6,6 +6,7 @@ import { RpcException, ClientProxy } from '@nestjs/microservices';
 import { from, lastValueFrom, map, scan, mergeMap } from 'rxjs';
 import { Admin } from 'src/schemas/admin.entity';
 import { appendFileSync } from 'fs';
+import { Tenant, TenantSchema } from 'src/schemas/tenant.schema';
 
 @Injectable()
 export class CommunitiesService {
@@ -13,7 +14,7 @@ export class CommunitiesService {
     @InjectModel(Community.name)
     private readonly communityModel: Model<CommunityDocument>,
     @Inject('SERVICIO_USUARIOS') private readonly clientUserApp: ClientProxy,
-  ) {}
+  ) { }
 
   async create(community: CommunityDocument): Promise<Community> {
     return this.communityModel.create(community);
@@ -56,15 +57,15 @@ export class CommunitiesService {
   }
 
   async remove(id: string) {
-    return this.communityModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
+    return this.communityModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
       new: true,
-    });  
+    });
   }
 
   async changeStatus(id: string, status: string) {
-    return this.communityModel.findOneAndUpdate({ _id: id }, {status: status}, {
+    return this.communityModel.findOneAndUpdate({ _id: id }, { status: status }, {
       new: true,
-    });  
+    });
   }
 
   async findCommunityAdmin(community: string, user_type: string) {
@@ -77,5 +78,45 @@ export class CommunitiesService {
 
     const finalValue = await lastValueFrom(callback);
     return finalValue['response'];
+  }
+
+
+  async saveTenant(id: string, number_house: string, ptenant_id: string) {
+    let community = await this.findOne(id);
+    await community.houses.map(house => {
+      if (house.number_house == number_house) {
+        if (house.tenants) {
+
+          house.tenants.tenant_id = ptenant_id
+        } else {
+          let tenant = new Tenant()
+          tenant.tenant_id = ptenant_id;
+          house.tenants = tenant;
+        }
+        house.state = "ocupada"
+      }
+      return house;
+    })
+
+    return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
+      new: true,
+    });
+  }
+
+
+  async deleteTenant(id: string, number_house: string, tenant_id: string) {
+    let community = await this.findOne(id);
+
+    await community.houses.map(house => {
+      if (house.number_house === number_house) {
+        house.tenants.tenant_id = "";
+        house.state = "desocupada"
+      }
+      return house;
+    })
+
+    return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
+      new: true,
+    });
   }
 }

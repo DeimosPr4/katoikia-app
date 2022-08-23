@@ -29,6 +29,12 @@ export class UsersController {
     return this.userService.createAdminCommunity(user);
   }
 
+  @MessagePattern({ cmd: 'createTenant' })
+  createTenant(@Payload() user: UserDocument) {
+    return this.userService.createTenant(user);
+  }
+
+
   @MessagePattern({ cmd: 'findAllUsers' })
   findAll() {
     return this.userService.findAll();
@@ -127,7 +133,10 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'deleteTenant' })
   deleteTenant(@Payload() user: any) {
-    return this.userService.deleteTenant(user['id']);
+    let tenant_id =  user['_id'];
+    return this.userService.deleteTenant(tenant_id, 
+    user['community_id'], 
+    user['number_house']);
   }
 
   @MessagePattern({ cmd: 'changeStatus' })

@@ -129,11 +129,47 @@ const RegistroComunicado = () => {
     setShowDeleteDialog(true);
   }
 
+  const deleteDialogFooter = (
+    <>
+      <Button label="Cancelar" icon="pi pi-times" className="p-button-secondary" onClick={() => setShowDeleteDialog(false)} />
+      <Button label="Eliminar" icon="pi pi-check" className="p-button-danger" onClick={() => deleteComunicado()} />
+    </>
+  );
+
+  const deleteComunicado = () => {
+    fetch(`http://localhost:4000/post/deletePost/${comunicado._id}`, {
+      cache: 'no-cache',
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    }).then((response) => {
+      if (response.status != 200)
+        console.log('Ocurrió un error con el servicio: ' + response.status);
+      else
+        return response.json();
+    }).then((_response) => {
+      setShowDeleteDialog(false);
+      listaComunis();
+      setComunicado(emptyComunicado);
+    }).catch(err => console.log('Ocurrió un error con el fetch', err));
+  }
+
   return (
     <div className="grid">
       <div className="col-12">
         <Toast ref={toast} />
         <div className="card">
+          <Dialog
+            header="Eliminar comunicado"
+            visible={showDeleteDialog}
+            style={{ width: '450px' }}
+            modal={true} onHide={() => setShowDeleteDialog(false)}
+            footer={deleteDialogFooter}
+          >
+            <div className="flex align-items-center justify-content-center">
+              <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+              {comunicado && <span>¿Estás seguro que desea eliminar el aviso "<b>{comunicado.post}</b>"?</span>}
+            </div>
+          </Dialog>
           <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
           <DataTable ref={dt} value={comunicados} dataKey="_id" paginator rows={5}
             scrollable scrollHeight="400px" scrollDirection="both" header={header}

@@ -202,10 +202,10 @@ const App = () => {
                     icon: PrimeIcons.BUILDING,
                     to: '/areasComunes',
                 },
-                
-                { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado'},
+
+                { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado' },
                 { label: 'Invitados', icon: PrimeIcons.USERS, to: '/invitadosComunidad' },
-    
+
             ]
         },
     ]
@@ -470,6 +470,7 @@ const App = () => {
                                                 <Route path="/inquilinos" component={Inquilinos} />
                                                 <Route path="/areasComunes" component={AreasComunes} />
                                                 <Route path="/registroComunicado" component={RegistroComunicado} />
+                                                <Route path="/invitadosComunidad" component={InvitadosComunidad} />
                                             </>
                                         )
                                     } else {

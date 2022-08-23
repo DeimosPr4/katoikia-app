@@ -28,7 +28,7 @@ export default function Invitados({navigation}) {
         })
 
         const response = await jsonResponse.json();
-        console.log(response);
+        //console.log(response);
         setInvitados(response.message);
 
       } catch (error) {

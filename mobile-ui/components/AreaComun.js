@@ -29,6 +29,8 @@ export default function AreaComun({navigation}){
 
       const onRequestReservasData = async () => {
         setIsRequesting(true);
+
+  
   
         try {
           const jsonResponse = await fetch(`${API.BASE_URL}/commonArea/allCommonAreas`, {
@@ -56,6 +58,39 @@ export default function AreaComun({navigation}){
 
 
     }, [user])
+
+
+    const postReserva = async() => {
+
+      const data = {
+        
+        "start_time": selectedHours + ":" +selectedMinutes,
+        "finish_time": endSelectedHours + ":" +endSelectedMinutes,
+        "date_entry": "",
+        "user_id" : user._id, 
+        "common_area_id": service
+      
+      }
+
+      console.log(data);
+      // try {
+
+      //   const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
+      //     cache: 'no-cache', 
+      //     method: 'POST', 
+      //     body: JSON.stringify(data), 
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     }
+      //   })
+
+      //   const response = await jsonResponse.json();
+      //   console.log(response.message);
+        
+      // } catch (error) {
+      //   console.log("ERROR:" + error);
+      // }
+    }
     
 
    
@@ -83,14 +118,14 @@ export default function AreaComun({navigation}){
       }} mt={1} onValueChange={itemValue => setService(itemValue)}>
 
         {areas.map(item => (
-          <Select.Item label={item.name} value={item.name} />
+          <Select.Item label={item.name} value={item.community_id} />
         ))}
           
         </Select>
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label>Hora de inicio</FormControl.Label>
-            <View height="80" >
+            <View  >
             <TimePicker 
           selectedHours={selectedHours}
           selectedMinutes={selectedMinutes}
@@ -102,7 +137,7 @@ export default function AreaComun({navigation}){
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label>Hora de finalización</FormControl.Label>
-            <View height="80" >
+            <View  >
             <TimePicker 
           selectedHours={selectedHours}
           //initial Hourse value
@@ -117,7 +152,7 @@ export default function AreaComun({navigation}){
           </FormControl>
          
         
-          <Button mt="2" backgroundColor="tertiary.600">
+          <Button mt="2" backgroundColor="tertiary.600" onPress={()=> postReserva()}>
             Reservar
           </Button>
           <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Comunicados')}>

@@ -241,6 +241,20 @@ export class AppController {
     return this.appService.changeStatusUser(pId, pStatus);
   }
 
+
+  @Post('user/updateAdminSystem')
+  updateAdminSystem(
+    //Nombre, Apellidos, Correo electrónico, Cédula, Teléfono
+    @Body('_id') _id: string,
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+  ) {
+    return this.appService.updateAdminSystem(_id, dni, name, last_name, email, phone);
+  }
+
   // #==== API Communities
   @Post('community/createCommunity')
   createCommunity(

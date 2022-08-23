@@ -926,7 +926,7 @@ const Inquilinos = () => {
               />
               {saveButtonTitle === 'Actualizar' && (
                 <Button
-                  label="Cancel"
+                  label="Cancelar"
                   onClick={cancelEdit}
                   className="p-button-danger" />)}
             </div>

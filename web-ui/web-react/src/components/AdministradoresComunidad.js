@@ -227,19 +227,19 @@ const AdministradoresComunidad = () => {
 
     const saveAdminCommunity = () => {
         let _administrators = [...listaAdmins];
+        let _admin = { ...adminCommunity };
+        _admin.community_id = communityId;
 
-        if (adminCommunity._id) {
+        if (adminCommunity._id === null) {
             if (adminCommunity.name && adminCommunity.dni &&
                 adminCommunity.last_name && adminCommunity.email &&
                 adminCommunity.phone) {
 
-                let _adminCommunity = { ...adminCommunity };
-                _adminCommunity.community_id = communityId;
 
                 fetch('http://localhost:4000/user/createAdminCommunity', {
                     cache: 'no-cache',
                     method: 'POST',
-                    body: JSON.stringify(_adminCommunity),
+                    body: JSON.stringify(_admin),
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -256,7 +256,7 @@ const AdministradoresComunidad = () => {
 
                         // _adminCommunity.community_id = communitiesList.find(c => c._id === _adminCommunity.community_id).name
 
-                        _administrators.push(_adminCommunity);
+                        _administrators.push(_admin);
                         toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
 
                         setListaAdmins(_administrators);
@@ -273,8 +273,10 @@ const AdministradoresComunidad = () => {
                 setSubmitted(true);
             }
         } else {
-            let _admin = { ...adminCommunity };
             console.log(`Actualizando admnistrador de comunidad: ${_admin}`)
+            _admin.community_id = communityId;
+            console.log(`Actualizando admnistrador de comunidad: ${_admin}`)
+
             fetch(`http://localhost:4000/user/updateAdminCommunity/${_admin._id}`, {
                 cache: 'no-cache',
                 method: 'PUT',
@@ -290,7 +292,7 @@ const AdministradoresComunidad = () => {
                 toast.current.show({
                     severity: 'success',
                     summary: 'Éxito',
-                    detail: 'Inquilino editado',
+                    detail: 'Administrador de comunidad actualizado',
                     life: 3000,
                 })
                 _administrators.push(_admin);
@@ -334,11 +336,12 @@ const AdministradoresComunidad = () => {
         setAdminCommunity(admin);
         console.log(admin);
         setSaveButtonTitle('Actualizar');
+        setCommunityId(admin.community_id)
     }
 
 
     const cancelEdit = () => {
-        setAdminCommunity(adminCommunity);
+        setAdminCommunity(emptyAdminCommunity);
         setSaveButtonTitle('Registrar');
     }
 
@@ -366,7 +369,7 @@ const AdministradoresComunidad = () => {
                     onClick={() => confirmChangeStatuAdminCommunity(rowData)}
                     title={`${text}`}
                 />
-                
+
                 <Button
                     icon="pi pi-trash"
                     className="p-button-rounded p-button-danger mt-2 mx-2"

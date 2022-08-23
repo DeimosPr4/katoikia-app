@@ -19,8 +19,6 @@ import AgregarInvitados from "./components/AgregarInvitados";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-
 function HomeTab({ route }) {
   const { user } = useContext(UserContext);
   const [selected, setSelected] = useState(0);

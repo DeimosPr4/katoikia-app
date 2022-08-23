@@ -589,11 +589,13 @@ export class AppService {
 
   //POST parameter from API
   createReservation(start_time: string, finish_time: string, status: string,
-    date_entry: Date, user_id: string, common_area_id: string) {
+    date_entry: Date, user_id: string, common_area_id: string, 
+    common_area_name: string, communty_id: string) {
     const pattern = { cmd: 'createReservation' };
     const payload = {
       start_time: start_time, finish_time: finish_time, status: status,
-      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id
+      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id, 
+      common_area_name: common_area_name, communty_id: communty_id
     };
     return this.clientReservationApp
       .send<string>(pattern, payload)

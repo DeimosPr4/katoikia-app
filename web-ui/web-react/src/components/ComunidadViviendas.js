@@ -400,8 +400,8 @@ const Communities = () => {
       .then(
         function (response) {
 
-          let _community = communities.filter(val => val._id !== community._id);
-          setCommunities(_community);
+          let _community = communitiesList.filter(val => val._id !== community._id);
+          setCommunitiesList(_community);
           setDeleteCommunityDialog(false);
           setCommunity(emptyCommunity);
           toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });

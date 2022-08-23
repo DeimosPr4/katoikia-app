@@ -66,13 +66,18 @@ const AdministradoresComunidad = () => {
                         item.status_text = 'Eliminado';
                     }
                     //item.full_name returns the repositorie name
-                    return fetch(`http://localhost:4000/community/findCommunityName/${item.community_id}`, { method: 'GET' })
-                        .then((response2) => response2.json())
-                        .then(data => data.message)
-                        .then(data => {
-                            item.community_name = data['name']
-                            return item
-                        })
+                    if (item.community_id || item.community_id != '') {
+                        return fetch(`http://localhost:4000/community/findCommunityName/${item.community_id}`, { method: 'GET' })
+                            .then((response2) => response2.json())
+                            .then(data => data.message)
+                            .then(data => {
+                                item.community_name = data['name']
+                                return item
+                            })
+                    } else {
+                        item.community_name = "Sin Comunidad Asignada";
+                        return item;
+                    }
                 }));
             })
             .then(data => {
@@ -84,9 +89,6 @@ const AdministradoresComunidad = () => {
             });
 
     }
-
-
-
 
 
     async function getCommunites() {
@@ -151,22 +153,22 @@ const AdministradoresComunidad = () => {
                 }
             );
 
-       
+
     };
 
     const deleteSelectedAdminsCommunity = () => {
         let _admins = listaAdmins.filter(
             (val) => !selectedAdminsCommunities.includes(val),
         );
-         selectedAdminsCommunities.map((item) => {
-                 fetch('http://localhost:4000/user/deleteAdminCommunity/' + item._id, {
-                     cache: 'no-cache',
-                     method: 'DELETE',
-                     headers: {
-                         'Content-Type': 'application/json'
-                     }
-                 })
-             })
+        selectedAdminsCommunities.map((item) => {
+            fetch('http://localhost:4000/user/deleteAdminCommunity/' + item._id, {
+                cache: 'no-cache',
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        })
         setListaAdmins(_admins);
         setDeleteAdminsCommunitiesDialog(false);
         setSelectedAdminsCommunities(null);

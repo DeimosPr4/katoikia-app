@@ -18,6 +18,26 @@ import { Community, CommunitySchema } from '../schemas/community.schema';
         },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: 'SERVICIO_AREAS_COMUNES',
+        transport: Transport.TCP,
+        options: {
+          host: '127.0.0.1',
+          port: 3003,
+        },
+      },
+    ]),
+    ClientsModule.register([
+      {
+        name: 'SERVICIO_RESERVACIONES',
+        transport: Transport.TCP,
+        options: {
+          host: '127.0.0.1',
+          port: 3006,
+        },
+      },
+    ]),
     MongooseModule.forFeature([
       { name: Community.name, schema: CommunitySchema },
     ]),

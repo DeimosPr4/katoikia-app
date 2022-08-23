@@ -508,12 +508,14 @@ export class AppService {
     number_plate: string,
     phone: number,
     status: string,
+    tenant_id: string,
+    community_id: string,
     date_entry: Date,
   ) {
     const pattern = { cmd: 'createGuest' };
     const payload = {
       name: name, last_name: last_name, dni: dni, number_plate: number_plate, phone: phone,
-      status: status, date_entry: date_entry
+      status: status,tenant_id:tenant_id, community_id:community_id,date_entry: date_entry
     };
     return this.clientGuestApp
       .send<string>(pattern, payload)
@@ -536,7 +538,14 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
-
+  //GET parameter from API
+  findGuestUser(paramGuestId: string) {
+    const pattern = { cmd: 'findGuestUser' };
+    const payload = { di: paramGuestId };
+    return this.clientGuestApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
   // ====================== PAYMENTS =============================== 
 
   //POST parameter from API
@@ -634,6 +643,15 @@ export class AppService {
   //GET parameter from API
   findPost(paramPostId: string) {
     const pattern = { cmd: 'findOnePost' };
+    const payload = { id: paramPostId };
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  //DELETE
+  deletePost(paramPostId: string) {
+    const pattern = { cmd: 'removePost' };
     const payload = { id: paramPostId };
     return this.clientPostApp
       .send<string>(pattern, payload)

@@ -16,7 +16,10 @@ export class GuestsController {
   findAll() {
     return this.guestsService.findAll();
   }
-
+  @MessagePattern({ cmd: 'findGuestUser' })
+  findGuestUser(@Payload() id: string) {
+    return this.guestsService.findGuestUser(id);
+  }
   @MessagePattern({ cmd: 'findOneGuest' })
   findOneById(@Payload() id: string) {
     let _id = id['_id'];

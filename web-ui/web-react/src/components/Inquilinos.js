@@ -148,7 +148,7 @@ const Inquilinos = () => {
               detail: 'Inquilino creado',
               life: 3000,
             })
-            
+
             setTenants(_tenants)
             setTenant(emptyTenant)
             setHouseNumber('')
@@ -231,7 +231,24 @@ const Inquilinos = () => {
   }
 
   const deleteSelectedTenants = () => {
-    let _tenants = tenants.filter((val) => !selectedTentants.includes(val))
+    let _tenants = tenants.filter(
+      (val) => !selectedTentants.includes(val)
+    );
+    selectedTentants.map((item) => {
+      let _tenant = {
+        community_id: item.community_id,
+        number_house: item.number_house
+      };
+      fetch('http://localhost:4000/user/deleteTenant/' + item._id, {
+        cache: 'no-cache',
+        method: 'PUT',
+        body: JSON.stringify(_tenant),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    });
+
     setTenants(_tenants)
     setDeleteTenantsDialog(false)
     setSelectedTenants(null)

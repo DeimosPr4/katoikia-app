@@ -1,69 +1,30 @@
-import React, { useContext, useState } from "react";
-import { API } from "../environment/api";
+import React, { useState } from "react";
 
 import {
-  Box, Button,
-  Center, FormControl, Heading, ScrollView, VStack
-} from "native-base";
+    Box, 
+    Heading, 
+    VStack, 
+    FormControl,  
+    Button,
+    Center,
+    ScrollView
+  } from "native-base";
 
-import { StyleSheet, TextInput } from "react-native";
-import { UserContext } from "../context/UserContext";
+  import { View, TextInput, StyleSheet } from "react-native";
 
-export default function Profile({ navigation }) {
+export default function ProfileGuarda({route, navigation}){
 
-  const baseURL = `${API.BASE_URL}/user/updateUser/`
-  //const userData = JSON.parse(JSON.stringify(route.params));
+  const userData = JSON.parse(JSON.stringify(route.params));
   const [name, setName] = useState(); 
   const [apellido, setApellido] =useState(); 
   const [email, setEmail] = useState(); 
   const [password, setPassword] = useState();
-
-  const userData = useContext(UserContext)
-  const id = userData.user._id;
 
   console.log(userData.user);
 
 
   const updateInfo = async() => {
 
-    const data = {
-      "_id": "6301df20dac7dcf76dcecade",
-      "dni": "1234567890",
-      "name": name,
-      "last_name": apellido,
-      "email": email,
-      "phone": 12121212,
-      "password": "827ccb0eea8a706c4c34a16891f84e7b",
-      "user_type": "3",
-      "status": "1",
-      "date_entry": "2022-08-21T07:30:09.929Z",
-      "community_id": null,
-    }
-
-    try {
-
-      await fetch(baseURL+`${id}`, {
-
-        cache: 'no-cache', 
-        method: 'PUT', 
-        body: JSON.stringify(data), 
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => {
-
-        console.log(baseURL+`${id}`);
-        if (response.status != 201){
-          console.log('ocurrio un error ');
-        }else{
-          return response.json(); 
-        }
-      })
-      
-    } catch (error) {
-      console.log("ERROR: " + error);
-    }
   }
     return (
         <Center>
@@ -87,11 +48,7 @@ export default function Profile({ navigation }) {
         <VStack space={3} mt="5">
         <FormControl>
             <FormControl.Label>DNI</FormControl.Label>
-            <TextInput type="text" defaultValue={userData.user.dni} editable={false} />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>Teléfono</FormControl.Label>
-            <TextInput type="text" defaultValue={userData.user.phone} editable={false} />
+            <TextInput type="text" defaultValue={userData.user.dni} editable='false' />
           </FormControl>
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
@@ -110,7 +67,7 @@ export default function Profile({ navigation }) {
             <TextInput style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) }/>
           </FormControl>
           
-          <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()}>
+          <Button mt="2" backgroundColor="orange.300">
             Actualizar
           </Button>
           <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Inicio')}>
@@ -120,17 +77,17 @@ export default function Profile({ navigation }) {
       </Box>
 
       </ScrollView>
-    </Center>
+        </Center>
+       
+    )
 
-  )
-
-
+   
 }
 
 const styles = StyleSheet.create({
   input: {
     height: 10,
-    margin: 3,
+    margin:3,
     borderWidth: 0.5,
     padding: 5,
     flex: 1,
@@ -138,9 +95,9 @@ const styles = StyleSheet.create({
     paddingRight: 19,
     paddingBottom: 20,
     paddingLeft: 0,
-    marginTop: 6,
-    marginBottom: 6,
+    marginTop: 6, 
+    marginBottom:6, 
     borderRadius: 4
   }
-})
+  })
 

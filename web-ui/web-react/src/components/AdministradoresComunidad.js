@@ -317,6 +317,7 @@ const AdministradoresComunidad = () => {
                 toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador de Comunidad de vivienda Actualizada', life: 3000 });
 
                 listaAdmin();
+                setCommunityId('');
 
                 setAdminCommunity(emptyAdminCommunity);
             })
@@ -352,7 +353,6 @@ const AdministradoresComunidad = () => {
 
     const editAdmin = (admin) => {
         setAdminCommunity(admin);
-        console.log(admin);
         setSaveButtonTitle('Actualizar');
         setCommunityId(admin.community_id)
     }
@@ -361,7 +361,7 @@ const AdministradoresComunidad = () => {
     const cancelEdit = () => {
         setAdminCommunity(emptyAdminCommunity);
         setSaveButtonTitle('Registrar');
-        setC
+        setCommunityId('');
     }
 
     const actionsAdminCommunity = (rowData) => {
@@ -621,7 +621,7 @@ const AdministradoresComunidad = () => {
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
+                                        <i className="pi pi-user"></i>
                                     </span>
                                     <InputText id="name" value={adminCommunity.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.name === '' })} />
                                 </div>
@@ -633,7 +633,7 @@ const AdministradoresComunidad = () => {
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
+                                        <i className="pi pi-user"></i>
                                     </span>
                                     <InputText id="last_name" value={adminCommunity.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.last_name === '' })} />
                                 </div>
@@ -645,7 +645,7 @@ const AdministradoresComunidad = () => {
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
+                                        <i className="pi pi-at"></i>
                                     </span>
                                     <InputText id="email" value={adminCommunity.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.email === '' })} />
                                 </div>
@@ -658,7 +658,7 @@ const AdministradoresComunidad = () => {
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
+                                        <i className="pi pi-id-card"></i>
                                     </span>
                                     <InputText id="dni" value={adminCommunity.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.dni === '' })} />
                                 </div>

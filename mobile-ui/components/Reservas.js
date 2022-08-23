@@ -19,8 +19,6 @@ export default function Reservas({navigation}) {
 
   useEffect(() => {
 
-    console.log("im in");
-
     const onRequestReservasData = async () => {
       setIsRequesting(true);
 

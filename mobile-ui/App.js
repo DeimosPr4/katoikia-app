@@ -14,6 +14,7 @@ import Profile from "./components/Profile";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AreaComun from "./components/AreaComun";
 import { UserContext, UserContextProvider } from "./context/UserContext";
+import AgregarInvitados from "./components/AgregarInvitados";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,6 +35,9 @@ function HomeTab({ route }) {
     <Tab.Screen  name="Reservas" component={Reservas } initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'tree' : 'tree-outline'} />} color="#D7A86E" size="md" />)} } onclick={() => setSelected(1)}  /> 
+        <Tab.Screen  name="Invitados" component={AgregarInvitados} initialParams={user} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'contacts' : 'contacts-outline'} />} color="#D7A86E" size="md" />)} } onclick={() => setSelected(1)}  /> 
     <Tab.Screen  name="Perfil" component={Profile} initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 2 ? 'account' : 'account-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(2)} /> 

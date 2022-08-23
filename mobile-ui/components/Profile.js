@@ -1,6 +1,5 @@
-
 import React, { useContext, useState } from "react";
-
+import { API } from "../environment/api";
 
 import {
   Box, Button,
@@ -12,17 +11,17 @@ import { UserContext } from "../context/UserContext";
 
 export default function Profile({ navigation }) {
 
-  const baseURL = 'http://localhost:4000/user/updateUser'
+  const baseURL = `${API.BASE_URL}/user/updateUser/`
   //const userData = JSON.parse(JSON.stringify(route.params));
   const [name, setName] = useState(); 
   const [apellido, setApellido] =useState(); 
   const [email, setEmail] = useState(); 
   const [password, setPassword] = useState();
+
+  const userData = useContext(UserContext)
   const id = userData.user._id;
 
   console.log(userData.user);
-
-  const userData = useContext(UserContext)
 
 
   const updateInfo = async() => {
@@ -43,7 +42,7 @@ export default function Profile({ navigation }) {
 
     try {
 
-      await fetch(baseURL+':'+id, {
+      await fetch(baseURL+`${id}`, {
 
         cache: 'no-cache', 
         method: 'PUT', 
@@ -54,7 +53,7 @@ export default function Profile({ navigation }) {
       })
       .then(response => {
 
-        console.log(baseURL+'/:'+id);
+        console.log(baseURL+`${id}`);
         if (response.status != 201){
           console.log('ocurrio un error ');
         }else{

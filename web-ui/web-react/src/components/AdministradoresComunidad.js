@@ -275,7 +275,7 @@ const AdministradoresComunidad = () => {
                         // _adminCommunity.community_id = communitiesList.find(c => c._id === _adminCommunity.community_id).name
 
                         _administrators.push(_admin);
-                        toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
+                        toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
 
                         setListaAdmins(_administrators);
 

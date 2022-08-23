@@ -113,3 +113,5 @@ const InvitadosComunidad = () => {
     </div>
   )
 }
+
+export default React.memo(InvitadosComunidad);

@@ -11,49 +11,40 @@ import { UserContext } from "../context/UserContext";
 
 export default function AgregarInvitados({ navigation }) {
 
-  const baseURL = `${API.BASE_URL}/user/updateUser/`
-  //const userData = JSON.parse(JSON.stringify(route.params));
+  const baseURL = `${API.BASE_URL}/guest/createGuest/`;
   const [name, setName] = useState(); 
   const [apellido, setApellido] =useState(); 
-  const [email, setEmail] = useState(); 
-  const [password, setPassword] = useState();
+  const [dni, setDNI] = useState(); 
+  const [phone, setPhone] = useState();
+  const [number_plate, setNumber_plate] = useState();
+  const [tenant_id, setTenant_id] = useState();
+  const [community_id, setCommunity_id] = useState();
+  const { user } = useContext(UserContext);
 
-  const userData = useContext(UserContext)
-  const id = userData.user._id;
-
-
-
-
-  const updateInfo = async() => {
+  const saveInvitado = async() => {
 
     const data = {
-      "_id": "6301df20dac7dcf76dcecade",
-      "dni": "1234567890",
       "name": name,
       "last_name": apellido,
-      "email": email,
-      "phone": 12121212,
-      "password": "827ccb0eea8a706c4c34a16891f84e7b",
-      "user_type": "3",
-      "status": "1",
-      "date_entry": "2022-08-21T07:30:09.929Z",
-      "community_id": null,
+      "dni": dni,
+      "phone": phone,
+      "number_plate": number_plate,
+      "tenant_id": user.id,
+      "community_id": user.community_id
     }
 
     try {
 
-      await fetch(baseURL+`${id}`, {
+      await fetch(baseURL, {
 
         cache: 'no-cache', 
-        method: 'PUT', 
+        method: 'POST', 
         body: JSON.stringify(data), 
         headers: {
           'Content-Type': 'application/json'
         }
       })
       .then(response => {
-
-        console.log(baseURL+`${id}`);
         if (response.status != 201){
           console.log('ocurrio un error ');
         }else{
@@ -85,37 +76,25 @@ export default function AgregarInvitados({ navigation }) {
          Registre el invitado que desee
         </Heading>
         <VStack space={3} mt="5">
-        <FormControl>
-            <FormControl.Label>DNI</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setName(value) }/>
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>Teléfono</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setName(value) }/>
-          </FormControl>
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setName(value) }/>
+            <TextInput style={styles.input} type="text" onChangeText={(value) => setName(value)}/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Apellido</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setApellido(value) } />
+            <TextInput style={styles.input} type="text" onChangeText={(value) => setApellido(value)}/>
           </FormControl>
           <FormControl>
-            <FormControl.Label>Correo electrónico</FormControl.Label>
-            <TextInput style={styles.input} type="text"  onChangeText={(value) => setEmail(value) }/>
+            <FormControl.Label>Identificación</FormControl.Label>
+            <TextInput style={styles.input} type="text" onChangeText={(value) => setDNI(value)}/>
           </FormControl>
           <FormControl>
-            <FormControl.Label>Contraseña actual</FormControl.Label>
-            <TextInput style={styles.input} type="password"  onChangeText={(value) => setPassword(value) }/>
+            <FormControl.Label>Teléfono</FormControl.Label>
+            <TextInput style={styles.input} type="text" onChangeText={(value) => setPhone(value)} />
           </FormControl>
-          
-          <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()}>
+          <Button mt="2" onPress={() => saveInvitado()}>
            Guardar
           </Button>
-          {/* <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Inicio')}>
-            Cerrar sesión
-          </Button> */}
         </VStack>
       </Box>
 

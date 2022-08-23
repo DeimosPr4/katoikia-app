@@ -24,8 +24,7 @@ const InvitadosComunidad = () => {
   const toastRef = useRef(null);
 
   const getInvitados = async () => {
-    console.log(`${process.env.REACT_APP_API_URL}`);
-    await fetch(`${process.env.REACT_APP_API_URL}/guest/allGuests`, {
+    await fetch(`http://localhost:4000/guest/allGuests`, {
       method: 'GET',
     })
       .then((response) => response.json())
@@ -40,7 +39,7 @@ const InvitadosComunidad = () => {
 
   useEffect(() => {
     getInvitados();
-  }, [invitados]);
+  }, [getInvitados, invitados]);
 
   const leftToolbarTemplate = () => {
     return (

@@ -15,7 +15,24 @@ const InvitadosComunidad = () => {
   const tableRef = useRef(null);
   const toastRef = useRef(null);
 
+  const getInvitados = async () => {
+    console.log(`${process.env.REACT_APP_API_URL}`);
+    await fetch(`${process.env.REACT_APP_API_URL}/guest/allGuests`, {
+      method: 'GET',
+    })
+      .then(response => response.json())
+      .then(data => data.message)
+      .then(data => {
+        data = data.filter(invitado =>
+          invitado.community === cookies.community_id);
+        setInvitados(data);
+      })
+  }
   
+  useEffect(() => {
+  getInvitados();
+  }, [invitados]);
+
   const headerTemplate = (
     <div className='flex flex-column md:flex-row md:justify-content-between md:align-items-center'>
       <h5 className='m-0'>Invitados</h5>

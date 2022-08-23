@@ -1,11 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button } from 'primereact/button'
-import { InputText } from 'primereact/inputtext'
-import { Column } from 'primereact/column'
-import { DataTable } from 'primereact/datatable'
-import { Toast } from 'primereact/toast'
-import { Toolbar } from 'primereact/toolbar'
-import { useCookies } from 'react-cookie';
+import React, { useEffect, useState, useRef } from 'react';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
+import { Toolbar } from 'primereact/toolbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faAt } from '@fortawesome/free-solid-svg-icons';
+import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import { useCookies } from "react-cookie";
+import classNames from 'classnames';
 
 const InvitadosComunidad = () => {
   const [cookies] = useCookies();
@@ -28,9 +36,9 @@ const InvitadosComunidad = () => {
         setInvitados(data);
       })
   }
-  
+
   useEffect(() => {
-  getInvitados();
+    getInvitados();
   }, [invitados]);
 
   const leftToolbarTemplate = () => {
@@ -54,6 +62,51 @@ const InvitadosComunidad = () => {
       </React.Fragment>
     )
   }
+
+  const headerName = (
+    <>
+      <p>{' '}
+        <FontAwesomeIcon icon={faUserAlt} style={{ color: "#C08135" }} /> {' '}
+        Nombre
+      </p>
+    </>
+  )
+
+  const headerLastName = (
+    <>
+      <p>
+        {' '}
+        <FontAwesomeIcon icon={faUserAlt} style={{ color: "#D7A86E" }} />{' '}
+        Apellido(s)
+      </p>
+    </>
+  )
+
+  const headerDNI = (
+    <p> {' '}
+      <FontAwesomeIcon icon={faIdCardAlt} style={{ color: "#C08135" }} />{' '}
+      Identificación
+    </p>
+  )
+
+  const headerEmail = (
+    <>
+      <p> {' '}
+        <FontAwesomeIcon icon={faAt} style={{ color: "#D7A86E" }} />{' '}
+        Correo Electrónico
+      </p>
+    </>
+  )
+
+  const headerPhone = (
+    <>
+      <p>
+        {' '}
+        <FontAwesomeIcon icon={faPhoneAlt} style={{ color: '#C08135' }} />{' '}
+        Teléfono
+      </p>
+    </>
+  )
 
   const headerTemplate = (
     <div className='flex flex-column md:flex-row md:justify-content-between md:align-items-center'>
@@ -99,14 +152,14 @@ const InvitadosComunidad = () => {
             globalFilter={globalFilter}
             emptyMessageTemplate='No se encontraron invitados'
           >
-            <Column field='name' header='Nombre' sortable />
-            <Column field='last_name' header='Apellido' sortable />
-            <Column field='dni' header='DNI' sortable />
-            <Column field='number_plate' header='Placa' sortable />
-            <Column field='telefono' header='Teléfono' sortable />
-            <Column field='email' header='Email' sortable />
-            <Column field='date_entry' header='Fecha de registro' sortable />
-            <Column field='tenant_name' header='Inquilino' sortable />
+            <Column field='name' header='Nombre' sortable header={headerName} />
+            <Column field='last_name' header='Apellido' sortable header={headerLastName} />
+            <Column field='dni' header='DNI' sortable header={headerDNI} />
+            <Column field='number_plate' header='Placa' sortable header={headerDNI} />
+            <Column field='telefono' header='Teléfono' sortable header={headerPhone} />
+            <Column field='email' header='Email' sortable header={headerEmail} />
+            <Column field='date_entry' header='Fecha de registro' sortable header={headerName} />
+            <Column field='tenant_name' header='Inquilino' sortable header={headerName} />
           </DataTable>
         </div>
       </div>

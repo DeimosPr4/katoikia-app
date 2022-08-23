@@ -14,6 +14,8 @@ export class CommunitiesService {
     @InjectModel(Community.name)
     private readonly communityModel: Model<CommunityDocument>,
     @Inject('SERVICIO_USUARIOS') private readonly clientUserApp: ClientProxy,
+    @Inject('SERVICIO_AREAS_COMUNES') private readonly clientAreaApp: ClientProxy,
+    @Inject('SERVICIO_RESERVACIONES') private readonly clientReservationApp: ClientProxy,
   ) { }
 
   async create(community: CommunityDocument): Promise<Community> {
@@ -57,6 +59,7 @@ export class CommunitiesService {
   }
 
   async remove(id: string) {
+    await this.removeIdCommunity(id);
     return this.communityModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
       new: true,
     });
@@ -80,7 +83,6 @@ export class CommunitiesService {
     return finalValue['response'];
   }
 
-
   async saveTenant(id: string, number_house: string, ptenant_id: string) {
     let community = await this.findOne(id);
     await community.houses.map(house => {
@@ -97,12 +99,10 @@ export class CommunitiesService {
       }
       return house;
     })
-
     return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
       new: true,
     });
   }
-
 
   async deleteTenant(id: string, number_house: string, tenant_id: string) {
     let community = await this.findOne(id);
@@ -114,9 +114,31 @@ export class CommunitiesService {
       }
       return house;
     })
-
     return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
       new: true,
     });
+  }
+
+  async removeIdCommunity(community: string) {
+    const pattern = { cmd: 'removeIdCommunity' };
+    const payload = { community_id: community };
+
+    await this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((response: string) => ({ response })));
+
+    const pattern2 = { cmd: 'removeIdCommunity' };
+    const payload2 = { community_id: community };
+
+    await this.clientAreaApp
+      .send<string>(pattern2, payload2)
+      .pipe(map((response: string) => ({ response })));
+
+    const pattern3 = { cmd: 'removeIdCommunity' };
+    const payload3 = { community_id: community };
+
+    await this.clientReservationApp
+      .send<string>(pattern3, payload3)
+      .pipe(map((response: string) => ({ response })));
   }
 }

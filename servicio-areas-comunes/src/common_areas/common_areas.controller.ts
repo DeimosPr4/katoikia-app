@@ -5,7 +5,7 @@ import { CommonAreasService } from './common_areas.service';
 
 @Controller()
 export class CommonAreasController {
-  constructor(private readonly commonAreasService: CommonAreasService) {}
+  constructor(private readonly commonAreasService: CommonAreasService) { }
 
   @MessagePattern({ cmd: 'createCommonArea' })
   create(@Payload() commonArea: CommonAreaDocument) {
@@ -40,11 +40,17 @@ export class CommonAreasController {
     return this.commonAreasService.findByCommunity(_community_id);
   }
 
-   //cambiar de estado
-   @MessagePattern({ cmd: 'changeStatus' })
-   changeStatus(@Payload() body: string) {
-     let pid = body['id'];
-     let pstatus = body['status'];
-     return this.commonAreasService.changeStatus(pid,pstatus);
-   }
+  //cambiar de estado
+  @MessagePattern({ cmd: 'changeStatus' })
+  changeStatus(@Payload() body: string) {
+    let pid = body['id'];
+    let pstatus = body['status'];
+    return this.commonAreasService.changeStatus(pid, pstatus);
+  }
+
+  @MessagePattern({ cmd: 'removeIdCommunity' })
+  removeIdCommunity(@Payload() area: any) {
+    let community_id = area['community_id'];
+    return this.commonAreasService.removeIdCommunity(community_id);
+  }
 }

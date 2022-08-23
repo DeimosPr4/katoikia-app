@@ -343,6 +343,11 @@ export class AppController {
   ) {
     return this.appService.saveTenant(community_id, number_house, tenant_id);
   }
+
+  @Delete('community/deleteCommunity/:id')
+  deleteCommunity(@Param('id') paramCommunityId: string) {
+    return this.appService.deleteCommunity(paramCommunityId);
+  }
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(
@@ -476,6 +481,7 @@ export class AppController {
     @Body('date_entry') date_entry: Date,
     @Body('user_id') user_id: string,
     @Body('common_area_id') common_area_id: string,
+    @Body('community_id') community_id: string,
   ) {
     return this.appService.createReservation(
       start_time,
@@ -484,6 +490,7 @@ export class AppController {
       date_entry,
       user_id,
       common_area_id,
+      community_id
     );
   }
 
@@ -497,6 +504,12 @@ export class AppController {
     return this.appService.findReservation(paramReservation);
   }
 
+  @Get('reservation/findReservations/:id')
+  findReservations(@Param('id') community_id: string) {
+    return this.appService.findReservations(community_id);
+  }
+
+  
   // #==== API Post
 
   @Post('post/createPost')

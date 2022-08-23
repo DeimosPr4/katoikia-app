@@ -309,12 +309,12 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  updateAdminSystem(_id: string, dni: string, name: string, 
+  updateAdminSystem(_id: string, dni: string, name: string,
     last_name: string, email: string, phone: number
-    ) {
+  ) {
     const pattern = { cmd: 'updateAdminSystem' };
     const payload = {
-      _id: _id, dni: dni, name: name, last_name: last_name, 
+      _id: _id, dni: dni, name: name, last_name: last_name,
       email: email, phone: phone
     };
     return this.clientUserApp
@@ -428,6 +428,15 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
+
+  deleteCommunity(id: string) {
+    const pattern = { cmd: 'removeCommunity' };
+    const payload = { _id: id };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
 
   // ====================== COMMON AREAS ===============================
   //POST parameter from API
@@ -589,11 +598,12 @@ export class AppService {
 
   //POST parameter from API
   createReservation(start_time: string, finish_time: string, status: string,
-    date_entry: Date, user_id: string, common_area_id: string) {
+    date_entry: Date, user_id: string, common_area_id: string, community_id: string) {
     const pattern = { cmd: 'createReservation' };
     const payload = {
       start_time: start_time, finish_time: finish_time, status: status,
-      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id
+      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id, 
+      community_id: community_id
     };
     return this.clientReservationApp
       .send<string>(pattern, payload)
@@ -612,6 +622,14 @@ export class AppService {
   findReservation(paramReservationId: string) {
     const pattern = { cmd: 'findOneReservation' };
     const payload = { id: paramReservationId };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  findReservations(community_id: string) {
+    const pattern = { cmd: 'findReservationsByCommunity' };
+    const payload = { community_id: community_id };
     return this.clientReservationApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));

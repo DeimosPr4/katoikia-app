@@ -228,20 +228,20 @@ const AdministradoresComunidad = () => {
     const findIndexById = (id) => {
         let index = -1;
         for (let i = 0; i < listaAdmins.length; i++) {
-          if (listaAdmins[i]._id === id) {
-            index = i;
-            break;
-          }
+            if (listaAdmins[i]._id === id) {
+                index = i;
+                break;
+            }
         }
         return index;
-    
-      }
-    
-      const findRepeated = (name, value) => {
+
+    }
+
+    const findRepeated = (name, value) => {
         let _administrators = [...listaAdmins];
         let value_filtered = _administrators.filter(item => item[`${name}`] === value);
         return value_filtered.length
-      }
+    }
 
     const saveAdminCommunity = () => {
         let _administrators = [...listaAdmins];
@@ -647,10 +647,16 @@ const AdministradoresComunidad = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-at"></i>
                                     </span>
-                                    <InputText id="email" value={adminCommunity.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.email === '' })} />
+                                    <InputText id="email" value={adminCommunity.email} 
+                                    onChange={(e) => onInputChange(e, 'email')} required autoFocus 
+                                    className={classNames({ 'p-invalid': submitted && 
+                                    (adminCommunity.email === '' || findRepeated('email', adminCommunity.email) > 0) })} />
                                 </div>
                                 {submitted && adminCommunity.email === '' && <small className="p-invalid">Correo electrónico
                                     es requirido.</small>}
+                                {submitted && findRepeated('email', adminCommunity.email) > 0 &&
+                                    <small className="p-invalid">Correo electrónico se encuentra repetido.</small>
+                                }
                             </div>
                         </div>
                         <div className="field col-12 md:col-6">
@@ -660,9 +666,15 @@ const AdministradoresComunidad = () => {
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                         <i className="pi pi-id-card"></i>
                                     </span>
-                                    <InputText id="dni" value={adminCommunity.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.dni === '' })} />
+                                    <InputText id="dni" value={adminCommunity.dni} 
+                                    onChange={(e) => onInputChange(e, 'dni')} required autoFocus 
+                                    className={classNames({ 'p-invalid': submitted 
+                                    && (adminCommunity.dni === '' || findRepeated('dni', adminCommunity.dni) > 0)})} />
                                 </div>
-                                {submitted && adminCommunity.email === '' && <small className="p-invalid">Identificación es requirida.</small>}
+                                {submitted && adminCommunity.dni === '' && <small className="p-invalid">Identificación es requirida.</small>}
+                                {submitted && findRepeated('dni', adminCommunity.dni) > 0 &&
+                                    <small className="p-invalid">Identificación se encuentra repetida.</small>
+                                }
                             </div>
                         </div>
                         <div className="field col-12 md:col-6">

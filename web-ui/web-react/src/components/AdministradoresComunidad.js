@@ -49,6 +49,7 @@ const AdministradoresComunidad = () => {
     const dt = useRef(null);
 
     const [changeStatusAdminCommunityDialog, setChangeStatusAdminCommunityDialog] = useState(false);
+    const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar");
 
 
     async function listaAdmin() {
@@ -151,22 +152,22 @@ const AdministradoresComunidad = () => {
                 }
             );
 
-       
+
     };
 
     const deleteSelectedAdminsCommunity = () => {
         let _admins = listaAdmins.filter(
             (val) => !selectedAdminsCommunities.includes(val),
         );
-         selectedAdminsCommunities.map((item) => {
-                 fetch('http://localhost:4000/user/deleteAdminCommunity/' + item._id, {
-                     cache: 'no-cache',
-                     method: 'DELETE',
-                     headers: {
-                         'Content-Type': 'application/json'
-                     }
-                 })
-             })
+        selectedAdminsCommunities.map((item) => {
+            fetch('http://localhost:4000/user/deleteAdminCommunity/' + item._id, {
+                cache: 'no-cache',
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        })
         setListaAdmins(_admins);
         setDeleteAdminsCommunitiesDialog(false);
         setSelectedAdminsCommunities(null);
@@ -224,52 +225,104 @@ const AdministradoresComunidad = () => {
             );
     }
 
-    const saveAdminCommunity = () => {
-        if (adminCommunity.name && adminCommunity.dni && adminCommunity.last_name && adminCommunity.email && adminCommunity.phone) {
-
-            let _administrators = [...listaAdmins];
-            let _adminCommunity = { ...adminCommunity };
-            _adminCommunity.community_id = communityId;
-            console.log(_adminCommunity)
-            console.log(communityId)
-
-            fetch('http://localhost:4000/user/createAdminCommunity', {
-                cache: 'no-cache',
-                method: 'POST',
-                body: JSON.stringify(_adminCommunity),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(
-                    function (response) {
-                        if (response.status != 201)
-                            console.log('Ocurrió un error con el servicio: ' + response.status);
-                        else
-                            return response.json();
-                    }
-                )
-                .then(() => {
-
-                    // _adminCommunity.community_id = communitiesList.find(c => c._id === _adminCommunity.community_id).name
-
-                    _administrators.push(_adminCommunity);
-                    toast.current.show({ severity: 'success', summary: 'Registro exitoso', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
-
-                    setListaAdmins(_administrators);
-
-                    setAdminCommunity(emptyAdminCommunity);
-
-                })
-                .catch(
-                    err => console.log('Ocurrió un error con el fetch', err)
-                );
-
-
-        } else {
-            setSubmitted(true);
-
+    const findIndexById = (id) => {
+        let index = -1;
+        for (let i = 0; i < listaAdmins.length; i++) {
+            if (listaAdmins[i]._id === id) {
+                index = i;
+                break;
+            }
         }
+        return index;
+
+    }
+
+    const findRepeated = (name, value) => {
+        let _administrators = [...listaAdmins];
+        let value_filtered = _administrators.filter(item => item[`${name}`] === value);
+        return value_filtered.length
+    }
+
+    const saveAdminCommunity = () => {
+        let _administrators = [...listaAdmins];
+        let _admin = { ...adminCommunity };
+        _admin.community_id = communityId;
+
+        if (adminCommunity._id === null) {
+            if (adminCommunity.name && adminCommunity.dni &&
+                adminCommunity.last_name && adminCommunity.email &&
+                adminCommunity.phone) {
+
+
+                fetch('http://localhost:4000/user/createAdminCommunity', {
+                    cache: 'no-cache',
+                    method: 'POST',
+                    body: JSON.stringify(_admin),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(
+                        function (response) {
+                            if (response.status != 201)
+                                console.log('Ocurrió un error con el servicio: ' + response.status);
+                            else
+                                return response.json();
+                        }
+                    )
+                    .then(() => {
+
+                        // _adminCommunity.community_id = communitiesList.find(c => c._id === _adminCommunity.community_id).name
+
+                        _administrators.push(_admin);
+                        toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
+
+                        setListaAdmins(_administrators);
+
+                        setAdminCommunity(emptyAdminCommunity);
+
+                    })
+                    .catch(
+                        err => console.log('Ocurrió un error con el fetch', err)
+                    );
+
+
+            } else {
+                setSubmitted(true);
+            }
+        } else {
+            console.log(`Actualizando admnistrador de comunidad: ${_admin}`)
+            _admin.community_id = communityId;
+            console.log(`Actualizando admnistrador de comunidad: ${_admin}`)
+
+            fetch(`http://localhost:4000/user/updateAdminCommunity/${_admin._id}`, {
+                cache: 'no-cache',
+                method: 'PUT',
+                body: JSON.stringify(_admin),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                if (response.status !== 200)
+                    console.log(`Hubo un error en el servicio: ${response.status}`)
+                else return response.json()
+            }).then(() => {
+
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Éxito',
+                    detail: 'Administrador de comunidad actualizado',
+                    life: 3000,
+                })
+                toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador de Comunidad de vivienda Actualizada', life: 3000 });
+
+                listaAdmin();
+                setCommunityId('');
+
+                setAdminCommunity(emptyAdminCommunity);
+            })
+        }
+
     }
 
     const hideDeleteAdminCommunityDialog = () => {
@@ -298,6 +351,19 @@ const AdministradoresComunidad = () => {
         setChangeStatusAdminCommunityDialog(true);
     };
 
+    const editAdmin = (admin) => {
+        setAdminCommunity(admin);
+        setSaveButtonTitle('Actualizar');
+        setCommunityId(admin.community_id)
+    }
+
+
+    const cancelEdit = () => {
+        setAdminCommunity(emptyAdminCommunity);
+        setSaveButtonTitle('Registrar');
+        setCommunityId('');
+    }
+
     const actionsAdminCommunity = (rowData) => {
         let icono = '';
         let text = '';
@@ -311,14 +377,21 @@ const AdministradoresComunidad = () => {
         return (
             <div className="actions">
                 <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-success mt-2 mx-2"
+                    onClick={() => editAdmin(rowData)}
+                    title="Editar"
+                />
+                <Button
                     icon={`${icono}`}
                     className="p-button-rounded p-button-warning mt-2 mx-2"
                     onClick={() => confirmChangeStatuAdminCommunity(rowData)}
                     title={`${text}`}
                 />
+
                 <Button
                     icon="pi pi-trash"
-                    className="p-button-rounded p-button-danger mt-2"
+                    className="p-button-rounded p-button-danger mt-2 mx-2"
                     onClick={() => confirmDeleteAdminCommunity(rowData)}
                 />
             </div>
@@ -503,7 +576,7 @@ const AdministradoresComunidad = () => {
                         <Column field="phone" header={headerPhone} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="community_name" sortable header={headerCommuntiy} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column field="status" sortable header={headerStatus} body={statusBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsAdminCommunity}></Column>
+                        <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsAdminCommunity}></Column>
                     </DataTable>
                     <Dialog visible={deleteAdminCommunityDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteAdminCommunityDialogFooter} onHide={hideDeleteAdminCommunityDialog}>
                         <div className="flex align-items-center justify-content-center">
@@ -548,7 +621,7 @@ const AdministradoresComunidad = () => {
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
+                                        <i className="pi pi-user"></i>
                                     </span>
                                     <InputText id="name" value={adminCommunity.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.name === '' })} />
                                 </div>
@@ -560,7 +633,7 @@ const AdministradoresComunidad = () => {
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
+                                        <i className="pi pi-user"></i>
                                     </span>
                                     <InputText id="last_name" value={adminCommunity.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.last_name === '' })} />
                                 </div>
@@ -572,12 +645,18 @@ const AdministradoresComunidad = () => {
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
+                                        <i className="pi pi-at"></i>
                                     </span>
-                                    <InputText id="email" value={adminCommunity.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.email === '' })} />
+                                    <InputText id="email" value={adminCommunity.email} 
+                                    onChange={(e) => onInputChange(e, 'email')} required autoFocus 
+                                    className={classNames({ 'p-invalid': submitted && 
+                                    (adminCommunity.email === '' || findRepeated('email', adminCommunity.email) > 0) })} />
                                 </div>
                                 {submitted && adminCommunity.email === '' && <small className="p-invalid">Correo electrónico
                                     es requirido.</small>}
+                                {submitted && findRepeated('email', adminCommunity.email) > 0 &&
+                                    <small className="p-invalid">Correo electrónico se encuentra repetido.</small>
+                                }
                             </div>
                         </div>
                         <div className="field col-12 md:col-6">
@@ -585,11 +664,17 @@ const AdministradoresComunidad = () => {
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
+                                        <i className="pi pi-id-card"></i>
                                     </span>
-                                    <InputText id="dni" value={adminCommunity.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && adminCommunity.dni === '' })} />
+                                    <InputText id="dni" value={adminCommunity.dni} 
+                                    onChange={(e) => onInputChange(e, 'dni')} required autoFocus 
+                                    className={classNames({ 'p-invalid': submitted 
+                                    && (adminCommunity.dni === '' || findRepeated('dni', adminCommunity.dni) > 0)})} />
                                 </div>
-                                {submitted && adminCommunity.email === '' && <small className="p-invalid">Identificación es requirida.</small>}
+                                {submitted && adminCommunity.dni === '' && <small className="p-invalid">Identificación es requirida.</small>}
+                                {submitted && findRepeated('dni', adminCommunity.dni) > 0 &&
+                                    <small className="p-invalid">Identificación se encuentra repetida.</small>
+                                }
                             </div>
                         </div>
                         <div className="field col-12 md:col-6">
@@ -617,7 +702,23 @@ const AdministradoresComunidad = () => {
                                 {submitted && !communityId && <small className="p-invalid">Comunidad es requirida.</small>}
                             </div>
                         </div>
-                        <Button label="Registrar" onClick={saveAdminCommunity} />
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            gap: "10px",
+                            width: "100%"
+                        }}>
+                            <Button
+                                label={`${saveButtonTitle}`}
+                                onClick={saveAdminCommunity}
+                            />
+                            {saveButtonTitle === 'Actualizar' && (
+                                <Button
+                                    label="Cancelar"
+                                    onClick={cancelEdit}
+                                    className="p-button-danger" />)}
+                        </div>
+
                     </div>
                 </div>
             </div>

@@ -93,6 +93,16 @@ const Inquilinos = () => {
     )
   }
 
+
+  async function getHouses() {
+    let response = await fetch(
+      `http://localhost:4000/community/findHousesCommunity/${cookies.community_id}`,
+      { method: 'GET' },
+    )
+    let resList = await response.json()
+    setHousesList(await resList)
+  }
+
   useEffect(() => {
     tenantsList()
   }, [])
@@ -110,9 +120,9 @@ const Inquilinos = () => {
         _tenant.community_id = cookies.community_id;
         _tenant.number_house = houseNumber;
         _tenant.password = _tenant.email;
-      console.log(`Registrando nuevo inquilino: ${_tenant}`)
+        console.log(`Registrando nuevo inquilino: ${_tenant}`)
 
-        fetch(`http://localhost:4000/user/createUser`, {
+        fetch(`http://localhost:4000/user/createTenant`, {
           cache: 'no-cache',
           method: 'POST',
           body: JSON.stringify(_tenant),
@@ -125,7 +135,12 @@ const Inquilinos = () => {
               console.log(`Hubo un error en el servicio: ${response.status}`)
             else return response.json()
           })
-          .then(() => {
+          .then((data) => {
+            if (_tenant.status === '1') {
+              _tenant.status_text = 'Activo'
+            } else if (_tenant.status === '0') {
+              _tenant.status_text = 'Inactivo'
+            }
             _tenants.push(_tenant)
             toast.current.show({
               severity: 'success',
@@ -133,6 +148,7 @@ const Inquilinos = () => {
               detail: 'Inquilino creado',
               life: 3000,
             })
+
             setTenants(_tenants)
             setTenant(emptyTenant)
             setHouseNumber('')
@@ -168,19 +184,71 @@ const Inquilinos = () => {
   }
 
   const deleteTenant = () => {
-    let _tenants = tenants.filter((val) => val._id !== tenant._id)
-    setTenants(_tenants)
-    setDeleteTenantDialog(false)
-    setTenant(emptyTenant)
-    toast.current.show({
-      severity: 'success',
-      summary: 'Inquilino Eliminado',
-      life: 3000,
+
+    let _tenant = {
+      community_id: tenant.community_id,
+      number_house: tenant.number_house
+    };
+
+    fetch('http://localhost:4000/user/deleteTenant/' + tenant._id, {
+      cache: 'no-cache',
+      method: 'PUT',
+      body: JSON.stringify(_tenant),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+
+          let _tenants = tenants.filter((val) => val._id !== tenant._id)
+          setTenants(_tenants)
+          setDeleteTenantDialog(false)
+          setTenant(emptyTenant)
+          toast.current.show({
+            severity: 'success',
+            summary: 'Inquilino Eliminado',
+            life: 3000,
+          })
+        }
+      )
+      .catch(
+        err => {
+          console.log('Ocurrió un error con el fetch', err)
+          toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Inquilino no se pudo eliminar', life: 3000 });
+        }
+      );
+
+
   }
 
   const deleteSelectedTenants = () => {
-    let _tenants = tenants.filter((val) => !selectedTentants.includes(val))
+    let _tenants = tenants.filter(
+      (val) => !selectedTentants.includes(val)
+    );
+    selectedTentants.map((item) => {
+      let _tenant = {
+        community_id: item.community_id,
+        number_house: item.number_house
+      };
+      fetch('http://localhost:4000/user/deleteTenant/' + item._id, {
+        cache: 'no-cache',
+        method: 'PUT',
+        body: JSON.stringify(_tenant),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    });
+
     setTenants(_tenants)
     setDeleteTenantsDialog(false)
     setSelectedTenants(null)
@@ -806,7 +874,7 @@ const Inquilinos = () => {
                   </span>
                   <InputText id="dni" value={tenant.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.dni === '' })} />
                 </div>
-                {submitted && tenant.email === '' && <small className="p-invalid">Identificación es requerida.</small>}
+                {submitted && tenant.dni === '' && <small className="p-invalid">Identificación es requerida.</small>}
               </div>
             </div>
             <div className="field col-12 md:col-6">
@@ -858,7 +926,7 @@ const Inquilinos = () => {
               />
               {saveButtonTitle === 'Actualizar' && (
                 <Button
-                  label="Cancel"
+                  label="Cancelar"
                   onClick={cancelEdit}
                   className="p-button-danger" />)}
             </div>

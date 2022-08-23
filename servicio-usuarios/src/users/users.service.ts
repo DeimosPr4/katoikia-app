@@ -24,6 +24,31 @@ export class UsersService {
   }
 
 
+  async createTenant(user: UserDocument) {
+    let password = user.password;
+    let passwordEncriptada = Md5.init(user.password);
+    user.password = passwordEncriptada;
+    let userCreated = await this.userModel.create(user);
+    await this.saveTenantNumHouse(user.community_id, user.number_house, userCreated['_id']);
+
+    let community = await this.findCommunity(user.community_id);
+    user.community_id = community['name'];
+
+    const pattern = { cmd: 'emailCreateUserTenant' };
+    const payload = {
+      email: user['email'], password: password, name: user['name'],
+      date_entry: user['date_entry'], community_name: community['name'],
+      number_house: user['number_house']
+    };
+
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
+  }
+
+
   async createAdminCommunity(user: UserDocument) {
     let password = user.password;
     let passwordEncriptada = Md5.init(user.password);
@@ -74,6 +99,15 @@ export class UsersService {
 
   async update(id: string, user: UserDocument) {
     return this.userModel.findOneAndUpdate({ _id: id }, user, {
+      new: true,
+    });
+  }
+
+  async updateAdminSystem(id: string, user: UserDocument) {
+    return this.userModel.findOneAndUpdate({ _id: id }, {
+      name: user['name'], last_name: user['last_name'],
+      dni:user['dni'], email: user['email'], phone: user['phone']
+  }, {
       new: true,
     });
   }
@@ -145,7 +179,6 @@ export class UsersService {
     return await this.userModel.find({ community_id: pcommunity_id, user_type: 4 })
   }
 
-
   async testSendMail(user: UserDocument) {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
@@ -171,7 +204,7 @@ export class UsersService {
   }
 
   async deleteAdminSystem(id: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1'}, {
       new: true,
     });
   }
@@ -182,10 +215,18 @@ export class UsersService {
     });
   }
 
-  async deleteTenant(id: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
-      new: true,
-    });
+  async deleteTenant(tenant_id: string, community_id: string, number_house: string) {
+
+    try{
+       await this.userModel.findOneAndUpdate({ _id: tenant_id }, { status: '-1', number_house:''}, {
+        new: true,
+      });
+  
+      return await this.deleteTenantNumHouse(community_id, number_house, tenant_id);
+    } catch(error){
+      console.log(error)
+      return error;
+    }
   }
 
   async validateEmail(email: string) {
@@ -230,6 +271,29 @@ export class UsersService {
     return this.userModel.findOneAndUpdate({ _id: id }, { status: status }, {
       new: true,
     });
+  }
+
+
+  async saveTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
+    const pattern = { cmd: 'saveTenant' }
+    const payload = { _id: community_id, number_house: number_house, tenant_id: tenant_id }
+
+    return await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+  }
+
+
+  async deleteTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
+    const pattern = { cmd: 'deleteTenant' }
+    const payload = { _id: community_id, number_house: number_house, tenant_id: tenant_id }
+    return await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
   }
 }
 

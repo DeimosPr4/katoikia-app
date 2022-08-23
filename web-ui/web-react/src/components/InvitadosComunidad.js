@@ -33,6 +33,28 @@ const InvitadosComunidad = () => {
   getInvitados();
   }, [invitados]);
 
+  const leftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <div className='my-2'>
+          <p>Boton Eliminar aqui</p>
+        </div>
+      </React.Fragment>
+    )
+  }
+
+  const rightToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Button
+          label='Exportar'
+          icon='pi pi-upload'
+          className='p-button-help'
+        />
+      </React.Fragment>
+    )
+  }
+
   const headerTemplate = (
     <div className='flex flex-column md:flex-row md:justify-content-between md:align-items-center'>
       <h5 className='m-0'>Invitados</h5>

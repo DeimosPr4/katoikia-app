@@ -12,6 +12,7 @@ import { UserContext } from "../context/UserContext";
 import { API } from "../environment/api";
 import {TimePicker} from 'react-native-simple-time-picker';
 import { View, StyleSheet } from "react-native";
+import { number } from "prop-types";
 export default function AreaComun({navigation}){
 
   const { user } = useContext(UserContext)
@@ -24,6 +25,7 @@ export default function AreaComun({navigation}){
 
   const [endSelectedHours, setEndSelectedHours] = useState(0);
   const [endSelectedMinutes, setEndSelectedMinutes] = useState(0);
+  const date = new Date(); 
 
     useEffect(() => {
 
@@ -62,11 +64,13 @@ export default function AreaComun({navigation}){
 
     const postReserva = async() => {
 
+      //console.log(date);
+
       const data = {
         
-        "start_time": selectedHours + ":" +selectedMinutes,
+        "start_time": Number.parseInt(selectedHours)  + ":" +selectedMinutes,
         "finish_time": endSelectedHours + ":" +endSelectedMinutes,
-        "date_entry": "",
+        "date_entry": date,
         "user_id" : user._id, 
         "common_area_id": service
       

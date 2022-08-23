@@ -3,7 +3,9 @@ import {
   Box,
   ScrollView,
   Fab,
-  Icon
+  Icon, 
+  Button, 
+  Heading
 } from "native-base";
 import { API } from "../environment/api";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
@@ -16,6 +18,7 @@ export default function Reservas({navigation}) {
   const { user } = useContext(UserContext)
   const [isRequesting, setIsRequesting] = useState(false);
   const [reservas, setReservas] = useState([]);
+ 
 
   useEffect(() => {
 
@@ -35,12 +38,6 @@ export default function Reservas({navigation}) {
 
         setReservas(response.message);
 
-        try {
-
-         
-        } catch (error) {
-          console.log("ERROR:" + error);
-        }
 
       } catch (error) {
           console.log("ERROR:" + error);
@@ -55,8 +52,15 @@ export default function Reservas({navigation}) {
 
 
   return (
-  
+
+    <Box>
+       <Heading fontSize="xl" p="4" pb="3">
+    Lista de reservas
+  </Heading>
     <ScrollView showsVerticalScrollIndicator={false}>
+      <Button width='200' mb="4"  mt="4" ml='85' backgroundColor='tertiary.600' onPress={() => navigation.navigate('area')}  icon={<Icon mb="0.5" as={<MaterialCommunityIcons name={'plus'} />} color="white" size="sm" />}>
+        Reservar
+       </Button>
           
           {
           reservas.map(item => (
@@ -70,17 +74,8 @@ export default function Reservas({navigation}) {
           ))
         }
 
-
-    <Box height="200" w="300" shadow="2" rounded="lg" m='5' ml='9' _dark={{
-      bg: "coolGray.200:alpha.20"
-    }} _light={{
-      bg: "coolGray.200:alpha.20"
-    }}>
-        <Fab renderInPortal={false} shadow={2} size="sm" icon={<Icon mb="0.5" as={<MaterialCommunityIcons name={'plus'} />} color="white" size="sm" />} onPress={() => navigation.navigate('area')}/>
-      </Box>
     </ScrollView>
-  );
-
-
- 
+    </Box>
+   
+  ); 
 }

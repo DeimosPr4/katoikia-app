@@ -4,7 +4,7 @@ import { UserContext } from "../context/UserContext";
 import { API } from "../environment/api";
 import {
   Box, Button,
-  Center, FormControl, Heading, ScrollView, VStack,FlatList, HStack,Avatar,Spacer,Text
+  Center, FormControl, Heading, ScrollView, VStack,FlatList, HStack,Avatar,Spacer,Text, Icon
 } from "native-base";
 
 export default function Invitados({navigation}) {
@@ -48,6 +48,9 @@ export default function Invitados({navigation}) {
       <Heading fontSize="xl" p="4" pb="3">
         Lista de invitados
       </Heading>
+      <Button width='200' mb="4"  mt="4" ml='85' backgroundColor='tertiary.600' onPress={() => navigation.navigate('invitado')}  icon={<Icon mb="0.5" as={<MaterialCommunityIcons name={'plus'} />} color="white" size="sm" />}>
+        Agregar invitado
+       </Button>
       <FlatList data={invitados} renderItem={({
       item
     }) => <Box key={item._id} borderBottomWidth="1" _dark={{
@@ -69,7 +72,7 @@ export default function Invitados({navigation}) {
                 <Text color="coolGray.600" _dark={{
             color: "warmGray.200"
           }}>
-                  {item.phone}
+                 (506) {item.phone}
                 </Text>
               </VStack>
               <Spacer />
@@ -82,9 +85,7 @@ export default function Invitados({navigation}) {
           </Box>} keyExtractor={item => item.id} />
 
 
-          <Button width='200'  mt="4" ml='85' backgroundColor='tertiary.600' onPress={() => navigation.navigate('invitado')}>
-        Agregar invitado
-       </Button>
+         
 
     </Box>
       

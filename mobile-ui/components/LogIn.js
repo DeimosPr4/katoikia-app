@@ -52,7 +52,7 @@ export default function LogIn({ navigation }) {
       })
       .then( response => {
 
-        // inqulino 4 y guarda 63
+        // inqulino 4 y guarda 3
          const user = response.message
           if(user.user_type == '4'){
             addUser(user);

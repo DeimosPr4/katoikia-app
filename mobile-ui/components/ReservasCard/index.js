@@ -4,7 +4,8 @@ import {
     ScrollView,
     Text, 
     Stack, 
-    Heading
+    Heading,
+    Badge
 } from "native-base";
 import PropTypes from 'prop-types';
 
@@ -36,6 +37,12 @@ export const ReservasCard = ({ date, startTime, endTime, status}) => {
     }}>
         <Stack p="4" space={3}>
           <Stack space={2}>
+
+          <Badge backgroundColor={status === 1 ? 'tertiary.500' : 'danger.600'} _text={{
+                        color: "white"
+                    }} variant="solid" rounded="4">
+                        <Text bold={true} color='danger.50'> {status === 1 ? 'LIBRE' : 'RESERVADO'}</Text>
+                    </Badge>
             <Heading size="md" ml="-1">
               Reserva #1
             </Heading>

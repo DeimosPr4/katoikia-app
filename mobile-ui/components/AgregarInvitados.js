@@ -76,23 +76,23 @@ export default function AgregarInvitados({ navigation }) {
          Registre el invitado que desee
         </Heading>
         <VStack space={3} mt="5">
-          <FormControl>
+          <FormControl isRequired>
             <FormControl.Label>Nombre</FormControl.Label>
             <TextInput style={styles.input} type="text" onChangeText={(value) => setName(value)}/>
           </FormControl>
-          <FormControl>
+          <FormControl isRequired>
             <FormControl.Label>Apellido</FormControl.Label>
             <TextInput style={styles.input} type="text" onChangeText={(value) => setApellido(value)}/>
           </FormControl>
-          <FormControl>
+          <FormControl isRequired>
             <FormControl.Label>Identificación</FormControl.Label>
             <TextInput style={styles.input} type="text" onChangeText={(value) => setDNI(value)}/>
           </FormControl>
-          <FormControl>
+          <FormControl isRequired>
             <FormControl.Label>Teléfono</FormControl.Label>
             <TextInput style={styles.input} type="text" onChangeText={(value) => setPhone(value)} />
           </FormControl>
-          <Button mt="2" onPress={() => saveInvitado()}>
+          <Button mt="2" backgroundColor='tertiary.600' onPress={() => saveInvitado()}>
            Guardar
           </Button>
         </VStack>

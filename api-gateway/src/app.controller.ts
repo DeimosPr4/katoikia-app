@@ -241,6 +241,26 @@ export class AppController {
     return this.appService.changeStatusUser(pId, pStatus);
   }
 
+  @Put('user/updateAdminCommunity/:id')
+  updateAdminCommunity(
+    @Param('id') id: string,
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updateAdminCommunity(
+      id,
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      community_id,
+    );
+  }
 
   @Post('user/updateAdminSystem')
   updateAdminSystem(

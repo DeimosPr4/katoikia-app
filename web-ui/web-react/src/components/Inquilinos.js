@@ -874,7 +874,7 @@ const Inquilinos = () => {
                   </span>
                   <InputText id="dni" value={tenant.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.dni === '' })} />
                 </div>
-                {submitted && tenant.email === '' && <small className="p-invalid">Identificación es requerida.</small>}
+                {submitted && tenant.dni === '' && <small className="p-invalid">Identificación es requerida.</small>}
               </div>
             </div>
             <div className="field col-12 md:col-6">

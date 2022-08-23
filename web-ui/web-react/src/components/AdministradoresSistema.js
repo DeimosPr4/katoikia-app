@@ -107,9 +107,6 @@ const AdministradoresSistema = () => {
 
       } else {
         if (_admin._id) {
-
-
-
           fetch('http://localhost:4000/user/updateAdminSystem/', {
             cache: 'no-cache',
             method: 'POST',
@@ -145,15 +142,7 @@ const AdministradoresSistema = () => {
             .catch(
               err => console.log('Ocurrió un error con el fetch', err)
             );
-
-
-
-
-
-
         } else {
-
-
           fetch('http://localhost:4000/user/createAdminSystem/', {
             cache: 'no-cache',
             method: 'POST',
@@ -181,15 +170,8 @@ const AdministradoresSistema = () => {
             );
         }
       }
-
-
-
-
-
-
     } else {
       setSubmitted(true);
-
     }
   }
 
@@ -268,15 +250,12 @@ const AdministradoresSistema = () => {
     setSubmitted(false);
     setAdminDialog(false);
     setSysAdmin(emptySysAdmin);
-
   };
 
   const infoAdmin = (sysadmin) => {
     setSysAdmin({ ...sysadmin });
     setAdminDialog(true);
-
   };
-
 
   const cancelEdit = () => {
     setSaveButtonTitle('Registrar');

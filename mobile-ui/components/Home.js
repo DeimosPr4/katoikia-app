@@ -23,6 +23,7 @@ export default function Home() {
         })
 
         const response = await jsonResponse.json();
+        console.log(response);
 
         setComments(response.message);
 

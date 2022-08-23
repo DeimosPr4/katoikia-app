@@ -29,12 +29,12 @@ export default function LogIn({ navigation }) {
     password: ""
   });
 
-
   const onHandleChange = (name) => (value) => setCredentials(prev => ({ ...prev, [name]: value }))
 
   const iniciarSesion = async () => {
     try {
   
+      console.log(baseURL);
       await fetch(baseURL, {
         cache: 'no-cache', 
         method: 'POST', 
@@ -55,11 +55,12 @@ export default function LogIn({ navigation }) {
         // inqulino 4 y guarda 63
          const user = response.message
           if(user.user_type == '4'){
+            addUser(user);
 
             navigation.navigate('Comunicados', {user})
           }else if(user.user_type == '3'){
             addUser(user);
-            navigation.navigate('Comunicados')
+            navigation.navigate('Comunicados', {user})
           }
       })
       
@@ -70,7 +71,6 @@ export default function LogIn({ navigation }) {
   }
 
   return (
-
 
     <Center w="100%">
       <Box safeArea p="2" py="8" w="90%" maxW="290">

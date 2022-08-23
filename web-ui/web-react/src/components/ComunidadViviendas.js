@@ -315,10 +315,8 @@ const Communities = () => {
     setDeleteCommunitiesDialog(true);
   };
 
-
   const infoCommunity = async (community) => {
     await tenantsList(community._id);
-
     setCommunity({ ...community });
     setCommunityDialog(true);
   };
@@ -383,40 +381,38 @@ const Communities = () => {
       );
   }
 
-
   const deleteCommunity = () => {
-    /*   fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
-               cache: 'no-cache',
-               method: 'DELETE',
-               headers: {
-                   'Content-Type': 'application/json'
-               }
-           })
-               .then(
-                   function (response) {
-                       if (response.status != 201)
-                           console.log('Ocurrió un error con el servicio: ' + response.status);
-                       else
-                           return response.json();
-                   }
-               )
-               .then(
-                   function (response) {
-                       
-                       let _community = communities.filter(val => val._id !== community._id);
-                       setCommunities(_community);
-                       setDeleteCommunityDialog(false);
-                       setCommunity(emptyCommunity);
-                       toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });
-                   }
-               )
-               .catch(
-                   err => {
-                       console.log('Ocurrió un error con el fetch', err)
-                       toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Comunidad de Viviendas no se pudo eliminar', life: 3000 });
-                   }
-               ); 
-        */
+    fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
+      cache: 'no-cache',
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status != 201)
+            console.log('Ocurrió un error con el servicio: ' + response.status);
+          else
+            return response.json();
+        }
+      )
+      .then(
+        function (response) {
+
+          let _community = communities.filter(val => val._id !== community._id);
+          setCommunities(_community);
+          setDeleteCommunityDialog(false);
+          setCommunity(emptyCommunity);
+          toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });
+        }
+      )
+      .catch(
+        err => {
+          console.log('Ocurrió un error con el fetch', err)
+          toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Comunidad de Viviendas no se pudo eliminar', life: 3000 });
+        }
+      );
     let _communities = communitiesList.filter((val) => val._id !== community._id);
     _communities = _communities.filter(
       (val) => val.status != -1,

@@ -142,6 +142,13 @@ export class UsersController {
     user['number_house']);
   }
 
+  @MessagePattern({ cmd: 'removeIdCommunity' })
+  removeIdCommunity(@Payload() user: any) {
+    let community_id =  user['community_id'];
+    return this.userService.removeIdCommunity(community_id);
+  }
+
+  
   @MessagePattern({ cmd: 'changeStatus' })
   changeStatus(@Payload() body: string) {
     let pid = body['id'];

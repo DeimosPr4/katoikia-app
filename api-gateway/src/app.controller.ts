@@ -323,6 +323,11 @@ export class AppController {
   ) {
     return this.appService.saveTenant(community_id, number_house, tenant_id);
   }
+
+  @Delete('community/deleteCommunity/:id')
+  deleteCommunity(@Param('id') paramCommunityId: string) {
+    return this.appService.deleteCommunity(paramCommunityId);
+  }
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
   createCommonArea(

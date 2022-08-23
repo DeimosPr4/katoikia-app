@@ -57,6 +57,7 @@ export class CommunitiesService {
   }
 
   async remove(id: string) {
+    await this.removeIdCommunity(id);
     return this.communityModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
       new: true,
     });
@@ -118,5 +119,17 @@ export class CommunitiesService {
     return await this.communityModel.findOneAndUpdate({ _id: id }, community, {
       new: true,
     });
+  }
+
+  async removeIdCommunity(community: string) {
+    const pattern = { cmd: 'removeIdCommunity' };
+    const payload = { community_id: community};
+
+    let callback = await this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((response: string) => ({ response })));
+
+    const finalValue = await lastValueFrom(callback);
+    return finalValue['response'];
   }
 }

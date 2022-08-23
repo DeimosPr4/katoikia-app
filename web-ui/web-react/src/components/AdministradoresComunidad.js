@@ -225,6 +225,24 @@ const AdministradoresComunidad = () => {
             );
     }
 
+    const findIndexById = (id) => {
+        let index = -1;
+        for (let i = 0; i < listaAdmins.length; i++) {
+          if (listaAdmins[i]._id === id) {
+            index = i;
+            break;
+          }
+        }
+        return index;
+    
+      }
+    
+      const findRepeated = (name, value) => {
+        let _administrators = [...listaAdmins];
+        let value_filtered = _administrators.filter(item => item[`${name}`] === value);
+        return value_filtered.length
+      }
+
     const saveAdminCommunity = () => {
         let _administrators = [...listaAdmins];
         let _admin = { ...adminCommunity };
@@ -289,16 +307,16 @@ const AdministradoresComunidad = () => {
                     console.log(`Hubo un error en el servicio: ${response.status}`)
                 else return response.json()
             }).then(() => {
+
                 toast.current.show({
                     severity: 'success',
                     summary: 'Éxito',
                     detail: 'Administrador de comunidad actualizado',
                     life: 3000,
                 })
-                _administrators.push(_admin);
                 toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador de Comunidad de vivienda Actualizada', life: 3000 });
 
-                setListaAdmins(_administrators);
+                listaAdmin();
 
                 setAdminCommunity(emptyAdminCommunity);
             })
@@ -343,6 +361,7 @@ const AdministradoresComunidad = () => {
     const cancelEdit = () => {
         setAdminCommunity(emptyAdminCommunity);
         setSaveButtonTitle('Registrar');
+        setC
     }
 
     const actionsAdminCommunity = (rowData) => {

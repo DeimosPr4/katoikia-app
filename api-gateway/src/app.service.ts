@@ -153,7 +153,7 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
   updateAdminCommunity(
-    _id: string,
+    id: string,
     dni: string,
     name: string,
     last_name: string,
@@ -163,7 +163,7 @@ export class AppService {
   ) {
     const pattern = { cmd: 'updateAdminCommunity' };
     const payload = {
-      id: _id,
+      _id: id,
       dni: dni,
       name: name,
       last_name: last_name,

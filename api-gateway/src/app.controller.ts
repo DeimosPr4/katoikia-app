@@ -243,7 +243,7 @@ export class AppController {
 
   @Put('user/updateAdminCommunity/:id')
   updateAdminCommunity(
-    @Param('_id') id: string,
+    @Param('id') id: string,
     @Body('dni') dni: string,
     @Body('name') name: string,
     @Body('last_name') last_name: string,

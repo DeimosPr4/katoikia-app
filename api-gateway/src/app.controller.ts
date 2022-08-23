@@ -380,6 +380,8 @@ export class AppController {
     @Body('number_plate') number_plate: string,
     @Body('phone') phone: number,
     @Body('status') status: string,
+    @Body('tenant_id') tenant_id: string,
+    @Body('community_id') community_id: string,
     @Body('date_entry') date_entry: Date,
   ) {
     return this.appService.createGuest(
@@ -389,6 +391,8 @@ export class AppController {
       number_plate,
       phone,
       status,
+      tenant_id,
+      community_id,
       date_entry,
     );
   }
@@ -402,6 +406,12 @@ export class AppController {
   findGuest(@Param('dni') paramGuestDNI: string) {
     return this.appService.findGuest(paramGuestDNI);
   }
+
+  @Get('guest/findGuestUser/:id')
+  findGuestUser(@Param('id') paramGuestId: string) {
+    return this.appService.findGuestUser(paramGuestId);
+  }
+
 
   // #==== API Payment
 

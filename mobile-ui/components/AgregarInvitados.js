@@ -92,6 +92,10 @@ export default function AgregarInvitados({ navigation }) {
             <FormControl.Label>Teléfono</FormControl.Label>
             <TextInput style={styles.input} type="text" onChangeText={(value) => setPhone(value)} />
           </FormControl>
+          <FormControl >
+            <FormControl.Label>Placa</FormControl.Label>
+            <TextInput style={styles.input} type="text" onChangeText={(value) => setPhone(value)} />
+          </FormControl>
           <Button mt="2" backgroundColor='tertiary.600' onPress={() => saveInvitado()}>
            Guardar
           </Button>

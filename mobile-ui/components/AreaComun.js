@@ -72,7 +72,9 @@ export default function AreaComun({navigation}){
         "finish_time": endSelectedHours + ":" +endSelectedMinutes,
         "date_entry": date,
         "user_id" : user._id, 
-        "common_area_id": service
+        "common_area_id": service,
+        "common_area_name": "", 
+        "community_id": ""
       
       }
 

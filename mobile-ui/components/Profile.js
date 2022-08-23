@@ -89,10 +89,10 @@ export default function Profile({ navigation }) {
             <FormControl.Label>DNI</FormControl.Label>
             <TextInput type="text" defaultValue={userData.user.dni} editable={false} />
           </FormControl>
-          <FormControl>
+          {/* <FormControl>
             <FormControl.Label>Teléfono</FormControl.Label>
             <TextInput type="text" defaultValue={userData.user.phone} editable={false} />
-          </FormControl>
+          </FormControl> */}
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
             <TextInput style={styles.input} type="text" defaultValue={userData.user.name} onChangeText={(value) => setName(value) }/>

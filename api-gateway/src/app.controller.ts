@@ -536,6 +536,12 @@ export class AppController {
     return this.appService.findReservation(paramReservation);
   }
 
+  @Get('reservation/findReservations/:id')
+  findReservations(@Param('id') community_id: string) {
+    return this.appService.findReservations(community_id);
+  }
+
+  
   // #==== API Post
 
   @Post('post/createPost')

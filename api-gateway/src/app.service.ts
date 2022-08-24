@@ -325,12 +325,12 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  updateAdminSystem(_id: string, dni: string, name: string, 
+  updateAdminSystem(_id: string, dni: string, name: string,
     last_name: string, email: string, phone: number
-    ) {
+  ) {
     const pattern = { cmd: 'updateAdminSystem' };
     const payload = {
-      _id: _id, dni: dni, name: name, last_name: last_name, 
+      _id: _id, dni: dni, name: name, last_name: last_name,
       email: email, phone: phone
     };
     return this.clientUserApp
@@ -453,7 +453,7 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  
+
   // ====================== COMMON AREAS ===============================
   //POST parameter from API
   createCommonArea(
@@ -639,6 +639,14 @@ export class AppService {
   findReservation(paramReservationId: string) {
     const pattern = { cmd: 'findOneReservation' };
     const payload = { id: paramReservationId };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  findReservations(community_id: string) {
+    const pattern = { cmd: 'findReservationsByCommunity' };
+    const payload = { community_id: community_id };
     return this.clientReservationApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));

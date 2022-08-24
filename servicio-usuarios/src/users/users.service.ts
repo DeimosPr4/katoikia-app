@@ -73,11 +73,22 @@ export class UsersService {
   }
 
   async resetUserPassword(user: UserDocument) {
-    let passwordEncriptada = Md5.init(user.password);
+    const password = user.password;
+    const passwordEncriptada = Md5.init(password);
     user.password = passwordEncriptada;
-    return this.userModel.findOneAndUpdate({ _id: user._id }, { password: passwordEncriptada }, {
+    this.userModel.findOneAndUpdate({ _id: user._id }, { password: passwordEncriptada }, {
       new: true,
     });
+    const pattern = { cmd: 'emailResetUserPassword' };
+    const payload = {
+      email: user['email'], password: user['password'],
+      date_entry: user['date_entry'], community_name: user['community_id']
+    };
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message }))
+      );
   }
 
   async findCommunity(community_id: string) {
@@ -306,8 +317,8 @@ export class UsersService {
 
   async removeIdCommunity(community_id: string){
     await this.userModel.updateMany({community_id: community_id, user_type:'2' }, {"$set":{"community_id": ''}});
-    await this.userModel.updateMany({community_id: community_id, user_type:'3' }, {"$set":{"community_id": '', "status": '-1'}});
-    return this.userModel.updateMany({community_id: community_id, user_type:'4' }, {"$set":{"community_id": '', "status": '-1'}});
+    await this.userModel.updateMany({community_id: community_id, user_type:'3' }, {"$set":{"community_id": '', "status": '-1'} });
+    return this.userModel.updateMany({ community_id: community_id, user_type: '4' }, { "$set": { "community_id": '', "status": '-1' }    });
   }
 }
 

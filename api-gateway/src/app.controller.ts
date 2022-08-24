@@ -481,7 +481,8 @@ export class AppController {
     @Body('date_entry') date_entry: Date,
     @Body('user_id') user_id: string,
     @Body('common_area_id') common_area_id: string,
-    @Body('community_id') community_id: string,
+    @Body('common_area_name') common_area_name: string,
+    @Body('communty_id') communty_id: string,
   ) {
     return this.appService.createReservation(
       start_time,
@@ -490,7 +491,8 @@ export class AppController {
       date_entry,
       user_id,
       common_area_id,
-      community_id
+      common_area_name,
+      communty_id,
     );
   }
 

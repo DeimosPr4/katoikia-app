@@ -21,6 +21,13 @@ export class Reservation {
   common_area_id: string;
 
   @Prop()
+  common_area_name: string;
+
+
+  @Prop()
+  community_id: string;
+
+  @Prop()
   user_id: string;
 
   @Prop()

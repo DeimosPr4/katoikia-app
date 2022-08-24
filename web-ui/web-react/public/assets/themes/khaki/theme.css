@@ -7164,3 +7164,7 @@
     flex-direction: column;
     align-items: center;
 }
+
+.layout-config-button{
+    display: none!important;
+}

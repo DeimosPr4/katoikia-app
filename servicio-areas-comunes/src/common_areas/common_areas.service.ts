@@ -47,4 +47,8 @@ export class CommonAreasService {
     });  
   }
 
+
+  async removeIdCommunity(community_id: string){
+    await this.commonAreaModel.updateMany({community_id: community_id}, {"$set":{"status": '-1'}});
+  }
 }

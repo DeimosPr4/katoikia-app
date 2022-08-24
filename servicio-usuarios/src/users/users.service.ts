@@ -303,5 +303,11 @@ export class UsersService {
         map((response: string) => ({ response }))
       )
   }
+
+  async removeIdCommunity(community_id: string){
+    await this.userModel.updateMany({community_id: community_id, user_type:'2' }, {"$set":{"community_id": ''}});
+    await this.userModel.updateMany({community_id: community_id, user_type:'3' }, {"$set":{"community_id": '', "status": '-1'}});
+    return this.userModel.updateMany({community_id: community_id, user_type:'4' }, {"$set":{"community_id": '', "status": '-1'}});
+  }
 }
 

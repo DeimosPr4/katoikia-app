@@ -38,4 +38,10 @@ export class ReservationsController {
     let _id = id['id'];
     return this.reservationsService.remove(_id);
   }
+
+  @MessagePattern({ cmd: 'removeIdCommunity' })
+  removeIdCommunity(@Payload() reservation: any) {
+    let community_id =  reservation['community_id'];
+    return this.reservationsService.removeIdCommunity(community_id);
+  }
 }

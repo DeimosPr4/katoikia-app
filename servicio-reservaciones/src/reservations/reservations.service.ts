@@ -45,4 +45,8 @@ export class ReservationsService {
       new: true,
     });  
   }
+
+  async removeIdCommunity(community_id: string){
+    await this.reservationModel.updateMany({community_id: community_id}, {"$set":{"status": '-1'}});
+  }
 }

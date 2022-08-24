@@ -445,6 +445,15 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  deleteCommunity(id: string) {
+    const pattern = { cmd: 'removeCommunity' };
+    const payload = { _id: id };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  
   // ====================== COMMON AREAS ===============================
   //POST parameter from API
   createCommonArea(

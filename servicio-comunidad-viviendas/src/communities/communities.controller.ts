@@ -5,7 +5,7 @@ import { Community, CommunityDocument } from 'src/schemas/community.schema';
 
 @Controller()
 export class CommunitiesController {
-  constructor(private readonly communitiesService: CommunitiesService) {}
+  constructor(private readonly communitiesService: CommunitiesService) { }
 
   @MessagePattern({ cmd: 'createCommunity' })
   create(@Payload() community: CommunityDocument) {
@@ -46,17 +46,17 @@ export class CommunitiesController {
     return this.communitiesService.remove(_id);
   }
 
-   //cambiar de estado
-   @MessagePattern({ cmd: 'changeStatus' })
-   changeStatus(@Payload() body: string) {
-     let pid = body['id'];
-     let pstatus = body['status'];
-     return this.communitiesService.changeStatus(pid,pstatus);
-   }
+  //cambiar de estado
+  @MessagePattern({ cmd: 'changeStatus' })
+  changeStatus(@Payload() body: string) {
+    let pid = body['id'];
+    let pstatus = body['status'];
+    return this.communitiesService.changeStatus(pid, pstatus);
+  }
 
 
-   @MessagePattern({ cmd: 'saveTenant' })
-   saveTenant(@Payload() body: string) {
+  @MessagePattern({ cmd: 'saveTenant' })
+  saveTenant(@Payload() body: string) {
 
     let id = body['_id'];
     let tenant_id = body['tenant_id'];
@@ -66,9 +66,9 @@ export class CommunitiesController {
 
   @MessagePattern({ cmd: 'deleteTenant' })
   deleteTenant(@Payload() body: string) {
-   let id = body['_id'];
-   let tenant_id = body['tenant_id'];
-   let number_house = body['number_house'];
-   return this.communitiesService.deleteTenant(id, number_house, tenant_id);
- }
+    let id = body['_id'];
+    let tenant_id = body['tenant_id'];
+    let number_house = body['number_house'];
+    return this.communitiesService.deleteTenant(id, number_house, tenant_id);
+  }
 }

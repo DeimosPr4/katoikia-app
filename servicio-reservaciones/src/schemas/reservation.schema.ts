@@ -29,6 +29,9 @@ export class Reservation {
 
   @Prop()
   user_id: string;
+
+  @Prop()
+  community_id: string;
 }
 
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);

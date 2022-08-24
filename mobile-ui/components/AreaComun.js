@@ -13,6 +13,7 @@ import { API } from "../environment/api";
 import {TimePicker} from 'react-native-simple-time-picker';
 import { View, StyleSheet } from "react-native";
 import { number } from "prop-types";
+import DateTimePicker from '@react-native-community/datetimepicker';
 export default function AreaComun({navigation}){
 
   const { user } = useContext(UserContext)
@@ -23,6 +24,8 @@ export default function AreaComun({navigation}){
   const [selectedMinutes, setSelectedMinutes] = useState(0);
   const [endSelectedHours, setEndSelectedHours] = useState(0);
   const [endSelectedMinutes, setEndSelectedMinutes] = useState(0);
+  const [time, setTime] = useState(new Date(1598051730000))
+  const [endTime, setEndTime] = useState(new Date(1598051730000))
   const date = new Date(); 
 
     useEffect(() => {
@@ -62,43 +65,53 @@ export default function AreaComun({navigation}){
 
     const postReserva = async() => {
 
-      //console.log(date);
+      console.log(time);
 
-      const data = {
+      // const data = {
         
-        "start_time": 7  + ":" +0,
-        "finish_time": 10 + ":" +0,
-        "status": 1,
-        "date_entry": date,
-        "user_id" : user._id, 
-        "common_area_id": service._id,
-        "common_area_name": service.name, 
-        "community_id": service.community_id
+      //   "start_time": 7  + ":" +0,
+      //   "finish_time": 10 + ":" +0,
+      //   "status": 1,
+      //   "date_entry": date,
+      //   "user_id" : user._id, 
+      //   "common_area_id": service._id,
+      //   "common_area_name": service.name, 
+      //   "community_id": service.community_id
       
-      }
+      // }
 
-      console.log(data);
-      try {
+      // console.log(data);
+      // try {
 
-        const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
-          cache: 'no-cache', 
-          method: 'POST', 
-          body: JSON.stringify(data), 
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+      //   const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
+      //     cache: 'no-cache', 
+      //     method: 'POST', 
+      //     body: JSON.stringify(data), 
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     }
+      //   })
 
-        const response = await jsonDataResponse.json();
-        console.log(response.message);
+      //   const response = await jsonDataResponse.json();
+      //   console.log(response.message);
         
-      } catch (error) {
-        console.log("ERROR:" + error);
-      }
+      // } catch (error) {
+      //   console.log("ERROR:" + error);
+      // }
     }
     
 
-   
+    const onChangeStart = (event, selectedDate) => {
+      const currentDate = selectedDate;
+      setShow(false);
+      setTime(currentDate);
+    };
+    const onChangeEnd = (event, selectedDate) => {
+      const currentDate = selectedDate;
+      setShow(false);
+      setEndTime(currentDate);
+    };
+  
 
     return (
         <Center>
@@ -131,36 +144,22 @@ export default function AreaComun({navigation}){
           <FormControl isRequired>
             <FormControl.Label>Hora de inicio</FormControl.Label>
             <View  >
-            <TimePicker 
-          selectedHours={selectedHours}
-          selectedMinutes={selectedMinutes}
-          onChange={(hours, minutes) => {
-            setSelectedHours(hours);
-            setSelectedMinutes(minutes);
-          }}/>
+            <DateTimePicker mode="time" is24Hour={true} value={time} onChangeStart={onChange}/>
             </View>
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label>Hora de finalización</FormControl.Label>
             <View  >
-            <TimePicker 
-          selectedHours={selectedHours}
-          //initial Hourse value
-          selectedMinutes={selectedMinutes}
-          //initial Minutes value
-          onChange={(hours, minutes) => {
-            setEndSelectedHours(hours);
-            setEndSelectedMinutes(minutes);
-          }}/>
+            <DateTimePicker mode="time" is24Hour={true} value={time} onChangeEnd={onChange}/>
             </View>
            
           </FormControl>
          
         
-          <Button mt="2" backgroundColor="tertiary.600" onPress={()=> postReserva()}>
+          <Button mt="10" backgroundColor="tertiary.600" onPress={()=> postReserva()}>
             Reservar
           </Button>
-          <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Comunicados')}>
+          <Button mt="3" colorScheme="error" onPress={() => navigation.navigate('Comunicados')}>
             Cancelar
           </Button>
         </VStack>

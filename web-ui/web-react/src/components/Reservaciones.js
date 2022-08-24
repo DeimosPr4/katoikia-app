@@ -88,7 +88,6 @@ const Reservations = () => {
                     } else if (item.status == '0') {
                         item.status_text = 'Inactivo';
                     }
-                    tenants.find((item2) => item2._id == item.user_id);
                 })
 
                 setReservations(data)
@@ -104,8 +103,11 @@ const Reservations = () => {
     }, [])
 
 
-    tenants.map((item) => {
-        
+    reservations.map((item) => {
+        let tenant = tenants.find(item2 => item2._id == item.user_id);
+        if(tenant){
+            item.user_name = tenant.name + ' ' +  tenant.last_name;
+        }
     });
 
 
@@ -211,7 +213,7 @@ const Reservations = () => {
             <p>
                 {' '}
                 <FontAwesomeIcon icon={faUserAlt} style={{ color: '#C08135' }} />{' '}
-                Usuario
+                Inquilino
             </p>
         </>
     );
@@ -222,7 +224,7 @@ const Reservations = () => {
             <p>
                 {' '}
                 <FontAwesomeIcon icon={faHome} style={{ color: '#D7A86E' }} />{' '}
-                Código de Area
+                Área Reservada
             </p>
         </>
     );
@@ -305,7 +307,7 @@ const Reservations = () => {
                             alignFrozen="left"
                         ></Column>
                         <Column
-                            field="user_id"
+                            field="user_name"
                             header={headerUser}
                             style={{
                                 flexGrow: 1,
@@ -315,7 +317,7 @@ const Reservations = () => {
                             }}
                         ></Column>
                         <Column
-                            field="common_area_id"
+                            field="common_area_name"
                             header={headerArea}
                             style={{
                                 flexGrow: 1,

@@ -6,18 +6,18 @@ import { User } from './user/user.entity';
 
 @Controller()
 export class EmailController {
-  constructor(private mailService: MailerService) {}
+    constructor(private mailService: MailerService) { }
 
-  @MessagePattern({ cmd: 'sendMail' })
-  sendMail(@Payload() toEmail: string) {
-    var response = this.mailService.sendMail({
-      to: toEmail['email'],
-      from: 'katoikiap4@gmail.com',
-      subject: 'Plain Text Email ✔',
-      text: 'Welcome NestJS Email Sending Tutorial',
-    });
-    return response;
-  }
+    @MessagePattern({ cmd: 'sendMail' })
+    sendMail(@Payload() toEmail: string) {
+        var response = this.mailService.sendMail({
+            to: toEmail['email'],
+            from: 'katoikiap4@gmail.com',
+            subject: 'Plain Text Email ✔',
+            text: 'Welcome NestJS Email Sending Tutorial',
+        });
+        return response;
+    }
 
     @MessagePattern({ cmd: 'html' })
     async postHTMLEmail(@Payload() user: any) {
@@ -109,6 +109,39 @@ export class EmailController {
                     cid: 'logoKatoikia' //my mistake was putting "cid:logo@cid" here! 
                 }
             ]
+        });
+        return response;
+    }
+
+    @MessagePattern({ cmd: 'emailResetUserPassword' })
+    async emailResetUserPassword(@Payload() user: any) {
+        const url = "http://localhost:3000/";
+        const image = "images/email.png";
+        const logo = "images/Logo Katoikia.png";
+        let response = await this.mailService.sendMail({
+            to: user["email"],
+            from: "katoikiap4@gmail.com",
+            subject: 'Restablecer contraseña',
+            template: 'emailResetUserPassword',
+            context: {
+                name: user["name"],
+                password: user["password"],
+                date_entry: user["date_entry"],
+                email: user["email"],
+                community_name: user['community_name'],
+                number_house: user['number_house'],
+            },
+            attachments: [
+                {
+                    filename: 'email.png',
+                    path: __dirname + '/mails/images/email.png',
+                    cid: 'image_email'
+                },
+                {
+                    filename: 'Logo_Katoikia.png',
+                    path: __dirname + '/mails/images/Logo_Katoikia.png',
+                    cid: 'logoKatoikia'
+                }],
         });
         return response;
     }

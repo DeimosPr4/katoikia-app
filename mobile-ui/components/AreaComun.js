@@ -19,10 +19,8 @@ export default function AreaComun({navigation}){
   const [service, setService] = useState("");
   const [areas, setAreas] = useState([])
   const [isRequesting, setIsRequesting] = useState(false);
-
   const [selectedHours, setSelectedHours] = useState(0);
   const [selectedMinutes, setSelectedMinutes] = useState(0);
-
   const [endSelectedHours, setEndSelectedHours] = useState(0);
   const [endSelectedMinutes, setEndSelectedMinutes] = useState(0);
   const date = new Date(); 
@@ -68,34 +66,35 @@ export default function AreaComun({navigation}){
 
       const data = {
         
-        "start_time": Number.parseInt(selectedHours)  + ":" +selectedMinutes,
-        "finish_time": endSelectedHours + ":" +endSelectedMinutes,
+        "start_time": 7  + ":" +0,
+        "finish_time": 10 + ":" +0,
+        "status": 1,
         "date_entry": date,
         "user_id" : user._id, 
-        "common_area_id": service,
-        "common_area_name": "", 
-        "community_id": ""
+        "common_area_id": service._id,
+        "common_area_name": service.name, 
+        "community_id": service.community_id
       
       }
 
       console.log(data);
-      // try {
+      try {
 
-      //   const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
-      //     cache: 'no-cache', 
-      //     method: 'POST', 
-      //     body: JSON.stringify(data), 
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //     }
-      //   })
+        const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
+          cache: 'no-cache', 
+          method: 'POST', 
+          body: JSON.stringify(data), 
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
 
-      //   const response = await jsonResponse.json();
-      //   console.log(response.message);
+        const response = await jsonDataResponse.json();
+        console.log(response.message);
         
-      // } catch (error) {
-      //   console.log("ERROR:" + error);
-      // }
+      } catch (error) {
+        console.log("ERROR:" + error);
+      }
     }
     
 
@@ -124,7 +123,7 @@ export default function AreaComun({navigation}){
       }} mt={1} onValueChange={itemValue => setService(itemValue)}>
 
         {areas.map(item => (
-          <Select.Item label={item.name} value={item.community_id} />
+          <Select.Item key={item._id} label={item.name} value={item} />
         ))}
           
         </Select>

@@ -72,6 +72,14 @@ export class UsersService {
       );
   }
 
+  async resetUserPassword(user: UserDocument){
+    let passwordEncriptada = Md5.init(user.password);
+    user.password = passwordEncriptada;
+    return this.userModel.findOneAndUpdate({ _id: user._id }, { password: passwordEncriptada }, {
+      new: true,
+    });
+  }
+
   async findCommunity(community_id: string) {
     const pattern = { cmd: 'findOneCommunity' }
     const payload = { _id: community_id }

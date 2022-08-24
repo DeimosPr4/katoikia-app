@@ -41,7 +41,9 @@ const Reservations = () => {
     const dt = useRef(null);
     const [cookies, setCookies] = useCookies()
     const [areas, setAreas] = useState([]);
+    const [areaId, setAreaId] = useState();
     const [tenants, setTenants] = useState([]);
+    const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
 
     async function tenantsList(id) {
         await fetch(`http://localhost:4000/user/findTenants/${id}`,
@@ -105,8 +107,8 @@ const Reservations = () => {
 
     reservations.map((item) => {
         let tenant = tenants.find(item2 => item2._id == item.user_id);
-        if(tenant){
-            item.user_name = tenant.name + ' ' +  tenant.last_name;
+        if (tenant) {
+            item.user_name = tenant.name + ' ' + tenant.last_name;
         }
     });
 
@@ -115,7 +117,13 @@ const Reservations = () => {
         reservationList(cookies.community_id);
     }, [])
 
+    const saveReservation = () => {
+        if (reservation.common_area_id) {
 
+        } else {
+            setSubmitted(true);
+        }
+    }
 
 
     const actionsReservation = (rowData) => {
@@ -143,6 +151,12 @@ const Reservations = () => {
     const confirmDeleteSelected = () => {
         setDeleteReservationsDialog(true);
     };
+
+    const cancelEdit = () => {
+        setReservation(emptyReservation);
+        setSaveButtonTitle('Registrar');
+        setAreaId('');
+    }
 
     const leftToolbarTemplate = () => {
         return (
@@ -250,6 +264,16 @@ const Reservations = () => {
         );
     };
 
+    const handleAreas = (e) => {
+        const getAreaId = e.target.value;
+        setAreaId(getAreaId);
+    }
+
+    const aList = areas.map((item) => ({
+        label: item.name,
+        value: item._id,
+    }));
+
     return (
         <div className="grid">
             <div className="col-12">
@@ -343,7 +367,53 @@ const Reservations = () => {
 
                 </div>
             </div>
+            <div className="col-12">
+                <div className="card">
+                    <h5>Reservar Área para Inquilino</h5>
+                    <div className="p-fluid formgrid grid">
 
+                        <div className="field col-12 md:col-6">
+                            <label htmlFor="common_area_id">Área Común: </label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <Dropdown
+                                        placeholder="--Seleccione el Area Común a Reservar--"
+                                        id="common_area_id"
+                                        value={areaId}
+                                        options={aList}
+                                        onChange={handleAreas}
+                                        required autoFocus
+                                        className={
+                                            classNames({ 'p-invalid': submitted && !areaId })}
+                                    />
+                                </div>
+                                {submitted
+                                    && !areaId
+                                    && <small className="p-invalid">Área Común es requerida.</small>}
+                            </div>
+                        </div>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            gap: "10px",
+                            width: "100%"
+                        }}>
+                            <Button
+                                label={`${saveButtonTitle}`}
+                                onClick={saveReservation}
+                            />
+                            {saveButtonTitle === 'Actualizar' && (
+                                <Button
+                                    label="Cancelar"
+                                    onClick={cancelEdit}
+                                    className="p-button-danger" />)}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

@@ -233,6 +233,36 @@ export class AppController {
     return this.appService.deleteTenant(id, community_id, number_house);
   }
 
+  @Put('user/resetUserPassword/:id')
+  resetUserPassword(@Param('id') id: string,
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('password') password: string,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
+  ) {
+    return this.appService.updateUser(
+      id,
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      password,
+      user_type,
+      status,
+      date_entry,
+      community_id,
+      number_house,
+    );
+  }
+
   @Post('user/changeStatus')
   changeStatusUser(
     @Body('id') pId: string,

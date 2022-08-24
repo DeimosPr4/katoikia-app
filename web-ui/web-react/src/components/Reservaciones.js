@@ -43,6 +43,7 @@ const Reservations = () => {
     const [areas, setAreas] = useState([]);
     const [areaId, setAreaId] = useState();
     const [tenants, setTenants] = useState([]);
+    const [tenantId, setTenantId] = useState();
     const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
 
     async function tenantsList(id) {
@@ -264,12 +265,30 @@ const Reservations = () => {
         );
     };
 
+    const onInputChange = (e, name) => {
+        const val = (e.target && e.target.value) || '';
+        let _reservation = { ...reservation };
+        _reservation[`${name}`] = val;
+    
+        setReservation(_reservation);
+      };
+
     const handleAreas = (e) => {
         const getAreaId = e.target.value;
         setAreaId(getAreaId);
     }
 
+    const handleTenants = (e) => {
+        const getTenantId = e.target.value;
+        setAreaId(getTenantId);
+    }
+
     const aList = areas.map((item) => ({
+        label: item.name,
+        value: item._id,
+    }));
+
+    const tList = tenants.map((item) => ({
         label: item.name,
         value: item._id,
     }));
@@ -371,8 +390,53 @@ const Reservations = () => {
                 <div className="card">
                     <h5>Reservar Área para Inquilino</h5>
                     <div className="p-fluid formgrid grid">
-
-                        <div className="field col-12 md:col-6">
+                        <div className="field col-12 md:col-12">
+                            <label htmlFor="name">Nombre</label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <InputText
+                                        id="name"
+                                        value={reservation.name}
+                                        onChange={(e) => onInputChange(e, 'name')}
+                                        required
+                                        autoFocus
+                                        className={classNames({
+                                            'p-invalid': submitted && reservation.start_time === '',
+                                        })}
+                                    />
+                                </div>
+                                {submitted && reservation.start_time === '' && (
+                                    <small className="p-invalid">Nombre es requirido.</small>
+                                )}
+                            </div>
+                        </div>
+                        <div className="field col-6 md:col-6">
+                            <label htmlFor="common_area_id">Inquilino: </label>
+                            <div className="p-0 col-12 md:col-12">
+                                <div className="p-inputgroup">
+                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                        <i className="pi pi-home"></i>
+                                    </span>
+                                    <Dropdown
+                                        placeholder="--Seleccione el Inquilino a Reservar--"
+                                        id="common_area_id"
+                                        value={tenantId}
+                                        options={tList}
+                                        onChange={handleTenants}
+                                        required autoFocus
+                                        className={
+                                            classNames({ 'p-invalid': submitted && !tenantId })}
+                                    />
+                                </div>
+                                {submitted
+                                    && !tenantId
+                                    && <small className="p-invalid">Inquilino es requerido.</small>}
+                            </div>
+                        </div>
+                        <div className="field col-6 md:col-6">
                             <label htmlFor="common_area_id">Área Común: </label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">

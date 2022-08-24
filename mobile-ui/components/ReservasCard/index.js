@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import React from 'react';
 
-export const ReservasCard = ({ date, startTime, endTime, status}) => {
+export const ReservasCard = ({ date, startTime, endTime, status, name}) => {
     const dateFormated = format(new Date(date), "dd LL yyyy")
   
 
@@ -44,7 +44,7 @@ export const ReservasCard = ({ date, startTime, endTime, status}) => {
                         <Text bold={true} color='danger.50'> {status == 1 ? 'LIBRE' : 'RESERVADO'}</Text>
                     </Badge>
             <Heading size="md" ml="-1">
-              Reserva #1
+             {name}
             </Heading>
             <Text fontSize="xs" _light={{
             color: "violet.500"

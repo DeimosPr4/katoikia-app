@@ -70,6 +70,7 @@ export default function Reservas({navigation}) {
               startTime={item.start_time}
               endTime={item.finish_time}
               status={item.status}
+              name={item.common_area_name}
             />
           ))
         }

@@ -24,8 +24,8 @@ export default function AreaComun({navigation}){
   const [selectedMinutes, setSelectedMinutes] = useState(0);
   const [endSelectedHours, setEndSelectedHours] = useState(0);
   const [endSelectedMinutes, setEndSelectedMinutes] = useState(0);
-  const [time, setTime] = useState(new Date(1598051730000))
-  const [endTime, setEndTime] = useState(new Date(1598051730000))
+  const [time, setTime] = useState(new Date())
+  const [endTime, setEndTime] = useState(new Date())
   const date = new Date(); 
 
     useEffect(() => {
@@ -144,13 +144,13 @@ export default function AreaComun({navigation}){
           <FormControl isRequired>
             <FormControl.Label>Hora de inicio</FormControl.Label>
             <View  >
-            <DateTimePicker mode="time" is24Hour={true} value={time} onChangeStart={onChange}/>
+            <DateTimePicker mode="time" is24Hour={true} value={time} onChangeStart={onChangeStart}/>
             </View>
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label>Hora de finalización</FormControl.Label>
             <View  >
-            <DateTimePicker mode="time" is24Hour={true} value={time} onChangeEnd={onChange}/>
+            <DateTimePicker mode="time" is24Hour={true} value={endTime} onChangeEnd={onChangeEnd}/>
             </View>
            
           </FormControl>

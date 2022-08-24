@@ -44,6 +44,28 @@ function HomeTab({ route }) {
 
   )
 }
+
+function HomeTabGuarda({ route }) {
+  const { user } = useContext(UserContext);
+  const [selected, setSelected] = useState(0);
+
+  return (
+
+    <Tab.Navigator initialParams={user} initialRouteName="Comunicados" > 
+    <Tab.Screen  name="Comunicados" component={Home}  initialParams={user} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 0 ? 'home' : 'home-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(0)}
+     />
+    <Tab.Screen  name="Invitados" component={Invitados} initialParams={user} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'contacts' : 'contacts-outline'} />} color="#D7A86E" size="md" />)} } onclick={() => setSelected(1)}  /> 
+    <Tab.Screen  name="Perfil" component={Profile} initialParams={user} options={{headerStyle: {
+      backgroundColor: "#D7A86E"
+    }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 2 ? 'account' : 'account-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(2)} /> 
+  </Tab.Navigator>
+
+  )
+}
 export default function App() {
   return (
     <NativeBaseProvider>
@@ -56,6 +78,7 @@ export default function App() {
               }
             }} />
             <Stack.Screen name="Comunicados" component={HomeTab} options={{ headerShown: false }} />
+            <Stack.Screen name="ComunicadosGuarda" component={HomeTabGuarda} options={{ headerShown: false }} />
             <Stack.Screen name="Password" component={RecoverPassword} />
             <Stack.Screen name="area" component={AreaComun} options={{
               headerStyle: {

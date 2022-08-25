@@ -23,18 +23,47 @@ const baseURL = `${API.BASE_URL}/user/loginUser`;
 export default function LogIn({ navigation }) {
 
   const { addUser } = useContext(UserContext);
+  const [errors, setErrors] = useState({});
 
   const [credentials, setCredentials] = useState({
-    email: "lalo@lalo.com",
-    password: "12345"
+    email: "",
+    password: ""
   });
 
   const onHandleChange = (name) => (value) => setCredentials(prev => ({ ...prev, [name]: value }))
 
+  const validate = async() => {
+      
+    if( credentials.email === "" && credentials.password === ""){
+      setErrors({ ...errors,
+        email: 'Debe ingresar un correo electrónico',
+        password: 'Debe ingresar una contraseña'
+      });
+      return false;
+    }else  if (credentials.password === "") {
+      setErrors({ ...errors,
+        password: 'Debe ingresar una contraseña'
+      });
+      return false;
+    } else if(credentials.email === ""){
+      setErrors({ ...errors,
+        email: 'Debe ingresar un correo electrónico'
+      });
+      return false;
+    }
+    
+    return true;
+  }
+
   const iniciarSesion = async () => {
+
+    const error = await validate(); 
+
+    console.log(error);
+
+   if (error) {
     try {
   
-      console.log(baseURL);
       await fetch(baseURL, {
         cache: 'no-cache', 
         method: 'POST', 
@@ -68,12 +97,15 @@ export default function LogIn({ navigation }) {
     } catch (error) {
       console.log("ERROR: " +error);
     }
-
+    
+   }
+   
+   console.log(errors);
   }
 
   return (
 
-    <Center w="100%">
+    <Center w="100%" flex={1}>
       <Box safeArea p="2" py="8" w="90%" maxW="290">
 
         <Center>
@@ -107,23 +139,26 @@ export default function LogIn({ navigation }) {
         </Heading>
 
         <View style={styles.container}>
-          <VStack space={3} mt="5">
-            <FormControl isRequired >
+          <VStack width="90%" mx="3" maxW="300px" mb={10}>
+            <FormControl isRequired isInvalid={'email' in errors}>
               <FormControl.Label Text='bold'> Correo Electrónico </FormControl.Label>
 
               <View style={styles.viewSection}>
                 <Entypo name="email" size={20} color="grey" style={styles.iconStyle} />
-                <TextInput
+                <TextInput 
                   name='email'
                   type="text"
                   style={styles.input}
                   value={credentials.email}
                   placeholder='Correo electrónico'
                   onChangeText={onHandleChange("email")} />
+                
               </View>
-
+              {'email' in errors && <FormControl.ErrorMessage  _text={{
+        fontSize: 'xs'
+      }}>Debe ingresar un correo electrónico</FormControl.ErrorMessage> }
             </FormControl>
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={'password' in errors}>
               <FormControl.Label Text='bold'> Contraseña </FormControl.Label>
               <View style={styles.viewSection}>
                 <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" style={styles.iconStyle} />
@@ -134,7 +169,12 @@ export default function LogIn({ navigation }) {
                   value={credentials.password}
                   placeholder='Contraseña'
                   onChangeText={onHandleChange("password")} />
+                   
               </View>
+              {'password' in errors && <FormControl.ErrorMessage _text={{
+        fontSize: 'xs'
+      }}
+      >Debe ingresar una contraseña</FormControl.ErrorMessage> }
               <Link
                 _text={{
                   fontSize: "xs",
@@ -180,6 +220,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 4
   },
+  errorMessage: {
+    height: 40,
+    margin: 10,
+    padding: 5,
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+  },
 
   iconStyle: {
     paddingBottom: 20,
@@ -197,6 +247,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
+    marginBottom: 6
 
   }
 })

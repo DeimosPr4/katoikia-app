@@ -144,13 +144,13 @@ export default function AreaComun({navigation}){
           <FormControl isRequired>
             <FormControl.Label>Hora de inicio</FormControl.Label>
             <View  >
-            <DateTimePicker mode="time" is24Hour={true} value={time} onChangeStart={onChangeStart}/>
+            <DateTimePicker mode="datetime" is24Hour value={time} onChangeStart={onChangeStart}/>
             </View>
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label>Hora de finalización</FormControl.Label>
             <View  >
-            <DateTimePicker mode="time" is24Hour={true} value={endTime} onChangeEnd={onChangeEnd}/>
+            <DateTimePicker mode="datetime" is24Hour value={endTime} onChangeEnd={onChangeEnd}/>
             </View>
            
           </FormControl>

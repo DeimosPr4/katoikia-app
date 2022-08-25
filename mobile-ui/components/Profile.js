@@ -4,9 +4,11 @@ import {
   Box, Button,
   Center, FormControl, Heading, ScrollView, VStack
 } from "native-base";
-import { Dimensions, StyleSheet, TextInput } from "react-native";
+import { Dimensions, StyleSheet, TextInput, useWindowDimensions } from "react-native";
 import { UserContext } from "../context/UserContext";
-import {SceneMap, TabView} from 'react-native-pager-view';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+const { Navigator, Screen } = createMaterialTopTabNavigator();
 
 export default function Profile({ navigation }) {
 
@@ -16,20 +18,21 @@ export default function Profile({ navigation }) {
   const [email, setEmail] = useState(); 
   const [password, setPassword] = useState();
   const [index, setIndex] = useState(0); 
+  const layout = useWindowDimensions(); 
 
-  const [routes] = useState([{
-    key: "first", 
-    title: 'Información'
-  }, {
-  key: "second", 
-  title: 'Contraseña'}])
+  // const [routes] = useState([{
+  //   key: "first", 
+  //   title: 'Información'
+  // }, {
+  // key: "second", 
+  // title: 'Contraseña'}])
 
   const userData = useContext(UserContext)
   const id = userData.user._id;
 
   console.log(userData.user);
 
-  const ProfileView = () => {
+  const ProfileView = () => (
 
     <ScrollView width='100%' h='550' ml='36' _contentContainerStyle={{
       px: "20px",
@@ -79,9 +82,9 @@ export default function Profile({ navigation }) {
 
       </ScrollView>
 
-  }
+  )
 
-  const PasswordView = () => {
+  const PasswordView = () => (
 
     <ScrollView width='100%' h='550' ml='36' _contentContainerStyle={{
       px: "20px",
@@ -126,41 +129,41 @@ export default function Profile({ navigation }) {
 
     </ScrollView>
     
-  }
+  )
 
-  const initialLayout = {
-    width: Dimensions.get('window').width
-  }
+  // const initialLayout = {
+  //   width: Dimensions.get('window').width
+  // }
 
-  const renderScene = SceneMap({
-    first: ProfileView, 
-    second: PasswordView
-  })
+  // const renderScene = SceneMap({
+  //   first: ProfileView, 
+  //   second: PasswordView
+  // })
 
 
-  const renderTabBar = props => {
-    const inputRange = props.navigationState.routes.map((x, i) => i);
-    return <Box flexDirection="row">
-        {props.navigationState.routes.map((route, i) => {
-        const opacity = props.position.interpolate({
-          inputRange,
-          outputRange: inputRange.map(inputIndex => inputIndex === i ? 1 : 0.5)
-        });
-        const color = index === i ? useColorModeValue('#000', '#e5e5e5') : useColorModeValue('#1f2937', '#a1a1aa');
-        const borderColor = index === i ? 'cyan.500' : useColorModeValue('coolGray.200', 'gray.400');
-        return <Box borderBottomWidth="3" borderColor={borderColor} flex={1} alignItems="center" p="3" cursor="pointer">
-              <Pressable onPress={() => {
-            console.log(i);
-            setIndex(i);
-          }}>
-                <Animated.Text style={{
-              color
-            }}>{route.title}</Animated.Text>
-              </Pressable>
-            </Box>;
-      })}
-      </Box>;
-  };
+  // const renderTabBar = props => {
+  //   const inputRange = props.navigationState.routes.map((x, i) => i);
+  //   return <Box flexDirection="row">
+  //       {props.navigationState.routes.map((route, i) => {
+  //       const opacity = props.position.interpolate({
+  //         inputRange,
+  //         outputRange: inputRange.map(inputIndex => inputIndex === i ? 1 : 0.5)
+  //       });
+  //       const color = index === i ? useColorModeValue('#000', '#e5e5e5') : useColorModeValue('#1f2937', '#a1a1aa');
+  //       const borderColor = index === i ? 'cyan.500' : useColorModeValue('coolGray.200', 'gray.400');
+  //       return <Box borderBottomWidth="3" borderColor={borderColor} flex={1} alignItems="center" p="3" cursor="pointer">
+  //             <Pressable onPress={() => {
+  //           console.log(i);
+  //           setIndex(i);
+  //         }}>
+  //               <Animated.Text style={{
+  //             color
+  //           }}>{route.title}</Animated.Text>
+  //             </Pressable>
+  //           </Box>;
+  //     })}
+  //     </Box>;
+  // };
 
   
   const updateInfo = async() => {
@@ -208,14 +211,12 @@ export default function Profile({ navigation }) {
 
 
     return (
-        <Center>
-        <TabView navigationState={{
-              index,
-              routes
-            }} renderScene={renderScene} renderTabBar={renderTabBar} onIndexChange={setIndex} initialLayout={initialLayout} style={{
-              marginTop: StatusBar.currentHeight
-            }} />;
-    </Center>
+     
+          <Navigator>
+            <Screen name="Perfil" component={ProfileView} />
+            <Screen name="Contraseña" component={PasswordView} />
+        
+          </Navigator>
 
   )
 

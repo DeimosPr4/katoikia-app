@@ -60,6 +60,7 @@ export default function LogIn({ navigation }) {
             navigation.navigate('Comunicados', {user})
           }else if(user.user_type == '3'){
             addUser(user);
+            // cambiar por ComunicadosGuarda luego
             navigation.navigate('Comunicados', {user})
           }
       })

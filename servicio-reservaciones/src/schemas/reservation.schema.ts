@@ -6,10 +6,10 @@ export type ReservationDocument = Reservation & Document;
 @Schema({ collection: 'reservations' })
 export class Reservation {
   @Prop()
-  start_time: string;
+  date: string;
 
   @Prop()
-  finish_time: string;
+  time: string;
 
   @Prop()
   status: string;

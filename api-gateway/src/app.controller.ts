@@ -505,8 +505,8 @@ export class AppController {
 
   @Post('reservation/createReservation')
   createReservation(
-    @Body('start_time') start_time: string,
-    @Body('finish_time') finish_time: string,
+    @Body('date') date: string,
+    @Body('time') time: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
     @Body('user_id') user_id: string,
@@ -515,8 +515,8 @@ export class AppController {
     @Body('communty_id') communty_id: string,
   ) {
     return this.appService.createReservation(
-      start_time,
-      finish_time,
+      date,
+      time,
       status,
       date_entry,
       user_id,

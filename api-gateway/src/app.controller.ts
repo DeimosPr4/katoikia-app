@@ -233,6 +233,36 @@ export class AppController {
     return this.appService.deleteTenant(id, community_id, number_house);
   }
 
+  @Put('user/resetUserPassword/:id')
+  resetUserPassword(@Param('id') id: string,
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('password') password: string,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
+  ) {
+    return this.appService.updateUser(
+      id,
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      password,
+      user_type,
+      status,
+      date_entry,
+      community_id,
+      number_house,
+    );
+  }
+
   @Post('user/changeStatus')
   changeStatusUser(
     @Body('id') pId: string,
@@ -342,6 +372,11 @@ export class AppController {
     @Body('tenant_id') tenant_id: string,
   ) {
     return this.appService.saveTenant(community_id, number_house, tenant_id);
+  }
+
+  @Delete('community/deleteCommunity/:id')
+  deleteCommunity(@Param('id') paramCommunityId: string) {
+    return this.appService.deleteCommunity(paramCommunityId);
   }
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
@@ -476,6 +511,8 @@ export class AppController {
     @Body('date_entry') date_entry: Date,
     @Body('user_id') user_id: string,
     @Body('common_area_id') common_area_id: string,
+    @Body('common_area_name') common_area_name: string,
+    @Body('communty_id') communty_id: string,
   ) {
     return this.appService.createReservation(
       start_time,
@@ -484,6 +521,8 @@ export class AppController {
       date_entry,
       user_id,
       common_area_id,
+      common_area_name,
+      communty_id,
     );
   }
 
@@ -497,6 +536,12 @@ export class AppController {
     return this.appService.findReservation(paramReservation);
   }
 
+  @Get('reservation/findReservations/:id')
+  findReservations(@Param('id') community_id: string) {
+    return this.appService.findReservations(community_id);
+  }
+
+  
   // #==== API Post
 
   @Post('post/createPost')

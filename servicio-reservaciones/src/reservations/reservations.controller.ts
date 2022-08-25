@@ -28,6 +28,12 @@ export class ReservationsController {
     return this.reservationsService.findOne(_id);
   }
 
+  @MessagePattern({ cmd: 'findReservationsByCommunity' })
+  findReservationsByCommunity(@Payload() body: string) {
+    let community_id = body['community_id'];
+    return this.reservationsService.findReservationsByCommunity(community_id);
+  }
+
   @MessagePattern({ cmd: 'updateReservation' })
   update(@Payload() reservation: ReservationDocument) {
     return this.reservationsService.update(reservation.id, reservation);
@@ -37,5 +43,11 @@ export class ReservationsController {
   remove(@Payload() id: string) {
     let _id = id['id'];
     return this.reservationsService.remove(_id);
+  }
+
+  @MessagePattern({ cmd: 'removeIdCommunity' })
+  removeIdCommunity(@Payload() reservation: any) {
+    let community_id =  reservation['community_id'];
+    return this.reservationsService.removeIdCommunity(community_id);
   }
 }

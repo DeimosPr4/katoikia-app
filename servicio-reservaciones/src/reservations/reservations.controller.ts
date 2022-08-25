@@ -28,6 +28,12 @@ export class ReservationsController {
     return this.reservationsService.findOne(_id);
   }
 
+  @MessagePattern({ cmd: 'findReservationsByCommunity' })
+  findReservationsByCommunity(@Payload() body: string) {
+    let community_id = body['community_id'];
+    return this.reservationsService.findReservationsByCommunity(community_id);
+  }
+
   @MessagePattern({ cmd: 'updateReservation' })
   update(@Payload() reservation: ReservationDocument) {
     return this.reservationsService.update(reservation.id, reservation);

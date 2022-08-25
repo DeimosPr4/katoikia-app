@@ -23,15 +23,12 @@ export class Reservation {
   @Prop()
   common_area_name: string;
 
-
-  @Prop()
-  community_id: string;
-
   @Prop()
   user_id: string;
 
   @Prop()
   community_id: string;
+
 }
 
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);

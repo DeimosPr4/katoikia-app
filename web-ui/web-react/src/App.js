@@ -56,6 +56,7 @@ import AreasComunes from './components/AreasComunes';
 import { useCookies } from "react-cookie";
 import LogInUser from './components/LogInUser';
 import Page404 from './components/Page404'
+import Reservaciones from './components/Reservaciones';
 
 
 const App = () => {
@@ -202,6 +203,7 @@ const App = () => {
                     to: '/areasComunes',
                 },
                 
+                { label: 'Reservaciones', icon: PrimeIcons.CALENDAR, to: '/reservaciones'},
                 { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado'},
     
             ]
@@ -467,6 +469,7 @@ const App = () => {
                                                 <Route path="/guardasSeguridad" component={GuardasSeguridad} />
                                                 <Route path="/inquilinos" component={Inquilinos} />
                                                 <Route path="/areasComunes" component={AreasComunes} />
+                                                <Route path="/reservaciones" component={Reservaciones} />
                                                 <Route path="/registroComunicado" component={RegistroComunicado} />
                                             </>
                                         )

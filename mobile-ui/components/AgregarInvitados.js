@@ -29,6 +29,7 @@ export default function AgregarInvitados({ navigation }) {
       "dni": dni,
       "phone": phone,
       "number_plate": number_plate,
+      "status":"-0",
       "tenant_id": user.id,
       "community_id": user.community_id
     }

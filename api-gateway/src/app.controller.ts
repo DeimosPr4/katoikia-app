@@ -431,7 +431,11 @@ export class AppController {
   findGuestUser(@Param('id') paramGuestId: string) {
     return this.appService.findGuestUser(paramGuestId);
   }
-
+  @Post('guest/updateGuest')
+  updateGuest(
+    @Body('_id') _id: string){
+    return this.appService.updateGuest(_id);
+  }
 
   // #==== API Payment
 

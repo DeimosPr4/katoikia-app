@@ -39,7 +39,7 @@ export class GuestsController {
 
   @MessagePattern({ cmd: 'removeGuest' })
   remove(@Payload() id: string) {
-    let dni = id['dni'];
+    let dni = id['_id'];
     return this.guestsService.remove(dni);
   }
 }

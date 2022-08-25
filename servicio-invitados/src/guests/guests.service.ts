@@ -18,7 +18,8 @@ export class GuestsService {
   }
 
   async findGuestUser(id: string): Promise<Guest[]> {
-    return this.guestModel.find({_tenant_id:id}).setOptions({ sanitizeFilter: true }).exec();
+    console.log(id);
+    return this.guestModel.find({_tenant_id:id, status:"-0"}).setOptions({ sanitizeFilter: true }).exec();
   }
 
   findOneId(id: string): Promise<Guest> {

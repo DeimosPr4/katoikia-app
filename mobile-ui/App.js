@@ -72,7 +72,7 @@ export default function App() {
       <UserContextProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="LogIn">
-            <Stack.Screen name="Inicio" component={LogIn} options={{
+            <Stack.Screen name="Inicio" component={Invitados} options={{
               headerStyle: {
                 backgroundColor: "#D7A86E"
               }

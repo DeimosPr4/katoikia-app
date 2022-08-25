@@ -322,6 +322,7 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+
   //GET parameter from API
   findCommunityAdmin(community_id: string) {
     const pattern = { cmd: 'findCommunityAdmin' };
@@ -541,10 +542,21 @@ export class AppService {
   //GET parameter from API
   findGuestUser(paramGuestId: string) {
     const pattern = { cmd: 'findGuestUser' };
-    const payload = { di: paramGuestId };
+    const payload = { id: paramGuestId };
     return this.clientGuestApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
+  }
+
+  updateGuest(_id: string
+    ) {
+    const pattern = { cmd: 'removeGuest' };
+    const payload = {
+      _id: _id
+    };
+    return this.clientGuestApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })))
   }
   // ====================== PAYMENTS =============================== 
 

@@ -8,11 +8,14 @@ import {
 } from "native-base";
 
 export default function Invitados({navigation}) {
+
+
   const [isRequesting, setIsRequesting] = useState(false);
   const [invitados, setInvitados] = useState([]);
   const { user } = useContext(UserContext);
-  const id = user._id;
-
+  //const id = user._id;
+  const id = "62ff074949eb1e993a9d0fda";
+  const [invitado, setInvitado] = useState([]);
 
   useEffect(() => {
 
@@ -42,6 +45,34 @@ export default function Invitados({navigation}) {
 
   })
 
+  const deleteInvitado = async(pid) => {
+    const data = {
+      "_id": pid
+    }
+
+    try {
+
+      await fetch("http://localhost:4000/guest/updateGuest", {
+
+        cache: 'no-cache', 
+        method: 'POST', 
+        body: JSON.stringify(data), 
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.status != 201){
+          console.log('ocurrio un error ');
+        }else{
+          return response.json(); 
+        }
+      })
+      
+    } catch (error) {
+      console.log("ERROR: " + error);
+    }
+  }
   return (
   
        <Box>
@@ -67,20 +98,22 @@ export default function Invitados({navigation}) {
                 <Text color="coolGray.600" _dark={{
             color: "warmGray.200"
           }}>
-                  {item.dni}
+                  {"Identificación: "+item.dni}
                 </Text>
                 <Text color="coolGray.600" _dark={{
             color: "warmGray.200"
           }}>
-                 (506) {item.phone}
+                 {"Teléfono: "+item.phone}
                 </Text>
+                <Text color="coolGray.600" _dark={{
+            color: "warmGray.200"
+          }}>
+                 {"Número Placa: "+item.number_plate}
+                </Text>
+
               </VStack>
               <Spacer />
-              <Text fontSize="xs" _dark={{
-          color: "warmGray.50"
-        }} color="coolGray.800" alignSelf="flex-start">
-                {item.number_plate}
-              </Text>
+              <MaterialCommunityIcons name="delete" size={28} color="#7C0808" onPress={() =>{deleteInvitado(item._id)}} />
             </HStack>
           </Box>} keyExtractor={item => item.id} />
 

@@ -46,6 +46,9 @@ const Reservations = () => {
     const [tenants, setTenants] = useState([]);
     const [tenantId, setTenantId] = useState();
     const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
+    const [reservationDialog, setReservationDialog] = useState(false);
+
+
 
     async function tenantsList(id) {
         await fetch(`http://localhost:4000/user/findTenants/${id}`,
@@ -71,12 +74,12 @@ const Reservations = () => {
             .then(data => data.message)
             .then(data => {
                 data = data.filter(
-                    (val) => val.status != -1  
+                    (val) => val.status != -1
                 )
                 data = data.filter(
                     (val) => val.bookable == 1,
                 )
-              
+
                 setAreas(data)
             });
     }
@@ -124,8 +127,20 @@ const Reservations = () => {
     }, [])
 
     const saveReservation = () => {
-        if (reservation.common_area_id) {
+            let _reservations = [...reservations];
+            let _reservation = { ...reservation };
+        
+        if ( _reservation.date && _reservation.time && tenantId && areaId && !validationTime()) {
+            _reservations.push(_reservation);
+            setReservations(_reservations)
+            toast.current.show({
+                severity: 'success',
+                summary: 'Éxito',
+                detail: 'Administrador del Sistema Actualizado',
+                life: 3000,
+              });
 
+            setReservationDialog(false)
         } else {
             setSubmitted(true);
         }
@@ -162,12 +177,34 @@ const Reservations = () => {
         setReservation(emptyReservation);
         setSaveButtonTitle('Registrar');
         setAreaId('');
+        setTenantId('');
     }
+
+    const hideNewReservationDialog = () => {
+        setSubmitted(false);
+        setReservationDialog(false);
+        setReservation(emptyReservation);
+        setAreaId('');
+        setTenantId('');
+    };
+
+    const openNewReservation = () => {
+        setReservation(emptyReservation);
+        setReservationDialog(true);
+        setSubmitted(false);
+
+    };
 
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
+                    <Button
+                        label="Nueva Reservación"
+                        icon="pi pi-plus"
+                        className="p-button-success mr-2"
+                        onClick={openNewReservation}
+                    />
                     <Button
                         label="Eliminar"
                         icon="pi pi-trash"
@@ -176,6 +213,7 @@ const Reservations = () => {
                         disabled={!selectedReservations || !selectedReservations.length}
                     />
                 </div>
+
             </React.Fragment>
         );
     };
@@ -191,6 +229,19 @@ const Reservations = () => {
             </React.Fragment>
         );
     };
+
+
+    const reservationDialogFooter = (
+        <>
+            <Button
+                label="Cerrar"
+                icon="pi pi-times"
+                className="p-button-text"
+                onClick={hideNewReservationDialog}
+            />
+
+        </>
+    );
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -317,7 +368,7 @@ const Reservations = () => {
             const [hourMax, minuteMax] = area.hourMax.split(':');
             if ((parseInt(hourR) >= parseInt(hourMin)) && (parseInt(hourR) <= parseInt(hourMax))) {
                 value = false;
-            } 
+            }
         } else {
             value = false;
         }
@@ -423,142 +474,149 @@ const Reservations = () => {
                             body={actionsReservation}
                         ></Column>
                     </DataTable>
-
-
-                </div>
-            </div>
-            <div className="col-12">
-                <div className="card">
-                    <h5>Reservar Área para Inquilino</h5>
-                    <div className="p-fluid formgrid grid">
-                        <div className="field col-6 md:col-6">
-                            <label htmlFor="common_area_id">Área Común: </label>
-                            <div className="p-0 col-12 md:col-12">
-                                <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
-                                    </span>
-                                    <Dropdown
-                                        placeholder="--Seleccione el Area Común a Reservar--"
-                                        id="common_area_id"
-                                        value={areaId}
-                                        options={aList}
-                                        onChange={handleAreas}
-                                        required autoFocus
-                                        className={
-                                            classNames({ 'p-invalid': submitted && !areaId })}
-                                    />
-                                </div>
-                                {submitted
-                                    && !areaId
-                                    && <small className="p-invalid">Área Común es requerida.</small>}
-                            </div>
-                        </div>
-                        {area &&
-                            <>
-                                <div className="field col-3 md:col-3">
-                                    <label htmlFor="name">Fecha</label>
+                    <Dialog
+                        visible={reservationDialog}
+                        style={{ width: '650px' }}
+                        header="Reservar Área para Inquilino"
+                        modal
+                        className="p-fluid"
+                        footer={reservationDialogFooter}
+                        onHide={hideNewReservationDialog}
+                    >
+                        {reservation && (
+                            <div className="p-fluid formgrid grid">
+                                <div className="field col-12 md:col-12">
+                                    <label htmlFor="common_area_id">Área Común: </label>
                                     <div className="p-0 col-12 md:col-12">
                                         <div className="p-inputgroup">
                                             <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                                 <i className="pi pi-home"></i>
                                             </span>
-                                            <InputText
-                                                id="date"
-                                                onChange={(e) => onInputChange(e, 'date')}
-                                                required
-                                                autoFocus
-                                                min={Date()}
-                                                type="date"
-                                                lang='es'
-                                                value={reservation.date}
-                                                className={classNames({
-                                                    'p-invalid': submitted && reservation.date === '',
-                                                })}
+                                            <Dropdown
+                                                placeholder="--Seleccione el Area Común a Reservar--"
+                                                id="common_area_id"
+                                                value={areaId}
+                                                options={aList}
+                                                onChange={handleAreas}
+                                                required autoFocus
+                                                className={
+                                                    classNames({ 'p-invalid': submitted && !areaId })}
                                             />
-
                                         </div>
-                                        {submitted && reservation.date === '' && (
-                                            <small className="p-invalid">Fecha es requirida.</small>
-                                        )}
+                                        {submitted
+                                            && !areaId
+                                            && <small className="p-invalid">Área Común es requerida.</small>}
                                     </div>
                                 </div>
+                                {area &&
+                                    <>
+                                        <div className="field col-6 md:col-6">
+                                            <label htmlFor="name">Fecha</label>
+                                            <div className="p-0 col-12 md:col-12">
+                                                <div className="p-inputgroup">
+                                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                                        <i className="pi pi-home"></i>
+                                                    </span>
+                                                    <InputText
+                                                        id="date"
+                                                        onChange={(e) => onInputChange(e, 'date')}
+                                                        required
+                                                        autoFocus
+                                                        min={new Date().toJSON().split('T')[0]}
+                                                        type="date"
+                                                        lang='es'
+                                                        value={reservation.date}
+                                                        className={classNames({
+                                                            'p-invalid': submitted && reservation.date === '',
+                                                        })}
+                                                    />
 
-                                <div className="field col-3 md:col-3">
-                                    <label htmlFor="name">Hora de Reservación</label>
+                                                </div>
+                                                {submitted && reservation.date === '' && (
+                                                    <small className="p-invalid">Fecha es requirida.</small>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="field col-6 md:col-6">
+                                            <label htmlFor="name">Hora de Reservación</label>
+                                            <div className="p-0 col-12 md:col-12">
+                                                <div className="p-inputgroup">
+                                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                                        <i className="pi pi-home"></i>
+                                                    </span>
+                                                    <InputText
+                                                        id="time"
+                                                        value={reservation.time}
+                                                        onChange={(e) => onInputChange(e, 'time')}
+                                                        required
+                                                        autoFocus
+                                                        type="time"
+                                                        step='3600'
+                                                        className={classNames({
+                                                            'p-invalid': submitted && (reservation.time === '' || validationTime()),
+                                                        })}
+                                                    />
+                                                </div>
+                                                {submitted && reservation.time === '' && (
+                                                    <small className="p-invalid">Hora es requirido.</small>
+                                                )}
+                                                {submitted && validationTime() && (
+                                                    <small className="p-invalid">La hora de inicio debe set mayor de {area.hourMin} y menor de {area.hourMax} .</small>
+                                                )}
+
+
+                                            </div>
+                                        </div>
+                                    </>
+                                }
+                                <div className="field col-12 md:col-12">
+                                    <label htmlFor="user_id">Inquilino: </label>
                                     <div className="p-0 col-12 md:col-12">
                                         <div className="p-inputgroup">
                                             <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                                 <i className="pi pi-home"></i>
                                             </span>
-                                            <InputText
-                                                id="time"
-                                                value={reservation.time}
-                                                onChange={(e) => onInputChange(e, 'time')}
-                                                required
-                                                autoFocus
-                                                type="time"
-                                                step='3600'
-                                                className={classNames({
-                                                    'p-invalid': submitted && (reservation.time === '' || validationTime()),
-                                                })}
+                                            <Dropdown
+                                                placeholder="--Seleccione el Inquilino a Reservar--"
+                                                id="user_id"
+                                                value={tenantId}
+                                                options={tList}
+                                                onChange={handleTenants}
+                                                required autoFocus
+                                                className={
+                                                    classNames({ 'p-invalid': submitted && !tenantId })}
                                             />
                                         </div>
-                                        {submitted && reservation.time === '' && (
-                                            <small className="p-invalid">Hora es requirido.</small>
-                                        )}
-                                        {submitted && validationTime() && (
-                                            <small className="p-invalid">La hora de inicio debe set mayor de {area.hourMin} y menor de {area.hourMax} .</small>
-                                        )}
-                                        
-
+                                        {submitted
+                                            && !tenantId
+                                            && <small className="p-invalid">Inquilino es requerido.</small>}
                                     </div>
                                 </div>
-                            </>
-                        }
-                        <div className="field col-6 md:col-6">
-                            <label htmlFor="user_id">Inquilino: </label>
-                            <div className="p-0 col-12 md:col-12">
-                                <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                                        <i className="pi pi-home"></i>
-                                    </span>
-                                    <Dropdown
-                                        placeholder="--Seleccione el Inquilino a Reservar--"
-                                        id="user_id"
-                                        value={tenantId}
-                                        options={tList}
-                                        onChange={handleTenants}
-                                        required autoFocus
-                                        className={
-                                            classNames({ 'p-invalid': submitted && !tenantId })}
-                                    />
-                                </div>
-                                {submitted
-                                    && !tenantId
-                                    && <small className="p-invalid">Inquilino es requerido.</small>}
-                            </div>
-                        </div>
 
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            gap: "10px",
-                            width: "100%"
-                        }}>
-                            <Button
-                                label={`${saveButtonTitle}`}
-                                onClick={saveReservation}
-                            />
-                            {saveButtonTitle === 'Actualizar' && (
-                                <Button
-                                    label="Cancelar"
-                                    onClick={cancelEdit}
-                                    className="p-button-danger" />)}
-                        </div>
-                    </div>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    gap: "10px",
+                                    width: "100%"
+                                }}>
+                                    <Button
+                                        label={`${saveButtonTitle}`}
+                                        onClick={saveReservation}
+                                    />
+                                    {saveButtonTitle === 'Actualizar' && (
+                                        <Button
+                                            label="Cancelar"
+                                            onClick={cancelEdit}
+                                            className="p-button-danger" />)}
+                                </div>
+                            </div>
+                        )}
+                    </Dialog>
+
                 </div>
             </div>
+           
         </div>
 
 

@@ -49,7 +49,6 @@ const Reservations = () => {
     const [reservationDialog, setReservationDialog] = useState(false);
 
 
-
     async function tenantsList(id) {
         await fetch(`http://localhost:4000/user/findTenants/${id}`,
             { method: 'GET' })
@@ -148,8 +147,6 @@ const Reservations = () => {
             } else if (_reservation.status == '0') {
                 _reservation.status_text = 'Inactivo';
             }
-            console.log(_reservation)
-
             fetch('http://localhost:4000/reservation/createReservation/', {
                 cache: 'no-cache',
                 method: 'POST',
@@ -174,19 +171,12 @@ const Reservations = () => {
 
                     setReservationDialog(false)
                 })
-
-
-
-
         } else {
             setSubmitted(true);
         }
     }
-
-
+    
     const actionsReservation = (rowData) => {
-
-
         return (
             <div className="actions">
                 <Button
@@ -198,8 +188,6 @@ const Reservations = () => {
             </div>
         );
     };
-
-
 
     const confirmDeleteReservation = (reservation) => {
         setReservation(reservation);
@@ -266,7 +254,6 @@ const Reservations = () => {
             </React.Fragment>
         );
     };
-
 
     const reservationDialogFooter = (
         <>
@@ -432,7 +419,7 @@ const Reservations = () => {
     }
 
     function formatDateString(dateString) {
-        const [date, time] = dateString.split('T');
+        let date = new Date(dateString).toLocaleDateString("es-CL");
         return date;
     }
 
@@ -587,7 +574,7 @@ const Reservations = () => {
                                                         autoFocus
                                                         min={new Date().toJSON().split('T')[0]}
                                                         type="date"
-                                                        lang='es'
+                                                        lang='es-CL'
                                                         value={reservation.date}
                                                         className={classNames({
                                                             'p-invalid': submitted && (reservation.date === ''

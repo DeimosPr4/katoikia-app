@@ -17,8 +17,8 @@ import { useCookies } from 'react-cookie';
 const Reservations = () => {
     let emptyReservation = {
         _id: null,
-        start_time: '',
-        finish_time: '',
+        date: '',
+        time: '',
         user_id: '',
         user_name: '',
         common_area_id: '',
@@ -71,8 +71,12 @@ const Reservations = () => {
             .then(data => data.message)
             .then(data => {
                 data = data.filter(
-                    (val) => val.status != -1,
+                    (val) => val.status != -1  
                 )
+                data = data.filter(
+                    (val) => val.bookable == 1,
+                )
+              
                 setAreas(data)
             });
     }
@@ -209,7 +213,7 @@ const Reservations = () => {
             <p>
                 {' '}
                 <FontAwesomeIcon icon={faClockFour} style={{ color: '#C08135' }} />
-                Hora de Apertura
+                Fecha de Reserva
             </p>
         </>
     );
@@ -219,7 +223,7 @@ const Reservations = () => {
             <p>
                 {' '}
                 <FontAwesomeIcon icon={faClockFour} style={{ color: '#D7A86E' }} />{' '}
-                Hora de Cierre
+                Hora de Reserva
             </p>
         </>
     );
@@ -283,7 +287,7 @@ const Reservations = () => {
 
     const handleTenants = (e) => {
         const getTenantId = e.target.value;
-        setAreaId(getTenantId);
+        setTenantId(getTenantId);
     }
 
     const aList = areas.map((item) => ({
@@ -305,14 +309,19 @@ const Reservations = () => {
         return date.toISOString()
     }
 
-    function validateTime(timeStart, timeFinish) {
-        if ((timeFinish - timeStart) == 1) {
-            return (
-                <>
-                    <small className="p-invalid">La hora de inicio debe ser la hora .</small>
-                </>
-            )
+    function validationTime() {
+        let value = true;
+        const [hourR, minuteR] = reservation.time.split(':');
+        if (hourR != "") {
+            const [hourMin, minuteMin] = area.hourMin.split(':');
+            const [hourMax, minuteMax] = area.hourMax.split(':');
+            if ((parseInt(hourR) >= parseInt(hourMin)) && (parseInt(hourR) <= parseInt(hourMax))) {
+                value = false;
+            } 
+        } else {
+            value = false;
         }
+        return value;
     }
 
     function convertToTime(timeString) {
@@ -448,61 +457,67 @@ const Reservations = () => {
                         {area &&
                             <>
                                 <div className="field col-3 md:col-3">
-                                    <label htmlFor="name">Fecha Inicio</label>
+                                    <label htmlFor="name">Fecha</label>
                                     <div className="p-0 col-12 md:col-12">
                                         <div className="p-inputgroup">
                                             <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                                 <i className="pi pi-home"></i>
                                             </span>
                                             <InputText
-                                                id="start_time"
-                                                onChange={(e) => onInputChange(e, 'start_time')}
+                                                id="date"
+                                                onChange={(e) => onInputChange(e, 'date')}
                                                 required
                                                 autoFocus
-                                                min={area.hourMin}
-                                                max={area.hourMax}
-                                                type="time"
+                                                min={Date()}
+                                                type="date"
                                                 lang='es'
-                                                value={reservation.start_time}
+                                                value={reservation.date}
                                                 className={classNames({
-                                                    'p-invalid': submitted && reservation.start_time === '',
+                                                    'p-invalid': submitted && reservation.date === '',
                                                 })}
                                             />
+
                                         </div>
-                                        {submitted && reservation.start_time === '' && (
-                                            <small className="p-invalid">Nombre es requirido.</small>
+                                        {submitted && reservation.date === '' && (
+                                            <small className="p-invalid">Fecha es requirida.</small>
                                         )}
                                     </div>
                                 </div>
 
                                 <div className="field col-3 md:col-3">
-                                    <label htmlFor="name">Nombre</label>
+                                    <label htmlFor="name">Hora de Reservación</label>
                                     <div className="p-0 col-12 md:col-12">
                                         <div className="p-inputgroup">
                                             <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                                                 <i className="pi pi-home"></i>
                                             </span>
                                             <InputText
-                                                id="finish_time"
-                                                value={reservation.finish_time}
-                                                onChange={(e) => onInputChange(e, 'finish_time')}
+                                                id="time"
+                                                value={reservation.time}
+                                                onChange={(e) => onInputChange(e, 'time')}
                                                 required
                                                 autoFocus
                                                 type="time"
+                                                step='3600'
                                                 className={classNames({
-                                                    'p-invalid': submitted && reservation.finish_time === '',
+                                                    'p-invalid': submitted && (reservation.time === '' || validationTime()),
                                                 })}
                                             />
                                         </div>
-                                        {submitted && reservation.finish_time === '' && (
-                                            <small className="p-invalid">Nombre es requirido.</small>
+                                        {submitted && reservation.time === '' && (
+                                            <small className="p-invalid">Hora es requirido.</small>
                                         )}
+                                        {submitted && validationTime() && (
+                                            <small className="p-invalid">La hora de inicio debe set mayor de {area.hourMin} y menor de {area.hourMax} .</small>
+                                        )}
+                                        
+
                                     </div>
                                 </div>
                             </>
                         }
                         <div className="field col-6 md:col-6">
-                            <label htmlFor="common_area_id">Inquilino: </label>
+                            <label htmlFor="user_id">Inquilino: </label>
                             <div className="p-0 col-12 md:col-12">
                                 <div className="p-inputgroup">
                                     <span className="p-inputgroup-addon p-button p-icon-input-khaki">
@@ -510,7 +525,7 @@ const Reservations = () => {
                                     </span>
                                     <Dropdown
                                         placeholder="--Seleccione el Inquilino a Reservar--"
-                                        id="common_area_id"
+                                        id="user_id"
                                         value={tenantId}
                                         options={tList}
                                         onChange={handleTenants}

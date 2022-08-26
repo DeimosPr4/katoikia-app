@@ -94,7 +94,9 @@ const Reservations = () => {
                 )
                 data.map((item) => {
 
-                    item.date = formatDateString(item.date)
+                    if (item.date) {
+                        item.date = formatDateString(item.date)
+                    }
 
                     if (item.status == '1') {
                         item.status_text = 'Activo';
@@ -129,11 +131,11 @@ const Reservations = () => {
     }, [])
 
     const saveReservation = () => {
-        
+
         let _reservations = [...reservations];
         let _reservation = { ...reservation };
 
-        if (_reservation.date && _reservation.time && tenantId && areaId && !validationTime()) {
+        if (!validationIsReservation() && _reservation.date && _reservation.time && tenantId && areaId && !validationTime()) {
             _reservation.common_area_name = areas.find(item => item._id == areaId).name;
             let tenant = tenants.find(item => item._id == tenantId);
             _reservation.user_name = tenant.name + ' ' + tenant.last_name;
@@ -147,34 +149,35 @@ const Reservations = () => {
                 _reservation.status_text = 'Inactivo';
             }
             console.log(_reservation)
-            fetch('http://localhost:4000/reservation/createReservation/', {
-                cache: 'no-cache',
-                method: 'POST',
-                body: JSON.stringify(_reservation),
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              })
-              .then((response) => {
-                if (response.status !== 200 && response.status !== 201 )
-                    console.log(`Hubo un error en el servicio: ${response.status}`)
-                else return response.json()
-            }).then(() => {
-                _reservations.push(_reservation);
-                setReservations(_reservations)
-                toast.current.show({
-                    severity: 'success',
-                    summary: 'Éxito',
-                    detail: 'Reservación realizada',
-                    life: 3000,
-                });
-    
-                setReservationDialog(false)
-            })
+
+            /* fetch('http://localhost:4000/reservation/createReservation/', {
+                 cache: 'no-cache',
+                 method: 'POST',
+                 body: JSON.stringify(_reservation),
+                 headers: {
+                   'Content-Type': 'application/json'
+                 }
+               })
+               .then((response) => {
+                 if (response.status !== 200 && response.status !== 201 )
+                     console.log(`Hubo un error en el servicio: ${response.status}`)
+                 else return response.json()
+             }).then(() => {*/
+            _reservations.push(_reservation);
+            setReservations(_reservations)
+            toast.current.show({
+                severity: 'success',
+                summary: 'Éxito',
+                detail: 'Reservación realizada',
+                life: 3000,
+            });
+
+            setReservationDialog(false)
+            /*})*/
 
 
 
-            
+
         } else {
             setSubmitted(true);
         }
@@ -363,6 +366,16 @@ const Reservations = () => {
         setReservation(_reservation);
     };
 
+    const onTimeChange = (e) => {
+        e.target.value.split(':')[1] = "00";
+        const val = (e.target && e.target.value.split(':')[0]) || '';
+        let _reservation = { ...reservation };
+        document.getElementById('time').value = val + ":00";
+        _reservation['time'] = val + ":00";
+        setReservation(_reservation);
+
+    };
+
     const handleAreas = (e) => {
         const getAreaId = e.target.value;
         setAreaId(getAreaId);
@@ -419,11 +432,21 @@ const Reservations = () => {
     }
 
     function formatDateString(dateString) {
-        const [date, time] = timeString.split('T');
+        const [date, time] = dateString.split('T');
         return date;
     }
 
+    function validationIsReservation() {
+        let booked = reservations.filter(item => item.common_area_id == areaId && item.date == reservation.date && item.time == reservation.time);
+        if (booked.length > 0) {
+            return true;
+            
+        } else {
+            return false;
+        }
+    }
 
+    
 
     return (
         <div className="grid">
@@ -567,7 +590,8 @@ const Reservations = () => {
                                                         lang='es'
                                                         value={reservation.date}
                                                         className={classNames({
-                                                            'p-invalid': submitted && reservation.date === '',
+                                                            'p-invalid': submitted && (reservation.date === '' 
+                                                            || validationIsReservation()),
                                                         })}
                                                     />
 
@@ -575,6 +599,7 @@ const Reservations = () => {
                                                 {submitted && reservation.date === '' && (
                                                     <small className="p-invalid">Fecha es requirida.</small>
                                                 )}
+                                                
                                             </div>
                                         </div>
 
@@ -588,13 +613,14 @@ const Reservations = () => {
                                                     <InputText
                                                         id="time"
                                                         value={reservation.time}
-                                                        onChange={(e) => onInputChange(e, 'time')}
+                                                        onChange={(e) => onTimeChange(e)}
                                                         required
                                                         autoFocus
                                                         type="time"
                                                         step='3600'
                                                         className={classNames({
-                                                            'p-invalid': submitted && (reservation.time === '' || validationTime()),
+                                                            'p-invalid': submitted && (reservation.time === '' 
+                                                            || validationTime() || validationIsReservation()),
                                                         })}
                                                     />
                                                 </div>
@@ -602,9 +628,11 @@ const Reservations = () => {
                                                     <small className="p-invalid">Hora es requirido.</small>
                                                 )}
                                                 {submitted && validationTime() && (
-                                                    <small className="p-invalid">La hora de inicio debe set mayor de {area.hourMin} y menor de {area.hourMax} .</small>
+                                                    <small className="p-invalid">La hora de inicio debe ser mayor de {area.hourMin} y menor de {area.hourMax} .</small>
                                                 )}
-
+                                                {submitted && validationIsReservation() && (
+                                                    <small className="p-invalid">Ya hay una reservación en la fecha y hora ingresada.</small>
+                                                )}
 
                                             </div>
                                         </div>

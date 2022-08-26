@@ -9,7 +9,8 @@ import {
   Box,
   FormControl,
   Button,
-  Image
+  Image, 
+  ErrorMessage
 } from "native-base";
 import logo from "../assets/logo-katoikia.png";
 import { Entypo } from '@expo/vector-icons';
@@ -83,6 +84,8 @@ export default function LogIn({ navigation }) {
 
         // inqulino 4 y guarda 3
          const user = response.message
+
+         if(user !== null){
           if(user.user_type == '4'){
             addUser(user);
 
@@ -92,10 +95,17 @@ export default function LogIn({ navigation }) {
             // cambiar por ComunicadosGuarda luego
             navigation.navigate('Comunicados', {user})
           }
+         }else{
+          setErrors({ ...errors,
+            user: 'Debe ingresar credenciales válidos'
+          });
+         }
+          
       })
       
     } catch (error) {
       console.log("ERROR: " +error);
+
     }
     
    }
@@ -148,7 +158,7 @@ export default function LogIn({ navigation }) {
                 <TextInput 
                   name='email'
                   type="text"
-                  style={styles.input}
+                  style={'email' in errors ? styles.errorMessage : styles.input}
                   value={credentials.email}
                   placeholder='Correo electrónico'
                   onChangeText={onHandleChange("email")} />
@@ -158,6 +168,7 @@ export default function LogIn({ navigation }) {
         fontSize: 'xs'
       }}>Debe ingresar un correo electrónico</FormControl.ErrorMessage> }
             </FormControl>
+
             <FormControl isRequired isInvalid={'password' in errors}>
               <FormControl.Label Text='bold'> Contraseña </FormControl.Label>
               <View style={styles.viewSection}>
@@ -165,7 +176,7 @@ export default function LogIn({ navigation }) {
                 <TextInput
                   name='password'
                   type="password"
-                  style={styles.input}
+                  style={'password' in errors ? styles.errorMessage : styles.input}
                   value={credentials.password}
                   placeholder='Contraseña'
                   onChangeText={onHandleChange("password")} />
@@ -196,6 +207,10 @@ export default function LogIn({ navigation }) {
             >
               <Text>Continuar</Text>
             </Button>
+                      {/* {'user' in errors && <ErrorMessage _text={{
+                  fontSize: 'xs'
+                }}
+                >Debe ingresar credenciales válidos</ErrorMessage> } */}
 
           </VStack></View>
 
@@ -214,21 +229,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 10,
     paddingRight: 10,
-    paddingBottom: 10,
     paddingLeft: 0,
     marginTop: 50,
-    marginBottom: 10,
     borderRadius: 4
   },
   errorMessage: {
     height: 40,
     margin: 10,
+    borderWidth: 0.5,
     padding: 5,
     flex: 1,
     paddingTop: 10,
     paddingRight: 10,
-    paddingBottom: 10,
     paddingLeft: 0,
+    marginTop: 50,
+    borderRadius: 4, 
+    borderColor: '#be123c'
   },
 
   iconStyle: {
@@ -242,8 +258,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
-    marginBottom: 28
+    marginBottom: 50
   },
 
   container: {

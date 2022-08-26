@@ -20,47 +20,91 @@ export default function AgregarInvitados({ navigation }) {
   const [tenant_id, setTenant_id] = useState();
   const [community_id, setCommunity_id] = useState();
   const { user } = useContext(UserContext);
+  const [errors, setErrors] = useState({});
+
+  const [info, setInfo] = useState({
+    name: "",
+    last_name: "", 
+    dni: "", 
+    phone: "",
+    number_plate:"", 
+    status: "-0", 
+    tenant_id: user._id, 
+    community_id: user.community_id
+  });
+
+  const onHandleChange = (name) => (value) => setInfo(prev => ({...prev, [name]: value}))
+
+  const validate = async() => {
+      
+    if( info.name === "" && info.last_name === "" && info.dni === "" && info.phone === ""){
+      setErrors({ ...errors,
+        name: 'Debe ingresar un nombre',
+        last_name: 'Debe ingresar un apellido', 
+        dni: 'Debe ingresar un número de identificación', 
+        phone: 'Debe ingresar un número de teléfono'
+      });
+      return false;
+    }else  if (info.name === "" ) {
+      setErrors({ ...errors,
+        name: 'Debe ingresar un nombre'
+      });
+      return false;
+    } else if(info.last_name === ""){
+      setErrors({ ...errors,
+       
+        last_name: 'Debe ingresar un apellido'
+      });
+      return false;
+    }else if (info.dni === "") {
+      setErrors({ ...errors,
+        dni: 'Debe ingresar un número de identificación'
+      });
+      return false;
+    }else if (info.phone === "") {
+      setErrors({ ...errors,
+        phone: 'Debe ingresar un número de teléfono'
+      });
+      return false;
+    }
+    
+    return true;
+  }
 
   const saveInvitado = async() => {
+    const error = await validate(); 
 
-    const data = {
-      "name": name,
-      "last_name": apellido,
-      "dni": dni,
-      "phone": phone,
-      "number_plate": number_plate,
-      "status":"-0",
-      "tenant_id": user.id,
-      "community_id": user.community_id
+    if (error) {
+      try {
+
+        await fetch(baseURL, {
+  
+          cache: 'no-cache', 
+          method: 'POST', 
+          body: JSON.stringify(info), 
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          if (response.status != 201){
+            console.log('ocurrio un error ');
+          }else{
+            return response.json(); 
+          }
+        })
+        
+      } catch (error) {
+        console.log("ERROR: " + error);
+      }
     }
-
-    try {
-
-      await fetch(baseURL, {
-
-        cache: 'no-cache', 
-        method: 'POST', 
-        body: JSON.stringify(data), 
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => {
-        if (response.status != 201){
-          console.log('ocurrio un error ');
-        }else{
-          return response.json(); 
-        }
-      })
-      
-    } catch (error) {
-      console.log("ERROR: " + error);
-    }
+   
+    
   }
     return (
         <Center>
 
-          <ScrollView width='100%' h='550' ml='36' _contentContainerStyle={{
+          <ScrollView width='100%' h='570' ml='36' _contentContainerStyle={{
       px: "20px",
       mb: "4",
       minW: "72"
@@ -76,26 +120,29 @@ export default function AgregarInvitados({ navigation }) {
       }} fontWeight="medium" size="xs">
          Registre el invitado que desee
         </Heading>
-        <VStack space={3} mt="5">
+        <VStack space={5} mt="5">
           <FormControl isRequired>
             <FormControl.Label>Nombre</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setName(value)}/>
+            <TextInput style={'name' in errors ? styles.errorMessage : styles.input} type="text" onChangeText={onHandleChange("name")}/>
+                    {'name' in errors && <FormControl.ErrorMessage  _text={{
+              fontSize: 'xs'
+            }}>Debe ingresar un correo electrónico</FormControl.ErrorMessage> }
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label>Apellido</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setApellido(value)}/>
+            <TextInput style={'last_name' in errors ? styles.errorMessage : styles.input} type="text" onChangeText={onHandleChange("last_name")}/>
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label>Identificación</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setDNI(value)}/>
+            <TextInput style={'dni' in errors ? styles.errorMessage : styles.input}type="text" onChangeText={onHandleChange("dni")}/>
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label>Teléfono</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setPhone(value)} />
+            <TextInput style={'phone' in errors ? styles.errorMessage : styles.input}type="text" onChangeText={onHandleChange("phone")} />
           </FormControl>
           <FormControl >
             <FormControl.Label>Placa</FormControl.Label>
-            <TextInput style={styles.input} type="text" onChangeText={(value) => setPhone(value)} />
+            <TextInput style={styles.input} type="text" onChangeText={onHandleChange("number_plate")} />
           </FormControl>
           <Button mt="2" backgroundColor='tertiary.600' onPress={() => saveInvitado()}>
            Guardar
@@ -113,7 +160,7 @@ export default function AgregarInvitados({ navigation }) {
 
 const styles = StyleSheet.create({
   input: {
-    height: 10,
+    height: 35,
     margin: 3,
     borderWidth: 0.5,
     padding: 5,
@@ -125,6 +172,19 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginBottom: 6,
     borderRadius: 4
+  },
+  errorMessage: {
+    height: 35,
+    margin: 3,
+    borderWidth: 0.5,
+    padding: 5,
+    flex: 1,
+    paddingTop: 9,
+    paddingRight: 19,
+    paddingLeft: 0,
+    marginTop: 6,
+    borderRadius: 4, 
+    borderColor: '#be123c'
   }
 })
 

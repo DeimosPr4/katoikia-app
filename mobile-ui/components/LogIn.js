@@ -27,8 +27,8 @@ export default function LogIn({ navigation }) {
   const [errors, setErrors] = useState({});
 
   const [credentials, setCredentials] = useState({
-    email: "",
-    password: ""
+    email: "lalo@lalo.com",
+    password: "12345"
   });
 
   const onHandleChange = (name) => (value) => setCredentials(prev => ({ ...prev, [name]: value }))

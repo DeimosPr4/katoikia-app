@@ -6,7 +6,7 @@ export type ReservationDocument = Reservation & Document;
 @Schema({ collection: 'reservations' })
 export class Reservation {
   @Prop()
-  date: string;
+  date: Date;
 
   @Prop()
   time: string;

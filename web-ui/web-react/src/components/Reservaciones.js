@@ -79,7 +79,6 @@ const Reservations = () => {
                 data = data.filter(
                     (val) => val.bookable == 1,
                 )
-
                 setAreas(data)
             });
     }
@@ -94,6 +93,9 @@ const Reservations = () => {
                     (val) => val.status != -1,
                 )
                 data.map((item) => {
+
+                    item.date = formatDateString(item.date)
+
                     if (item.status == '1') {
                         item.status_text = 'Activo';
                     } else if (item.status == '0') {
@@ -127,20 +129,52 @@ const Reservations = () => {
     }, [])
 
     const saveReservation = () => {
-            let _reservations = [...reservations];
-            let _reservation = { ...reservation };
         
-        if ( _reservation.date && _reservation.time && tenantId && areaId && !validationTime()) {
-            _reservations.push(_reservation);
-            setReservations(_reservations)
-            toast.current.show({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Administrador del Sistema Actualizado',
-                life: 3000,
-              });
+        let _reservations = [...reservations];
+        let _reservation = { ...reservation };
 
-            setReservationDialog(false)
+        if (_reservation.date && _reservation.time && tenantId && areaId && !validationTime()) {
+            _reservation.common_area_name = areas.find(item => item._id == areaId).name;
+            let tenant = tenants.find(item => item._id == tenantId);
+            _reservation.user_name = tenant.name + ' ' + tenant.last_name;
+            _reservation.user_id = tenantId;
+            _reservation.common_area_id = areaId;
+            _reservation.community_id = cookies.community_id;
+
+            if (_reservation.status == '1') {
+                _reservation.status_text = 'Activo';
+            } else if (_reservation.status == '0') {
+                _reservation.status_text = 'Inactivo';
+            }
+            console.log(_reservation)
+            fetch('http://localhost:4000/reservation/createReservation/', {
+                cache: 'no-cache',
+                method: 'POST',
+                body: JSON.stringify(_reservation),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              })
+              .then((response) => {
+                if (response.status !== 200 && response.status !== 201 )
+                    console.log(`Hubo un error en el servicio: ${response.status}`)
+                else return response.json()
+            }).then(() => {
+                _reservations.push(_reservation);
+                setReservations(_reservations)
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Éxito',
+                    detail: 'Reservación realizada',
+                    life: 3000,
+                });
+    
+                setReservationDialog(false)
+            })
+
+
+
+            
         } else {
             setSubmitted(true);
         }
@@ -259,7 +293,7 @@ const Reservations = () => {
         </div>
     );
 
-    const headerStartTime = (
+    const headerDate = (
         <>
             <p>
                 {' '}
@@ -269,7 +303,7 @@ const Reservations = () => {
         </>
     );
 
-    const headerEndTime = (
+    const headerTime = (
         <>
             <p>
                 {' '}
@@ -384,6 +418,12 @@ const Reservations = () => {
         return date.toString()
     }
 
+    function formatDateString(dateString) {
+        const [date, time] = timeString.split('T');
+        return date;
+    }
+
+
 
     return (
         <div className="grid">
@@ -419,9 +459,9 @@ const Reservations = () => {
                             headerStyle={{ width: '3rem' }}
                         ></Column>
                         <Column
-                            field="start_time"
+                            field="date"
                             sortable
-                            header={headerStartTime}
+                            header={headerDate}
                             style={{
                                 flexGrow: 1,
                                 flexBasis: '160px',
@@ -430,9 +470,9 @@ const Reservations = () => {
                             }}
                         ></Column>
                         <Column
-                            field="finish_time"
+                            field="time"
                             sortable
-                            header={headerEndTime}
+                            header={headerTime}
                             style={{
                                 flexGrow: 1,
                                 flexBasis: '160px',
@@ -616,7 +656,7 @@ const Reservations = () => {
 
                 </div>
             </div>
-           
+
         </div>
 
 

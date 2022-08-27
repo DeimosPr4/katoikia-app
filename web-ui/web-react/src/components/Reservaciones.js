@@ -181,6 +181,12 @@ const Reservations = () => {
         }
     }
 
+    const exportCSV = () => {
+        dt.current.exportCSV();
+        selectedReservations.current.exportCSV();
+      };
+
+
     const actionsReservation = (rowData) => {
         return (
             <div className="actions">
@@ -255,6 +261,7 @@ const Reservations = () => {
                     label="Exportar"
                     icon="pi pi-upload"
                     className="p-button-help"
+                    onClick={exportCSV}
                 />
             </React.Fragment>
         );

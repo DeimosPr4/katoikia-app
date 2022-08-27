@@ -47,6 +47,7 @@ const Reservations = () => {
     const [tenantId, setTenantId] = useState();
     const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
     const [reservationDialog, setReservationDialog] = useState(false);
+    const [dateMax, setDateMax] = useState();
 
 
     async function tenantsList(id) {
@@ -93,9 +94,7 @@ const Reservations = () => {
                 )
                 data.map((item) => {
 
-                    if (item.date) {
                         item.date = formatDateString(item.date)
-                    }
 
                     if (item.status == '1') {
                         item.status_text = 'Activo';
@@ -134,13 +133,16 @@ const Reservations = () => {
         let _reservations = [...reservations];
         let _reservation = { ...reservation };
 
-        if (!validationIsReservation() && _reservation.date && _reservation.time && tenantId && areaId && !validationTime()) {
+        if (_reservation.date && _reservation.time && tenantId && areaId
+            && !validationTime() 
+            && !validationIsSameUser() && !validationIsReservation()) {
             _reservation.common_area_name = areas.find(item => item._id == areaId).name;
             let tenant = tenants.find(item => item._id == tenantId);
             _reservation.user_name = tenant.name + ' ' + tenant.last_name;
             _reservation.user_id = tenantId;
             _reservation.common_area_id = areaId;
             _reservation.community_id = cookies.community_id;
+            _reservation.date = formatDateString(_reservation.date)
 
             if (_reservation.status == '1') {
                 _reservation.status_text = 'Activo';
@@ -170,12 +172,15 @@ const Reservations = () => {
                     });
 
                     setReservationDialog(false)
+                    setAreaId('')
+                    setTenantId('')
                 })
+            
         } else {
             setSubmitted(true);
         }
     }
-    
+
     const actionsReservation = (rowData) => {
         return (
             <div className="actions">
@@ -385,15 +390,6 @@ const Reservations = () => {
         value: item._id,
     }));
 
-    function convertToISO(timeString) {
-        const [hour12, ampm] = timeString.split(/(?=[ap]m$)/i)
-        const hour = hour12 % 12 + (ampm.toLowerCase() === 'pm' ? 12 : 0)
-        const date = new Date()
-        // Set time, adjusted for time zone
-        date.setHours(hour, -date.getTimezoneOffset(), 0, 0)
-        return date.toISOString()
-    }
-
     function validationTime() {
         let value = true;
         const [hourR, minuteR] = reservation.time.split(':');
@@ -409,30 +405,57 @@ const Reservations = () => {
         return value;
     }
 
-    function convertToTime(timeString) {
-        const [hour, minute] = timeString.split(':');
-        const date = new Date()
-        date.setHours(hour);
-        date.setMinutes(minute);
-        console.log(date.toTimeString());
-        return date.toString()
-    }
-
     function formatDateString(dateString) {
         let date = new Date(dateString).toLocaleDateString("es-CL");
         return date;
     }
 
     function validationIsReservation() {
-        let booked = reservations.filter(item => item.common_area_id == areaId && item.date == reservation.date && item.time == reservation.time);
-        if (booked.length > 0) {
-            return true;
-
-        } else {
-            return false;
+        if(reservation.date && reservation.time && areaId){
+            let date1 = new Date(reservation.date).toJSON().split('T')[0];
+            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' +date1.split('-')[0];
+    
+            let booked = reservations.filter(item => item.common_area_id == areaId
+                &&  item.date == date2
+                && item.time == reservation.time);
+                
+            if (booked.length > 0) {
+                return true;
+    
+            } else {
+                return false;
+            }
         }
     }
 
+    function validationIsSameUser() {
+        if(reservation.date && tenantId && areaId){
+            let date1 = new Date(reservation.date).toJSON().split('T')[0];
+            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' +date1.split('-')[0];
+    
+            let booked = reservations.filter(item => item.common_area_id == areaId
+                &&  item.date == date2
+                && item.user_id == tenantId);
+            if (booked.length >= 2) {
+                return true;
+    
+            } else {
+                return false;
+            }
+        }
+    }
+
+    const getDateMax = () => {
+        let today = new Date();
+        today.setDate(today.getDate() + 7)
+        return today.toJSON().split('T')[0];
+    }
+
+    const getDateMin = () => {
+        let today = new Date();
+        today.setDate(today.getDate() - 1)
+        return today.toJSON().split('T')[0];
+    }
 
 
     return (
@@ -572,7 +595,8 @@ const Reservations = () => {
                                                         onChange={(e) => onInputChange(e, 'date')}
                                                         required
                                                         autoFocus
-                                                        min={new Date().toJSON().split('T')[0]}
+                                                        min={getDateMin()}
+                                                        max={getDateMax()}
                                                         type="date"
                                                         lang='es-CL'
                                                         value={reservation.date}
@@ -640,12 +664,18 @@ const Reservations = () => {
                                                 onChange={handleTenants}
                                                 required autoFocus
                                                 className={
-                                                    classNames({ 'p-invalid': submitted && !tenantId })}
+                                                    classNames({
+                                                        'p-invalid': submitted && (!tenantId
+                                                            || validationIsSameUser())
+                                                    })}
                                             />
                                         </div>
                                         {submitted
                                             && !tenantId
                                             && <small className="p-invalid">Inquilino es requerido.</small>}
+                                        {submitted && validationIsSameUser() && (
+                                            <small className="p-invalid">El inquilino no puede reservar más de dos veces el mismo día.</small>
+                                        )}
                                     </div>
                                 </div>
 

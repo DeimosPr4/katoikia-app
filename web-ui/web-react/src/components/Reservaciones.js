@@ -142,7 +142,7 @@ const Reservations = () => {
             _reservation.user_id = tenantId;
             _reservation.common_area_id = areaId;
             _reservation.community_id = cookies.community_id;
-            _reservation.date = formatDateString(_reservation.date)
+           
 
             if (_reservation.status == '1') {
                 _reservation.status_text = 'Activo';
@@ -161,8 +161,10 @@ const Reservations = () => {
                     if (response.status !== 200 && response.status !== 201)
                         console.log(`Hubo un error en el servicio: ${response.status}`)
                     else return response.json()
-                }).then(() => {
-                    _reservations.push(_reservation);
+                }).then((response) => {
+                    let _r = response.message;
+                    _r.date = formatDateString(_r.date)
+                    _reservations.push(_r);
                     setReservations(_reservations)
                     toast.current.show({
                         severity: 'success',
@@ -236,7 +238,9 @@ const Reservations = () => {
 
 
     const deleteReservation = () => {
-        fetch('http://localhost:4000/reservation/deleteReservation' + reservation._id, {
+
+
+        fetch('http://localhost:4000/reservation/deleteReservation/' + reservation._id, {
             cache: 'no-cache',
             method: 'DELETE',
             headers: {
@@ -244,13 +248,13 @@ const Reservations = () => {
             },
         })
             .then(function (response) {
-                if (response.status != 201)
+                if (response.status != 201 || response.status != 200)
                     console.log('Ocurrió un error con el servicio: ' + response.status);
                 else return response.json();
             })
             .then(function (response) {
                 let _reservation = reservations.filter(
-                    (val) => (val._id !== reservation._id || val.status != -1),
+                    (val) => (val._id !== reservation._id),
                 );
 
                 setReservations(_reservation);
@@ -809,7 +813,7 @@ const Reservations = () => {
                         )}
                     </Dialog>
                     <Dialog
-                        visible={deleteReservationsDialog}
+                        visible={deleteReservationDialog}
                         style={{ width: '450px' }}
                         header="Confirmar"
                         modal

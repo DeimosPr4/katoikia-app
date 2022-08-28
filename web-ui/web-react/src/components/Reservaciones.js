@@ -94,7 +94,7 @@ const Reservations = () => {
                 )
                 data.map((item) => {
 
-                        item.date = formatDateString(item.date)
+                    item.date = formatDateString(item.date)
 
                     if (item.status == '1') {
                         item.status_text = 'Activo';
@@ -134,7 +134,7 @@ const Reservations = () => {
         let _reservation = { ...reservation };
 
         if (_reservation.date && _reservation.time && tenantId && areaId
-            && !validationTime() 
+            && !validationTime()
             && !validationIsSameUser() && !validationIsReservation()) {
             _reservation.common_area_name = areas.find(item => item._id == areaId).name;
             let tenant = tenants.find(item => item._id == tenantId);
@@ -175,7 +175,7 @@ const Reservations = () => {
                     setAreaId('')
                     setTenantId('')
                 })
-            
+
         } else {
             setSubmitted(true);
         }
@@ -222,7 +222,83 @@ const Reservations = () => {
         setReservation(emptyReservation);
         setReservationDialog(true);
         setSubmitted(false);
+    };
 
+
+
+    const hideDeleteReservationDialog = () => {
+        setDeleteReservationDialog(false);
+    };
+
+    const hideDeleteReservationsDialog = () => {
+        setDeleteReservationsDialog(false);
+    };
+
+
+    const deleteReservation = () => {
+        fetch('http://localhost:4000/reservation/deleteReservation' + reservation._id, {
+            cache: 'no-cache',
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(function (response) {
+                if (response.status != 201)
+                    console.log('Ocurrió un error con el servicio: ' + response.status);
+                else return response.json();
+            })
+            .then(function (response) {
+                let _reservation = reservations.filter(
+                    (val) => (val._id !== reservation._id || val.status != -1),
+                );
+
+                setReservations(_reservation);
+                setDeleteReservationDialog(false);
+                setReservation(emptyReservation);
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Éxito',
+                    detail: 'Reservación Eliminada',
+                    life: 3000,
+                });
+            })
+            .catch((err) => {
+                console.log('Ocurrió un error con el fetch', err);
+                toast.current.show({
+                    severity: 'danger',
+                    summary: 'Error',
+                    detail: 'Reservación no se pudo Eliminar',
+                    life: 3000,
+                });
+            });
+    };
+
+    const deleteSelectedReservations = () => {
+        let _reservations = reservations.filter(
+            (val) => (!selectedReservations.includes(val)),
+        );
+        selectedReservations.map((item) => {
+            fetch('http://localhost:4000/reservation/deleteReservation/' + item._id, {
+                cache: 'no-cache',
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        });
+        _reservations = _reservations.filter(
+            (val) => val.status != -1,
+        )
+        setReservations(_reservations);
+        setDeleteReservationsDialog(false);
+        setSelectedReservations(null);
+        toast.current.show({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Reservaciones Eliminadas',
+            life: 3000,
+        });
     };
 
     const leftToolbarTemplate = () => {
@@ -271,6 +347,40 @@ const Reservations = () => {
 
         </>
     );
+
+    const deleteReservationDialogFooter = (
+        <>
+          <Button
+            label="No"
+            icon="pi pi-times"
+            className="p-button-text"
+            onClick={hideDeleteReservationDialog}
+          />
+          <Button
+            label="Yes"
+            icon="pi pi-check"
+            className="p-button-text"
+            onClick={deleteReservation}
+          />
+        </>
+      );
+    
+      const deleteReservationsDialogFooter = (
+        <>
+          <Button
+            label="No"
+            icon="pi pi-times"
+            className="p-button-text"
+            onClick={hideDeleteReservationsDialog}
+          />
+          <Button
+            label="Yes"
+            icon="pi pi-check"
+            className="p-button-text"
+            onClick={deleteSelectedReservations}
+          />
+        </>
+      );
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -411,17 +521,17 @@ const Reservations = () => {
     }
 
     function validationIsReservation() {
-        if(reservation.date && reservation.time && areaId){
+        if (reservation.date && reservation.time && areaId) {
             let date1 = new Date(reservation.date).toJSON().split('T')[0];
-            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' +date1.split('-')[0];
-    
+            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' + date1.split('-')[0];
+
             let booked = reservations.filter(item => item.common_area_id == areaId
-                &&  item.date == date2
+                && item.date == date2
                 && item.time == reservation.time);
-                
+
             if (booked.length > 0) {
                 return true;
-    
+
             } else {
                 return false;
             }
@@ -429,16 +539,16 @@ const Reservations = () => {
     }
 
     function validationIsSameUser() {
-        if(reservation.date && tenantId && areaId){
+        if (reservation.date && tenantId && areaId) {
             let date1 = new Date(reservation.date).toJSON().split('T')[0];
-            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' +date1.split('-')[0];
-    
+            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' + date1.split('-')[0];
+
             let booked = reservations.filter(item => item.common_area_id == areaId
-                &&  item.date == date2
+                && item.date == date2
                 && item.user_id == tenantId);
             if (booked.length >= 2) {
                 return true;
-    
+
             } else {
                 return false;
             }
@@ -698,7 +808,47 @@ const Reservations = () => {
                             </div>
                         )}
                     </Dialog>
-
+                    <Dialog
+                        visible={deleteReservationsDialog}
+                        style={{ width: '450px' }}
+                        header="Confirmar"
+                        modal
+                        footer={deleteReservationDialogFooter}
+                        onHide={hideDeleteReservationDialog}
+                    >
+                        <div className="flex align-items-center justify-content-center">
+                            <i
+                                className="pi pi-exclamation-triangle mr-3"
+                                style={{ fontSize: '2rem' }}
+                            />
+                            {reservation && (
+                                <span>
+                                    ¿Estás seguro que desea eliminar la reservación de <b>{reservation.user_name}</b>?
+                                </span>
+                            )}
+                        </div>
+                    </Dialog>
+                    <Dialog
+                        visible={deleteReservationsDialog}
+                        style={{ width: '450px' }}
+                        header="Confirmar"
+                        modal
+                        footer={deleteReservationsDialogFooter}
+                        onHide={hideDeleteReservationsDialog}
+                    >
+                        <div className="flex align-items-center justify-content-center">
+                            <i
+                                className="pi pi-exclamation-triangle mr-3"
+                                style={{ fontSize: '2rem' }}
+                            />
+                            {selectedReservations && (
+                                <span>
+                                    ¿Está seguro eliminar las reservaciones
+                                    seleccionadas?
+                                </span>
+                            )}
+                        </div>
+                    </Dialog>
                 </div>
             </div>
 

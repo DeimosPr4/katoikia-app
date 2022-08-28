@@ -48,7 +48,6 @@ const Reservations = () => {
     const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
     const [reservationDialog, setReservationDialog] = useState(false);
     const [dateMax, setDateMax] = useState();
-    const [tenants, setTenants] = useState([]);
 
 
     async function tenantsList(id) {

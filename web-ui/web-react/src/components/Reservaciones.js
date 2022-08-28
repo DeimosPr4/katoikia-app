@@ -48,6 +48,7 @@ const Reservations = () => {
     const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
     const [reservationDialog, setReservationDialog] = useState(false);
     const [dateMax, setDateMax] = useState();
+    const [tenants, setTenants] = useState([]);
 
 
     async function tenantsList(id) {
@@ -93,9 +94,7 @@ const Reservations = () => {
                     (val) => val.status != -1,
                 )
                 data.map((item) => {
-
                         item.date = formatDateString(item.date)
-
                     if (item.status == '1') {
                         item.status_text = 'Activo';
                     } else if (item.status == '0') {
@@ -193,7 +192,7 @@ const Reservations = () => {
             </div>
         );
     };
-
+    
     const confirmDeleteReservation = (reservation) => {
         setReservation(reservation);
         setDeleteReservationDialog(true);
@@ -224,7 +223,6 @@ const Reservations = () => {
         setSubmitted(false);
 
     };
-
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
@@ -243,7 +241,6 @@ const Reservations = () => {
                         disabled={!selectedReservations || !selectedReservations.length}
                     />
                 </div>
-
             </React.Fragment>
         );
     };
@@ -271,7 +268,7 @@ const Reservations = () => {
 
         </>
     );
-
+    
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5 className="m-0">
@@ -456,8 +453,7 @@ const Reservations = () => {
         today.setDate(today.getDate() - 1)
         return today.toJSON().split('T')[0];
     }
-
-
+    
     return (
         <div className="grid">
             <div className="col-12">
@@ -698,16 +694,10 @@ const Reservations = () => {
                             </div>
                         )}
                     </Dialog>
-
                 </div>
             </div>
-
         </div>
-
-
     );
-
-
 }
 
 export default React.memo(Reservations);

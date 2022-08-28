@@ -316,7 +316,6 @@ const AdministradoresComunidad = () => {
                     detail: 'Administrador de comunidad actualizado',
                     life: 3000,
                 })
-                toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador de Comunidad de vivienda Actualizada', life: 3000 });
 
                 listaAdmin();
                 setCommunityId('');

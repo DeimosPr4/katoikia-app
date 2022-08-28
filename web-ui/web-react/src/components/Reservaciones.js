@@ -94,7 +94,7 @@ const Reservations = () => {
                 )
                 data.map((item) => {
 
-                        item.date = formatDateString(item.date)
+                    item.date = formatDateString(item.date)
 
                     if (item.status == '1') {
                         item.status_text = 'Activo';
@@ -134,7 +134,7 @@ const Reservations = () => {
         let _reservation = { ...reservation };
 
         if (_reservation.date && _reservation.time && tenantId && areaId
-            && !validationTime() 
+            && !validationTime()
             && !validationIsSameUser() && !validationIsReservation()) {
             _reservation.common_area_name = areas.find(item => item._id == areaId).name;
             let tenant = tenants.find(item => item._id == tenantId);
@@ -175,16 +175,25 @@ const Reservations = () => {
                     setAreaId('')
                     setTenantId('')
                 })
-            
+
         } else {
             setSubmitted(true);
         }
     }
 
     const exportCSV = () => {
-        dt.current.exportCSV();
-        selectedReservations.current.exportCSV();
-      };
+        // 
+        if (selectedReservations) {
+            while (dt.current.props.value.length > 0)
+                dt.current.props.value.pop();
+            let n=0;
+            for (let n = 0; n < selectedReservations.length; n++){
+                dt.current.props.value.push(selectedReservations[n]);
+            }
+        }
+         dt.current.exportCSV();
+
+    };
 
 
     const actionsReservation = (rowData) => {
@@ -238,8 +247,9 @@ const Reservations = () => {
                     <Button
                         label="Nueva Reservación"
                         icon="pi pi-plus"
-                        className="p-button-success mr-2"
+                        className="p-button-primary mr-2"
                         onClick={openNewReservation}
+
                     />
                     <Button
                         label="Eliminar"
@@ -418,17 +428,17 @@ const Reservations = () => {
     }
 
     function validationIsReservation() {
-        if(reservation.date && reservation.time && areaId){
+        if (reservation.date && reservation.time && areaId) {
             let date1 = new Date(reservation.date).toJSON().split('T')[0];
-            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' +date1.split('-')[0];
-    
+            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' + date1.split('-')[0];
+
             let booked = reservations.filter(item => item.common_area_id == areaId
-                &&  item.date == date2
+                && item.date == date2
                 && item.time == reservation.time);
-                
+
             if (booked.length > 0) {
                 return true;
-    
+
             } else {
                 return false;
             }
@@ -436,16 +446,16 @@ const Reservations = () => {
     }
 
     function validationIsSameUser() {
-        if(reservation.date && tenantId && areaId){
+        if (reservation.date && tenantId && areaId) {
             let date1 = new Date(reservation.date).toJSON().split('T')[0];
-            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' +date1.split('-')[0];
-    
+            let date2 = date1.split('-')[2] + '-' + date1.split('-')[1] + '-' + date1.split('-')[0];
+
             let booked = reservations.filter(item => item.common_area_id == areaId
-                &&  item.date == date2
+                && item.date == date2
                 && item.user_id == tenantId);
             if (booked.length >= 2) {
                 return true;
-    
+
             } else {
                 return false;
             }
@@ -499,6 +509,7 @@ const Reservations = () => {
                             headerStyle={{ width: '3rem' }}
                         ></Column>
                         <Column
+                            exportFilename="Date"
                             field="date"
                             sortable
                             header={headerDate}

@@ -6,11 +6,11 @@ export const AppFooter = (props) => {
       <img
         src={
           props.layoutColorMode === 'light'
-            ? 'assets/layout/images/logo-dark.svg'
+            ? 'images/deimos-logo.png'
             : 'assets/layout/images/logo-white.svg'
         }
         alt="Logo"
-        height="20"
+        height="40"
         className="mr-2"
       />
       por

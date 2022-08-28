@@ -446,6 +446,8 @@ const App = () => {
                                         <>
 
                                             <Route path="/login" exact component={LogInUser} />
+                                            <Route path="/crud" component={Crud} />
+
                                         </>
 
                                     )

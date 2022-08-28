@@ -14,8 +14,6 @@ export class ReservationsService {
   ) {}
 
   create(reservation: ReservationDocument) {
-    console.log(reservation);
-
     return this.reservationModel.create(reservation);
   }
 

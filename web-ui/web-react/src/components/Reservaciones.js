@@ -48,6 +48,7 @@ const Reservations = () => {
     const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
     const [reservationDialog, setReservationDialog] = useState(false);
     const [dateMax, setDateMax] = useState();
+    const [tenants, setTenants] = useState([]);
 
 
     async function tenantsList(id) {
@@ -195,7 +196,7 @@ const Reservations = () => {
             </div>
         );
     };
-
+    
     const confirmDeleteReservation = (reservation) => {
         setReservation(reservation);
         setDeleteReservationDialog(true);
@@ -323,7 +324,6 @@ const Reservations = () => {
                         disabled={!selectedReservations || !selectedReservations.length}
                     />
                 </div>
-
             </React.Fragment>
         );
     };
@@ -570,8 +570,7 @@ const Reservations = () => {
         today.setDate(today.getDate() - 1)
         return today.toJSON().split('T')[0];
     }
-
-
+    
     return (
         <div className="grid">
             <div className="col-12">
@@ -855,13 +854,8 @@ const Reservations = () => {
                     </Dialog>
                 </div>
             </div>
-
         </div>
-
-
     );
-
-
 }
 
 export default React.memo(Reservations);

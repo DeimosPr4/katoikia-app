@@ -7,6 +7,7 @@ import {
 import { Dimensions, StyleSheet, TextInput, useWindowDimensions } from "react-native";
 import { UserContext } from "../context/UserContext";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { stringMd5 } from 'react-native-quick-md5';
 
 const { Navigator, Screen } = createMaterialTopTabNavigator();
 
@@ -19,18 +20,17 @@ export default function Profile({ navigation }) {
   const [password, setPassword] = useState();
   const [index, setIndex] = useState(0); 
   const layout = useWindowDimensions(); 
-
-  // const [routes] = useState([{
-  //   key: "first", 
-  //   title: 'Información'
-  // }, {
-  // key: "second", 
-  // title: 'Contraseña'}])
-
   const userData = useContext(UserContext)
   const id = userData.user._id;
+  const decode = userData.Password; 
 
   console.log(userData.user);
+
+  const onHandleChangePassword = (value) => {
+    console.log(value);
+    const dpassword = stringMd5(value)
+    console.log(dpassword);
+  }
 
   const ProfileView = () => (
 
@@ -107,7 +107,7 @@ export default function Profile({ navigation }) {
         <VStack space={3} mt="5"> 
         <FormControl>
             <FormControl.Label>Contraseña actual</FormControl.Label>
-            <TextInput style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) }/>
+            <TextInput style={styles.input} type="password" defaultValue="" onChangeText={(value) => onHandleChangePassword(value) }/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Nueva Contraseña</FormControl.Label>
@@ -131,40 +131,9 @@ export default function Profile({ navigation }) {
     
   )
 
-  // const initialLayout = {
-  //   width: Dimensions.get('window').width
-  // }
+  const updatePassword = async() =>{
 
-  // const renderScene = SceneMap({
-  //   first: ProfileView, 
-  //   second: PasswordView
-  // })
-
-
-  // const renderTabBar = props => {
-  //   const inputRange = props.navigationState.routes.map((x, i) => i);
-  //   return <Box flexDirection="row">
-  //       {props.navigationState.routes.map((route, i) => {
-  //       const opacity = props.position.interpolate({
-  //         inputRange,
-  //         outputRange: inputRange.map(inputIndex => inputIndex === i ? 1 : 0.5)
-  //       });
-  //       const color = index === i ? useColorModeValue('#000', '#e5e5e5') : useColorModeValue('#1f2937', '#a1a1aa');
-  //       const borderColor = index === i ? 'cyan.500' : useColorModeValue('coolGray.200', 'gray.400');
-  //       return <Box borderBottomWidth="3" borderColor={borderColor} flex={1} alignItems="center" p="3" cursor="pointer">
-  //             <Pressable onPress={() => {
-  //           console.log(i);
-  //           setIndex(i);
-  //         }}>
-  //               <Animated.Text style={{
-  //             color
-  //           }}>{route.title}</Animated.Text>
-  //             </Pressable>
-  //           </Box>;
-  //     })}
-  //     </Box>;
-  // };
-
+  }
   
   const updateInfo = async() => {
 

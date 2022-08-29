@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import {
-    Box, HStack,
+    Box,
     ScrollView,
     Text, 
     Stack, 

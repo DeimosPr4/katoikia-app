@@ -72,6 +72,15 @@ const InvitadosComunidad = () => {
     </>
   );
 
+  const headerTenant = (
+    <>
+      <p>
+        {' '}
+        <FontAwesomeIcon icon={faUserAlt} style={{ color: '#C08135' }} /> Inquilino
+      </p>
+    </>
+  );
+
   const headerLastName = (
     <>
       <p>
@@ -80,6 +89,14 @@ const InvitadosComunidad = () => {
         Apellido(s)
       </p>
     </>
+  );
+
+  const headerPlate = (
+    <p>
+      {' '}
+      <FontAwesomeIcon icon={faIdCardAlt} style={{ color: '#C08135' }} />{' '}
+      Placa
+    </p>
   );
 
   const headerDNI = (
@@ -166,7 +183,7 @@ const InvitadosComunidad = () => {
               field="number_plate"
               header="Placa"
               sortable
-              header={headerDNI}
+              header={headerPlate}
             />
             <Column
               field="telefono"
@@ -190,7 +207,7 @@ const InvitadosComunidad = () => {
               field="tenant_name"
               header="Inquilino"
               sortable
-              header={headerName}
+              header={headerTenant}
             />
           </DataTable>
         </div>

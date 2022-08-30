@@ -29,6 +29,7 @@ const RegistroComunicado = () => {
 
   const [comunicado, setComunicado] = useState(emptyComunicado);
   const [comunicados, setComunicados] = useState([]);
+  const [saveButtonLabel, setSaveButtonLabel] = useState('Registrar');
   const [comunicadoId, setComunicadoId] = useState(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -204,7 +205,22 @@ const RegistroComunicado = () => {
                 </div>
               </div>
             </div>
-            <Button label="Registrar" onClick={saveComunicado} />
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              width: "100%"
+            }}>
+              <Button
+                label={`${saveButtonLabel}`}
+                onClick={() => saveComunicado()}
+              />
+              {saveButtonLabel === 'Actualizar' && (
+                <Button
+                  label="Cancelar"
+                  onClick={cancelEdit}
+                  className="p-button-danger" />)}
+            </div>
           </div>
         </div>
       </div>

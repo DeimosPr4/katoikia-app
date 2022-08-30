@@ -167,7 +167,7 @@ const RegistroComunicado = () => {
           >
             <div className="flex align-items-center justify-content-center">
               <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-              {comunicado && <span>¿Estás seguro que desea eliminar el aviso "<b>{comunicado.post}</b>"?</span>}
+              {comunicado && <span>¿Está seguro que desea eliminar el aviso "<b>{comunicado.post}</b>"?</span>}
             </div>
           </Dialog>
           <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>

@@ -74,7 +74,7 @@ const RegistroComunicado = () => {
         err => console.log('Ocurrió un error con el fetch', err)
       );
     } else {
-      let data = {
+      const data = {
         _id: comunicado._id,
         post: document.getElementById('txt_comunicado').value,
         user_id: cookies.id,
@@ -89,12 +89,12 @@ const RegistroComunicado = () => {
           'Content-Type': 'application/json'
         }
       }).then((response) => {
-        if (response.status != 201)
+        if (response.status != 200)
           console.log('Ocurrió un error con el servicio: ' + response.status);
         else
           return response.json();
       }).then((_response) => {
-
+        setComunicado(emptyComunicado);
       }).catch(
         err => console.log('Ocurrió un error con el fetch', err)
       );
@@ -245,7 +245,7 @@ const RegistroComunicado = () => {
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-pencil"></i>
                   </span>
-                  <InputTextarea value={comunicado.post} id="txt_comunicado" rows="4" />
+                  <InputTextarea value={comunicado.post} id="txt_comunicado" />
                 </div>
               </div>
             </div>

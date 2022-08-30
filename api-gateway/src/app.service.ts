@@ -512,11 +512,12 @@ export class AppService {
     tenant_id: string,
     community_id: string,
     date_entry: Date,
+    type_guest: string,
   ) {
     const pattern = { cmd: 'createGuest' };
     const payload = {
       name: name, last_name: last_name, dni: dni, number_plate: number_plate, phone: phone,
-      status: status,tenant_id:tenant_id, community_id:community_id,date_entry: date_entry
+      status: status,tenant_id:tenant_id, community_id:community_id,date_entry: date_entry,type_guest:type_guest
     };
     return this.clientGuestApp
       .send<string>(pattern, payload)

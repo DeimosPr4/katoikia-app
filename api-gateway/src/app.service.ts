@@ -232,7 +232,6 @@ export class AppService {
     const payload = {
       id: id, dni: dni, name: name, last_name: last_name, email: email, phone: phone,
       password: this.generatePassword(), user_type: user_type, status: status, date_entry: date_entry, community_id
-
     };
     return this.clientUserApp
       .send<string>(pattern, payload)

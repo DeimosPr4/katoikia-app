@@ -211,6 +211,7 @@ class LogInUser extends Component {
                                 </div>
 
                                 <Button label="Iniciar sesión" type="button" onClick={() => this.iniciarSesion()}></Button>
+                                <Button label="Restablecer Contraseña" className="p-button-link" />
                             </div>
                         </div>
                     </div>

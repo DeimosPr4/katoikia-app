@@ -116,6 +116,12 @@ const RegistroComunicado = () => {
     return (
       <div className="actions">
         <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success mt-2 mx-2"
+          onClick={() => edit(rowData)}
+          title="Editar"
+        />
+        <Button
           icon='pi pi-trash'
           className='p-button-rounded p-button-danger mt-2 mx-2'
           onClick={() => confirmDelete(rowData)}

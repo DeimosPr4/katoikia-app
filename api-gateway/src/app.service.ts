@@ -571,45 +571,7 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
-  // ====================== PAYMENTS =============================== 
-
-  //POST parameter from API
-  createPayment(
-    date_payment: Date,
-    mount: number,
-    description: string,
-    period: string,
-    status: string,
-    user_id: string,
-    communty_id: string,
-  ) {
-    const pattern = { cmd: 'createPayment' };
-    const payload = {
-      date_payment: date_payment, mount: mount, description: description,
-      period: period, status: status, user_id: user_id, communty_id: communty_id
-    };
-    return this.clientPaymentApp
-      .send<string>(pattern, payload)
-      .pipe(map((message: string) => ({ message })));
-  }
-
-  allPayments() {
-    const pattern = { cmd: 'findAllPayments' };
-    const payload = {};
-    return this.clientPaymentApp
-      .send<string>(pattern, payload)
-      .pipe(map((message: string) => ({ message })));
-  }
-
-  //GET parameter from API
-  findPayment(paramPaymentId: string) {
-    const pattern = { cmd: 'findOnePayment' };
-    const payload = { id: paramPaymentId };
-    return this.clientPaymentApp
-      .send<string>(pattern, payload)
-      .pipe(map((message: string) => ({ message })));
-  }
-
+  
   // ====================== RESERVATIONS ===============================
 
   //POST parameter from API
@@ -647,6 +609,15 @@ export class AppService {
   findReservations(community_id: string) {
     const pattern = { cmd: 'findReservationsByCommunity' };
     const payload = { community_id: community_id };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  //DELETE parameter from API
+  deleteReservation(paramReservationId: string) {
+    const pattern = { cmd: 'removeReservation' };
+    const payload = { id: paramReservationId };
     return this.clientReservationApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));

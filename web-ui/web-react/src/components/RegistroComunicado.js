@@ -112,6 +112,18 @@ const RegistroComunicado = () => {
     )
   }
 
+  const edit = (rowData) => {
+    setComunicado(rowData);
+    setComunicadoId(rowData._id);
+    setSaveButtonLabel('Actualizar');
+  }
+
+  const cancelEdit = () => {
+    setComunicado(emptyComunicado);
+    setSaveButtonLabel('Registrar');
+    setComunicadoId(null);
+  }
+
   const actions = (rowData) => {
     return (
       <div className="actions">

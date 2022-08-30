@@ -147,13 +147,6 @@ export default function AreaComun({navigation}){
             <DateTimePicker mode="datetime" is24Hour value={time} onChangeStart={onChangeStart}/>
             </View>
           </FormControl>
-          <FormControl isRequired>
-            <FormControl.Label>Hora de finalización</FormControl.Label>
-            <View  >
-            <DateTimePicker mode="datetime" is24Hour value={endTime} onChangeEnd={onChangeEnd}/>
-            </View>
-           
-          </FormControl>
          
         
           <Button mt="10" backgroundColor="tertiary.600" onPress={()=> postReserva()}>

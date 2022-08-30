@@ -13,8 +13,8 @@ export default function Invitados({navigation}) {
   const [isRequesting, setIsRequesting] = useState(false);
   const [invitados, setInvitados] = useState([]);
   const { user } = useContext(UserContext);
-  //const id = user._id;
-  const id = "62ff074949eb1e993a9d0fda";
+  const id = user._id;
+  //const id = "6301df20dac7dcf76dcecade";
   const [invitado, setInvitado] = useState([]);
 
   useEffect(() => {
@@ -109,6 +109,11 @@ export default function Invitados({navigation}) {
             color: "warmGray.200"
           }}>
                  {"Número Placa: "+item.number_plate}
+                </Text>
+                <Text color="coolGray.600" _dark={{
+            color: "warmGray.200"
+          }}>
+                 {"Tipo de acceso: "+item.type_guest}
                 </Text>
 
               </VStack>

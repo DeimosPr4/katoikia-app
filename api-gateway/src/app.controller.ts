@@ -403,6 +403,7 @@ export class AppController {
     @Body('tenant_id') tenant_id: string,
     @Body('community_id') community_id: string,
     @Body('date_entry') date_entry: Date,
+    @Body('type_guest') type_guest: string,
   ) {
     return this.appService.createGuest(
       name,
@@ -414,6 +415,7 @@ export class AppController {
       tenant_id,
       community_id,
       date_entry,
+      type_guest,
     );
   }
 

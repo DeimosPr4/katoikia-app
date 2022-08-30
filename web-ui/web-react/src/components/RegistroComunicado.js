@@ -201,7 +201,7 @@ const RegistroComunicado = () => {
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-pencil"></i>
                   </span>
-                  <InputTextarea id="txt_comunicado" rows="4" />
+                  <InputTextarea value={comunicado.post} id="txt_comunicado" rows="4" />
                 </div>
               </div>
             </div>

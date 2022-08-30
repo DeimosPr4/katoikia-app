@@ -540,7 +540,7 @@ export class AppService {
     const pattern = { cmd: 'createGuest' };
     const payload = {
       name: name, last_name: last_name, dni: dni, number_plate: number_plate, phone: phone,
-      status: status,tenant_id:tenant_id, community_id:community_id,date_entry: date_entry
+      status: status, tenant_id: tenant_id, community_id: community_id, date_entry: date_entry
     };
     return this.clientGuestApp
       .send<string>(pattern, payload)
@@ -571,17 +571,17 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
-  
+
   // ====================== RESERVATIONS ===============================
 
   //POST parameter from API
   createReservation(date: string, time: string, status: string,
-    date_entry: Date, user_id: string, common_area_id: string, 
+    date_entry: Date, user_id: string, common_area_id: string,
     common_area_name: string, community_id: string) {
     const pattern = { cmd: 'createReservation' };
     const payload = {
       date: date, time: time, status: status,
-      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id, 
+      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id,
       common_area_name: common_area_name, community_id: community_id
     };
     return this.clientReservationApp
@@ -632,6 +632,16 @@ export class AppService {
     const payload = {
       post: post, date_entry: date_entry, user_id: user_id,
       community_id: community_id
+    };
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  updatePost(id: string, post: string, user_id: string, community_id: string) {
+    const pattern = { cmd: 'updatePost' };
+    const payload = {
+      post: post, id: id, user_id: user_id, community_id: community_id
     };
     return this.clientPostApp
       .send<string>(pattern, payload)

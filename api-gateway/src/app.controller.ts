@@ -468,7 +468,7 @@ export class AppController {
   }
 
 
- 
+
 
   // #==== API Reservation
 
@@ -516,7 +516,7 @@ export class AppController {
     return this.appService.deleteReservation(id);
   }
 
-  
+
   // #==== API Post
 
   @Post('post/createPost')
@@ -527,6 +527,16 @@ export class AppController {
     @Body('community_id') community_id: string,
   ) {
     return this.appService.createPost(post, date_entry, user_id, community_id);
+  }
+
+  @Put('post/updatePost/:id')
+  updatePost(
+    @Param('id') id: string,
+    @Body('post') post: string,
+    @Body('user_id') user_id: string,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updatePost(id, post, user_id, community_id);
   }
 
   @Get('post/allPosts')

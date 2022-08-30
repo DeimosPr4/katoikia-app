@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { API } from "../environment/api";
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   Box, Button,
-  Center, FormControl, Heading, ScrollView, VStack
+  Center, FormControl, Heading, ScrollView, VStack,Select
 } from "native-base";
 
 import { StyleSheet, TextInput } from "react-native";
@@ -21,6 +21,7 @@ export default function AgregarInvitados({ navigation }) {
   const [community_id, setCommunity_id] = useState();
   const { user } = useContext(UserContext);
   const [errors, setErrors] = useState({});
+  const [categoria, setCategoria] = React.useState("");
 
   const [info, setInfo] = useState({
     name: "",
@@ -28,9 +29,12 @@ export default function AgregarInvitados({ navigation }) {
     dni: "", 
     phone: "",
     number_plate:"", 
-    status: "-0", 
+    status: "1", 
     tenant_id: user._id, 
-    community_id: user.community_id
+    //tenant_id: "6301df20dac7dcf76dcecade", 
+    community_id: user.community_id,
+    //community_id: "62be68215692582bbfd77134",
+    type_guest:""
   });
 
   const onHandleChange = (name) => (value) => setInfo(prev => ({...prev, [name]: value}))
@@ -90,6 +94,7 @@ export default function AgregarInvitados({ navigation }) {
           if (response.status != 201){
             console.log('ocurrio un error ');
           }else{
+            navigation.navigate('Inicio');
             return response.json(); 
           }
         })
@@ -143,6 +148,18 @@ export default function AgregarInvitados({ navigation }) {
           <FormControl >
             <FormControl.Label>Placa</FormControl.Label>
             <TextInput style={styles.input} type="text" onChangeText={onHandleChange("number_plate")} />
+          </FormControl>
+          <FormControl >
+            <FormControl.Label>Tipo de invitado</FormControl.Label>
+            
+            <Select onChangeText={onHandleChange("type_guest")} selectedValue={categoria} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
+        bg: "teal.600"
+      }} mt={1} onValueChange={onHandleChange("type_guest")}>
+          <Select.Item label="Invitado Frecuente" value="Frecuente" />
+          <Select.Item label="Invitado de acceso rápido" value="Rapido" />
+        </Select>
+
+
           </FormControl>
           <Button mt="2" backgroundColor='tertiary.600' onPress={() => saveInvitado()}>
            Guardar

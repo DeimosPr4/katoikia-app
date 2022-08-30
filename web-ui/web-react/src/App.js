@@ -34,6 +34,7 @@ import GuardasSeguridad from './components/GuardasSeguridad';
 import Communities from './components/ComunidadViviendas';
 import Inquilinos from './components/Inquilinos';
 import RegistroComunicado from './components/RegistroComunicado';
+import InvitadosComunidad from './components/InvitadosComunidad';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 import Crud from './pages/Crud';
@@ -202,10 +203,9 @@ const App = () => {
                     icon: PrimeIcons.BUILDING,
                     to: '/areasComunes',
                 },
-                
+                { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado' },
+                { label: 'Invitados', icon: PrimeIcons.USERS, to: '/invitadosComunidad' },
                 { label: 'Reservaciones', icon: PrimeIcons.CALENDAR, to: '/reservaciones'},
-                { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado'},
-    
             ]
         },
     ]
@@ -471,6 +471,7 @@ const App = () => {
                                                 <Route path="/areasComunes" component={AreasComunes} />
                                                 <Route path="/reservaciones" component={Reservaciones} />
                                                 <Route path="/registroComunicado" component={RegistroComunicado} />
+                                                <Route path="/invitadosComunidad" component={InvitadosComunidad} />
                                             </>
                                         )
                                     } else {

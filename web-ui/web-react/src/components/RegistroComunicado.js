@@ -16,7 +16,7 @@ import classNames from 'classnames';
 
 const RegistroComunicado = () => {
 
-  let emptyComunicado = {
+  const emptyComunicado = {
     _id: null,
     post: '',
     user_id: '',
@@ -51,7 +51,7 @@ const RegistroComunicado = () => {
   const saveComunicado = () => {
     if (comunicado._id === null) {
       var data = {
-        post: document.getElementById('txt_comunicado').value,
+        post: comunicado.post,
         user_id: cookies.id,
         community_id: cookies.community_id
       };
@@ -69,16 +69,16 @@ const RegistroComunicado = () => {
         else
           return response.json();
       }).then((_response) => {
-
+        setComunicado(emptyComunicado);
       }).catch(
         err => console.log('Ocurrió un error con el fetch', err)
       );
     } else {
       const data = {
         _id: comunicado._id,
-        post: document.getElementById('txt_comunicado').value,
-        user_id: cookies.id,
-        community_id: cookies.community_id
+        post: comunicado.post,
+        user_id: comunicado.user_id,
+        community_id: comunicado.community_id
       };
 
       fetch(`http://localhost:4000/post/updatePost/${comunicado._id}`, {
@@ -95,6 +95,8 @@ const RegistroComunicado = () => {
           return response.json();
       }).then((_response) => {
         setComunicado(emptyComunicado);
+        setSaveButtonLabel('Registrar');
+        listaComunis();
       }).catch(
         err => console.log('Ocurrió un error con el fetch', err)
       );
@@ -245,7 +247,16 @@ const RegistroComunicado = () => {
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-pencil"></i>
                   </span>
-                  <InputTextarea value={comunicado.post} id="txt_comunicado" />
+                  <InputTextarea
+                    value={comunicado.post}
+                    placeholder="Ingrese el contenido del comunicado"
+                    onChange={(e) => setComunicado({ ...comunicado, post: e.target.value })}
+                    id="txt_comunicado"
+                    type="text"
+                    autoResize
+                    rows={5}
+                    cols={50}
+                  />
                 </div>
               </div>
             </div>
@@ -257,7 +268,7 @@ const RegistroComunicado = () => {
             }}>
               <Button
                 label={`${saveButtonLabel}`}
-                onClick={() => saveComunicado()}
+                onClick={saveComunicado}
               />
               {saveButtonLabel === 'Actualizar' && (
                 <Button

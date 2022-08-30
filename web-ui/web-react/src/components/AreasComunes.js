@@ -8,7 +8,7 @@ import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUserAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faHome, faHomeAlt, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faIdCardAlt } from '@fortawesome/free-solid-svg-icons';
@@ -41,9 +41,9 @@ const AreasComunes = () => {
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const dt = useRef(null);
-
     const [cookies, setCookie] = useCookies();
     const [changeStatusAreaDialog, setChangeStatusAreaDialog] = useState(false);
+    const [areaDialog, setAreaDialog] = useState(false);
 
 
 
@@ -283,8 +283,6 @@ const AreasComunes = () => {
         setDeleteCommonAreasDialog(true);
     };
 
-
-
     const hideChangeStatusAreaDialog = () => {
         setChangeStatusAreaDialog(false);
     };
@@ -293,6 +291,20 @@ const AreasComunes = () => {
         setCommonArea(commonArea);
         setChangeStatusAreaDialog(true);
     };
+
+
+    const hideNewAreaDialog = () => {
+        setSubmitted(false);
+        setAreaDialog(false);
+        setCommonArea(emptyCommonArea);
+    };
+
+    const openNewArea = () => {
+        setCommonArea(emptyCommonArea);
+        setAreaDialog(true);
+        setSubmitted(false);
+    };
+
 
     const actionsCommonArea = (rowData) => {
         let icono = '';
@@ -335,6 +347,24 @@ const AreasComunes = () => {
         setCommonArea(_commonArea);
     };
 
+    const areaDialogFooter = (
+        <>
+            <Button
+                label="Registrar"
+                icon="pi pi-check"
+                className="p-button-primary"
+                onClick={saveCommonArea}
+            />
+            <Button
+                label="Cerrar"
+                icon="pi pi-times"
+                className="p-button-text"
+                onClick={hideNewAreaDialog}
+            />
+
+        </>
+    );
+
     const deleteCommonAreaDialogFooter = (
         <>
             <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCommonAreaDialog} />
@@ -370,7 +400,18 @@ const AreasComunes = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedCommonAreas || !selectedCommonAreas.length} />
+                    <Button
+                        label="Agregar Área Común"
+                        icon="pi pi-plus"
+                        className="p-button-primary mr-2"
+                        onClick={openNewArea}
+                    />
+                    <Button label="Eliminar"
+                        icon="pi pi-trash"
+                        className="p-button-danger"
+                        onClick={confirmDeleteSelected}
+                        disabled={!selectedCommonAreas || !selectedCommonAreas.length}
+                    />
                 </div>
             </React.Fragment>
         )
@@ -401,7 +442,7 @@ const AreasComunes = () => {
     const headerName = (
         <>
             <p>{' '}
-                <FontAwesomeIcon icon={faUserAlt} style={{ color: "#C08135" }} /> {' '}
+                <FontAwesomeIcon icon={faHomeAlt} style={{ color: "#C08135" }} /> {' '}
                 Nombre
             </p>
         </>
@@ -411,7 +452,7 @@ const AreasComunes = () => {
         <>
             <p>
                 {' '}
-                <FontAwesomeIcon icon={faUserAlt} style={{ color: "#D7A86E" }} />{' '}
+                <FontAwesomeIcon icon={faClock} style={{ color: "#D7A86E" }} />{' '}
                 Hora de apertura
             </p>
         </>
@@ -420,7 +461,7 @@ const AreasComunes = () => {
     const headerHourMax = (
         <>
             <p> {' '}
-                <FontAwesomeIcon icon={faIdCardAlt} style={{ color: "#C08135" }} />{' '}
+                <FontAwesomeIcon icon={faClock} style={{ color: "#C08135" }} />{' '}
                 Hora de cierre
             </p>
         </>
@@ -508,6 +549,131 @@ const AreasComunes = () => {
                         <Column field="status" sortable header={headerStatus} body={statusBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
                         <Column style={{ flexGrow: 1, flexBasis: '130px', minWidth: '130px' }} body={actionsCommonArea}></Column>
                     </DataTable>
+                    <Dialog
+                        visible={areaDialog}
+                        style={{ width: '650px' }}
+                        header="Agregar Área Común"
+                        modal
+                        className="p-fluid"
+                        footer={areaDialogFooter}
+                        onHide={hideNewAreaDialog}
+                    >
+                        {commonArea && (
+                            <div className="p-fluid formgrid grid">
+                                <div className="field col-12 md:col-12">
+                                    <label htmlFor="name">Nombre</label>
+                                    <div className="p-0 col-12 md:col-12">
+
+                                        <div className="p-inputgroup">
+                                            <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                                <i className="pi pi-home"></i>
+                                            </span>
+                                            <InputText id="name"
+                                                type="text"
+                                                onChange={(e) => onInputChange(e, 'name')}
+                                                value={commonArea.name}
+                                                required
+                                                autoFocus
+                                                className={classNames({
+                                                    'p-invalid': submitted && commonArea.name === '',
+                                                })}
+                                            />
+                                        </div>
+                                        {submitted && commonArea.name === '' && (
+                                            <small className="p-invalid">Nombre es requirido.</small>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="field col-12 md:col-6">
+                                    <label htmlFor="hourMin">Hora apertura</label>
+                                    <div className="p-0 col-12 md:col-12">
+                                        <div className="p-inputgroup">
+                                            <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                                <i className="pi pi-clock"></i>
+                                            </span>
+                                            <InputText id="hourMin"
+                                                type="time"
+                                                min="00:00" max="23:59"
+                                                step="3600"
+                                                onChange={(e) => onInputChange(e, 'hourMin')}
+                                                value={commonArea.hourMin}
+                                                required
+                                                autoFocus
+                                                className={classNames({
+                                                    'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
+                                                })}
+                                            />
+                                        </div>
+                                        {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
+                                            <small className="p-invalid">La hora de apertura debe ser menor que la hora de cierre.</small>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="field col-12 md:col-6">
+                                    <label htmlFor="hourMax">Hora de cierre</label>
+                                    <div className="p-0 col-12 md:col-12">
+                                        <div className="p-inputgroup">
+                                            <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                                                <i className="pi pi-clock"></i>
+                                            </span>
+                                            <InputText id="hourMax"
+                                                type="time"
+                                                min="00:00" 
+                                                max="23:59"
+                                                step="3600"
+                                                onChange={(e) => onInputChange(e, 'hourMax')}
+                                                value={commonArea.hourMax}
+                                                required
+                                                autoFocus
+                                                className={classNames({
+                                                    'p-invalid': submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin),
+                                                })}
+                                            />
+                                        </div>
+                                        {submitted && compareTimesMinRequired(commonArea.hourMax, commonArea.hourMin) && (
+                                            <small className="p-invalid">La hora de cierre debe ser mayor que la hora de apertura</small>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="field col-12 md:col-12">
+                                    <label htmlFor="bookable">¿Necesita Reservación?</label>
+                                    <div className="formgrid grid align-items-end" style={{ marginTop: '12px', width: '300px' }}>
+                                        <div className="field-radiobutton col-6">
+
+                                            <RadioButton
+                                                inputId="bookable1"
+                                                name="bookable"
+                                                value="1"
+                                                onChange={onBookableChange}
+                                                checked={commonArea.bookable === '1'}
+                                            />
+                                            <label htmlFor="bookable1">
+                                                <span className="p-icon-input-khaki">
+                                                    <i className="pi pi-check status status-1"></i> Sí
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div className="field-radiobutton col-6">
+                                            <RadioButton
+                                                inputId="bookable2"
+                                                name="bookable"
+                                                value="0"
+                                                onChange={onBookableChange}
+                                                checked={commonArea.bookable === '0'}
+                                            />
+                                            <label htmlFor="bookable2">
+                                                <span className="p-icon-input-khaki">
+                                                    <i className="pi pi-times status status-0"></i> No
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        )}
+                    </Dialog>
                     <Dialog visible={deleteCommonAreaDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteCommonAreaDialogFooter} onHide={hideDeleteCommonAreaDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />

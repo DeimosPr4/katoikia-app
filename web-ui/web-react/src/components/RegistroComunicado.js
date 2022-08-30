@@ -70,6 +70,7 @@ const RegistroComunicado = () => {
           return response.json();
       }).then((_response) => {
         setComunicado(emptyComunicado);
+        listaComunis();
       }).catch(
         err => console.log('Ocurrió un error con el fetch', err)
       );

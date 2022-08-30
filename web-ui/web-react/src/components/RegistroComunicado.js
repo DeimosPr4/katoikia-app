@@ -16,7 +16,7 @@ import classNames from 'classnames';
 
 const RegistroComunicado = () => {
 
-  let emptyComunicado = {
+  const emptyComunicado = {
     _id: null,
     post: '',
     user_id: '',
@@ -29,6 +29,7 @@ const RegistroComunicado = () => {
 
   const [comunicado, setComunicado] = useState(emptyComunicado);
   const [comunicados, setComunicados] = useState([]);
+  const [saveButtonLabel, setSaveButtonLabel] = useState('Registrar');
   const [comunicadoId, setComunicadoId] = useState(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -48,31 +49,60 @@ const RegistroComunicado = () => {
   }
 
   const saveComunicado = () => {
-    var data = {
-      post: document.getElementById('txt_comunicado').value,
-      user_id: cookies.id,
-      community_id: cookies.community_id
-    };
+    if (comunicado._id === null) {
+      var data = {
+        post: comunicado.post,
+        user_id: cookies.id,
+        community_id: cookies.community_id
+      };
 
-    fetch('http://localhost:4000/post/createPost', {
-      cache: 'no-cache',
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((response) => {
-      if (response.status != 201)
-        console.log('Ocurrió un error con el servicio: ' + response.status);
-      else
-        return response.json();
-    }).then((_response) => {
+      fetch('http://localhost:4000/post/createPost', {
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.status != 201)
+          console.log('Ocurrió un error con el servicio: ' + response.status);
+        else
+          return response.json();
+      }).then((_response) => {
+        setComunicado(emptyComunicado);
+        listaComunis();
+      }).catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+    } else {
+      const data = {
+        _id: comunicado._id,
+        post: comunicado.post,
+        user_id: comunicado.user_id,
+        community_id: comunicado.community_id
+      };
 
-    }).catch(
-      err => console.log('Ocurrió un error con el fetch', err)
-    );
+      fetch(`http://localhost:4000/post/updatePost/${comunicado._id}`, {
+        cache: 'no-cache',
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.status != 200)
+          console.log('Ocurrió un error con el servicio: ' + response.status);
+        else
+          return response.json();
+      }).then((_response) => {
+        setComunicado(emptyComunicado);
+        setSaveButtonLabel('Registrar');
+        listaComunis();
+      }).catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+    }
   }
-
   const header = (
     <React.Fragment>
       <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -111,9 +141,27 @@ const RegistroComunicado = () => {
     )
   }
 
+  const edit = (rowData) => {
+    setComunicado(rowData);
+    setComunicadoId(rowData._id);
+    setSaveButtonLabel('Actualizar');
+  }
+
+  const cancelEdit = () => {
+    setComunicado(emptyComunicado);
+    setSaveButtonLabel('Registrar');
+    setComunicadoId(null);
+  }
+
   const actions = (rowData) => {
     return (
       <div className="actions">
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success mt-2 mx-2"
+          onClick={() => edit(rowData)}
+          title="Editar"
+        />
         <Button
           icon='pi pi-trash'
           className='p-button-rounded p-button-danger mt-2 mx-2'
@@ -167,7 +215,7 @@ const RegistroComunicado = () => {
           >
             <div className="flex align-items-center justify-content-center">
               <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-              {comunicado && <span>¿Estás seguro que desea eliminar el aviso "<b>{comunicado.post}</b>"?</span>}
+              {comunicado && <span>¿Está seguro que desea eliminar el aviso "<b>{comunicado.post}</b>"?</span>}
             </div>
           </Dialog>
           <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
@@ -200,11 +248,35 @@ const RegistroComunicado = () => {
                   <span className="p-inputgroup-addon p-button p-icon-input-khaki">
                     <i className="pi pi-pencil"></i>
                   </span>
-                  <InputTextarea id="txt_comunicado" rows="4" />
+                  <InputTextarea
+                    value={comunicado.post}
+                    placeholder="Ingrese el contenido del comunicado"
+                    onChange={(e) => setComunicado({ ...comunicado, post: e.target.value })}
+                    id="txt_comunicado"
+                    type="text"
+                    autoResize
+                    rows={5}
+                    cols={50}
+                  />
                 </div>
               </div>
             </div>
-            <Button label="Registrar" onClick={saveComunicado} />
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              width: "100%"
+            }}>
+              <Button
+                label={`${saveButtonLabel}`}
+                onClick={saveComunicado}
+              />
+              {saveButtonLabel === 'Actualizar' && (
+                <Button
+                  label="Cancelar"
+                  onClick={cancelEdit}
+                  className="p-button-danger" />)}
+            </div>
           </div>
         </div>
       </div>

@@ -468,38 +468,7 @@ export class AppController {
   }
 
 
-  // #==== API Payment
 
-  @Post('payment/createPayment')
-  createPayment(
-    @Body('date_payment') date_payment: Date,
-    @Body('mount') mount: number,
-    @Body('description') description: string,
-    @Body('period') period: string,
-    @Body('status') status: string,
-    @Body('user_id') user_id: string,
-    @Body('communty_id') communty_id: string,
-  ) {
-    return this.appService.createPayment(
-      date_payment,
-      mount,
-      description,
-      period,
-      status,
-      user_id,
-      communty_id,
-    );
-  }
-
-  @Get('payment/allPayments')
-  allPayments() {
-    return this.appService.allPayments();
-  }
-
-  @Get('payment/find/:dni')
-  findPayment(@Param('dni') paramPaymentDNI: string) {
-    return this.appService.findPayment(paramPaymentDNI);
-  }
 
   // #==== API Reservation
 
@@ -541,7 +510,13 @@ export class AppController {
     return this.appService.findReservations(community_id);
   }
 
-  
+
+  @Delete('reservation/deleteReservation/:id')
+  deleteReservation(@Param('id') id: string) {
+    return this.appService.deleteReservation(id);
+  }
+
+
   // #==== API Post
 
   @Post('post/createPost')
@@ -552,6 +527,16 @@ export class AppController {
     @Body('community_id') community_id: string,
   ) {
     return this.appService.createPost(post, date_entry, user_id, community_id);
+  }
+
+  @Put('post/updatePost/:id')
+  updatePost(
+    @Param('id') id: string,
+    @Body('post') post: string,
+    @Body('user_id') user_id: string,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updatePost(id, post, user_id, community_id);
   }
 
   @Get('post/allPosts')

@@ -27,9 +27,17 @@ export default function Profile({ navigation }) {
   console.log(userData.user);
 
   const onHandleChangePassword = (value) => {
-    console.log(value);
+    //console.log(value);
     const dpassword = stringMd5(value)
     console.log(dpassword);
+
+
+    console.log(userData.password);
+    if (userData.password == dpassword) {
+      console.log(true);
+    }else{
+      console.log(false);
+    }
   }
 
   const ProfileView = () => (

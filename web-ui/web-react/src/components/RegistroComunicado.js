@@ -49,31 +49,57 @@ const RegistroComunicado = () => {
   }
 
   const saveComunicado = () => {
-    var data = {
-      post: document.getElementById('txt_comunicado').value,
-      user_id: cookies.id,
-      community_id: cookies.community_id
-    };
+    if (comunicado._id === null) {
+      var data = {
+        post: document.getElementById('txt_comunicado').value,
+        user_id: cookies.id,
+        community_id: cookies.community_id
+      };
 
-    fetch('http://localhost:4000/post/createPost', {
-      cache: 'no-cache',
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((response) => {
-      if (response.status != 201)
-        console.log('Ocurrió un error con el servicio: ' + response.status);
-      else
-        return response.json();
-    }).then((_response) => {
+      fetch('http://localhost:4000/post/createPost', {
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.status != 201)
+          console.log('Ocurrió un error con el servicio: ' + response.status);
+        else
+          return response.json();
+      }).then((_response) => {
 
-    }).catch(
-      err => console.log('Ocurrió un error con el fetch', err)
-    );
+      }).catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+    } else {
+      let data = {
+        _id: comunicado._id,
+        post: document.getElementById('txt_comunicado').value,
+        user_id: cookies.id,
+        community_id: cookies.community_id
+      };
+
+      fetch(`http://localhost:4000/post/updatePost/${comunicado._id}`, {
+        cache: 'no-cache',
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.status != 201)
+          console.log('Ocurrió un error con el servicio: ' + response.status);
+        else
+          return response.json();
+      }).then((_response) => {
+
+      }).catch(
+        err => console.log('Ocurrió un error con el fetch', err)
+      );
+    }
   }
-
   const header = (
     <React.Fragment>
       <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">

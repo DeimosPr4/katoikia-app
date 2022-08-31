@@ -433,6 +433,12 @@ export class AppController {
   findGuestUser(@Param('id') paramGuestId: string) {
     return this.appService.findGuestUser(paramGuestId);
   }
+
+  @Get('guest/findGuestCommunity/:id')
+  findGuestCommunityr(@Param('id') paramGuestId: string) {
+    return this.appService.findGuestCommunityr(paramGuestId);
+  }
+
   @Post('guest/updateGuest')
   updateGuest(
     @Body('_id') _id: string){
@@ -523,7 +529,10 @@ export class AppController {
   allPosts() {
     return this.appService.allPosts();
   }
-
+  @Get('post/findPostCommunity/:id')
+  findPostCommunity(@Param('id') paramPost: string) {
+    return this.appService.findPostCommunity(paramPost);
+  }
   @Get('post/find/:id')
   findPost(@Param('id') paramPost: string) {
     return this.appService.findPost(paramPost);

@@ -22,7 +22,7 @@ class LogInUser extends Component {
   }
 
   handleChange = async (e) => {
-    await this.setState({
+    this.setState({
       form: {
         ...this.state.form,
         [e.target.name]: e.target.value,

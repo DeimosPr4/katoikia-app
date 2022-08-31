@@ -15,6 +15,10 @@ export default function Invitados({navigation}) {
   const { user } = useContext(UserContext);
   const id = user._id;
   //const id = "6301df20dac7dcf76dcecade";
+  const user_type=user.user_type;
+  //const user_type="4";
+  //const community_id="1";
+  const community_id=user.community_id;
   const [invitado, setInvitado] = useState([]);
 
   useEffect(() => {
@@ -23,17 +27,27 @@ export default function Invitados({navigation}) {
       setIsRequesting(true);
 
       try {
-        const jsonResponse = await fetch(`${API.BASE_URL}/guest/findGuestUser/`+`${id}`, {
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-
-        const response = await jsonResponse.json();
-        //console.log(response);
-        setInvitados(response.message);
-
+        if(user_type=="4"){
+          const jsonResponse = await fetch(`${API.BASE_URL}/guest/findGuestCommunity/`+`${community_id}`, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+  
+          const response = await jsonResponse.json();
+          setInvitados(response.message);
+        }else{
+          const jsonResponse = await fetch(`${API.BASE_URL}/guest/findGuestUser/`+`${id}`, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+  
+          const response = await jsonResponse.json();
+          setInvitados(response.message);
+        }
       } catch (error) {
 
       }
@@ -118,13 +132,9 @@ export default function Invitados({navigation}) {
 
               </VStack>
               <Spacer />
-              <MaterialCommunityIcons name="delete" size={28} color="#7C0808" onPress={() =>{deleteInvitado(item._id)}} />
+              {user_type == 3 && <MaterialCommunityIcons name="delete" size={28} color="#7C0808" onPress={() =>{deleteInvitado(item._id)}} />}
             </HStack>
           </Box>} keyExtractor={item => item.id} />
-
-
-         
-
     </Box>
       
 

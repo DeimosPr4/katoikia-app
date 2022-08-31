@@ -549,6 +549,14 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  findGuestCommunityr(paramGuestId: string) {
+    const pattern = { cmd: 'findGuestCommunity' };
+    const payload = { id: paramGuestId };
+    return this.clientGuestApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   updateGuest(_id: string
     ) {
     const pattern = { cmd: 'removeGuest' };
@@ -650,6 +658,14 @@ export class AppService {
   allPosts() {
     const pattern = { cmd: 'findAllPosts' };
     const payload = {};
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  findPostCommunity(paramGuestId: string) {
+    const pattern = { cmd: 'findPostCommunity' };
+    const payload = { id: paramGuestId };
     return this.clientPostApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));

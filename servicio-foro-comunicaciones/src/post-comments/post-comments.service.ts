@@ -37,4 +37,9 @@ export class PostCommentsService {
       new: true,
     });  
   }
+
+  async findPostCommunity(id: string): Promise<Comment[]> {
+    console.log(id);
+    return this.commentModel.find({community_id:id}).setOptions({ sanitizeFilter: true }).exec();
+  }
 }

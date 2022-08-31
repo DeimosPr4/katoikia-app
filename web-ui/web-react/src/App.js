@@ -58,6 +58,7 @@ import { useCookies } from "react-cookie";
 import LogInUser from './components/LogInUser';
 import Page404 from './components/Page404'
 import Reservaciones from './components/Reservaciones';
+import PerfilAdminComunidad from './components/PerfilAdminComunidad';
 
 
 const App = () => {
@@ -472,6 +473,7 @@ const App = () => {
                                                 <Route path="/reservaciones" component={Reservaciones} />
                                                 <Route path="/registroComunicado" component={RegistroComunicado} />
                                                 <Route path="/invitadosComunidad" component={InvitadosComunidad} />
+                                                <Route path="/pefilAdminComunidad" component={PerfilAdminComunidad} />
                                             </>
                                         )
                                     } else {

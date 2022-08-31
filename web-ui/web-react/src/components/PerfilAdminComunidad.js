@@ -132,7 +132,7 @@ const PerfilAdminComunidad = () => {
     }
 
     useEffect(() => {
-        tenantsList(community._id);
+        tenantsList(cookies.community_id);
     }, [])
 
 

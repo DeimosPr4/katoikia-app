@@ -57,7 +57,6 @@ export class CommunitiesController {
 
   @MessagePattern({ cmd: 'saveTenant' })
   saveTenant(@Payload() body: string) {
-
     let id = body['_id'];
     let tenant_id = body['tenant_id'];
     let number_house = body['number_house'];

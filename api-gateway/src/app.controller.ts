@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Put, Body, Param, Delete } from '@nestjs/common';
+import { Console } from 'console';
 import { AppService } from './app.service';
 @Controller()
 export class AppController {
@@ -305,6 +306,30 @@ export class AppController {
     return this.appService.updateAdminSystem(_id, dni, name, last_name, email, phone);
   }
 
+  @Put('user/updateTenant/:id')
+  updateTenant(
+    @Param('id') id: string,
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
+  ) {
+
+    return this.appService.updateTenant(
+      id,
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      community_id,
+      number_house,
+    );
+  }
+  
   // #==== API Communities
   @Post('community/createCommunity')
   createCommunity(
@@ -369,8 +394,9 @@ export class AppController {
   saveTenant(
     @Body('community_id') community_id: string,
     @Body('number_house') number_house: string,
-    @Body('tenant_id') tenant_id: string,
+    @Body('_id') tenant_id: string,
   ) {
+    console.log(community_id + ' ' + number_house + ' ' + tenant_id)
     return this.appService.saveTenant(community_id, number_house, tenant_id);
   }
 
@@ -425,6 +451,23 @@ export class AppController {
     return this.appService.changeStatusCommonArea(pId, pStatus);
   }
 
+  @Post('commonArea/updateCommonArea')
+  updateCommonArea(
+    @Body('_id') id: string,
+    @Body('name') name: string,
+    @Body('hourMin') hourMin: string,
+    @Body('hourMax') hourMax: string,
+    @Body('bookable') bookable: number,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updateCommonArea(
+      id, 
+      name,
+      hourMin,
+      hourMax,
+      bookable,
+      community_id,);
+  }
   // #==== API GUEST
   //#API userService - create user
   @Post('guest/createGuest')

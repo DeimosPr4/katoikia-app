@@ -77,12 +77,17 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'updateGuard' })
   updateGuard(@Payload() guard: UserDocument) {
-    return this.userService.update(guard.id, guard);
+    return this.userService.update(guard._id, guard);
   }
-
+  
   @MessagePattern({ cmd: 'updateAdminCommunity' })
   updateAdminCommunity(@Payload() user: UserDocument) {
     return this.userService.update(user._id, user);
+  }
+
+  @MessagePattern({ cmd: 'updateTenant' })
+  updateTenant(@Payload() tenant: UserDocument) {
+    return this.userService.updateTenant(tenant.id, tenant);
   }
 
   @MessagePattern({ cmd: 'removeUser' })

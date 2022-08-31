@@ -72,6 +72,9 @@ const Inquilinos = () => {
             item.number_house = 'Sin vivienda asignada'
           }
         })
+        data = data.filter(
+          (val) => val.status != -1,
+      );
         setTenants(data)
       })
   }
@@ -156,9 +159,9 @@ const Inquilinos = () => {
           .catch((error) => console.log(`Ocurrió un error: ${error}`))
       } else setSubmitted(true)
     } else {
-      let _tenant = { ..._tenant, number_house: houseNumber };
+      let _tenant = { ...tenant, number_house: houseNumber };
       console.log(`Actualizando inquilino: ${_tenant}`)
-      fetch(`http://localhost:4000/user/updateUser/${tenant._id}`, {
+      fetch(`http://localhost:4000/user/updateTenant/${tenant._id}`, {
         cache: 'no-cache',
         method: 'PUT',
         body: JSON.stringify(_tenant),
@@ -170,6 +173,17 @@ const Inquilinos = () => {
           console.log(`Hubo un error en el servicio: ${response.status}`)
         else return response.json()
       }).then(() => {
+
+        fetch('http://localhost:4000/community/saveTenant',
+        {
+          cache: 'no-cache',
+          method: 'POST',
+          body: JSON.stringify(_tenant),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
         toast.current.show({
           severity: 'success',
           summary: 'Éxito',

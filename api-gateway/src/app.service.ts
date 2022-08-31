@@ -175,6 +175,36 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
+
+  
+  async updateTenant(
+    _id: string,
+    dni: string,
+    name: string,
+    last_name: string,
+    email: string,
+    phone: number,
+    community_id: string,
+    number_house: string,
+  ) {
+    await this.saveTenant(community_id, number_house, _id);
+
+    const pattern = { cmd: 'updateTenant' };
+    const payload = {
+      id: _id,
+      dni: dni,
+      name: name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
+      community_id: community_id,
+      number_house: number_house,
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   //POST parameter from API
   createAdminSystem(dni: string, name: string, last_name: string, email: string, phone: number
     , user_type: string, status: string, date_entry: Date) {
@@ -521,7 +551,27 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-
+  updateCommonArea(
+    id: string,
+    name: string,
+    hourMin: string,
+    hourMax: string,
+    bookable: number,
+    community_id: string,
+  ) {
+    const pattern = { cmd: 'updateCommonArea' };
+    const payload = {
+      id: id,
+      name: name,
+      hourMin: hourMin,
+      hourMax: hourMax,
+      bookable: bookable,
+      community_id: community_id,
+    };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
   // ====================== GUESTS ===============================
 
   //POST parameter from API
@@ -770,4 +820,19 @@ export class AppService {
 
     return pass;
   }
+
+
+
+  async saveTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
+
+    const pattern = { cmd: 'saveTenantNumHouse' }
+    const payload = { _id: community_id, number_house: number_house, tenant_id: tenant_id }
+
+    return await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+  }
+
 }

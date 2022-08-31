@@ -26,6 +26,7 @@ export class CommonAreasService {
   }
 
   update(id: string, commonArea: CommonAreaDocument) {
+    console.log(commonArea);
     return this.commonAreaModel.findOneAndUpdate({ _id: id }, commonArea, {
       new: true,
     });

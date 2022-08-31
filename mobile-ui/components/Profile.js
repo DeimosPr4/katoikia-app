@@ -15,13 +15,13 @@ const { Navigator, Screen } = createMaterialTopTabNavigator();
 export default function Profile({ navigation }) {
 
   const baseURL = `${API.BASE_URL}/user/updateUser/`
-  const [name, setName] = useState(); 
-  const [apellido, setApellido] =useState(); 
-  const [email, setEmail] = useState(); 
-  const [password, setPassword] = useState();
   const [index, setIndex] = useState(0); 
   const layout = useWindowDimensions(); 
   const userData = useContext(UserContext)
+  const [name, setName] = useState(userData.user.name); 
+  const [apellido, setApellido] =useState(userData.user.last_name); 
+  const [email, setEmail] = useState(userData.user.email); 
+  const [password, setPassword] = useState();
   const id = userData.user._id;
   const decode = userData.Password; 
   const [error, setError] = useState({}) 
@@ -37,6 +37,7 @@ export default function Profile({ navigation }) {
     console.log(userData.user.password);
     if (userData.user.password == dpassword) {
       console.log(true);
+      setError({});
     }else{
       console.log(false);
       setError({ ...error,
@@ -79,7 +80,7 @@ export default function Profile({ navigation }) {
           </FormControl>
           <FormControl>
             <FormControl.Label>Apellido</FormControl.Label>
-            <TextInput style={styles.input} type="text"defaultValue={userData.user.last_name} onChangeText={(value) => setApellido(value) } />
+            <TextInput style={styles.input} type="text" defaultValue={userData.user.last_name} onChangeText={(value) => setApellido(value) } />
           </FormControl>
           <FormControl>
             <FormControl.Label>Correo electrónico</FormControl.Label>
@@ -179,9 +180,10 @@ export default function Profile({ navigation }) {
       })
       .then(response => {
 
-        console.log(baseURL+`${id}`);
+        // console.log(baseURL+`${id}`);
         if (response.status != 201){
           console.log('ocurrio un error ');
+          
         }else{
           return response.json(); 
         }
@@ -206,7 +208,10 @@ export default function Profile({ navigation }) {
       "status": userData.user.status,
       "date_entry": userData.user.date_entry,
       "community_id": userData.user.community_id,
+      "number_house": '20'
     }
+
+    console.log(data);
 
     try {
 
@@ -221,9 +226,10 @@ export default function Profile({ navigation }) {
       })
       .then(response => {
 
-        console.log(baseURL+`${id}`);
+        //console.log(baseURL+`${id}`);
         if (response.status != 201){
-          console.log('ocurrio un error ');
+         // console.log('ocurrio un error ');
+         console.log(response.json());
         }else{
           return response.json(); 
         }

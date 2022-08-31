@@ -166,7 +166,7 @@ const AreasComunes = () => {
                     },
                 })
                     .then(function (response) {
-                        if (response.status != 201)
+                        if (response.status != 201 && response.status != 200)
                             console.log('Ocurrió un error con el servicio: ' + response.status);
                         else return response.json();
                     })

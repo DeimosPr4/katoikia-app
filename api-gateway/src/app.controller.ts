@@ -425,6 +425,23 @@ export class AppController {
     return this.appService.changeStatusCommonArea(pId, pStatus);
   }
 
+  @Post('commonArea/updateCommonArea')
+  updateCommonArea(
+    @Body('_id') id: string,
+    @Body('name') name: string,
+    @Body('hourMin') hourMin: string,
+    @Body('hourMax') hourMax: string,
+    @Body('bookable') bookable: number,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updateCommonArea(
+      id, 
+      name,
+      hourMin,
+      hourMax,
+      bookable,
+      community_id,);
+  }
   // #==== API GUEST
   //#API userService - create user
   @Post('guest/createGuest')

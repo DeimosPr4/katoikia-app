@@ -522,7 +522,27 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-
+  updateCommonArea(
+    id: string,
+    name: string,
+    hourMin: string,
+    hourMax: string,
+    bookable: number,
+    community_id: string,
+  ) {
+    const pattern = { cmd: 'updateCommonArea' };
+    const payload = {
+      id: id,
+      name: name,
+      hourMin: hourMin,
+      hourMax: hourMax,
+      bookable: bookable,
+      community_id: community_id,
+    };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
   // ====================== GUESTS ===============================
 
   //POST parameter from API

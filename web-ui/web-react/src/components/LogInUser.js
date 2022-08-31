@@ -2,6 +2,7 @@ import React, { Component, Fragment, useRef } from 'react';
 import Cookies from 'universal-cookie';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
 
 const baseUrl = 'http://localhost:4000/user/loginUser';
@@ -122,6 +123,27 @@ class LogInUser extends Component {
     }
   };
 
+  resetPassword = () => {
+    this.props.showPwdResetDialog = true;
+  }
+
+  pwdResetDialogFooter = (
+    <>
+      <Button
+        label="Confirmar"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={this.resetPassword}
+      />
+      <Button
+        label='Cerrar'
+        icon='pi pi-times'
+        className='p-button-text'
+        onClick={() => this.props.showPwdResetDialog = false}
+      />
+    </>
+  )
+
   componentDidMount() {
     if (cookies.get('email')) {
       window.location.href = '/';
@@ -221,11 +243,19 @@ class LogInUser extends Component {
                 <Button
                   label="Restablecer Contraseña"
                   className="p-button-link"
+                  onClick={() => this.props.showPwdResetDialog = true}
                 />
               </div>
             </div>
           </div>
         </div>
+        <Dialog
+          visible={this.props.showPwdResetDialog}
+          style={{ width: '50vw' }}
+          header="Restablecer Contraseña"
+          modal
+          className="p-fluid"
+        ></Dialog>
       </Fragment>
     );
   }

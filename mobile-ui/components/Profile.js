@@ -9,6 +9,7 @@ import { UserContext } from "../context/UserContext";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { stringMd5 } from 'react-native-quick-md5';
 
+
 const { Navigator, Screen } = createMaterialTopTabNavigator();
 
 export default function Profile({ navigation }) {
@@ -23,6 +24,7 @@ export default function Profile({ navigation }) {
   const userData = useContext(UserContext)
   const id = userData.user._id;
   const decode = userData.Password; 
+  const [error, setError] = useState({}) 
 
   console.log(userData.user);
 
@@ -32,11 +34,15 @@ export default function Profile({ navigation }) {
     console.log(dpassword);
 
 
-    console.log(userData.password);
-    if (userData.password == dpassword) {
+    console.log(userData.user.password);
+    if (userData.user.password == dpassword) {
       console.log(true);
     }else{
       console.log(false);
+      setError({ ...error,
+        
+        password: 'La contraseña no coincide con la actual'
+      });
     }
   }
 
@@ -115,21 +121,26 @@ export default function Profile({ navigation }) {
         <VStack space={3} mt="5"> 
         <FormControl>
             <FormControl.Label>Contraseña actual</FormControl.Label>
-            <TextInput style={styles.input} type="password" defaultValue="" onChangeText={(value) => onHandleChangePassword(value) }/>
+            <TextInput style={'password' in error ? styles.errorMessage : styles.input} type="password" defaultValue="" onChangeText={(value) => onHandleChangePassword(value) }/>
           </FormControl>
+       
           <FormControl>
             <FormControl.Label>Nueva Contraseña</FormControl.Label>
-            <TextInput style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) }/>
+            <TextInput editable={!error} style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) } />
           </FormControl>
 
           <FormControl>
             <FormControl.Label>Confirmar nueva contraseña</FormControl.Label>
-            <TextInput style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) }/>
+            <TextInput editable={!error} style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) }/>
           </FormControl>
 
-          <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()}>
+          <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()} disabled={error}>
             Actualizar contraseña
           </Button>
+
+             {/* {'password' in error && <FormControl.ErrorMessage  _text={{
+        fontSize: 'xs'
+                }}>La contraseña no coincide con la actual</FormControl.ErrorMessage> } */}
           
         </VStack>
     </Box>
@@ -202,18 +213,29 @@ export default function Profile({ navigation }) {
 
 const styles = StyleSheet.create({
   input: {
-    height: 10,
+    height: 35,
     margin: 3,
     borderWidth: 0.5,
     padding: 5,
     flex: 1,
     paddingTop: 9,
     paddingRight: 19,
-    paddingBottom: 20,
     paddingLeft: 0,
     marginTop: 6,
-    marginBottom: 6,
     borderRadius: 4
+  }, 
+  errorMessage: {
+    height: 35,
+    margin: 3,
+    borderWidth: 0.5,
+    padding: 5,
+    flex: 1,
+    paddingTop: 9,
+    paddingRight: 19,
+    paddingLeft: 0,
+    marginTop: 6,
+    borderRadius: 4, 
+    borderColor: '#be123c'
   }
 })
 

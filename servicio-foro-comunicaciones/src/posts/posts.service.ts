@@ -30,4 +30,9 @@ export class PostsService {
   async remove(id: string) {
     return this.postModel.findByIdAndRemove({ _id: id }).exec();
   }
+
+  async findPostCommunity(id: string): Promise<Post[]> {
+    console.log(id);
+    return this.postModel.find({community_id:id}).setOptions({ sanitizeFilter: true }).exec();
+  }
 }

@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 
 import React from 'react';
 
-export const CommentCard = ({ date, comment }) => {
-    const dateFormated = format(new Date(date), "dd LL yyyy")
+export const CommentCard = ({ post }) => {
+    //const dateFormated = format(new Date(date), "dd LL yyyy")
     return (
         <Pressable
             rounded="8"
@@ -31,14 +31,14 @@ export const CommentCard = ({ date, comment }) => {
                     </Badge>
                     <Spacer />
                     <Text fontSize={10} color="coolGray.800">
-                        {dateFormated}
+                        
                     </Text>
                 </HStack>
                 <Text color="coolGray.800" mt="3" fontWeight="medium" fontSize="xl">
                     Administrador de Comunidad
                 </Text>
                 <Text mt="2" fontSize="sm" color="coolGray.700">
-                    {comment}
+                    {post}
                 </Text>
             </Box>
         </Pressable>
@@ -46,6 +46,6 @@ export const CommentCard = ({ date, comment }) => {
 }
 
 CommentCard.propTypes = {
-    date: PropTypes.string.isRequired,
-    comment: PropTypes.string.isRequired,
+   // date: PropTypes.string.isRequired,
+   post: PropTypes.string.isRequired,
 }

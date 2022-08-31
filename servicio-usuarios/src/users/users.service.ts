@@ -29,7 +29,7 @@ export class UsersService {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
     let userCreated = await this.userModel.create(user);
-    await this.saveTenantNumHouse(user.community_id, user.number_house, userCreated['_id']);
+    await this.saveTenant(user.community_id, user.number_house, userCreated['_id']);
 
     let community = await this.findCommunity(user.community_id);
     user.community_id = community['name'];
@@ -117,6 +117,9 @@ export class UsersService {
   }
 
   async update(id: string, user: UserDocument) {
+    console.log(id)
+    console.log(user)
+
     return this.userModel.findOneAndUpdate({ _id: id }, user, {
       new: true,
     });
@@ -126,6 +129,18 @@ export class UsersService {
     return this.userModel.findOneAndUpdate({ _id: id }, {
       name: user['name'], last_name: user['last_name'],
       dni: user['dni'], email: user['email'], phone: user['phone']
+    }, {
+      new: true,
+    });
+  }
+
+  async updateTenant(id: string, user: UserDocument) {
+    await this.saveTenant(user.community_id, user.number_house, user.id);
+
+    return await this.userModel.findOneAndUpdate({ _id: id }, {
+      name: user['name'], last_name: user['last_name'],
+      dni: user['dni'], email: user['email'], phone: user['phone'],
+      number_house: user['number_house']
     }, {
       new: true,
     });
@@ -293,7 +308,7 @@ export class UsersService {
   }
 
 
-  async saveTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
+  async saveTenant(community_id: string, number_house: string, tenant_id: string) {
     const pattern = { cmd: 'saveTenant' }
     const payload = { _id: community_id, number_house: number_house, tenant_id: tenant_id }
 

@@ -88,7 +88,6 @@ export class CommunitiesService {
     await community.houses.map(house => {
       if (house.number_house == number_house) {
         if (house.tenants) {
-
           house.tenants.tenant_id = ptenant_id
         } else {
           let tenant = new Tenant()
@@ -109,7 +108,8 @@ export class CommunitiesService {
 
     await community.houses.map(house => {
       if (house.number_house === number_house) {
-        house.tenants.tenant_id = "";
+        if(house.tenants)
+          house.tenants.tenant_id = "";
         house.state = "desocupada"
       }
       return house;

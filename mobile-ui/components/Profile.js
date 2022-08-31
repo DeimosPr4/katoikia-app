@@ -121,20 +121,20 @@ export default function Profile({ navigation }) {
         <VStack space={3} mt="5"> 
         <FormControl>
             <FormControl.Label>Contraseña actual</FormControl.Label>
-            <TextInput style={'password' in error ? styles.errorMessage : styles.input} type="password" defaultValue="" onChangeText={(value) => onHandleChangePassword(value) }/>
+            <TextInput style={'password' in error ? styles.errorMessage : styles.input} type="password" onChangeText={(value) => onHandleChangePassword(value) }/>
           </FormControl>
        
           <FormControl>
             <FormControl.Label>Nueva Contraseña</FormControl.Label>
-            <TextInput editable={!error} style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) } />
+            <TextInput editable={!error} style={styles.input} type="password" onChangeText={(value) => setPassword(value) } />
           </FormControl>
 
           <FormControl>
             <FormControl.Label>Confirmar nueva contraseña</FormControl.Label>
-            <TextInput editable={!error} style={styles.input} type="password" defaultValue="" onChangeText={(value) => setPassword(value) }/>
+            <TextInput editable={!error} style={styles.input} type="password" onChangeText={(value) => setPassword(value) }/>
           </FormControl>
 
-          <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()} disabled={error}>
+          <Button mt="2" backgroundColor="orange.300" onPress={() => updatePassword()} disabled={error}>
             Actualizar contraseña
           </Button>
 
@@ -152,22 +152,60 @@ export default function Profile({ navigation }) {
 
   const updatePassword = async() =>{
 
+    const dataPassword = {
+      "_id": userData.user._id,
+      "dni": userData.user.dni,
+      "name": userData.user.name,
+      "last_name": userData.user.last_name,
+      "email": userData.user.email,
+      "phone": userData.user.phone,
+      "password": password,
+      "user_type": userData.user.user_type,
+      "status": userData.user.status,
+      "date_entry": userData.user.date_entry,
+      "community_id": userData.user.community_id,
+    }
+
+    try {
+
+      await fetch(baseURL+`${id}`, {
+
+        cache: 'no-cache', 
+        method: 'PUT', 
+        body: JSON.stringify(dataPassword), 
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+
+        console.log(baseURL+`${id}`);
+        if (response.status != 201){
+          console.log('ocurrio un error ');
+        }else{
+          return response.json(); 
+        }
+      })
+      
+    } catch (error) {
+      console.log("ERROR: " + error);
+    }
   }
   
   const updateInfo = async() => {
 
     const data = {
-      "_id": "6301df20dac7dcf76dcecade",
-      "dni": "1234567890",
+      "_id": userData.user._id,
+      "dni": userData.user.dni,
       "name": name,
       "last_name": apellido,
       "email": email,
-      "phone": 12121212,
-      "password": "827ccb0eea8a706c4c34a16891f84e7b",
-      "user_type": "3",
-      "status": "1",
-      "date_entry": "2022-08-21T07:30:09.929Z",
-      "community_id": null,
+      "phone": userData.user.phone,
+      "password": userData.user.password,
+      "user_type": userData.user.user_type,
+      "status": userData.user.status,
+      "date_entry": userData.user.date_entry,
+      "community_id": userData.user.community_id,
     }
 
     try {

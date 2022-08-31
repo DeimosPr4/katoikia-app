@@ -181,8 +181,8 @@ export default function Profile({ navigation }) {
       .then(response => {
 
         // console.log(baseURL+`${id}`);
-        if (response.status != 201){
-          console.log('ocurrio un error ');
+        if (response.status != 201 && response.status != 200){
+          console.log('ocurrio un error ' + response);
           
         }else{
           return response.json(); 

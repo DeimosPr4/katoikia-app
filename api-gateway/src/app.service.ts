@@ -94,12 +94,7 @@ export class AppService {
     last_name: string,
     email: string,
     phone: number,
-    password: string,
-    user_type: string,
-    status: string,
-    date_entry: Date,
     community_id: string,
-    number_house: string,
   ) {
     const pattern = { cmd: 'updateUser' };
     const payload = {
@@ -109,12 +104,7 @@ export class AppService {
       last_name: last_name,
       email: email,
       phone: phone,
-      password: password,
-      user_type: user_type,
-      status: status,
-      date_entry: date_entry,
       community_id: community_id,
-      number_house: number_house,
     };
     return this.clientUserApp
       .send<string>(pattern, payload)

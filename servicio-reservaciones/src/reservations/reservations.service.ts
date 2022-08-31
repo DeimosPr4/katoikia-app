@@ -14,8 +14,6 @@ export class ReservationsService {
   ) {}
 
   create(reservation: ReservationDocument) {
-    console.log(reservation);
-
     return this.reservationModel.create(reservation);
   }
 
@@ -44,5 +42,14 @@ export class ReservationsService {
     return this.reservationModel.findOneAndUpdate({ _id: id }, {status: '-1'}, {
       new: true,
     });  
+  }
+
+  async removeIdCommunity(community_id: string){
+    await this.reservationModel.updateMany({community_id: community_id}, {"$set":{"status": '-1'}});
+  }
+
+
+  async findReservationsByCommunity(community_id: string){
+    return this.reservationModel.find({ community_id: community_id }).exec();
   }
 }

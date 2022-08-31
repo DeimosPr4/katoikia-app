@@ -6,10 +6,10 @@ export type ReservationDocument = Reservation & Document;
 @Schema({ collection: 'reservations' })
 export class Reservation {
   @Prop()
-  start_time: string;
+  date: Date;
 
   @Prop()
-  finish_time: string;
+  time: string;
 
   @Prop()
   status: string;
@@ -23,12 +23,12 @@ export class Reservation {
   @Prop()
   common_area_name: string;
 
+  @Prop()
+  user_id: string;
 
   @Prop()
   community_id: string;
 
-  @Prop()
-  user_id: string;
 }
 
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);

@@ -13,8 +13,8 @@ export const AppFooter = (props) => {
         height="20"
         className="mr-2"
       />
-      by
-      <span className="font-medium ml-2">PrimeReact</span>
+      por
+      <span className="font-medium ml-2">Deimos</span>
     </div>
   );
 };

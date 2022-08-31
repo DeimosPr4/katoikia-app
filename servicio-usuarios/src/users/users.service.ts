@@ -29,7 +29,7 @@ export class UsersService {
     let passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
     let userCreated = await this.userModel.create(user);
-    await this.saveTenantNumHouse(user.community_id, user.number_house, userCreated['_id']);
+    await this.saveTenant(user.community_id, user.number_house, userCreated['_id']);
 
     let community = await this.findCommunity(user.community_id);
     user.community_id = community['name'];
@@ -72,11 +72,30 @@ export class UsersService {
       );
   }
 
+  async resetUserPassword(user: UserDocument) {
+    const password = user.password;
+    const passwordEncriptada = Md5.init(password);
+    user.password = passwordEncriptada;
+    this.userModel.findOneAndUpdate({ _id: user._id }, { password: passwordEncriptada }, {
+      new: true,
+    });
+    const pattern = { cmd: 'emailResetUserPassword' };
+    const payload = {
+      email: user['email'], password: user['password'],
+      date_entry: user['date_entry'], community_name: user['community_id']
+    };
+    return this.clientNotificationtApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message }))
+      );
+  }
+
   async findCommunity(community_id: string) {
     const pattern = { cmd: 'findOneCommunity' }
     const payload = { _id: community_id }
 
-    let callback = await this.clientCommunityApp
+    let callback = this.clientCommunityApp
       .send<string>(pattern, payload)
       .pipe(
         map((response: string) => ({ response }))
@@ -98,6 +117,9 @@ export class UsersService {
   }
 
   async update(id: string, user: UserDocument) {
+    console.log(id)
+    console.log(user)
+
     return this.userModel.findOneAndUpdate({ _id: id }, user, {
       new: true,
     });
@@ -106,8 +128,20 @@ export class UsersService {
   async updateAdminSystem(id: string, user: UserDocument) {
     return this.userModel.findOneAndUpdate({ _id: id }, {
       name: user['name'], last_name: user['last_name'],
-      dni:user['dni'], email: user['email'], phone: user['phone']
-  }, {
+      dni: user['dni'], email: user['email'], phone: user['phone']
+    }, {
+      new: true,
+    });
+  }
+
+  async updateTenant(id: string, user: UserDocument) {
+    await this.saveTenant(user.community_id, user.number_house, user.id);
+
+    return await this.userModel.findOneAndUpdate({ _id: id }, {
+      name: user['name'], last_name: user['last_name'],
+      dni: user['dni'], email: user['email'], phone: user['phone'],
+      number_house: user['number_house']
+    }, {
       new: true,
     });
   }
@@ -204,7 +238,7 @@ export class UsersService {
   }
 
   async deleteAdminSystem(id: string) {
-    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1'}, {
+    return this.userModel.findOneAndUpdate({ _id: id }, { status: '-1' }, {
       new: true,
     });
   }
@@ -217,13 +251,13 @@ export class UsersService {
 
   async deleteTenant(tenant_id: string, community_id: string, number_house: string) {
 
-    try{
-       await this.userModel.findOneAndUpdate({ _id: tenant_id }, { status: '-1', number_house:''}, {
+    try {
+      await this.userModel.findOneAndUpdate({ _id: tenant_id }, { status: '-1', number_house: '' }, {
         new: true,
       });
-  
+
       return await this.deleteTenantNumHouse(community_id, number_house, tenant_id);
-    } catch(error){
+    } catch (error) {
       console.log(error)
       return error;
     }
@@ -274,7 +308,7 @@ export class UsersService {
   }
 
 
-  async saveTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
+  async saveTenant(community_id: string, number_house: string, tenant_id: string) {
     const pattern = { cmd: 'saveTenant' }
     const payload = { _id: community_id, number_house: number_house, tenant_id: tenant_id }
 
@@ -294,6 +328,12 @@ export class UsersService {
       .pipe(
         map((response: string) => ({ response }))
       )
+  }
+
+  async removeIdCommunity(community_id: string){
+    await this.userModel.updateMany({community_id: community_id, user_type:'2' }, {"$set":{"community_id": ''}});
+    await this.userModel.updateMany({community_id: community_id, user_type:'3' }, {"$set":{"community_id": '', "status": '-1'} });
+    return this.userModel.updateMany({ community_id: community_id, user_type: '4' }, { "$set": { "community_id": '', "status": '-1' }    });
   }
 }
 

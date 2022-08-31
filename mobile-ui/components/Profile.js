@@ -14,7 +14,7 @@ const { Navigator, Screen } = createMaterialTopTabNavigator();
 
 export default function Profile({ navigation }) {
 
-  const baseURL = `${API.BASE_URL}/user/updateUser/`
+  const baseURL = `${API.BASE_URL}/user/updateGuarda/`
   const [index, setIndex] = useState(0); 
   const layout = useWindowDimensions(); 
   const userData = useContext(UserContext)
@@ -203,12 +203,7 @@ export default function Profile({ navigation }) {
       "last_name": apellido,
       "email": email,
       "phone": userData.user.phone,
-      "password": userData.user.password,
-      "user_type": userData.user.user_type,
-      "status": userData.user.status,
-      "date_entry": userData.user.date_entry,
-      "community_id": userData.user.community_id,
-      "number_house": '20'
+      "community_id": userData.user.community_id
     }
 
     console.log(data);

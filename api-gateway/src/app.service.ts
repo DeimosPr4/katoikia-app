@@ -175,6 +175,36 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
+
+  
+  async updateTenant(
+    _id: string,
+    dni: string,
+    name: string,
+    last_name: string,
+    email: string,
+    phone: number,
+    community_id: string,
+    number_house: string,
+  ) {
+    await this.saveTenant(community_id, number_house, _id);
+
+    const pattern = { cmd: 'updateTenant' };
+    const payload = {
+      id: _id,
+      dni: dni,
+      name: name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
+      community_id: community_id,
+      number_house: number_house,
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   //POST parameter from API
   createAdminSystem(dni: string, name: string, last_name: string, email: string, phone: number
     , user_type: string, status: string, date_entry: Date) {
@@ -223,6 +253,22 @@ export class AppService {
     return this.clientUserApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
+  }
+
+  resetUserPassword(id: string, dni: string, name: string, last_name: string, email: string, phone: number
+    , user_type: string, status: string, date_entry: Date, community_id: string) {
+    const pattern = { cmd: 'resetUserPassword' };
+
+    const payload = {
+      id: id, dni: dni, name: name, last_name: last_name, email: email, phone: phone,
+      password: this.generatePassword(), user_type: user_type, status: status, date_entry: date_entry, community_id
+
+    };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((message: string) => ({ message })),
+      );
   }
 
   allUsersAdminSistema() {
@@ -309,12 +355,12 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  updateAdminSystem(_id: string, dni: string, name: string, 
+  updateAdminSystem(_id: string, dni: string, name: string,
     last_name: string, email: string, phone: number
-    ) {
+  ) {
     const pattern = { cmd: 'updateAdminSystem' };
     const payload = {
-      _id: _id, dni: dni, name: name, last_name: last_name, 
+      _id: _id, dni: dni, name: name, last_name: last_name,
       email: email, phone: phone
     };
     return this.clientUserApp
@@ -430,6 +476,15 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  deleteCommunity(id: string) {
+    const pattern = { cmd: 'removeCommunity' };
+    const payload = { _id: id };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+
   // ====================== COMMON AREAS ===============================
   //POST parameter from API
   createCommonArea(
@@ -498,7 +553,27 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-
+  updateCommonArea(
+    id: string,
+    name: string,
+    hourMin: string,
+    hourMax: string,
+    bookable: number,
+    community_id: string,
+  ) {
+    const pattern = { cmd: 'updateCommonArea' };
+    const payload = {
+      id: id,
+      name: name,
+      hourMin: hourMin,
+      hourMax: hourMax,
+      bookable: bookable,
+      community_id: community_id,
+    };
+    return this.clientCommonAreaApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
   // ====================== GUESTS ===============================
 
   //POST parameter from API
@@ -518,6 +593,7 @@ export class AppService {
     const payload = {
       name: name, last_name: last_name, dni: dni, number_plate: number_plate, phone: phone,
       status: status,tenant_id:tenant_id, community_id:community_id,date_entry: date_entry,type_guest:type_guest
+
     };
     return this.clientGuestApp
       .send<string>(pattern, payload)
@@ -567,56 +643,17 @@ export class AppService {
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })))
   }
-  // ====================== PAYMENTS =============================== 
-
-  //POST parameter from API
-  createPayment(
-    date_payment: Date,
-    mount: number,
-    description: string,
-    period: string,
-    status: string,
-    user_id: string,
-    communty_id: string,
-  ) {
-    const pattern = { cmd: 'createPayment' };
-    const payload = {
-      date_payment: date_payment, mount: mount, description: description,
-      period: period, status: status, user_id: user_id, communty_id: communty_id
-    };
-    return this.clientPaymentApp
-      .send<string>(pattern, payload)
-      .pipe(map((message: string) => ({ message })));
-  }
-
-  allPayments() {
-    const pattern = { cmd: 'findAllPayments' };
-    const payload = {};
-    return this.clientPaymentApp
-      .send<string>(pattern, payload)
-      .pipe(map((message: string) => ({ message })));
-  }
-
-  //GET parameter from API
-  findPayment(paramPaymentId: string) {
-    const pattern = { cmd: 'findOnePayment' };
-    const payload = { id: paramPaymentId };
-    return this.clientPaymentApp
-      .send<string>(pattern, payload)
-      .pipe(map((message: string) => ({ message })));
-  }
-
   // ====================== RESERVATIONS ===============================
 
   //POST parameter from API
-  createReservation(start_time: string, finish_time: string, status: string,
-    date_entry: Date, user_id: string, common_area_id: string, 
-    common_area_name: string, communty_id: string) {
+  createReservation(date: string, time: string, status: string,
+    date_entry: Date, user_id: string, common_area_id: string,
+    common_area_name: string, community_id: string) {
     const pattern = { cmd: 'createReservation' };
     const payload = {
-      start_time: start_time, finish_time: finish_time, status: status,
-      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id, 
-      common_area_name: common_area_name, communty_id: communty_id
+      date: date, time: time, status: status,
+      date_entry: date_entry, user_id: user_id, common_area_id: common_area_id,
+      common_area_name: common_area_name, community_id: community_id
     };
     return this.clientReservationApp
       .send<string>(pattern, payload)
@@ -640,6 +677,23 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  findReservations(community_id: string) {
+    const pattern = { cmd: 'findReservationsByCommunity' };
+    const payload = { community_id: community_id };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  //DELETE parameter from API
+  deleteReservation(paramReservationId: string) {
+    const pattern = { cmd: 'removeReservation' };
+    const payload = { id: paramReservationId };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   // ====================== POSTS ===============================
 
   //POST parameter from API
@@ -649,6 +703,16 @@ export class AppService {
     const payload = {
       post: post, date_entry: date_entry, user_id: user_id,
       community_id: community_id
+    };
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  updatePost(id: string, post: string, user_id: string, community_id: string) {
+    const pattern = { cmd: 'updatePost' };
+    const payload = {
+      post: post, id: id, user_id: user_id, community_id: community_id
     };
     return this.clientPostApp
       .send<string>(pattern, payload)
@@ -786,4 +850,19 @@ export class AppService {
 
     return pass;
   }
+
+
+
+  async saveTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
+
+    const pattern = { cmd: 'saveTenantNumHouse' }
+    const payload = { _id: community_id, number_house: number_house, tenant_id: tenant_id }
+
+    return await this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(
+        map((response: string) => ({ response }))
+      )
+  }
+
 }

@@ -34,6 +34,7 @@ import GuardasSeguridad from './components/GuardasSeguridad';
 import Communities from './components/ComunidadViviendas';
 import Inquilinos from './components/Inquilinos';
 import RegistroComunicado from './components/RegistroComunicado';
+import InvitadosComunidad from './components/InvitadosComunidad';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 import Crud from './pages/Crud';
@@ -56,6 +57,8 @@ import AreasComunes from './components/AreasComunes';
 import { useCookies } from "react-cookie";
 import LogInUser from './components/LogInUser';
 import Page404 from './components/Page404'
+import Reservaciones from './components/Reservaciones';
+import PerfilAdminComunidad from './components/PerfilAdminComunidad';
 
 
 const App = () => {
@@ -201,9 +204,9 @@ const App = () => {
                     icon: PrimeIcons.BUILDING,
                     to: '/areasComunes',
                 },
-                
-                { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado'},
-    
+                { label: 'Comunicados', icon: PrimeIcons.COMMENTS, to: '/registroComunicado' },
+                { label: 'Invitados', icon: PrimeIcons.USERS, to: '/invitadosComunidad' },
+                { label: 'Reservaciones', icon: PrimeIcons.CALENDAR, to: '/reservaciones'},
             ]
         },
     ]
@@ -467,7 +470,10 @@ const App = () => {
                                                 <Route path="/guardasSeguridad" component={GuardasSeguridad} />
                                                 <Route path="/inquilinos" component={Inquilinos} />
                                                 <Route path="/areasComunes" component={AreasComunes} />
+                                                <Route path="/reservaciones" component={Reservaciones} />
                                                 <Route path="/registroComunicado" component={RegistroComunicado} />
+                                                <Route path="/invitadosComunidad" component={InvitadosComunidad} />
+                                                <Route path="/pefilAdminComunidad" component={PerfilAdminComunidad} />
                                             </>
                                         )
                                     } else {

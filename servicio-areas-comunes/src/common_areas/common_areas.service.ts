@@ -26,6 +26,7 @@ export class CommonAreasService {
   }
 
   update(id: string, commonArea: CommonAreaDocument) {
+    console.log(commonArea);
     return this.commonAreaModel.findOneAndUpdate({ _id: id }, commonArea, {
       new: true,
     });
@@ -47,4 +48,8 @@ export class CommonAreasService {
     });  
   }
 
+
+  async removeIdCommunity(community_id: string){
+    await this.commonAreaModel.updateMany({community_id: community_id}, {"$set":{"status": '-1'}});
+  }
 }

@@ -88,10 +88,11 @@ export const AppTopbar = (props) => {
                         </button>
                     </li> */}
                 <li className='mx-2' hidden={!logged}>
-                    <button className="p-link layout-topbar-button" >
+                    <a href="/pefilAdminComunidad">  <button className="p-link layout-topbar-button"  >
                         <i className="pi pi-user" />
                         <span>Perfil</span>
-                    </button>
+
+                    </button></a>
                 </li>
                 <li className='mx-2' hidden={!logged}>
                     <button className="p-link layout-topbar-button" onClick={cerrarSesion} >

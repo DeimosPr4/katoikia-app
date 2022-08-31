@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Put, Body, Param, Delete } from '@nestjs/common';
+import { Console } from 'console';
 import { AppService } from './app.service';
 @Controller()
 export class AppController {
@@ -233,6 +234,36 @@ export class AppController {
     return this.appService.deleteTenant(id, community_id, number_house);
   }
 
+  @Put('user/resetUserPassword/:id')
+  resetUserPassword(@Param('id') id: string,
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('password') password: string,
+    @Body('user_type') user_type: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
+  ) {
+    return this.appService.updateUser(
+      id,
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      password,
+      user_type,
+      status,
+      date_entry,
+      community_id,
+      number_house,
+    );
+  }
+
   @Post('user/changeStatus')
   changeStatusUser(
     @Body('id') pId: string,
@@ -275,6 +306,30 @@ export class AppController {
     return this.appService.updateAdminSystem(_id, dni, name, last_name, email, phone);
   }
 
+  @Put('user/updateTenant/:id')
+  updateTenant(
+    @Param('id') id: string,
+    @Body('dni') dni: string,
+    @Body('name') name: string,
+    @Body('last_name') last_name: string,
+    @Body('email') email: string,
+    @Body('phone') phone: number,
+    @Body('community_id') community_id: string,
+    @Body('number_house') number_house: string,
+  ) {
+
+    return this.appService.updateTenant(
+      id,
+      dni,
+      name,
+      last_name,
+      email,
+      phone,
+      community_id,
+      number_house,
+    );
+  }
+  
   // #==== API Communities
   @Post('community/createCommunity')
   createCommunity(
@@ -339,9 +394,15 @@ export class AppController {
   saveTenant(
     @Body('community_id') community_id: string,
     @Body('number_house') number_house: string,
-    @Body('tenant_id') tenant_id: string,
+    @Body('_id') tenant_id: string,
   ) {
+    console.log(community_id + ' ' + number_house + ' ' + tenant_id)
     return this.appService.saveTenant(community_id, number_house, tenant_id);
+  }
+
+  @Delete('community/deleteCommunity/:id')
+  deleteCommunity(@Param('id') paramCommunityId: string) {
+    return this.appService.deleteCommunity(paramCommunityId);
   }
   // #==== API Common Areas
   @Post('commonArea/createCommonArea')
@@ -390,6 +451,23 @@ export class AppController {
     return this.appService.changeStatusCommonArea(pId, pStatus);
   }
 
+  @Post('commonArea/updateCommonArea')
+  updateCommonArea(
+    @Body('_id') id: string,
+    @Body('name') name: string,
+    @Body('hourMin') hourMin: string,
+    @Body('hourMax') hourMax: string,
+    @Body('bookable') bookable: number,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updateCommonArea(
+      id, 
+      name,
+      hourMin,
+      hourMax,
+      bookable,
+      community_id,);
+  }
   // #==== API GUEST
   //#API userService - create user
   @Post('guest/createGuest')
@@ -445,61 +523,30 @@ export class AppController {
     return this.appService.updateGuest(_id);
   }
 
-  // #==== API Payment
 
-  @Post('payment/createPayment')
-  createPayment(
-    @Body('date_payment') date_payment: Date,
-    @Body('mount') mount: number,
-    @Body('description') description: string,
-    @Body('period') period: string,
-    @Body('status') status: string,
-    @Body('user_id') user_id: string,
-    @Body('communty_id') communty_id: string,
-  ) {
-    return this.appService.createPayment(
-      date_payment,
-      mount,
-      description,
-      period,
-      status,
-      user_id,
-      communty_id,
-    );
-  }
-
-  @Get('payment/allPayments')
-  allPayments() {
-    return this.appService.allPayments();
-  }
-
-  @Get('payment/find/:dni')
-  findPayment(@Param('dni') paramPaymentDNI: string) {
-    return this.appService.findPayment(paramPaymentDNI);
-  }
 
   // #==== API Reservation
 
   @Post('reservation/createReservation')
   createReservation(
-    @Body('start_time') start_time: string,
-    @Body('finish_time') finish_time: string,
+    @Body('date') date: string,
+    @Body('time') time: string,
     @Body('status') status: string,
     @Body('date_entry') date_entry: Date,
     @Body('user_id') user_id: string,
     @Body('common_area_id') common_area_id: string,
     @Body('common_area_name') common_area_name: string,
-    @Body('communty_id') communty_id: string,
+    @Body('community_id') community_id: string,
   ) {
     return this.appService.createReservation(
-      start_time,
-      finish_time,
+      date,
+      time,
       status,
       date_entry,
       user_id,
       common_area_id,
       common_area_name,
-      communty_id,
+      community_id,
     );
   }
 
@@ -513,6 +560,18 @@ export class AppController {
     return this.appService.findReservation(paramReservation);
   }
 
+  @Get('reservation/findReservations/:id')
+  findReservations(@Param('id') community_id: string) {
+    return this.appService.findReservations(community_id);
+  }
+
+
+  @Delete('reservation/deleteReservation/:id')
+  deleteReservation(@Param('id') id: string) {
+    return this.appService.deleteReservation(id);
+  }
+
+
   // #==== API Post
 
   @Post('post/createPost')
@@ -523,6 +582,16 @@ export class AppController {
     @Body('community_id') community_id: string,
   ) {
     return this.appService.createPost(post, date_entry, user_id, community_id);
+  }
+
+  @Put('post/updatePost/:id')
+  updatePost(
+    @Param('id') id: string,
+    @Body('post') post: string,
+    @Body('user_id') user_id: string,
+    @Body('community_id') community_id: string,
+  ) {
+    return this.appService.updatePost(id, post, user_id, community_id);
   }
 
   @Get('post/allPosts')

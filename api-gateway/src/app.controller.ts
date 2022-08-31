@@ -149,12 +149,7 @@ export class AppController {
     @Body('last_name') last_name: string,
     @Body('email') email: string,
     @Body('phone') phone: number,
-    @Body('password') password: string,
-    @Body('user_type') user_type: string,
-    @Body('status') status: string,
-    @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
-    @Body('number_house') number_house: string,
   ) {
     return this.appService.updateUser(
       id,
@@ -163,12 +158,7 @@ export class AppController {
       last_name,
       email,
       phone,
-      password,
-      user_type,
-      status,
-      date_entry,
-      community_id,
-      number_house,
+      community_id
     );
   }
 
@@ -255,12 +245,7 @@ export class AppController {
       last_name,
       email,
       phone,
-      password,
-      user_type,
-      status,
-      date_entry,
-      community_id,
-      number_house,
+      password
     );
   }
 

@@ -93,7 +93,7 @@ const Communities = () => {
 
   async function fillCantons() {
     const resJson = await getCantons();
-    const cantones = await resJson.filter((i, n) => {
+    const cantones = await resJson.filter((i, _n) => {
       return i.parentCode === provinciaId;
     });
     setCantonsList(await cantones);
@@ -108,7 +108,7 @@ const Communities = () => {
 
   async function fillDistricts() {
     const resJson = await getDistricts();
-    const districts = await resJson.filter((i, n) => {
+    const districts = await resJson.filter((i, _n) => {
       return i.parentCode === cantonId;
     });
     setDistrictsList(await districts);
@@ -349,7 +349,7 @@ const Communities = () => {
           console.log('Ocurrió un error con el servicio: ' + response.status);
         else return response.json();
       })
-      .then((response) => {
+      .then((_response) => {
         setEditCommunityDialog(false);
         toast.current.show({
           severity: 'success',
@@ -374,7 +374,7 @@ const Communities = () => {
           console.log('Ocurrió un error con el servicio: ' + response.status);
         else return response.json();
       })
-      .then((response) => {
+      .then((_response) => {
         let _community = communitiesList.filter(
           (val) => val._id !== community._id,
         );

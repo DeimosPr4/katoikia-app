@@ -94,7 +94,12 @@ export default function AgregarInvitados({ navigation }) {
           if (response.status != 201){
             console.log('ocurrio un error ');
           }else{
-            navigation.navigate('Inicio');
+            if (user.user_type == '4') {
+              navigation.navigate('Mis Invitados');
+            }else if(user.user_type == '3'){
+              navigation.navigate('Lista De Invitados');
+            }
+           
             return response.json(); 
           }
         })
@@ -180,12 +185,8 @@ const styles = StyleSheet.create({
     height: 35,
     margin: 3,
     borderWidth: 0.5,
-    padding: 5,
+    padding: 3,
     flex: 1,
-    paddingTop: 9,
-    paddingRight: 19,
-    paddingBottom: 20,
-    paddingLeft: 0,
     marginTop: 6,
     marginBottom: 6,
     borderRadius: 4

@@ -93,7 +93,7 @@ export default function LogIn({ navigation }) {
           }else if(user.user_type == '3'){
             addUser(user);
             // cambiar por Comunicados Guarda luego
-            navigation.navigate('Comunicados', {user})
+            navigation.navigate('Comunicados Guarda', {user})
           }
          }else{
           setErrors({ ...errors,

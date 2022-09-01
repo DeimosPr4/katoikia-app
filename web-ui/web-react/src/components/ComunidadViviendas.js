@@ -203,59 +203,80 @@ const Communities = () => {
       districtId &&
       community.phone
     ) {
-      let _communities = [...communitiesList];
-      let _community = { ...community };
-      _community.province = provinciaId;
-      _community.canton = cantonId;
-      _community.district = districtId;
+      if (saveButtonLabel === 'Registrar') {
+        let _communities = [...communitiesList];
+        let _community = { ...community };
+        _community.province = provinciaId;
+        _community.canton = cantonId;
+        _community.district = districtId;
 
-      for (let i = 0; i < _community.num_houses; i++) {
-        _community.houses.push({
-          number_house: codeHouses + (i + 1),
-        });
-      }
-      fetch('http://localhost:4000/community/createCommunity', {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify(_community),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => {
-          if (response.status != 201)
+        for (let i = 0; i < _community.num_houses; i++) {
+          _community.houses.push({
+            number_house: codeHouses + (i + 1),
+          });
+        }
+        fetch('http://localhost:4000/community/createCommunity', {
+          cache: 'no-cache',
+          method: 'POST',
+          body: JSON.stringify(_community),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => {
+            if (response.status != 201)
+              console.log('Ocurrió un error con el servicio: ' + response.status);
+            else return response.json();
+          })
+          .then(() => {
+            _community.province = provincesList.find(
+              (p) => p.code === _community.province,
+            ).name;
+            _community.canton = cantonsList.find(
+              (p) => p.code === _community.canton,
+            ).name;
+            _community.district = districtsList.find(
+              (p) => p.code === _community.district,
+            ).name;
+
+            _communities.push(_community);
+            toast.current.show({
+              severity: 'success',
+              summary: 'Registro exitoso',
+              detail: 'Comunidad de vivienda Creada',
+              life: 3000,
+            });
+            setCommunitiesList(_communities);
+            setProvinciaId('');
+            setCantonId('');
+            setDistrictId('');
+            setCodeHouses('');
+            getCommunites();
+            setCommunity(emptyCommunity);
+          })
+          .catch((err) => console.log('Ocurrió un error con el fetch', err));
+      } else {
+        let _community = { ...community };
+        _community.province = provinciaId;
+        _community.canton = cantonId;
+        _community.district = districtId;
+        console.log(`Actualizando comunidad: ${_community}`);
+        fetch(`http://localhost:4000/community/updateCommunity/${community._id}`, {
+          method: 'PUT',
+          cache: 'no-cache',
+          body: JSON.stringify(_community),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }).then((response) => {
+          getCommunites();
+          if (response.status != 200)
             console.log('Ocurrió un error con el servicio: ' + response.status);
           else return response.json();
-        })
-        .then(() => {
-          _community.province = provincesList.find(
-            (p) => p.code === _community.province,
-          ).name;
-          _community.canton = cantonsList.find(
-            (p) => p.code === _community.canton,
-          ).name;
-          _community.district = districtsList.find(
-            (p) => p.code === _community.district,
-          ).name;
-
-          _communities.push(_community);
-          toast.current.show({
-            severity: 'success',
-            summary: 'Registro exitoso',
-            detail: 'Comunidad de vivienda Creada',
-            life: 3000,
-          });
-
-          setCommunitiesList(_communities);
-
-          setProvinciaId('');
-          setCantonId('');
-          setDistrictId('');
-          setCodeHouses('');
-
-          setCommunity(emptyCommunity);
-        })
-        .catch((err) => console.log('Ocurrió un error con el fetch', err));
+        }).catch((err) => console.log('Ocurrió un error con el fetch', err));
+        setSaveButtonLabel('Registrar');
+        setCommunity(emptyCommunity);
+      }
     } else {
       setSubmitted(true);
     }
@@ -356,6 +377,7 @@ const Communities = () => {
           detail: 'Comunidad de Viviendas Actualizada',
           life: 3000,
         });
+        getCommunites();
       })
       .catch((err) => console.log('Ocurrió un error con el fetch', err));
   };

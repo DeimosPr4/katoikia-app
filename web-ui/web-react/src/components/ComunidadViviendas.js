@@ -456,7 +456,6 @@ const Communities = () => {
   };
 
   const updateCommunity = (community) => {
-    console.log(community);
     setCommunity(community);
     setSaveButtonLabel('Actualizar');
     setHousesList(community.houses);

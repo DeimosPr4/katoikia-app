@@ -52,4 +52,9 @@ export class ReservationsService {
   async findReservationsByCommunity(community_id: string){
     return this.reservationModel.find({ community_id: community_id }).exec();
   }
+
+  async findReservationUser(id: string): Promise<Reservation[]> {
+    return this.reservationModel.find({user_id:id}).setOptions({ sanitizeFilter: true }).exec();
+
+  }
 }

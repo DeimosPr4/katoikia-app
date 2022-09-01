@@ -823,8 +823,6 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-
-
   /* Function to generate combination of password */
   generatePassword() {
     var pass = '';
@@ -841,8 +839,6 @@ export class AppService {
     return pass;
   }
 
-
-
   async saveTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
 
     const pattern = { cmd: 'saveTenantNumHouse' }
@@ -853,6 +849,15 @@ export class AppService {
       .pipe(
         map((response: string) => ({ response }))
       )
+  }
+
+
+  findReservationUser(paramGuestId: string) {
+    const pattern = { cmd: 'findReservationUser' };
+    const payload = { id: paramGuestId };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
   }
 
 }

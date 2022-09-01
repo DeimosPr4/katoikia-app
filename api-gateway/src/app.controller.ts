@@ -654,4 +654,10 @@ export class AppController {
   html(@Body('email') email: string, @Body('name') name: string) {
     return this.appService.html(email, name);
   }
+
+  @Get('reservation/findReservationUser/:id')
+  findReservationUser(@Param('id') paramComment: string) {
+    return this.appService.findReservationUser(paramComment);
+  }
+
 }

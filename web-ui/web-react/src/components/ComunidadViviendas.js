@@ -49,6 +49,7 @@ const Communities = () => {
   const [editCommunityDialog, setEditCommunityDialog] = useState(false);
   const toast = useRef(null);
   const dt = useRef(null);
+  const [formCommunityDialog, setFormCommunityDialog] = useState(false);
 
   //para el perfil de la comunidad
   const [tenants, setTenants] = useState([]);
@@ -273,10 +274,37 @@ const Communities = () => {
           if (response.status != 200)
             console.log('Ocurrió un error con el servicio: ' + response.status);
           else return response.json();
-        }).catch((err) => console.log('Ocurrió un error con el fetch', err));
-        setSaveButtonLabel('Registrar');
-        setCommunity(emptyCommunity);
-      }
+        })
+        .then(() => {
+          _community.province = provincesList.find(
+            (p) => p.code === _community.province,
+          ).name;
+          _community.canton = cantonsList.find(
+            (p) => p.code === _community.canton,
+          ).name;
+          _community.district = districtsList.find(
+            (p) => p.code === _community.district,
+          ).name;
+
+          _communities.push(_community);
+          toast.current.show({
+            severity: 'success',
+            summary: 'Registro exitoso',
+            detail: 'Comunidad de vivienda Creada',
+            life: 3000,
+          });
+
+          setCommunitiesList(_communities);
+
+          setProvinciaId('');
+          setCantonId('');
+          setDistrictId('');
+          setCodeHouses('');
+          setFormCommunityDialog(false);
+
+          setCommunity(emptyCommunity);
+        })
+        .catch((err) => console.log('Ocurrió un error con el fetch', err));
     } else {
       setSubmitted(true);
     }
@@ -341,6 +369,16 @@ const Communities = () => {
   const confirmEditCommunity = (community) => {
     setCommunity(community);
     setEditCommunityDialog(true);
+  };
+
+  const openNewCommunity = () => {
+    setCommunity({ emptyCommunity });
+    setFormCommunityDialog(true);
+  };
+
+  const hideFormCommunityDialog = () => {
+    setCommunity({ emptyCommunity });
+    setFormCommunityDialog(false);
   };
 
   //desactivar o activar una comunidad
@@ -513,6 +551,12 @@ const Communities = () => {
       <React.Fragment>
         <div className="my-2">
           <Button
+            label="Agregar Comunidad"
+            icon="pi pi-plus"
+            className="p-button-primary mr-2"
+            onClick={openNewCommunity}
+          />
+          <Button
             label="Eliminar"
             icon="pi pi-trash"
             className="p-button-danger"
@@ -560,6 +604,25 @@ const Communities = () => {
       />
     </>
   );
+
+  const formCommunityDialogFooter = (
+    <>
+      <Button
+        label={'Registrar'}
+        icon="pi pi-check"
+        className="p-button-primary"
+        onClick={saveCommunity}
+      />
+      <Button
+        label="Cerrar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideFormCommunityDialog}
+      />
+
+    </>
+  );
+
 
   const deleteCommunityDialogFooter = (
     <>
@@ -673,8 +736,8 @@ const Communities = () => {
     <>
       <p>
         {' '}
-        <FontAwesomeIcon icon={faHashtag} style={{ color: '#D7A86E' }} /> Número
-        de viviendas
+        <FontAwesomeIcon icon={faHashtag} style={{ color: '#D7A86E' }} />{' '}
+        Cantidad de viviendas
       </p>
     </>
   );
@@ -709,6 +772,16 @@ const Communities = () => {
         {' '}
         <FontAwesomeIcon icon={faUserAlt} style={{ color: '#C08135' }} />{' '}
         Inquilinos
+      </p>
+    </>
+  );
+
+  const headerCodeHouses = (
+    <>
+      <p>
+        {' '}
+        <FontAwesomeIcon icon={faHashtag} style={{ color: '#D7A86E' }} />{' '}
+        Código de vivienda
       </p>
     </>
   );
@@ -748,14 +821,14 @@ const Communities = () => {
             value={communitiesList}
             dataKey="_id"
             paginator
-            rows={5}
+            rows={10}
             selection={selectedCommunities}
             onSelectionChange={(e) => setSelectedCommunities(e.value)}
             scrollable
-            scrollHeight="400px"
+            scrollHeight="800px"
             scrollDirection="both"
             header={header}
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 20, 30]}
             className="datatable-responsive mt-3"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} comunidades de viviendas"
@@ -791,11 +864,6 @@ const Communities = () => {
               style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
             <Column
-              field="phone"
-              header={headerPhone}
-              style={{ flexGrow: 1, flexBasis: '180px' }}
-            ></Column>
-            <Column
               field="num_houses"
               sortable
               header={headerNumberHouses}
@@ -821,7 +889,7 @@ const Communities = () => {
             ></Column>
             <Column
               body={actionsCommunity}
-              style={{ flexGrow: 2, flexBasis: '100px', flexDirection: 'row' }}
+              style={{ flexGrow: 1, flexBasis: '160px' }}
             ></Column>
           </DataTable>
 
@@ -837,13 +905,11 @@ const Communities = () => {
             <div className="container text-center">
               <div className="row my-4">
                 <div className=" col-12 md:col-12">
-                  <p>Nombre</p>
-                  <div
-                    className="p-0 col-2  md:col-2"
-                    style={{ margin: '0 auto' }}
-                  >
+                  <i className="pi pi-home icon-khaki"></i>
+
+                  <p><strong>Nombre</strong></p>
+                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-home icon-khaki"></i>
                       <p>{community.name}</p>
                     </div>
                   </div>
@@ -851,25 +917,21 @@ const Communities = () => {
               </div>
               <div className="row my-5">
                 <div className=" col-6 md:col-6">
-                  <p>Administrador</p>
-                  <div
-                    className="p-0 col-6  md:col-6"
-                    style={{ margin: '0 auto' }}
-                  >
+                  <i className="pi pi-user icon-khaki"></i>
+
+                  <p><strong>Administrador</strong></p>
+                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-user icon-khaki"></i>
                       <p>{community.name_admin}</p>
                     </div>
                   </div>
                 </div>
                 <div className=" col-6 md:col-6">
-                  <p>Teléfono Administrativo</p>
-                  <div
-                    className="p-0 col-6  md:col-6"
-                    style={{ margin: '0 auto' }}
-                  >
+                  <i className="pi pi-phone icon-khaki"></i>
+
+                  <p><strong>Teléfono Administrativo</strong></p>
+                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-phone icon-khaki"></i>
                       <p>{community.phone}</p>
                     </div>
                   </div>
@@ -878,28 +940,31 @@ const Communities = () => {
 
               <div className="row my-5">
                 <div className=" col-4 col-md-4 md:col-4">
-                  <p>Provincia</p>
-                  <div className="p-0 col-10 md:col-10">
+                  <i className="pi pi-map-marker icon-khaki"></i>
+
+                  <p><strong>Provincia</strong></p>
+                  <div className="p-0 col-12 md:col-12">
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-map-marker icon-khaki"></i>
                       <p>{community.province}</p>
                     </div>
                   </div>
                 </div>
                 <div className=" col-4 md:col-4">
-                  <p>Cantón</p>
-                  <div className="p-0 col-10 md:col-10">
+                  <i className="pi pi-map-marker icon-khaki"></i>
+
+                  <p><strong>Cantón</strong></p>
+                  <div className="p-0 col-12 md:col-12">
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-map-marker icon-khaki"></i>
                       <p>{community.canton}</p>
                     </div>
                   </div>
                 </div>
                 <div className=" col-4 md:col-4">
-                  <p>Distrito</p>
-                  <div className="p-0 col-10 md:col-10">
+                  <i className="pi pi-map-marker icon-khaki"></i>
+
+                  <p><strong>Distrito</strong></p>
+                  <div className="p-0 col-12 md:col-12">
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-map-marker icon-khaki"></i>
                       <p>{community.district}</p>
                     </div>
                   </div>
@@ -907,13 +972,11 @@ const Communities = () => {
               </div>
               <div className="row my-5">
                 <div className=" col-12 md:col-12">
-                  <p>Número de Viviendas</p>
-                  <div
-                    className="p-0 col-2  md:col-2"
-                    style={{ margin: '0 auto' }}
-                  >
+                  <i className="pi pi-hashtag icon-khaki"></i>
+
+                  <p><strong>Cantidad de viviendas</strong></p>
+                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
                     <div className="p-inputgroup justify-content-evenly">
-                      <i className="pi pi-hashtag icon-khaki"></i>
                       <p>{community.num_houses}</p>
                     </div>
                   </div>
@@ -945,12 +1008,8 @@ const Communities = () => {
                       >
                         <Column
                           field="number_house"
-                          header={headerNumberHouses}
-                          style={{
-                            flexGrow: 1,
-                            flexBasis: '160px',
-                            minWidth: '160px',
-                          }}
+                          header={headerCodeHouses}
+                          style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }}
                         ></Column>
                         <Column
                           field="tenants"
@@ -1032,201 +1091,189 @@ const Communities = () => {
               )}
             </div>
           </Dialog>
-        </div>
-      </div>
-      <div className="col-12">
-        <div className="card">
-          <h5>Registro de comunidad de viviendas</h5>
-          <div className="p-fluid formgrid grid">
-            <div className="field col-12 md:col-12">
-              <label htmlFor="name">Nombre</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText
-                    id="name"
-                    value={community.name}
-                    onChange={(e) => onInputChange(e, 'name')}
-                    required
-                    autoFocus
-                    className={classNames({
-                      'p-invalid': submitted && community.name === '',
-                    })}
-                  />
+          <Dialog
+            visible={formCommunityDialog}
+            style={{ width: '850px' }}
+            header="Mantenimiento de comunidad de viviendas"
+            modal
+            footer={formCommunityDialogFooter}
+            onHide={hideFormCommunityDialog}
+          >
+            <div className="p-fluid formgrid grid">
+              <div className="field col-12 md:col-12">
+                <label htmlFor="name">Nombre</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText
+                      id="name"
+                      value={community.name}
+                      onChange={(e) => onInputChange(e, 'name')}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && community.name === '',
+                      })}
+                    />
+                  </div>
+                  {submitted && community.name === '' && (
+                    <small className="p-invalid">Nombre es requirido.</small>
+                  )}
                 </div>
-                {submitted && community.name === '' && (
-                  <small className="p-invalid">Nombre es requirido.</small>
-                )}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="provinces">Provincia</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-map-marker"></i>
-                  </span>
-                  <Dropdown
-                    placeholder="--Seleccione Provincia--"
-                    value={provinciaId}
-                    options={p}
-                    onChange={handleProvinces}
-                    required
-                    autoFocus
-                    className={classNames({
-                      'p-invalid': submitted && !provinciaId,
-                    })}
-                  />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="provinces">Provincia</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-map-marker"></i>
+                    </span>
+                    <Dropdown
+                      placeholder="--Seleccione Provincia--"
+                      value={provinciaId}
+                      options={p}
+                      onChange={handleProvinces}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && !provinciaId,
+                      })}
+                    />
+                  </div>
+                  {submitted && !provinciaId && (
+                    <small className="p-invalid">Provincia es requirido.</small>
+                  )}
                 </div>
-                {submitted && !provinciaId && (
-                  <small className="p-invalid">Provincia es requirido.</small>
-                )}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="cantons">Cantón</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-map-marker"></i>
-                  </span>
-                  <Dropdown
-                    placeholder="--Seleccione Cantón--"
-                    value={cantonId}
-                    options={c}
-                    onChange={handleCanton}
-                    required
-                    autoFocus
-                    className={classNames({
-                      'p-invalid': submitted && !cantonId,
-                    })}
-                  />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="cantons">Cantón</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-map-marker"></i>
+                    </span>
+                    <Dropdown
+                      placeholder="--Seleccione Cantón--"
+                      value={cantonId}
+                      options={c}
+                      onChange={handleCanton}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && !cantonId,
+                      })}
+                    />
+                  </div>
+                  {submitted && !cantonId && (
+                    <small className="p-invalid">Cantón es requirido.</small>
+                  )}
                 </div>
-                {submitted && !cantonId && (
-                  <small className="p-invalid">Cantón es requirido.</small>
-                )}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="districts">Distrito</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-map-marker"></i>
-                  </span>
-                  <Dropdown
-                    placeholder="--Seleccione Distrito--"
-                    value={districtId}
-                    options={d}
-                    onChange={handleDistrict}
-                    required
-                    autoFocus
-                    className={classNames({
-                      'p-invalid': submitted && !districtId,
-                    })}
-                  />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="districts">Distrito</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-map-marker"></i>
+                    </span>
+                    <Dropdown
+                      placeholder="--Seleccione Distrito--"
+                      value={districtId}
+                      options={d}
+                      onChange={handleDistrict}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && !districtId,
+                      })}
+                    />
+                  </div>
+                  {submitted && !districtId && (
+                    <small className="p-invalid">Distrito es requirido.</small>
+                  )}
                 </div>
-                {submitted && !districtId && (
-                  <small className="p-invalid">Distrito es requirido.</small>
-                )}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="telefono">Número de Teléfono</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-phone"></i>
-                  </span>
-                  <InputText
-                    id="phone"
-                    value={community.phone}
-                    onChange={(e) => onInputChange(e, 'phone')}
-                    required
-                    autoFocus
-                    className={classNames({
-                      'p-invalid': submitted && community.phone === '',
-                    })}
-                  />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="telefono">Número de Teléfono</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-phone"></i>
+                    </span>
+                    <InputText
+                      id="phone"
+                      value={community.phone}
+                      onChange={(e) => onInputChange(e, 'phone')}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && community.phone === '',
+                      })}
+                    />
+                  </div>
+                  {submitted && community.phone === '' && (
+                    <small className="p-invalid">
+                      Número de teléfono es requirido.
+                    </small>
+                  )}
                 </div>
-                {submitted && community.phone === '' && (
-                  <small className="p-invalid">
-                    Número de teléfono es requirido.
-                  </small>
-                )}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="numHouse">Numero de Viviendas</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-hashtag"></i>
-                  </span>
-                  <InputText
-                    id="num_houses"
-                    value={community.num_houses}
-                    onChange={(e) => onInputChange(e, 'num_houses')}
-                    required
-                    autoFocus
-                    className={classNames({
-                      'p-invalid': submitted && community.num_houses < 1,
-                    })}
-                  />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="numHouse">Numero de Viviendas</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-hashtag"></i>
+                    </span>
+                    <InputText
+                      id="num_houses"
+                      value={community.num_houses}
+                      onChange={(e) => onInputChange(e, 'num_houses')}
+                      required
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && community.num_houses < 1,
+                      })}
+                    />
+                  </div>
+                  {submitted && community.num_houses < 1 && (
+                    <small className="p-invalid">
+                      Número de viviendas es requirido y debe ser mayor que 0.
+                    </small>
+                  )}
                 </div>
-                {submitted && community.num_houses < 1 && (
-                  <small className="p-invalid">
-                    Número de viviendas es requirido y debe ser mayor que 0.
-                  </small>
-                )}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="numHouse">
-                Ingrese el prefijo para el código de las viviendas
-              </label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-hashtag"></i>
-                  </span>
-                  <InputText
-                    id="code_houses"
-                    value={codeHouses}
-                    onChange={handleCodeHouses}
-                    autoFocus
-                    className={classNames({
-                      'p-invalid': submitted && codeHouses === '',
-                    })}
-                  />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="numHouse">
+                  Ingrese el prefijo para el código de las viviendas
+                </label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-hashtag"></i>
+                    </span>
+                    <InputText
+                      id="code_houses"
+                      value={codeHouses}
+                      onChange={handleCodeHouses}
+                      autoFocus
+                      className={classNames({
+                        'p-invalid': submitted && codeHouses === '',
+                      })}
+                    />
+                  </div>
+                  {submitted && codeHouses === '' && (
+                    <small className="p-invalid">
+                      El código para las viviendas es requirido.
+                    </small>
+                  )}
                 </div>
-                {submitted && codeHouses === '' && (
-                  <small className="p-invalid">
-                    El código para las viviendas es requirido.
-                  </small>
-                )}
               </div>
+             
             </div>
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-              width: "100%"
-            }} className="col-12 md:col-12 py-2">
-              <Button
-                label={saveButtonLabel}
-                icon="pi pi-check"
-                onClick={saveCommunity}
-              />
-              {saveButtonLabel === 'Actualizar' && (
-                <Button
-                  label="Cancelar"
-                  onClick={cancelEdit}
-                  className="p-button-danger" />)}
-            </div>
-          </div>
+          </Dialog>
         </div>
       </div>
     </div>

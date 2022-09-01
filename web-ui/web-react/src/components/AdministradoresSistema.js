@@ -50,7 +50,7 @@ const AdministradoresSistema = () => {
   const [adminDialog, setAdminDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const [editAdminDialog, setEditAdminDialog] = useState(false);
+  const [formAdminDialog, setFormAdminDialog] = useState(false);
   const [saveButtonTitle, setSaveButtonTitle] = useState("Registrar")
 
 
@@ -136,7 +136,7 @@ const AdministradoresSistema = () => {
                   life: 3000,
                 });
                 setAdministrators(_administrators)
-                setEditAdminDialog(false);
+                setFormAdminDialog(false);
                 setSysAdmin(emptySysAdmin);
               }
             )
@@ -164,6 +164,8 @@ const AdministradoresSistema = () => {
               function (response) {
                 _administrators.push(_admin);
                 setAdministrators(_administrators)
+                setFormAdminDialog(false)
+
               }
             )
             .catch(
@@ -267,7 +269,23 @@ const AdministradoresSistema = () => {
   const editAdmin = (sysadmin) => {
     setSysAdmin({ ...sysadmin });
     setSaveButtonTitle('Actualizar');
+    setFormAdminDialog(true)
+
   };
+  const openNewAdmin = () => {
+    setSysAdmin(emptySysAdmin);
+    setFormAdminDialog(true)
+    setSubmitted(false);
+  };
+
+  const hideFormAdminDialog = () => {
+    setSubmitted(false);
+    setFormAdminDialog(false)
+    setSysAdmin(emptySysAdmin);
+    setSaveButtonTitle('Registrar');
+
+  };
+
 
   const deleteSysAdmin = () => {
     fetch('http://localhost:4000/user/deleteAdminSystem/' + sysadmin._id, {
@@ -386,6 +404,12 @@ const AdministradoresSistema = () => {
     return (
       <React.Fragment>
         <div className="my-2">
+        <Button
+            label="Agregar Administrador"
+            icon="pi pi-plus"
+            className="p-button-primary mr-2"
+            onClick={openNewAdmin}
+          />
           <Button
             label="Eliminar"
             icon="pi pi-trash"
@@ -478,19 +502,19 @@ const AdministradoresSistema = () => {
   );
 
 
-  const editAdminDialogFooter = (
+  const formAdminDialogFooter = (
     <>
       <Button
-        label="No"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={hideChangeStatusAdminDialog}
+        label={`${saveButtonTitle}`}
+        icon="pi pi-check"
+        className="p-button-primary"
+        onClick={guardarAdmin}
       />
       <Button
-        label="Yes"
-        icon="pi pi-check"
+        label="Cerrar"
+        icon="pi pi-times"
         className="p-button-text"
-        onClick={editAdmin}
+        onClick={hideFormAdminDialog}
       />
     </>
   );
@@ -691,7 +715,7 @@ const AdministradoresSistema = () => {
             </Column>
             <Column
 
-              style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }}
+              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }}
               body={actionsAdmin}
             ></Column>
           </DataTable>
@@ -834,13 +858,15 @@ const AdministradoresSistema = () => {
               )}
             </div>
           </Dialog>
-
-        </div>
-      </div>
-      <div className="col-12">
-        <div className="card">
-          <h5>Mantenimiento Administrador del Sistema</h5>
-          <div className="p-fluid formgrid grid">
+          <Dialog
+            visible={formAdminDialog}
+            style={{ width: '650px' }}
+            header="Mantenimiento Administrador del Sistema"
+            modal
+            className="p-fluid"
+            footer={formAdminDialogFooter}
+            onHide={hideFormAdminDialog}>
+           <div className="p-fluid formgrid grid">
             <div className="field col-6 md:col-6">
               <label htmlFor="name">Nombre</label>
 
@@ -953,28 +979,12 @@ const AdministradoresSistema = () => {
                 )}
               </div>
             </div>
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-              width: "100%"
-            }}>
-              <Button
-                label={`${saveButtonTitle}`}
-                onClick={guardarAdmin}
-              />
-              {saveButtonTitle === 'Actualizar' && (
-                <Button
-                  label="Cancelar"
-                  onClick={cancelEdit}
-                  className="p-button-danger" />)}
-            </div>
-
           </div>
 
+          </Dialog>
         </div>
-
       </div>
+      
     </div>
   );
 };

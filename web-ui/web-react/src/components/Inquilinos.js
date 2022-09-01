@@ -51,6 +51,8 @@ const Inquilinos = () => {
   const dt = useRef(null)
   const [cookies] = useCookies()
   const [changeStatusTenantDialog, setChangeStatusTenantDialog] = useState(false)
+  const [tenantDialog, setTenantDialog] = useState(false)
+
 
   async function tenantsList() {
     await fetch(
@@ -74,7 +76,7 @@ const Inquilinos = () => {
         })
         data = data.filter(
           (val) => val.status != -1,
-      );
+        );
         setTenants(data)
       })
   }
@@ -155,6 +157,8 @@ const Inquilinos = () => {
             setTenants(_tenants)
             setTenant(emptyTenant)
             setHouseNumber('')
+            setTenantDialog(false)
+
           })
           .catch((error) => console.log(`Ocurrió un error: ${error}`))
       } else setSubmitted(true)
@@ -175,14 +179,14 @@ const Inquilinos = () => {
       }).then(() => {
 
         fetch('http://localhost:4000/community/saveTenant',
-        {
-          cache: 'no-cache',
-          method: 'POST',
-          body: JSON.stringify(_tenant),
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
+          {
+            cache: 'no-cache',
+            method: 'POST',
+            body: JSON.stringify(_tenant),
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
 
         toast.current.show({
           severity: 'success',
@@ -193,6 +197,8 @@ const Inquilinos = () => {
         tenantsList()
         setTenant(emptyTenant)
         setHouseNumber('')
+        setTenantDialog(false)
+
       })
     }
   }
@@ -352,16 +358,33 @@ const Inquilinos = () => {
 
   const editTenant = (tenant) => {
     setTenant(tenant);
-    console.log(tenant);
     setSaveButtonTitle('Actualizar');
     setHouseNumber(tenant.number_house);
+    setTenantDialog(true)
+
   }
 
   const cancelEdit = () => {
     setTenant(emptyTenant);
     setSaveButtonTitle('Registrar');
     setHouseNumber('');
+    setTenantDialog(false)
+
   }
+
+  const openNewTenant = () => {
+    setTenant(emptyTenant);
+    setTenantDialog(true)
+    setSubmitted(false);
+  };
+
+  const hideTenantDialog = () => {
+    setSubmitted(false);
+    setTenantDialog(false)
+    setTenant(emptyTenant);
+    setSaveButtonTitle('Registrar');
+
+  };
 
   const actionsTenant = (rowData) => {
     let icono = ''
@@ -407,6 +430,12 @@ const Inquilinos = () => {
     return (
       <React.Fragment>
         <div className='my-2'>
+          <Button
+            label="Agregar Inquilino"
+            icon="pi pi-plus"
+            className="p-button-primary mr-2"
+            onClick={openNewTenant}
+          />
           <Button
             label='Eliminar'
             icon='pi pi-trash'
@@ -503,6 +532,23 @@ const Inquilinos = () => {
         icon='pi pi-times'
         className='p-button-text'
         onClick={hideInfoDialog}
+      />
+    </>
+  );
+
+  const tenantDialogFooter = (
+    <>
+      <Button
+        label={`${saveButtonTitle}`}
+        icon="pi pi-check"
+        className="p-button-primary"
+        onClick={saveTenant}
+      />
+      <Button
+        label="Cerrar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideTenantDialog}
       />
     </>
   );
@@ -610,14 +656,14 @@ const Inquilinos = () => {
             value={tenants}
             dataKey='_id'
             paginator
-            rows={5}
+            rows={10}
             selection={selectedTentants}
             onSelectionChange={(e) => setSelectedTenants(e.value)}
             scrollable
-            scrollHeight='400px'
+            scrollHeight='800px'
             scrollDirection='both'
             header={header}
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 20, 30]}
             className='datatable-responsive mt-3'
             paginatorTemplate='FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown'
             currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} inquilinos'
@@ -673,16 +719,7 @@ const Inquilinos = () => {
                 wordBreak: 'break-word',
               }}
             ></Column>
-            <Column
-              field='phone'
-              header={headerPhone}
-              style={{
-                flexGrow: 1,
-                flexBasis: '80px',
-                minWidth: '80px',
-                wordBreak: 'break-word',
-              }}
-            ></Column>
+
             <Column
               field='number_house'
               sortable
@@ -707,7 +744,7 @@ const Inquilinos = () => {
                 wordBreak: 'break-word',
               }}
             ></Column>
-            <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsTenant}></Column>
+            <Column style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }} body={actionsTenant}></Column>
           </DataTable>
           <Dialog
             visible={infoDialogVisible}
@@ -780,23 +817,155 @@ const Inquilinos = () => {
 
           </Dialog>
           <Dialog
-            visible={deleteTenantDialog}
-            style={{ width: '450px' }}
-            header='Confirmar'
+            visible={infoDialogVisible}
+            style={{ width: '650px' }}
+            header="Información del Inquilino"
             modal
-            footer={deleteTenantDialogFooter}
-            onHide={hideDeleteTenantDialog}
+            className="p-fluid"
+            footer={infoDialogFooter}
+            onHide={hideInfoDialog}>
+            <div className='container text-center'>
+              <div className='row my-4 justify-content-center'>
+                <div className=" col-6 md:col-6">
+                  <i className="pi pi-user icon-khaki"></i>
+                  <p><strong>Nombre Completo</strong></p>
+                  <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <p>{tenant.name + ' ' + tenant.last_name} </p>
+                    </div>
+                  </div>
+                </div>
+                <div className=" col-6 col-md-6 md:col-6">
+                  <i className="pi pi-id-card icon-khaki"></i>
+                  <p><strong>Identificación</strong></p>
+                  <div className="p-0 col-10 md:col-10" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <p>{tenant.dni}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div className='row my-5 justify-content-center'>
+                <div className=" col-6 md:col-6">
+                  <i className="pi pi-phone icon-khaki"></i>
+                  <p><strong>Teléfono</strong></p>
+                  <div className="p-0 col-12 md:col-12">
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <p>{tenant.phone}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className=" col-6 md:col-6">
+                  <i className="pi pi-envelope icon-khaki"></i>
+
+                  <p><strong>Correo Electrónico</strong></p>
+                  <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <p>{tenant.email}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Dialog>
+          <Dialog
+            visible={tenantDialog}
+            style={{ width: '750px' }}
+            header='Mantenimiento de inquilino'
+            modal
+            footer={tenantDialogFooter}
+            onHide={hideTenantDialog}
           >
-            <div className='flex align-items-center justify-content-center'>
-              <i
-                className='pi pi-exclamation-triangle mr-3'
-                style={{ fontSize: '2rem' }}
-              />
-              {tenant && (
-                <span>
-                  ¿Estás seguro que desea eliminar a <b>{tenant.name}</b>?
-                </span>
-              )}
+            <div className="p-fluid formgrid grid">
+              <div className="field col-12 md:col-6">
+                <label htmlFor="name">Nombre</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText type="text" id="name" value={tenant.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.name === '' })} />
+                  </div>
+                  {submitted && tenant.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
+                </div>
+              </div>
+              <div className="field col-12 md:col-6">
+                <label htmlFor="name">Apellido(s)</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText type="text" id="last_name" value={tenant.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.last_name === '' })} />
+                  </div>
+                  {submitted && tenant.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
+                </div>
+              </div>
+              <div className="field col-12 md:col-6">
+                <label htmlFor="name">Correo Electrónico</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText type='email' id="email" value={tenant.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.email === '' })} />
+                  </div>
+                  {submitted && tenant.email === '' && <small className="p-invalid">Correo electrónico es requerido.</small>}
+                </div>
+              </div>
+              <div className="field col-12 md:col-6">
+                <label htmlFor="dni">Identificación</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText id="dni" value={tenant.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.dni === '' })} />
+                  </div>
+                  {submitted && tenant.dni === '' && <small className="p-invalid">Identificación es requerida.</small>}
+                </div>
+              </div>
+              <div className="field col-12 md:col-6">
+                <label htmlFor="phone">Número de teléfono</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-phone"></i>
+                    </span>
+                    <InputText id="phone" value={tenant.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && tenant.phone === '' })} />
+                  </div>
+                  {submitted
+                    && tenant.phone === ''
+                    && <small className="p-invalid">Número de teléfono es requerido.</small>}
+                </div>
+              </div>
+              <div className="field col-12 md:col-6">
+                <label htmlFor="number_house">Casa a asignar: </label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <Dropdown
+                      placeholder="--Seleccione la Casa a Asignar--"
+                      id="number_house"
+                      value={houseNumber}
+                      options={housesList}
+                      onChange={handleHouses}
+                      required autoFocus
+                      className={
+                        classNames({ 'p-invalid': submitted && !houseNumber })}
+                    />
+                  </div>
+                  {submitted
+                    && !houseNumber
+                    && <small className="p-invalid">Casa es requerida.</small>}
+                </div>
+              </div>
+
+
             </div>
           </Dialog>
           <Dialog
@@ -838,116 +1007,9 @@ const Inquilinos = () => {
             </div>
           </Dialog>
         </div>
-      </div>
-      <div className="col-12">
-        <div className="card">
-          <h5>Registro de un Inquilino</h5>
-          <div className="p-fluid formgrid grid">
-            <div className="field col-12 md:col-6">
-              <label htmlFor="name">Nombre</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText type="text" id="name" value={tenant.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.name === '' })} />
-                </div>
-                {submitted && tenant.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
-              </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="name">Apellido(s)</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText type="text" id="last_name" value={tenant.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.last_name === '' })} />
-                </div>
-                {submitted && tenant.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
-              </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="name">Correo Electrónico</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText type='email' id="email" value={tenant.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.email === '' })} />
-                </div>
-                {submitted && tenant.email === '' && <small className="p-invalid">Correo electrónico es requerido.</small>}
-              </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="dni">Identificación</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText id="dni" value={tenant.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && tenant.dni === '' })} />
-                </div>
-                {submitted && tenant.dni === '' && <small className="p-invalid">Identificación es requerida.</small>}
-              </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="phone">Número de teléfono</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-phone"></i>
-                  </span>
-                  <InputText id="phone" value={tenant.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && tenant.phone === '' })} />
-                </div>
-                {submitted
-                  && tenant.phone === ''
-                  && <small className="p-invalid">Número de teléfono es requerido.</small>}
-              </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="number_house">Casa a asignar: </label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <Dropdown
-                    placeholder="--Seleccione la Casa a Asignar--"
-                    id="number_house"
-                    value={houseNumber}
-                    options={housesList}
-                    onChange={handleHouses}
-                    required autoFocus
-                    className={
-                      classNames({ 'p-invalid': submitted && !houseNumber })}
-                  />
-                </div>
-                {submitted
-                  && !houseNumber
-                  && <small className="p-invalid">Casa es requerida.</small>}
-              </div>
-            </div>
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-              width: "100%"
-            }}>
-              <Button
-                label={`${saveButtonTitle}`}
-                onClick={saveTenant}
-              />
-              {saveButtonTitle === 'Actualizar' && (
-                <Button
-                  label="Cancelar"
-                  onClick={cancelEdit}
-                  className="p-button-danger" />)}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      </div >
+
+    </div >
   )
 }
 

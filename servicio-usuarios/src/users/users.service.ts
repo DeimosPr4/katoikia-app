@@ -134,6 +134,17 @@ export class UsersService {
     });
   }
 
+  async updateAdminCommunity(id: string, user: UserDocument) {
+
+    return this.userModel.findOneAndUpdate({ _id: id }, {
+      name: user['name'], last_name: user['last_name'],
+      dni: user['dni'], email: user['email'], phone: user['phone'],
+      community_id: user['community_id']
+    }, {
+      new: true,
+    });
+  }
+
   async updateTenant(id: string, user: UserDocument) {
     await this.saveTenant(user.community_id, user.number_house, user.id);
 

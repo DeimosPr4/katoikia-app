@@ -494,7 +494,7 @@ const GuardasSeguridad = () => {
       <div className="col-12">
         <Toast ref={toast} />
         <div className="card">
-          <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+          <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
           <DataTable ref={dt} value={listaGuardas} dataKey="_id" paginator rows={5} selection={selectedGuardas} onSelectionChange={(e) => setSelectedGuardas(e.value)}
             responsiveLayout="scroll" header={header}
             rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"

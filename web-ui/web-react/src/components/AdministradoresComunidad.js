@@ -601,7 +601,7 @@ const AdministradoresComunidad = () => {
             <div className="col-12">
                 <Toast ref={toast} />
                 <div className="card">
-                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                    <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
                     <DataTable ref={dt} value={listaAdmins} dataKey="_id" paginator rows={10} selection={selectedAdminsCommunities} onSelectionChange={(e) => setSelectedAdminsCommunities(e.value)}
                         scrollable scrollHeight="800px" scrollDirection="both" header={header}
                         rowsPerPageOptions={[10, 20, 30]} className="datatable-responsive mt-3"

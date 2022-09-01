@@ -260,7 +260,7 @@ const RegistroComunicado = () => {
               {comunicado && <span>¿Está seguro que desea eliminar el aviso "<b>{comunicado.post}</b>"?</span>}
             </div>
           </Dialog>
-          <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+          <Toolbar className="mb-4" left={leftToolbarTemplate} ></Toolbar>
           <DataTable ref={dt} value={comunicados} dataKey="_id" paginator rows={5}
             scrollable scrollHeight="400px" scrollDirection="both" header={header}
             rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive mt-3"

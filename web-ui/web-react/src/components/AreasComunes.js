@@ -623,7 +623,7 @@ const AreasComunes = () => {
             <div className="col-12">
                 <Toast ref={toast} />
                 <div className="card">
-                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+                    <Toolbar className="mb-4" left={leftToolbarTemplate} ></Toolbar>
                     <DataTable ref={dt} value={commonAreaList} dataKey="_id" paginator rows={10} selection={selectedCommonAreas} onSelectionChange={(e) => setSelectedCommonAreas(e.value)}
                         scrollable scrollHeight="700px" scrollDirection="both" header={header}
                         rowsPerPageOptions={[10, 20, 30]} className="datatable-responsive mt-3"

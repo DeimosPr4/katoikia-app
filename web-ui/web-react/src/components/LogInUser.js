@@ -159,6 +159,7 @@ class LogInUser extends Component {
           console.log('Se ha enviado un correo con la información para resetear la contraseña');
       }).catch((error) => { console.log(error) })
     }
+    this.setState.showPwdResetDialog = false;
   };
 
   resetPassword = () => {

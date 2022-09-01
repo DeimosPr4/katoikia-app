@@ -19,6 +19,7 @@ class LogInUser extends Component {
       errorEmail: false,
       errorPassword: false,
       logged: null,
+      showPwdResetDialog: false,
     };
   }
 

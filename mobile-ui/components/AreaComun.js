@@ -143,7 +143,7 @@ export default function AreaComun({navigation}){
           <Button mt="10" backgroundColor="tertiary.600" onPress={()=> postReserva()}>
             Reservar
           </Button>
-          <Button mt="3" colorScheme="error" onPress={() => navigation.navigate('Comunicados')}>
+          <Button mt="3" colorScheme="error" onPress={() => navigation.navigate('Mis Reservas')}>
             Cancelar
           </Button>
         </VStack>

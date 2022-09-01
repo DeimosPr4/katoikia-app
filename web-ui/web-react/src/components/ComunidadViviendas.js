@@ -257,6 +257,7 @@ const Communities = () => {
           })
           .catch((err) => console.log('Ocurrió un error con el fetch', err));
       } else {
+        let _communities = [...communitiesList];
         let _community = { ...community };
         _community.province = provinciaId;
         _community.canton = cantonId;

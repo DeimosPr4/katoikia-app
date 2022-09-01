@@ -426,6 +426,25 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+  updateCommunity(id: string, name: string, province: string, canton: string, district: string, num_houses: number, phone: string, status: string, date_entry: Date, houses: unknown) {
+    const pattern = { cmd: 'updateCommunity' };
+    const payload = {
+      id: id,
+      name: name,
+      province: province,
+      canton: canton,
+      district: district,
+      num_houses: num_houses,
+      phone: phone,
+      status: status,
+      date_entry: date_entry,
+      houses: houses,
+    };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
   allCommunities() {
     const pattern = { cmd: 'findAllCommunities' };
     const payload = {};

@@ -16,7 +16,7 @@ import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 const Communities = () => {
-  let emptyCommunity = {
+  const emptyCommunity = {
     _id: null,
     name: '',
     province: provinciaId,
@@ -32,7 +32,6 @@ const Communities = () => {
 
   const [communitiesList, setCommunitiesList] = useState([]);
   const [community, setCommunity] = useState(emptyCommunity);
-
   const [housesList, setHousesList] = useState([]);
   const [provincesList, setProvincesList] = useState([]);
   const [provinciaId, setProvinciaId] = useState(null);
@@ -42,6 +41,7 @@ const Communities = () => {
   const [districtId, setDistrictId] = useState(null);
   const [codeHouses, setCodeHouses] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [saveButtonLabel, setSaveButtonLabel] = useState('Registrar');
   const [selectedCommunities, setSelectedCommunities] = useState(null);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [deleteCommunityDialog, setDeleteCommunityDialog] = useState(false);
@@ -50,14 +50,10 @@ const Communities = () => {
   const toast = useRef(null);
   const dt = useRef(null);
 
-
-
   //para el perfil de la comunidad
   const [tenants, setTenants] = useState([]);
 
   const [communityDialog, setCommunityDialog] = useState(false);
-
-
 
   const p = provincesList.map((item) => ({
     label: item.name,
@@ -75,7 +71,6 @@ const Communities = () => {
     value: item.code,
     parent: item.parentCode,
   }));
-
 
   async function getProvinces() {
     const response = await fetch('assets/demo/data/provincias.json', {
@@ -98,7 +93,7 @@ const Communities = () => {
 
   async function fillCantons() {
     const resJson = await getCantons();
-    const cantones = await resJson.filter(function (i, n) {
+    const cantones = await resJson.filter((i, _n) => {
       return i.parentCode === provinciaId;
     });
     setCantonsList(await cantones);
@@ -113,12 +108,11 @@ const Communities = () => {
 
   async function fillDistricts() {
     const resJson = await getDistricts();
-    const districts = await resJson.filter(function (i, n) {
+    const districts = await resJson.filter((i, _n) => {
       return i.parentCode === cantonId;
     });
     setDistrictsList(await districts);
   }
-
 
   useEffect(() => {
     fillProvinces();
@@ -131,7 +125,6 @@ const Communities = () => {
   useEffect(() => {
     fillDistricts();
   }, [cantonId]);
-
 
   const handleProvinces = (event) => {
     const getprovinciaId = event.target.value;
@@ -162,9 +155,7 @@ const Communities = () => {
     let pList = await getProvinces();
     let cList = await getCantons();
     let dList = await getDistricts();
-    let data = await resJson.message.filter(
-      (val) => val.status != -1,
-    )
+    let data = await resJson.message.filter((val) => val.status != -1);
     await data.map((item) => {
       if (item.status == '1') {
         item.status_text = 'Activo';
@@ -188,21 +179,20 @@ const Communities = () => {
   }, []);
 
   async function tenantsList(id) {
-    await fetch(`http://localhost:4000/user/findTenants/${id}`, { method: 'GET' })
+    await fetch(`http://localhost:4000/user/findTenants/${id}`, {
+      method: 'GET',
+    })
       .then((response) => response.json())
-      .then(data => data.message)
-      .then(data => {
-        data = data.filter(
-          (val) => val.status != -1,
-        )
-        setTenants(data)
+      .then((data) => data.message)
+      .then((data) => {
+        data = data.filter((val) => val.status != -1);
+        setTenants(data);
       });
   }
 
   useEffect(() => {
     tenantsList(community._id);
-  }, [])
-
+  }, []);
 
   const saveCommunity = () => {
     if (
@@ -213,73 +203,91 @@ const Communities = () => {
       districtId &&
       community.phone
     ) {
-      let _communities = [...communitiesList];
-      let _community = { ...community };
-      _community.province = provinciaId;
-      _community.canton = cantonId;
-      _community.district = districtId;
+      if (saveButtonLabel === 'Registrar') {
+        let _communities = [...communitiesList];
+        let _community = { ...community };
+        _community.province = provinciaId;
+        _community.canton = cantonId;
+        _community.district = districtId;
 
-      for (let i = 0; i < _community.num_houses; i++) {
-        _community.houses.push({
-          number_house: codeHouses + (i + 1),
-        });
-      }
-      // console.log(houses)
-      fetch('http://localhost:4000/community/createCommunity', {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify(_community),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(function (response) {
-          if (response.status != 201)
+        for (let i = 0; i < _community.num_houses; i++) {
+          _community.houses.push({
+            number_house: codeHouses + (i + 1),
+          });
+        }
+        fetch('http://localhost:4000/community/createCommunity', {
+          cache: 'no-cache',
+          method: 'POST',
+          body: JSON.stringify(_community),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => {
+            if (response.status != 201)
+              console.log('Ocurrió un error con el servicio: ' + response.status);
+            else return response.json();
+          })
+          .then(() => {
+            _community.province = provincesList.find(
+              (p) => p.code === _community.province,
+            ).name;
+            _community.canton = cantonsList.find(
+              (p) => p.code === _community.canton,
+            ).name;
+            _community.district = districtsList.find(
+              (p) => p.code === _community.district,
+            ).name;
+
+            _communities.push(_community);
+            toast.current.show({
+              severity: 'success',
+              summary: 'Registro exitoso',
+              detail: 'Comunidad de vivienda Creada',
+              life: 3000,
+            });
+            setCommunitiesList(_communities);
+            setProvinciaId('');
+            setCantonId('');
+            setDistrictId('');
+            setCodeHouses('');
+            getCommunites();
+            setCommunity(emptyCommunity);
+          })
+          .catch((err) => console.log('Ocurrió un error con el fetch', err));
+      } else {
+        let _community = { ...community };
+        _community.province = provinciaId;
+        _community.canton = cantonId;
+        _community.district = districtId;
+        console.log(`Actualizando comunidad: ${_community}`);
+        fetch(`http://localhost:4000/community/updateCommunity/${community._id}`, {
+          method: 'PUT',
+          cache: 'no-cache',
+          body: JSON.stringify(_community),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }).then((response) => {
+          getCommunites();
+          if (response.status != 200)
             console.log('Ocurrió un error con el servicio: ' + response.status);
           else return response.json();
-        })
-        .then(() => {
-          _community.province = provincesList.find(
-            (p) => p.code === _community.province,
-          ).name;
-          _community.canton = cantonsList.find(
-            (p) => p.code === _community.canton,
-          ).name;
-          _community.district = districtsList.find(
-            (p) => p.code === _community.district,
-          ).name;
-
-          _communities.push(_community);
-          toast.current.show({
-            severity: 'success',
-            summary: 'Registro exitoso',
-            detail: 'Comunidad de vivienda Creada',
-            life: 3000,
-          });
-
-          setCommunitiesList(_communities);
-
-          setProvinciaId('');
-          setCantonId('');
-          setDistrictId('');
-          setCodeHouses('');
-
-          setCommunity(emptyCommunity);
-        })
-        .catch((err) => console.log('Ocurrió un error con el fetch', err));
+        }).catch((err) => console.log('Ocurrió un error con el fetch', err));
+        setSaveButtonLabel('Registrar');
+        setCommunity(emptyCommunity);
+      }
     } else {
       setSubmitted(true);
     }
   };
-
-
 
   function findNameTenant(tenant_id) {
     let name = '';
     if (tenant_id == '') {
       name = 'Sin inquilino';
     } else {
-      let tenant = tenants.find(t => t._id == tenant_id)
+      let tenant = tenants.find((t) => t._id == tenant_id);
       name = tenant['name'] + ' ' + tenant['last_name'];
     }
     return name;
@@ -340,7 +348,6 @@ const Communities = () => {
     if (community.status == '1') {
       community.status = '0';
       community.status_text = 'Inactivo';
-
     } else if (community.status == '0') {
       community.status = '1';
       community.status_text = 'Activo';
@@ -354,69 +361,67 @@ const Communities = () => {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
-      .then(
-        function (response) {
-          if (response.status != 201)
-            console.log('Ocurrió un error con el servicio: ' + response.status);
-          else
-            return response.json();
-        }
-      )
-      .then(
-        function (response) {
-          setEditCommunityDialog(false);
-          toast.current.show({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Comunidad de Viviendas Actualizada',
-            life: 3000,
-          });
-        }
-      )
-      .catch(
-        err => console.log('Ocurrió un error con el fetch', err)
-      );
-  }
+      .then((response) => {
+        if (response.status != 201)
+          console.log('Ocurrió un error con el servicio: ' + response.status);
+        else return response.json();
+      })
+      .then((_response) => {
+        setEditCommunityDialog(false);
+        toast.current.show({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Comunidad de Viviendas Actualizada',
+          life: 3000,
+        });
+        getCommunites();
+      })
+      .catch((err) => console.log('Ocurrió un error con el fetch', err));
+  };
 
   const deleteCommunity = () => {
     fetch('http://localhost:4000/community/deleteCommunity/' + community._id, {
       cache: 'no-cache',
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
-      .then(
-        function (response) {
-          if (response.status != 201)
-            console.log('Ocurrió un error con el servicio: ' + response.status);
-          else
-            return response.json();
-        }
-      )
-      .then(
-        function (response) {
-
-          let _community = communitiesList.filter(val => val._id !== community._id);
-          setCommunitiesList(_community);
-          setDeleteCommunityDialog(false);
-          setCommunity(emptyCommunity);
-          toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Comunidad de Viviendas Eliminada', life: 3000 });
-        }
-      )
-      .catch(
-        err => {
-          console.log('Ocurrió un error con el fetch', err)
-          toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Comunidad de Viviendas no se pudo eliminar', life: 3000 });
-        }
-      );
-    let _communities = communitiesList.filter((val) => val._id !== community._id);
-    _communities = _communities.filter(
-      (val) => val.status != -1,
-    )
+      .then((response) => {
+        if (response.status != 201)
+          console.log('Ocurrió un error con el servicio: ' + response.status);
+        else return response.json();
+      })
+      .then((_response) => {
+        let _community = communitiesList.filter(
+          (val) => val._id !== community._id,
+        );
+        setCommunitiesList(_community);
+        setDeleteCommunityDialog(false);
+        setCommunity(emptyCommunity);
+        toast.current.show({
+          severity: 'success',
+          summary: 'Exito',
+          detail: 'Comunidad de Viviendas Eliminada',
+          life: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('Ocurrió un error con el fetch', err);
+        toast.current.show({
+          severity: 'danger',
+          summary: 'Error',
+          detail: 'Comunidad de Viviendas no se pudo eliminar',
+          life: 3000,
+        });
+      });
+    let _communities = communitiesList.filter(
+      (val) => val._id !== community._id,
+    );
+    _communities = _communities.filter((val) => val.status != -1);
     setCommunitiesList(_communities);
     setDeleteCommunityDialog(false);
     setCommunity(emptyCommunity);
@@ -441,9 +446,7 @@ const Communities = () => {
                  }
              })
          })*/
-    _communities = _communities.filter(
-      (val) => val.status != -1,
-    )
+    _communities = _communities.filter((val) => val.status != -1);
     setCommunitiesList(_communities);
     setDeleteCommunitiesDialog(false);
     setSelectedCommunities(null);
@@ -455,17 +458,37 @@ const Communities = () => {
     });
   };
 
-  const actionsCommunity = (rowData) => {
+  const updateCommunity = (community) => {
+    setCommunity(community);
+    setSaveButtonLabel('Actualizar');
+    setHousesList(community.houses);
+  };
 
+  const cancelEdit = () => {
+    setCommunity(emptyCommunity);
+    setCantonId('');
+    setHousesList([]);
+    setProvinciaId('');
+    setDistrictId('');
+    setSaveButtonLabel('Registrar');
+  }
+
+  const actionsCommunity = (rowData) => {
     let icono = '';
     if (rowData.status == '0') {
-      icono = "pi pi-eye";
+      icono = 'pi pi-eye';
     } else if (rowData.status == '1') {
-      icono = "pi pi-eye-slash";
+      icono = 'pi pi-eye-slash';
     }
 
     return (
       <div className="actions">
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success mt-2 mx-2"
+          onClick={() => updateCommunity(rowData)}
+          title="Editar"
+        />
         <Button
           icon="pi pi-exclamation-circle"
           className="p-button-rounded p-button-info mt-2 mx-2"
@@ -535,7 +558,6 @@ const Communities = () => {
         className="p-button-text"
         onClick={hideCommunityDialog}
       />
-
     </>
   );
 
@@ -588,8 +610,6 @@ const Communities = () => {
       />
     </>
   );
-
-
 
   const headerName = (
     <>
@@ -653,8 +673,8 @@ const Communities = () => {
     <>
       <p>
         {' '}
-        <FontAwesomeIcon icon={faHashtag} style={{ color: '#D7A86E' }} />{' '}
-        Número de viviendas
+        <FontAwesomeIcon icon={faHashtag} style={{ color: '#D7A86E' }} /> Número
+        de viviendas
       </p>
     </>
   );
@@ -671,12 +691,16 @@ const Communities = () => {
 
   const headerStatus = (
     <>
-      <p> {' '}
-        <FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#D7A86E" }} />{' '}
+      <p>
+        {' '}
+        <FontAwesomeIcon
+          icon={faCircleQuestion}
+          style={{ color: '#D7A86E' }}
+        />{' '}
         Estado
       </p>
     </>
-  )
+  );
 
   //ver perfil comunidad
   const headerTenant = (
@@ -686,16 +710,13 @@ const Communities = () => {
         <FontAwesomeIcon icon={faUserAlt} style={{ color: '#C08135' }} />{' '}
         Inquilinos
       </p>
-
     </>
   );
 
   const statusBodyTemplate = (rowData) => {
     return (
       <>
-        <span
-          className={`status status-${rowData.status}`}
-        >
+        <span className={`status status-${rowData.status}`}>
           {rowData.status_text}
         </span>
       </>
@@ -709,11 +730,7 @@ const Communities = () => {
       name = findNameTenant(tenants.tenant_id);
     }
 
-    return (
-      <>
-        {name}
-      </>
-    )
+    return <>{name}</>;
   };
 
   return (
@@ -795,14 +812,18 @@ const Communities = () => {
               sortable
               header={headerStatus}
               body={statusBodyTemplate}
-              style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
-            </Column>
+              style={{
+                flexGrow: 1,
+                flexBasis: '160px',
+                minWidth: '160px',
+                wordBreak: 'break-word',
+              }}
+            ></Column>
             <Column
               body={actionsCommunity}
-              style={{ flexGrow: 1, flexBasis: '100px' }}
+              style={{ flexGrow: 2, flexBasis: '100px', flexDirection: 'row' }}
             ></Column>
           </DataTable>
-
 
           <Dialog
             visible={communityDialog}
@@ -811,12 +832,16 @@ const Communities = () => {
             modal
             className="p-fluid"
             footer={communityDialogFooter}
-            onHide={hideCommunityDialog}>
-            <div className='container text-center'>
-              <div className='row my-4'>
+            onHide={hideCommunityDialog}
+          >
+            <div className="container text-center">
+              <div className="row my-4">
                 <div className=" col-12 md:col-12">
                   <p>Nombre</p>
-                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
+                  <div
+                    className="p-0 col-2  md:col-2"
+                    style={{ margin: '0 auto' }}
+                  >
                     <div className="p-inputgroup align-items-center justify-content-evenly">
                       <i className="pi pi-home icon-khaki"></i>
                       <p>{community.name}</p>
@@ -824,30 +849,34 @@ const Communities = () => {
                   </div>
                 </div>
               </div>
-              <div className='row my-5'>
+              <div className="row my-5">
                 <div className=" col-6 md:col-6">
                   <p>Administrador</p>
-                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
+                  <div
+                    className="p-0 col-6  md:col-6"
+                    style={{ margin: '0 auto' }}
+                  >
                     <div className="p-inputgroup align-items-center justify-content-evenly">
                       <i className="pi pi-user icon-khaki"></i>
                       <p>{community.name_admin}</p>
                     </div>
-
                   </div>
                 </div>
                 <div className=" col-6 md:col-6">
                   <p>Teléfono Administrativo</p>
-                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
+                  <div
+                    className="p-0 col-6  md:col-6"
+                    style={{ margin: '0 auto' }}
+                  >
                     <div className="p-inputgroup align-items-center justify-content-evenly">
                       <i className="pi pi-phone icon-khaki"></i>
                       <p>{community.phone}</p>
                     </div>
-
                   </div>
                 </div>
               </div>
 
-              <div className='row my-5'>
+              <div className="row my-5">
                 <div className=" col-4 col-md-4 md:col-4">
                   <p>Provincia</p>
                   <div className="p-0 col-10 md:col-10">
@@ -855,7 +884,6 @@ const Communities = () => {
                       <i className="pi pi-map-marker icon-khaki"></i>
                       <p>{community.province}</p>
                     </div>
-
                   </div>
                 </div>
                 <div className=" col-4 md:col-4">
@@ -865,7 +893,6 @@ const Communities = () => {
                       <i className="pi pi-map-marker icon-khaki"></i>
                       <p>{community.canton}</p>
                     </div>
-
                   </div>
                 </div>
                 <div className=" col-4 md:col-4">
@@ -875,14 +902,16 @@ const Communities = () => {
                       <i className="pi pi-map-marker icon-khaki"></i>
                       <p>{community.district}</p>
                     </div>
-
                   </div>
                 </div>
               </div>
-              <div className='row my-5'>
+              <div className="row my-5">
                 <div className=" col-12 md:col-12">
                   <p>Número de Viviendas</p>
-                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
+                  <div
+                    className="p-0 col-2  md:col-2"
+                    style={{ margin: '0 auto' }}
+                  >
                     <div className="p-inputgroup justify-content-evenly">
                       <i className="pi pi-hashtag icon-khaki"></i>
                       <p>{community.num_houses}</p>
@@ -890,12 +919,16 @@ const Communities = () => {
                   </div>
                 </div>
               </div>
-              <div className='row my-5'>
+              <div className="row my-5">
                 <div className=" col-12 md:col-12">
-
-
-                  <p> <i className="pi pi-home icon-khaki"></i>  Viviendas</p>
-                  <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
+                  <p>
+                    {' '}
+                    <i className="pi pi-home icon-khaki"></i> Viviendas
+                  </p>
+                  <div
+                    className="p-0 col-12  md:col-12"
+                    style={{ margin: '0 auto' }}
+                  >
                     <div className="p-inputgroup justify-content-evenly">
                       <DataTable
                         value={community.houses}
@@ -913,13 +946,21 @@ const Communities = () => {
                         <Column
                           field="number_house"
                           header={headerNumberHouses}
-                          style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }}
+                          style={{
+                            flexGrow: 1,
+                            flexBasis: '160px',
+                            minWidth: '160px',
+                          }}
                         ></Column>
                         <Column
                           field="tenants"
                           header={headerTenant}
                           body={tenantsBodyTemplate}
-                          style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }}
+                          style={{
+                            flexGrow: 1,
+                            flexBasis: '160px',
+                            minWidth: '160px',
+                          }}
                         ></Column>
                       </DataTable>
                     </div>
@@ -927,7 +968,6 @@ const Communities = () => {
                 </div>
               </div>
             </div>
-
           </Dialog>
 
           <Dialog
@@ -945,7 +985,8 @@ const Communities = () => {
               />
               {community && (
                 <span>
-                  ¿Estás seguro que desea cambiar estado a <b>{community.name}</b>?
+                  ¿Estás seguro que desea cambiar estado a{' '}
+                  <b>{community.name}</b>?
                 </span>
               )}
             </div>
@@ -1168,12 +1209,22 @@ const Communities = () => {
                 )}
               </div>
             </div>
-            <div className="col-12 md:col-12 py-2">
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              width: "100%"
+            }} className="col-12 md:col-12 py-2">
               <Button
-                label="Registrar"
+                label={saveButtonLabel}
                 icon="pi pi-check"
                 onClick={saveCommunity}
-              ></Button>
+              />
+              {saveButtonLabel === 'Actualizar' && (
+                <Button
+                  label="Cancelar"
+                  onClick={cancelEdit}
+                  className="p-button-danger" />)}
             </div>
           </div>
         </div>

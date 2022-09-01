@@ -353,6 +353,33 @@ export class AppController {
     );
   }
 
+  @Put('community/updateCommunity/:id')
+  updateCommunity(
+    @Param('id') id: string,
+    @Body('name') name: string,
+    @Body('province') province: string,
+    @Body('canton') canton: string,
+    @Body('district') district: string,
+    @Body('num_houses') num_houses: number,
+    @Body('phone') phone: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('houses') houses: [],
+  ) {
+    return this.appService.updateCommunity(
+      id,
+      name,
+      province,
+      canton,
+      district,
+      num_houses,
+      phone,
+      status,
+      date_entry,
+      houses,
+    );
+  }
+
   @Get('community/allCommunities')
   allcommunities() {
     return this.appService.allCommunities();

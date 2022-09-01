@@ -440,9 +440,6 @@ const Communities = () => {
     setCommunity(community);
     setSaveButtonLabel('Actualizar');
     setHousesList(community.houses);
-    setProvinciaId(community.provincia);
-    setCantonId(community.canton);
-    setDistrictId(community.district);
   };
 
   const cancelEdit = () => {

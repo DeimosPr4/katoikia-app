@@ -41,6 +41,7 @@ const Communities = () => {
   const [districtId, setDistrictId] = useState(null);
   const [codeHouses, setCodeHouses] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [saveButtonLabel, setSaveButtonLabel] = useState('Registrar')
   const [selectedCommunities, setSelectedCommunities] = useState(null);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [deleteCommunityDialog, setDeleteCommunityDialog] = useState(false);
@@ -97,7 +98,7 @@ const Communities = () => {
 
   async function fillCantons() {
     const resJson = await getCantons();
-    const cantones = await resJson.filter(function (i, n) {
+    const cantones = await resJson.filter(function(i, n) {
       return i.parentCode === provinciaId;
     });
     setCantonsList(await cantones);
@@ -112,7 +113,7 @@ const Communities = () => {
 
   async function fillDistricts() {
     const resJson = await getDistricts();
-    const districts = await resJson.filter(function (i, n) {
+    const districts = await resJson.filter(function(i, n) {
       return i.parentCode === cantonId;
     });
     setDistrictsList(await districts);
@@ -232,7 +233,7 @@ const Communities = () => {
           'Content-Type': 'application/json',
         },
       })
-        .then(function (response) {
+        .then(function(response) {
           if (response.status != 201)
             console.log('Ocurrió un error con el servicio: ' + response.status);
           else return response.json();
@@ -357,7 +358,7 @@ const Communities = () => {
       }
     })
       .then(
-        function (response) {
+        function(response) {
           if (response.status != 201)
             console.log('Ocurrió un error con el servicio: ' + response.status);
           else
@@ -365,7 +366,7 @@ const Communities = () => {
         }
       )
       .then(
-        function (response) {
+        function(response) {
           setEditCommunityDialog(false);
           toast.current.show({
             severity: 'success',
@@ -389,7 +390,7 @@ const Communities = () => {
       }
     })
       .then(
-        function (response) {
+        function(response) {
           if (response.status != 201)
             console.log('Ocurrió un error con el servicio: ' + response.status);
           else
@@ -397,7 +398,7 @@ const Communities = () => {
         }
       )
       .then(
-        function (response) {
+        function(response) {
 
           let _community = communitiesList.filter(val => val._id !== community._id);
           setCommunitiesList(_community);
@@ -454,6 +455,16 @@ const Communities = () => {
     });
   };
 
+  const updateCommunity = (community) => {
+    console.log(community);
+    setCommunity(community);
+    setSaveButtonLabel('Actualizar');
+    setHousesList(community.houses);
+    setProvinciaId(community.provincia);
+    setCantonId(community.canton);
+    setDistrictId(community.district);
+  }
+
   const actionsCommunity = (rowData) => {
 
     let icono = '';
@@ -465,6 +476,12 @@ const Communities = () => {
 
     return (
       <div className="actions">
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success mt-2 mx-2"
+          onClick={() => updateCommunity(rowData)}
+          title="Editar"
+        />
         <Button
           icon="pi pi-exclamation-circle"
           className="p-button-rounded p-button-info mt-2 mx-2"
@@ -1169,7 +1186,7 @@ const Communities = () => {
             </div>
             <div className="col-12 md:col-12 py-2">
               <Button
-                label="Registrar"
+                label={saveButtonLabel}
                 icon="pi pi-check"
                 onClick={saveCommunity}
               ></Button>

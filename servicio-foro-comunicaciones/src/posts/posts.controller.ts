@@ -33,4 +33,9 @@ export class PostsController {
     let _id = id['id'];
     return this.postsService.remove(_id);
   }
+  @MessagePattern({ cmd: 'findPostCommunity' })
+  findPostCommunity(@Payload() id: string) {
+    let _id = id['id'];
+    return this.postsService.findPostCommunity(_id);
+  }
 }

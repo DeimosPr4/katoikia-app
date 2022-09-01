@@ -33,4 +33,10 @@ export class PostCommentsController {
     let _id = id['id'];
     return this.postCommentsService.remove(_id);
   }
+
+  @MessagePattern({ cmd: 'findCommentCommunity' })
+  findPostCommunity(@Payload() id: string) {
+    let _id = id['id'];
+    return this.postCommentsService.findPostCommunity(_id);
+  }
 }

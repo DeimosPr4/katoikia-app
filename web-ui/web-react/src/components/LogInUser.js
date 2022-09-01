@@ -124,7 +124,19 @@ class LogInUser extends Component {
   };
 
   resetPassword = () => {
-    this.props.showPwdResetDialog = true;
+    const data = {
+      email: this.state.form.email,
+    };
+    const tenant = fetch('http://localhost:4000/user/allUsers',
+      { method: 'GET' })
+      .then((response) => response.json())
+      .then((response) => response.message)
+      .then((response) => {
+        response = response.filter((value) => value.email === data.email)
+      }).catch((error) => {
+        console.log(error);
+      });
+    console.log(tenant);
   }
 
   pwdResetDialogFooter = (

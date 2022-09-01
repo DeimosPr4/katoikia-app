@@ -152,7 +152,7 @@ export default function AgregarInvitados({ navigation }) {
           <FormControl >
             <FormControl.Label>Tipo de invitado</FormControl.Label>
             
-            <Select onChangeText={onHandleChange("type_guest")} selectedValue={categoria} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
+            <Select onChangeText={onHandleChange("type_guest")} selectedValue={categoria} minWidth="200" accessibilityLabel="Choose Service" placeholder="Elija el tipo de invitado" _selectedItem={{
         bg: "teal.600"
       }} mt={1} onValueChange={onHandleChange("type_guest")}>
           <Select.Item label="Invitado Frecuente" value="Frecuente" />

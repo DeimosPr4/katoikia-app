@@ -93,7 +93,7 @@ export default function Invitados({navigation}) {
       <Heading fontSize="xl" p="4" pb="3">
         Lista de invitados
       </Heading>
-      <Button width='200' mb="4"  mt="4" ml='85' backgroundColor='tertiary.600' onPress={() => navigation.navigate('invitado')}  icon={<Icon mb="0.5" as={<MaterialCommunityIcons name={'plus'} />} color="white" size="sm" />}>
+      <Button width='200' mb="4"  mt="4" ml='85' backgroundColor='tertiary.600' onPress={() => navigation.navigate('Agregar Invitado')}  icon={<Icon mb="0.5" as={<MaterialCommunityIcons name={'plus'} />} color="white" size="sm" />}>
         Agregar invitado
        </Button>
       <FlatList data={invitados} renderItem={({

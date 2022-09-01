@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {
   Box,
   ScrollView,
-  Fab,
+  Text,
   Icon, 
   Button, 
   Heading
@@ -18,8 +18,10 @@ export default function Reservas({navigation}) {
   const { user } = useContext(UserContext)
   const [isRequesting, setIsRequesting] = useState(false);
   const [reservas, setReservas] = useState([]);
-  const id = user._id;
-  //const id = "6301df20dac7dcf76dcecade";
+  // const id = user._id;
+  const id = "6301df20dac7dcf76dcecade";
+
+  console.log(user);
  
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export default function Reservas({navigation}) {
     const onRequestReservasData = async () => {
       setIsRequesting(true);
 
+      console.log(user);
       try {
         const jsonResponse = await fetch(`${API.BASE_URL}/reservation/findReservationUser/`+`${id}`, {
           method: "GET",
@@ -52,6 +55,8 @@ export default function Reservas({navigation}) {
 
   }, [user])
 
+  console.log(reservas);
+
 
   return (
 
@@ -60,17 +65,17 @@ export default function Reservas({navigation}) {
     Lista de reservas
   </Heading>
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Button width='200' mb="4"  mt="4" ml='85' backgroundColor='tertiary.600' onPress={() => navigation.navigate('area')}  icon={<Icon mb="0.5" as={<MaterialCommunityIcons name={'plus'} />} color="white" size="sm" />}>
+      <Button width='200' mb="4"  mt="4" ml='85' backgroundColor='tertiary.600' onPress={() => navigation.navigate('Reservar')}  icon={<Icon mb="0.5" as={<MaterialCommunityIcons name={'plus'} />} color="white" size="sm" />}>
         Reservar
        </Button>
           
-          {
+          { reservas == [] ? <Text mt="9" ml='10'> No hay reservas relacionados a su usuario</Text> :
+          
           reservas.map(item => (
             <ReservasCard
               key={item._id}
               date={item.date_entry}
               startTime={item.start_time}
-              endTime={item.finish_time}
               status={item.status}
               name={item.common_area_name}
             />

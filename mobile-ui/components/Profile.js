@@ -243,7 +243,7 @@ export default function Profile({ navigation }) {
     return (
      
           <Navigator>
-            <Screen name="Perfil" component={ProfileView} />
+            <Screen name="Datos Personales" component={ProfileView} />
             <Screen name="Contraseña" component={PasswordView} />
         
           </Navigator>

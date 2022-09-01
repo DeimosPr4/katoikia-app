@@ -186,22 +186,7 @@ export default function LogIn({ navigation }) {
         fontSize: 'xs'
       }}
       >Debe ingresar una contraseña</FormControl.ErrorMessage> }
-              <Link
-                _text={{
-                  fontSize: "xs",
-                  fontWeight: "500",
-                  color: "indigo.500",
-                  marginTop: "10"
-                }}
-                alignSelf="flex-end"
-                mt="1"
-                onPress={() => navigation.navigate('Password')}
-
-              >
-
-                Recuperar contraseña
-
-              </Link>
+            
             </FormControl>
             <Button mt="2" backgroundColor="#D7A86E" onPress={iniciarSesion}
             >

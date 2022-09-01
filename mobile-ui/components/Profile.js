@@ -1,22 +1,19 @@
 import React, { useContext, useState } from "react";
 import { API } from "../environment/api";
 import {
-  Box, Button,
-  Center, FormControl, Heading, ScrollView, VStack
+  Box, Button, FormControl, Heading, ScrollView, VStack
 } from "native-base";
-import { StyleSheet, TextInput, useWindowDimensions } from "react-native";
+import { StyleSheet, TextInput} from "react-native";
 import { UserContext } from "../context/UserContext";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { stringMd5 } from 'react-native-quick-md5';
-
 
 const { Navigator, Screen } = createMaterialTopTabNavigator();
 
 export default function Profile({ navigation }) {
 
   const baseURL = `${API.BASE_URL}/user/updateUser/`
-  const [index, setIndex] = useState(0); 
-  const layout = useWindowDimensions(); 
+
   const userData = useContext(UserContext)
   const [name, setName] = useState(userData.user.name); 
   const [apellido, setApellido] =useState(userData.user.last_name); 
@@ -28,6 +25,26 @@ export default function Profile({ navigation }) {
   const [error, setError] = useState({}) 
 
   console.log(userData.user);
+
+
+  const [info, setInfo] = useState({
+    _id: userData.user._id,
+    dni: userData.user.dni, 
+    name: "",
+    last_name: "",  
+    email: "",
+    community_id: userData.user.community_id,
+  });
+
+  const [infoPassword, setInfoPassword] = useState({
+    _id: userData.user._id,
+    dni: userData.user.dni, 
+    password: ""
+
+  });
+
+
+  const onHandleChange = (name) => (value) => setInfo(prev => ({...prev, [name]: value}))
 
   const onHandleChangePassword = (value) => {
     //console.log(value);
@@ -77,20 +94,20 @@ export default function Profile({ navigation }) {
           </FormControl> */}
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={userData.user.name} onChangeText={(value) => setName(value) }/>
+            <TextInput style={styles.input} type="text" defaultValue={userData.user.name} onChangeText={onHandleChange("name")}/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Apellido</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={userData.user.last_name} onChangeText={(value) => setApellido(value) } />
+            <TextInput style={styles.input} type="text" defaultValue={userData.user.last_name} onChangeText={onHandleChange("last_name") } />
           </FormControl>
           <FormControl>
             <FormControl.Label>Correo electrónico</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={userData.user.email} onChangeText={(value) => setEmail(value) }/>
+            <TextInput style={styles.input} type="text" defaultValue={userData.user.email} onChangeText={onHandleChange("email") }/>
           </FormControl>
           <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()}>
             Actualizar
           </Button>
-          <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Inicio')}>
+          <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Iniciar Sesión')}>
             Cerrar sesión
           </Button>
         </VStack>
@@ -214,7 +231,7 @@ export default function Profile({ navigation }) {
 
         cache: 'no-cache', 
         method: 'PUT', 
-        body: JSON.stringify(data), 
+        body: JSON.stringify(info), 
         headers: {
           'Content-Type': 'application/json'
         }
@@ -258,11 +275,7 @@ const styles = StyleSheet.create({
     height: 35,
     margin: 3,
     borderWidth: 0.5,
-    padding: 5,
     flex: 1,
-    paddingTop: 9,
-    paddingRight: 19,
-    paddingLeft: 0,
     marginTop: 6,
     borderRadius: 4
   }, 

@@ -72,8 +72,6 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
-    console.log(user);
-    
     return this.userService.update(user['id'], user);
   }
 
@@ -167,4 +165,13 @@ export class UsersController {
     let pstatus = body['status'];
     return this.userService.changeStatus(pid, pstatus);
   }
+
+  @MessagePattern({ cmd: 'changePassword' })
+  changePassword(@Payload() body: string) {
+    let pid = body['id'];
+    let password = body['password'];
+    return this.userService.changePassword(pid, password);
+  }
+
+  
 }

@@ -314,7 +314,19 @@ export class AppController {
       number_house,
     );
   }
-  
+ 
+  @Put('user/changePassword/:id')
+  changePassword(
+    @Param('id') id: string,
+    @Body('password') password: string,
+  ) {
+
+    return this.appService.changePassword(
+      id,
+      password,
+    );
+  }
+
   // #==== API Communities
   @Post('community/createCommunity')
   createCommunity(

@@ -7,20 +7,20 @@ export type UserDocument = User & Document;
 
 @Schema({ collection: 'users'})
 export class User {
-  @Prop({index: true})
-  dni!: string;
+  @Prop()
+  dni: string;
 
-  @Prop({required: true})
+  @Prop()
   name: string;
 
-  @Prop({required: true})
+  @Prop()
   last_name: string;
 
-  @Prop({required: true, unique: true})
+  @Prop()
   email: string; 
 
-  @Prop({required: true, unique: true})
-  phone: number;
+  @Prop()
+  phone: string;
 
   @Prop()
   password: string;

@@ -387,6 +387,16 @@ export class AppService {
   }
 
 
+  changePassword(id: string, password: string) {
+    const pattern = { cmd: 'changePassword' };
+    const payload = { id: id, password: password };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  
+
   // ====================== COMMUNITIES ===============================
   changeStatusCommunity(pId: string, pStatus: string) {
     const pattern = { cmd: 'changeStatus' };

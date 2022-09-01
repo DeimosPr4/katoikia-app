@@ -11,29 +11,19 @@ import PropTypes from 'prop-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 
-export const ReservasCard = ({key, date, startTime, name}) => {
-
+export const ReservasCard = ({id, date, startTime, name}) => {
 
     const dateFormated = date.toString().split("T")[0]
   
+  const deleteReservas = async(id) => {
 
-
-    console.log(dateFormated);
-
-
-  const deleteReservas = async(key) => {
-
-    const data = {
-      "_id": key
-    }
-
+   
     try {
 
-      await fetch(`http://localhost:4000/reservation/deleteReservation/`+`${key}`, {
+      await fetch(`http://localhost:4000/reservation/deleteReservation/`+`${id}`, {
 
         cache: 'no-cache', 
         method: 'DELETE', 
-        body: JSON.stringify(data), 
         headers: {
           'Content-Type': 'application/json'
         }
@@ -89,7 +79,7 @@ export const ReservasCard = ({key, date, startTime, name}) => {
         </Stack>
 
 
-      <MaterialCommunityIcons ml="70" name="delete" size={28} color="#7C0808" onPress={() =>{deleteReservas(key)}} />
+      <MaterialCommunityIcons ml="70" name="delete" size={28} color="#7C0808" onPress={() =>{deleteReservas(id)}} />
       </Box>
     </Box>
         </ScrollView>
@@ -99,5 +89,5 @@ export const ReservasCard = ({key, date, startTime, name}) => {
 ReservasCard.propTypes = {
     date: PropTypes.string.isRequired,
     startTime: PropTypes.string.isRequired,
-    key: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired
 }

@@ -103,7 +103,7 @@ export default function Invitados({navigation}) {
     }} borderColor="coolGray.200" pl="4" pr="5" py="2">
             <HStack space={3} justifyContent="space-between" >
             <MaterialCommunityIcons name="account" size={48} color="#D7A86E" />
-              <VStack>
+              <VStack key={item._id}>
                 <Text _dark={{
             color: "warmGray.50"
           }} color="coolGray.800" bold>

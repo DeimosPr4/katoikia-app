@@ -78,6 +78,7 @@ export default function Reservas({navigation}) {
               startTime={item.time}
               status={item.status}
               name={item.common_area_name}
+              id={item._id}
             />
           ))
         }

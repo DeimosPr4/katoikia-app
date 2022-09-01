@@ -79,7 +79,7 @@ export const ReservasCard = ({id, date, startTime, name}) => {
         </Stack>
 
 
-      <MaterialCommunityIcons ml="70" name="delete" size={28} color="#7C0808" onPress={() =>{deleteReservas(id)}} />
+      {/* <MaterialCommunityIcons ml="70" name="delete" size={28} color="#7C0808" onPress={() =>{deleteReservas(id)}} /> */}
       </Box>
     </Box>
         </ScrollView>

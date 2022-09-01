@@ -1,9 +1,8 @@
-import React, { Component, Fragment, useRef } from 'react';
+import React, { Component, Fragment } from 'react';
 import Cookies from 'universal-cookie';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import { Toast } from 'primereact/toast'
 
 const baseUrl = 'http://localhost:4000/user/loginUser';
 const cookies = new Cookies();

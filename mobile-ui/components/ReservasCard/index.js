@@ -8,10 +8,10 @@ import {
     Badge
 } from "native-base";
 import PropTypes from 'prop-types';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 
-export const ReservasCard = ({ date, startTime, name}) => {
+export const ReservasCard = ({key, date, startTime, name}) => {
 
 
     const dateFormated = date.toString().split("T")[0]
@@ -19,6 +19,38 @@ export const ReservasCard = ({ date, startTime, name}) => {
 
 
     console.log(dateFormated);
+
+
+  const deleteReservas = async(key) => {
+
+    const data = {
+      "_id": key
+    }
+
+    try {
+
+      await fetch(`http://localhost:4000/reservation/deleteReservation/`+`${key}`, {
+
+        cache: 'no-cache', 
+        method: 'DELETE', 
+        body: JSON.stringify(data), 
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.status != 201){
+          console.log('ocurrio un error ');
+        }else{
+          return response.json(); 
+        }
+      })
+      
+    } catch (error) {
+      console.log("ERROR: " + error);
+    }
+
+  }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}> 
@@ -57,14 +89,15 @@ export const ReservasCard = ({ date, startTime, name}) => {
         </Stack>
 
 
+      <MaterialCommunityIcons ml="70" name="delete" size={28} color="#7C0808" onPress={() =>{deleteReservas(key)}} />
       </Box>
     </Box>
         </ScrollView>
     )
 
 }
-// ReservasCard.propTypes = {
-//     date: PropTypes.string.isRequired,
-//     startTime: PropTypes.string.isRequired,
-//     status: PropTypes.string.isRequired
-// }
+ReservasCard.propTypes = {
+    date: PropTypes.string.isRequired,
+    startTime: PropTypes.string.isRequired,
+    key: PropTypes.string.isRequired
+}

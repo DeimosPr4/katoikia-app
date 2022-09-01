@@ -27,7 +27,7 @@ export default function LogIn({ navigation }) {
   const [errors, setErrors] = useState({});
 
   const [credentials, setCredentials] = useState({
-    email: "lalo@lalo.com",
+    email: "jorgesoto@gmail.com",
     password: "12345"
   });
 
@@ -175,7 +175,7 @@ export default function LogIn({ navigation }) {
                 <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" style={styles.iconStyle} />
                 <TextInput
                   name='password'
-                  type="password"
+                  secureTextEntry={true}
                   style={'password' in errors ? styles.errorMessage : styles.input}
                   value={credentials.password}
                   placeholder='Contraseña'

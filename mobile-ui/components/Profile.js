@@ -76,7 +76,7 @@ export default function Profile({ navigation }) {
         <Heading size="lg" color="coolGray.800" _dark={{
         color: "warmGray.50"
       }} fontWeight="semibold">
-          Bienvenido {userData.user.name}
+          Bienvenido(a) {userData.user.name}
         </Heading>
         <Heading mt="1" color="coolGray.600" _dark={{
         color: "warmGray.200"
@@ -94,15 +94,15 @@ export default function Profile({ navigation }) {
           </FormControl> */}
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={userData.user.name} onChangeText={onHandleChange("name")}/>
+            <TextInput style={styles.input} type="text" defaultValue={name} onChangeText={onHandleChange("name")} placeholder='Nombre'/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Apellido</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={userData.user.last_name} onChangeText={onHandleChange("last_name") } />
+            <TextInput style={styles.input} type="text" defaultValue={apellido} onChangeText={onHandleChange("last_name") }placeholder='Apellido' />
           </FormControl>
           <FormControl>
             <FormControl.Label>Correo electrónico</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={userData.user.email} onChangeText={onHandleChange("email") }/>
+            <TextInput style={styles.input} type="text" defaultValue={email} onChangeText={onHandleChange("email") } placeholder='Correo electrónico'/>
           </FormControl>
           <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()}>
             Actualizar
@@ -129,7 +129,7 @@ export default function Profile({ navigation }) {
     <Heading size="lg" color="coolGray.800" _dark={{
         color: "warmGray.50"
       }} fontWeight="semibold">
-          Bienvenido {userData.user.name}
+          Bienvenido(a) {userData.user.name}
         </Heading>
         <Heading mt="1" color="coolGray.600" _dark={{
         color: "warmGray.200"
@@ -140,17 +140,17 @@ export default function Profile({ navigation }) {
         <VStack space={3} mt="5"> 
         <FormControl>
             <FormControl.Label>Contraseña actual</FormControl.Label>
-            <TextInput style={'password' in error ? styles.errorMessage : styles.input} type="password" onChangeText={(value) => onHandleChangePassword(value) }/>
+            <TextInput secureTextEntry={true} style={'password' in error ? styles.errorMessage : styles.input} type="password" onChangeText={(value) => onHandleChangePassword(value) } placeholder='Actual contraseña'/>
           </FormControl>
        
           <FormControl>
             <FormControl.Label>Nueva Contraseña</FormControl.Label>
-            <TextInput editable={!error} style={styles.input} type="password" onChangeText={(value) => setPassword(value) } />
+            <TextInput secureTextEntry={true} editable={!error} style={styles.input} type="password" onChangeText={(value) => setPassword(value) } placeholder='Nueva contraseña' />
           </FormControl>
 
           <FormControl>
             <FormControl.Label>Confirmar nueva contraseña</FormControl.Label>
-            <TextInput editable={!error} style={styles.input} type="password" onChangeText={(value) => setConfirmPassword(value) }/>
+            <TextInput secureTextEntry={true} editable={!error} style={styles.input} type="password" onChangeText={(value) => setConfirmPassword(value) } placeholder='Confirmar nueva contraseña'/>
           </FormControl>
 
           <Button mt="2" backgroundColor="orange.300" onPress={() => updatePassword()} disabled={error}>
@@ -222,37 +222,39 @@ export default function Profile({ navigation }) {
       "email": email,
       "community_id": userData.user.community_id
     }
+console.log(email);
+  if (name) {
+    
+  }
 
-    console.log(data);
+    // try {
 
-    try {
+    //   await fetch(baseURL+`${id}`, {
 
-      await fetch(baseURL+`${id}`, {
+    //     cache: 'no-cache', 
+    //     method: 'PUT', 
+    //     body: JSON.stringify(info), 
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     }
+    //   })
+    //   .then(response => {
 
-        cache: 'no-cache', 
-        method: 'PUT', 
-        body: JSON.stringify(info), 
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => {
+    //     console.log(response);
 
-        console.log(response);
-
-        //console.log(baseURL+`${id}`);
-        if (response.status != 201){
-         console.log('ocurrio un error ');
+    //     //console.log(baseURL+`${id}`);
+    //     if (response.status != 201){
+    //      console.log('ocurrio un error ');
 
                
-        }else{
-          return response.json(); 
-        }
-      })
+    //     }else{
+    //       return response.json(); 
+    //     }
+    //   })
       
-    } catch (error) {
-      console.log("ERROR: " + error);
-    }
+    // } catch (error) {
+    //   console.log("ERROR: " + error);
+    // }
   }
 
 

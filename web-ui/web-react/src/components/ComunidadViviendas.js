@@ -16,7 +16,7 @@ import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 const Communities = () => {
-  let emptyCommunity = {
+  const emptyCommunity = {
     _id: null,
     name: '',
     province: provinciaId,
@@ -214,7 +214,6 @@ const Communities = () => {
           number_house: codeHouses + (i + 1),
         });
       }
-      // console.log(houses)
       fetch('http://localhost:4000/community/createCommunity', {
         cache: 'no-cache',
         method: 'POST',

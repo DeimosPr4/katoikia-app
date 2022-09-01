@@ -73,15 +73,15 @@ export class UsersService {
   }
 
   async resetUserPassword(user: UserDocument) {
-    const password = user.password;
-    const passwordEncriptada = Md5.init(password);
+    const unencryptedPassword = user.password;
+    const passwordEncriptada = Md5.init(user.password);
     user.password = passwordEncriptada;
-    this.userModel.findOneAndUpdate({ _id: user._id }, { password: passwordEncriptada }, {
+    this.userModel.findOneAndUpdate({ _id: user._id }, user, {
       new: true,
     });
     const pattern = { cmd: 'emailResetUserPassword' };
     const payload = {
-      email: user['email'], password: user['password'],
+      email: user['email'], password: unencryptedPassword,
       date_entry: user['date_entry'], community_name: user['community_id']
     };
     return this.clientNotificationtApp

@@ -248,7 +248,7 @@ export class AppController {
     @Body('community_id') community_id: string,
     @Body('number_house') number_house: string,
   ) {
-    return this.appService.updateUser(
+    return this.appService.resetUserPassword(
       id,
       dni,
       name,

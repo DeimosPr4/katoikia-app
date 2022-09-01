@@ -176,7 +176,7 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  
+
   async updateTenant(
     _id: string,
     dni: string,
@@ -255,14 +255,27 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-  resetUserPassword(id: string, dni: string, name: string, last_name: string, email: string, phone: number
-    , user_type: string, status: string, date_entry: Date, community_id: string) {
+  resetUserPassword(
+    id: string,
+    dni: string,
+    name: string,
+    last_name: string,
+    email: string,
+    phone: number,
+    _password: string,
+    user_type: string,
+    status: string,
+    date_entry: Date,
+    community_id: string,
+    number_house: string,
+  ) {
     const pattern = { cmd: 'resetUserPassword' };
 
     const payload = {
       id: id, dni: dni, name: name, last_name: last_name, email: email, phone: phone,
-      password: this.generatePassword(), user_type: user_type, status: status, date_entry: date_entry, community_id
+      password: this.generatePassword(), user_type: user_type, status: status, date_entry: date_entry, community_id: community_id, number_house: number_house
     };
+    console.log(payload);
     return this.clientUserApp
       .send<string>(pattern, payload)
       .pipe(

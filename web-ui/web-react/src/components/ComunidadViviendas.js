@@ -257,6 +257,7 @@ const Communities = () => {
           })
           .catch((err) => console.log('Ocurrió un error con el fetch', err));
       } else {
+        let _communities = [...communitiesList];
         let _community = { ...community };
         _community.province = provinciaId;
         _community.canton = cantonId;
@@ -275,36 +276,37 @@ const Communities = () => {
             console.log('Ocurrió un error con el servicio: ' + response.status);
           else return response.json();
         })
-        .then(() => {
-          _community.province = provincesList.find(
-            (p) => p.code === _community.province,
-          ).name;
-          _community.canton = cantonsList.find(
-            (p) => p.code === _community.canton,
-          ).name;
-          _community.district = districtsList.find(
-            (p) => p.code === _community.district,
-          ).name;
+          .then(() => {
+            _community.province = provincesList.find(
+              (p) => p.code === _community.province,
+            ).name;
+            _community.canton = cantonsList.find(
+              (p) => p.code === _community.canton,
+            ).name;
+            _community.district = districtsList.find(
+              (p) => p.code === _community.district,
+            ).name;
 
-          _communities.push(_community);
-          toast.current.show({
-            severity: 'success',
-            summary: 'Registro exitoso',
-            detail: 'Comunidad de vivienda Creada',
-            life: 3000,
-          });
+            _communities.push(_community);
+            toast.current.show({
+              severity: 'success',
+              summary: 'Registro exitoso',
+              detail: 'Comunidad de vivienda Creada',
+              life: 3000,
+            });
 
-          setCommunitiesList(_communities);
+            setCommunitiesList(_communities);
 
-          setProvinciaId('');
-          setCantonId('');
-          setDistrictId('');
-          setCodeHouses('');
-          setFormCommunityDialog(false);
+            setProvinciaId('');
+            setCantonId('');
+            setDistrictId('');
+            setCodeHouses('');
+            setFormCommunityDialog(false);
 
-          setCommunity(emptyCommunity);
-        })
-        .catch((err) => console.log('Ocurrió un error con el fetch', err));
+            setCommunity(emptyCommunity);
+          })
+          .catch((err) => console.log('Ocurrió un error con el fetch', err));
+      }
     } else {
       setSubmitted(true);
     }
@@ -1271,7 +1273,7 @@ const Communities = () => {
                   )}
                 </div>
               </div>
-             
+
             </div>
           </Dialog>
         </div>

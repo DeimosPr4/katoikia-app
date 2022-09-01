@@ -4,7 +4,7 @@ import {
   Box, Button,
   Center, FormControl, Heading, ScrollView, VStack
 } from "native-base";
-import { Dimensions, StyleSheet, TextInput, useWindowDimensions } from "react-native";
+import { StyleSheet, TextInput, useWindowDimensions } from "react-native";
 import { UserContext } from "../context/UserContext";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { stringMd5 } from 'react-native-quick-md5';
@@ -14,7 +14,7 @@ const { Navigator, Screen } = createMaterialTopTabNavigator();
 
 export default function Profile({ navigation }) {
 
-  const baseURL = `${API.BASE_URL}/user/updateGuarda/`
+  const baseURL = `${API.BASE_URL}/user/updateUser/`
   const [index, setIndex] = useState(0); 
   const layout = useWindowDimensions(); 
   const userData = useContext(UserContext)
@@ -22,6 +22,7 @@ export default function Profile({ navigation }) {
   const [apellido, setApellido] =useState(userData.user.last_name); 
   const [email, setEmail] = useState(userData.user.email); 
   const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState()
   const id = userData.user._id;
   const decode = userData.Password; 
   const [error, setError] = useState({}) 
@@ -132,7 +133,7 @@ export default function Profile({ navigation }) {
 
           <FormControl>
             <FormControl.Label>Confirmar nueva contraseña</FormControl.Label>
-            <TextInput editable={!error} style={styles.input} type="password" onChangeText={(value) => setPassword(value) }/>
+            <TextInput editable={!error} style={styles.input} type="password" onChangeText={(value) => setConfirmPassword(value) }/>
           </FormControl>
 
           <Button mt="2" backgroundColor="orange.300" onPress={() => updatePassword()} disabled={error}>
@@ -202,7 +203,6 @@ export default function Profile({ navigation }) {
       "name": name,
       "last_name": apellido,
       "email": email,
-      "phone": userData.user.phone,
       "community_id": userData.user.community_id
     }
 
@@ -221,10 +221,13 @@ export default function Profile({ navigation }) {
       })
       .then(response => {
 
+        console.log(response);
+
         //console.log(baseURL+`${id}`);
         if (response.status != 201){
-         // console.log('ocurrio un error ');
-         console.log(response.json());
+         console.log('ocurrio un error ');
+
+               
         }else{
           return response.json(); 
         }

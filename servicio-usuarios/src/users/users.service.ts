@@ -120,7 +120,10 @@ export class UsersService {
     console.log(id)
     console.log(user)
 
-    return this.userModel.findOneAndUpdate({ _id: id }, user, {
+    return this.userModel.findOneAndUpdate({ _id: id }, {
+      name: user['name'], last_name: user['last_name'],
+      dni: user['dni'], email: user['email'], phone: user['phone']
+    }, {
       new: true,
     });
   }

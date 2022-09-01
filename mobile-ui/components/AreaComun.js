@@ -20,13 +20,10 @@ export default function AreaComun({navigation}){
   const [service, setService] = useState("");
   const [areas, setAreas] = useState([])
   const [isRequesting, setIsRequesting] = useState(false);
-  const [selectedHours, setSelectedHours] = useState(0);
-  const [selectedMinutes, setSelectedMinutes] = useState(0);
-  const [endSelectedHours, setEndSelectedHours] = useState(0);
-  const [endSelectedMinutes, setEndSelectedMinutes] = useState(0);
   const [time, setTime] = useState(new Date())
-  const [endTime, setEndTime] = useState(new Date())
+  const idComunidad = user.community_id
   const date = new Date(); 
+  const [mode, setMode] = useState('time');
 
     useEffect(() => {
 
@@ -36,7 +33,7 @@ export default function AreaComun({navigation}){
   
   
         try {
-          const jsonResponse = await fetch(`${API.BASE_URL}/commonArea/allCommonAreas`, {
+          const jsonResponse = await fetch(`${API.BASE_URL}/commonArea/findByCommunity/` + `${idComunidad}`, {
             method: "GET",
             headers: {
               'Content-Type': 'application/json'
@@ -44,7 +41,7 @@ export default function AreaComun({navigation}){
           })
   
           const response = await jsonResponse.json();
-          console.log(response.message);
+          // console.log(response.message);
   
           setAreas(response.message);
   
@@ -102,16 +99,10 @@ export default function AreaComun({navigation}){
     
 
     const onChangeStart = (event, selectedDate) => {
-      const currentDate = selectedDate;
-      setShow(false);
+      const currentDate = selectedDate || time;
+     
       setTime(currentDate);
     };
-    const onChangeEnd = (event, selectedDate) => {
-      const currentDate = selectedDate;
-      setShow(false);
-      setEndTime(currentDate);
-    };
-  
 
     return (
         <Center>

@@ -72,7 +72,9 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'updateUser' })
   update(@Payload() user: UserDocument) {
-    return this.userService.update(user._id, user);
+    console.log(user);
+    
+    return this.userService.update(user['id'], user);
   }
 
   @MessagePattern({ cmd: 'updateGuard' })

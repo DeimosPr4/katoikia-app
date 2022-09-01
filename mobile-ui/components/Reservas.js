@@ -18,6 +18,8 @@ export default function Reservas({navigation}) {
   const { user } = useContext(UserContext)
   const [isRequesting, setIsRequesting] = useState(false);
   const [reservas, setReservas] = useState([]);
+  const id = user._id;
+  //const id = "6301df20dac7dcf76dcecade";
  
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export default function Reservas({navigation}) {
       setIsRequesting(true);
 
       try {
-        const jsonResponse = await fetch(`${API.BASE_URL}/reservation/allReservations`, {
+        const jsonResponse = await fetch(`${API.BASE_URL}/reservation/findReservationUser/`+`${id}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'

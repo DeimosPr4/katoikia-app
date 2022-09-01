@@ -786,4 +786,12 @@ export class AppService {
 
     return pass;
   }
+
+  findReservationUser(paramGuestId: string) {
+    const pattern = { cmd: 'findReservationUser' };
+    const payload = { id: paramGuestId };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
 }

@@ -37,6 +37,9 @@ const RegistroComunicado = () => {
   const dt = useRef(null);
   const [cookies, setCookie] = useCookies();
   const [globalFilter, setGlobalFilter] = useState(null);
+  const [postDialog, setPostDialog] = useState(false);
+
+
 
   async function listaComunis() {
     let comunicadosResponse = await fetch('http://localhost:4000/post/allPosts', { method: 'GET' });
@@ -127,6 +130,12 @@ const RegistroComunicado = () => {
     return (
       <React.Fragment>
         <div className="my-2">
+        <Button
+            label="Agregar Comunicado"
+            icon="pi pi-plus"
+            className="p-button-primary mr-2"
+            onClick={openNewPost}
+          />
           <Button label="Eliminar" icon="pi pi-trash" className="p-button-danger" />
         </div>
       </React.Fragment>
@@ -145,6 +154,8 @@ const RegistroComunicado = () => {
     setComunicado(rowData);
     setComunicadoId(rowData._id);
     setSaveButtonLabel('Actualizar');
+    setPostDialog(true)
+
   }
 
   const cancelEdit = () => {
@@ -177,10 +188,41 @@ const RegistroComunicado = () => {
     setShowDeleteDialog(true);
   }
 
+  const openNewPost = () => {
+    setComunicado(emptyComunicado);
+    setPostDialog(true)
+    setSubmitted(false);
+  };
+
+  const hidePostDialog = () => {
+    setSubmitted(false);
+    setPostDialog(false)
+    setComunicado(emptyComunicado);
+    setSaveButtonLabel('Registrar');
+  }
+
+
   const deleteDialogFooter = (
     <>
       <Button label="Cancelar" icon="pi pi-times" className="p-button-secondary" onClick={() => setShowDeleteDialog(false)} />
       <Button label="Eliminar" icon="pi pi-check" className="p-button-danger" onClick={() => deleteComunicado()} />
+    </>
+  );
+
+  const postDialogFooter = (
+    <>
+      <Button
+        label={`${saveButtonLabel}`}
+        icon="pi pi-check"
+        className="p-button-primary"
+        onClick={saveComunicado}
+      />
+      <Button
+        label="Cerrar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hidePostDialog}
+      />
     </>
   );
 
@@ -235,12 +277,15 @@ const RegistroComunicado = () => {
               }}
               body={actions} />
           </DataTable>
-        </div>
-      </div>
-      <div className="col-12">
-        <div className="card">
-          <h5>Registro de un comunicado para la comunidad</h5>
-          <div className="p-fluid formgrid grid">
+          <Dialog
+            visible={postDialog}
+            style={{ width: '650px' }}
+            header="Mantenimiento del Comunicado"
+            modal
+            className="p-fluid"
+            footer={postDialogFooter}
+            onHide={hidePostDialog}>
+            <div className="p-fluid formgrid grid">
             <div className="field col-12 md:col-12">
               <label htmlFor="name">Contenido del comunicado</label>
               <div className="p-0 col-12 md:col-12">
@@ -261,25 +306,13 @@ const RegistroComunicado = () => {
                 </div>
               </div>
             </div>
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-              width: "100%"
-            }}>
-              <Button
-                label={`${saveButtonLabel}`}
-                onClick={saveComunicado}
-              />
-              {saveButtonLabel === 'Actualizar' && (
-                <Button
-                  label="Cancelar"
-                  onClick={cancelEdit}
-                  className="p-button-danger" />)}
-            </div>
+          
           </div>
+
+          </Dialog>
         </div>
       </div>
+    
     </div>
   );
 };

@@ -636,7 +636,7 @@ const AreasComunes = () => {
                         <Column field="hourMax" sortable header={headerHourMax} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>                    </Column>
                         <Column field="bookable" sortable header={headerBookable} body={bookableBodyTemplate} style={{ flexGrow: 1, flexBasis: '200px', minWidth: '200px', wordBreak: 'break-word' }}></Column>
                         <Column field="status" sortable header={headerStatus} body={statusBodyTemplate} style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}></Column>
-                        <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsCommonArea}></Column>
+                        <Column style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }} body={actionsCommonArea}></Column>
                     </DataTable>
                     <Dialog
                         visible={areaDialog}

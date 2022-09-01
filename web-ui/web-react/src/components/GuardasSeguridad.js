@@ -317,7 +317,7 @@ const GuardasSeguridad = () => {
     return (
       <React.Fragment>
         <div className="my-2">
-        <Button
+          <Button
             label="Agregar Guarda"
             icon="pi pi-plus"
             className="p-button-primary mr-2"
@@ -549,7 +549,7 @@ const GuardasSeguridad = () => {
               </div>
               <div className='row my-5 justify-content-center'>
                 <div className=" col-6 md:col-6">
-                <i className="pi pi-phone icon-khaki"></i>
+                  <i className="pi pi-phone icon-khaki"></i>
                   <p><strong>Teléfono</strong></p>
                   <div className="p-0 col-12 md:col-12">
                     <div className="p-inputgroup align-items-center justify-content-evenly">
@@ -559,7 +559,7 @@ const GuardasSeguridad = () => {
                   </div>
                 </div>
                 <div className=" col-6 md:col-6">
-                <i className="pi pi-envelope icon-khaki"></i>
+                  <i className="pi pi-envelope icon-khaki"></i>
 
                   <p><strong>Correo Electrónico</strong></p>
                   <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
@@ -614,74 +614,74 @@ const GuardasSeguridad = () => {
             onHide={hideFormGuardDialog}
           >
             <div className="p-fluid formgrid grid">
-            <div className="field col-12 md:col-6">
-              <label htmlFor="name">Nombre</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText type="text" id="name" value={guarda.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.name === '' })} />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="name">Nombre</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText type="text" id="name" value={guarda.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.name === '' })} />
+                  </div>
+                  {submitted && guarda.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
                 </div>
-                {submitted && guarda.name === '' && <small className="p-invalid">Nombre es requerido.</small>}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="name">Apellido(s)</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText type="text" id="last_name" value={guarda.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.last_name === '' })} />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="name">Apellido(s)</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText type="text" id="last_name" value={guarda.last_name} onChange={(e) => onInputChange(e, 'last_name')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.last_name === '' })} />
+                  </div>
+                  {submitted && guarda.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
                 </div>
-                {submitted && guarda.last_name === '' && <small className="p-invalid">Apellidos son requeridos.</small>}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="name">Correo Electrónico</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText type='email' id="email" value={guarda.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.email === '' })} />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="name">Correo Electrónico</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText type='email' id="email" value={guarda.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.email === '' })} />
+                  </div>
+                  {submitted && guarda.email === '' && <small className="p-invalid">Correo electrónico es requerido.</small>}
                 </div>
-                {submitted && guarda.email === '' && <small className="p-invalid">Correo electrónico es requerido.</small>}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="dni">Identificación</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-home"></i>
-                  </span>
-                  <InputText id="dni" value={guarda.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.dni === '' })} />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="dni">Identificación</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-home"></i>
+                    </span>
+                    <InputText id="dni" value={guarda.dni} onChange={(e) => onInputChange(e, 'dni')} required autoFocus className={classNames({ 'p-invalid': submitted && guarda.dni === '' })} />
+                  </div>
+                  {submitted && guarda.email === '' && <small className="p-invalid">Identificación es requerida.</small>}
                 </div>
-                {submitted && guarda.email === '' && <small className="p-invalid">Identificación es requerida.</small>}
               </div>
-            </div>
-            <div className="field col-12 md:col-6">
-              <label htmlFor="phone">Número de teléfono</label>
-              <div className="p-0 col-12 md:col-12">
-                <div className="p-inputgroup">
-                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
-                    <i className="pi pi-phone"></i>
-                  </span>
-                  <InputText id="phone" value={guarda.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && guarda.phone === '' })} />
+              <div className="field col-12 md:col-6">
+                <label htmlFor="phone">Número de teléfono</label>
+                <div className="p-0 col-12 md:col-12">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                      <i className="pi pi-phone"></i>
+                    </span>
+                    <InputText id="phone" value={guarda.phone} onChange={(e) => onInputChange(e, 'phone')} type='tel' required autoFocus className={classNames({ 'p-invalid': submitted && guarda.phone === '' })} />
+                  </div>
+                  {submitted
+                    && guarda.phone === ''
+                    && <small className="p-invalid">Número de teléfono es requerido.</small>}
                 </div>
-                {submitted
-                  && guarda.phone === ''
-                  && <small className="p-invalid">Número de teléfono es requerido.</small>}
               </div>
+
             </div>
-           
-          </div>
           </Dialog>
         </div>
       </div>
-     
+
     </div>
   );
 };

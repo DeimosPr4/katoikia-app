@@ -38,4 +38,10 @@ export class ReservationsController {
     let _id = id['id'];
     return this.reservationsService.remove(_id);
   }
+
+  @MessagePattern({ cmd: 'findReservationUser' })
+  findReservationUser(@Payload() id: string) {
+    let _id = id['id'];
+    return this.reservationsService.findReservationUser(_id);
+  }
 }

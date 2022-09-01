@@ -45,4 +45,8 @@ export class ReservationsService {
       new: true,
     });  
   }
+
+  async findReservationUser(id: string): Promise<Reservation[]> {
+    return this.reservationModel.find({user_id:id}).setOptions({ sanitizeFilter: true }).exec();
+  }
 }

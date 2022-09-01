@@ -267,7 +267,21 @@ class LogInUser extends Component {
           header="Restablecer Contraseña"
           modal
           className="p-fluid"
-        ></Dialog>
+          footer={this.pwdResetDialogFooter}
+          onHide={() => this.props.showPwdResetDialog = false}
+        >
+          <div className='flex align-items-center justify-content-center'>
+            <i
+              className='pi pi-exclamation-triangle mr-3'
+              style={{ fontSize: '2rem' }}
+            />
+            <InputText
+              type='email'
+              style={{ width: '100%' }}
+              placeholder='Correo electrónico'
+            />
+          </div>
+        </Dialog>
       </Fragment>
     );
   }

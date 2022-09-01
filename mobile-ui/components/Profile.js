@@ -7,6 +7,7 @@ import { StyleSheet, TextInput} from "react-native";
 import { UserContext } from "../context/UserContext";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { stringMd5 } from 'react-native-quick-md5';
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { Navigator, Screen } = createMaterialTopTabNavigator();
 
@@ -23,6 +24,7 @@ export default function Profile({ navigation }) {
   const id = userData.user._id;
   const decode = userData.Password; 
   const [error, setError] = useState({}) 
+  const [disable, setDisable] = useState(false)
 
   console.log(userData.user);
 
@@ -94,22 +96,25 @@ export default function Profile({ navigation }) {
           </FormControl> */}
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={name} onChangeText={onHandleChange("name")} placeholder='Nombre'/>
+            <TextInput style={styles.input} type="text" defaultValue={info.name} onChangeText={onHandleChange("name")} placeholder={name}/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Apellido</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={apellido} onChangeText={onHandleChange("last_name") }placeholder='Apellido' />
+            <TextInput style={styles.input} type="text" defaultValue={info.last_name} onChangeText={onHandleChange("last_name") }placeholder={apellido} />
           </FormControl>
           <FormControl>
             <FormControl.Label>Correo electrónico</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={email} onChangeText={onHandleChange("email") } placeholder='Correo electrónico'/>
+            <TextInput style={styles.input} type="text" defaultValue={info.email} onChangeText={onHandleChange("email") } placeholder={email}/>
           </FormControl>
           <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()}>
             Actualizar
           </Button>
-          <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Iniciar Sesión')}>
+          <TouchableOpacity disabled={disable}>
+          <Button disabled={disable} mt="6" colorScheme="error" onPress={() => navigation.navigate('Iniciar Sesión')}>
             Cerrar sesión
           </Button>
+          </TouchableOpacity>
+          
         </VStack>
       </Box>
 
@@ -222,39 +227,44 @@ export default function Profile({ navigation }) {
       "email": email,
       "community_id": userData.user.community_id
     }
-console.log(email);
-  if (name) {
-    
+
+  if (info.email == "") {
+   info.email = email
+   
+  }else if (info.name == "") {
+    info.name = name
+  }else if (info.last_name ==" ") {
+    info.name = apellido
   }
 
-    // try {
+    try {
 
-    //   await fetch(baseURL+`${id}`, {
+      await fetch(baseURL+`${id}`, {
 
-    //     cache: 'no-cache', 
-    //     method: 'PUT', 
-    //     body: JSON.stringify(info), 
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    //   })
-    //   .then(response => {
+        cache: 'no-cache', 
+        method: 'PUT', 
+        body: JSON.stringify(info), 
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
 
-    //     console.log(response);
+        console.log(response);
 
-    //     //console.log(baseURL+`${id}`);
-    //     if (response.status != 201){
-    //      console.log('ocurrio un error ');
+        //console.log(baseURL+`${id}`);
+        if (response.status != 201){
+         console.log('ocurrio un error ');
 
                
-    //     }else{
-    //       return response.json(); 
-    //     }
-    //   })
+        }else{
+          return response.json(); 
+        }
+      })
       
-    // } catch (error) {
-    //   console.log("ERROR: " + error);
-    // }
+    } catch (error) {
+      console.log("ERROR: " + error);
+    }
   }
 
 

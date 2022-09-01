@@ -6,6 +6,7 @@ import { Dialog } from 'primereact/dialog';
 
 const baseUrl = 'http://localhost:4000/user/loginUser';
 const cookies = new Cookies();
+const passwordResetUrl = 'http://localhost:4000/user/resetUserPassword';
 
 class LogInUser extends Component {
   constructor(props) {

@@ -96,24 +96,24 @@ export default function Profile({ navigation }) {
           </FormControl> */}
           <FormControl>
             <FormControl.Label>Nombre</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={info.name} onChangeText={onHandleChange("name")} placeholder={name}/>
+            <TextInput style={styles.input} type="text" onChangeText={onHandleChange("name")} placeholder={name}/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Apellido</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={info.last_name} onChangeText={onHandleChange("last_name") }placeholder={apellido} />
+            <TextInput style={styles.input} type="text" onChangeText={onHandleChange("last_name") } placeholder={apellido} />
           </FormControl>
           <FormControl>
             <FormControl.Label>Correo electrónico</FormControl.Label>
-            <TextInput style={styles.input} type="text" defaultValue={info.email} onChangeText={onHandleChange("email") } placeholder={email}/>
+            <TextInput style={styles.input} type="text"  onChangeText={onHandleChange("email") } placeholder={email}/>
           </FormControl>
-          <Button mt="2" backgroundColor="orange.300" onPress={() => updateInfo()}>
+          <Button disabled={disable} mt="2" backgroundColor="orange.300" onPress={() => updateInfo()}>
             Actualizar
           </Button>
-          <TouchableOpacity disabled={disable}>
-          <Button disabled={disable} mt="6" colorScheme="error" onPress={() => navigation.navigate('Iniciar Sesión')}>
+          
+          <Button  mt="6" colorScheme="error" onPress={() => navigation.navigate('Iniciar Sesión')}>
             Cerrar sesión
           </Button>
-          </TouchableOpacity>
+         
           
         </VStack>
       </Box>

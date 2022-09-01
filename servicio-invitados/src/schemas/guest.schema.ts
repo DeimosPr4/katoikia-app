@@ -32,6 +32,9 @@ export class Guest {
   @Prop()
   community_id: string; ///creo que se debe de agregar para facilitar al guarda ver
   // ver los invitados de x comunidad
+
+  @Prop()
+  type_guest: string;
 }
 
 export const GuestSchema = SchemaFactory.createForClass(Guest);

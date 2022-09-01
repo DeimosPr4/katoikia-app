@@ -149,12 +149,7 @@ export class AppController {
     @Body('last_name') last_name: string,
     @Body('email') email: string,
     @Body('phone') phone: number,
-    @Body('password') password: string,
-    @Body('user_type') user_type: string,
-    @Body('status') status: string,
-    @Body('date_entry') date_entry: Date,
     @Body('community_id') community_id: string,
-    @Body('number_house') number_house: string,
   ) {
     return this.appService.updateUser(
       id,
@@ -163,12 +158,7 @@ export class AppController {
       last_name,
       email,
       phone,
-      password,
-      user_type,
-      status,
-      date_entry,
-      community_id,
-      number_house,
+      community_id
     );
   }
 
@@ -255,12 +245,7 @@ export class AppController {
       last_name,
       email,
       phone,
-      password,
-      user_type,
-      status,
-      date_entry,
-      community_id,
-      number_house,
+      password
     );
   }
 
@@ -493,6 +478,7 @@ export class AppController {
     @Body('tenant_id') tenant_id: string,
     @Body('community_id') community_id: string,
     @Body('date_entry') date_entry: Date,
+    @Body('type_guest') type_guest: string,
   ) {
     return this.appService.createGuest(
       name,
@@ -504,6 +490,7 @@ export class AppController {
       tenant_id,
       community_id,
       date_entry,
+      type_guest,
     );
   }
 
@@ -522,6 +509,16 @@ export class AppController {
     return this.appService.findGuestUser(paramGuestId);
   }
 
+  @Get('guest/findGuestCommunity/:id')
+  findGuestCommunityr(@Param('id') paramGuestId: string) {
+    return this.appService.findGuestCommunityr(paramGuestId);
+  }
+
+  @Post('guest/updateGuest')
+  updateGuest(
+    @Body('_id') _id: string){
+    return this.appService.updateGuest(_id);
+  }
 
 
 
@@ -598,7 +595,10 @@ export class AppController {
   allPosts() {
     return this.appService.allPosts();
   }
-
+  @Get('post/findPostCommunity/:id')
+  findPostCommunity(@Param('id') paramPost: string) {
+    return this.appService.findPostCommunity(paramPost);
+  }
   @Get('post/find/:id')
   findPost(@Param('id') paramPost: string) {
     return this.appService.findPost(paramPost);
@@ -666,4 +666,10 @@ export class AppController {
   html(@Body('email') email: string, @Body('name') name: string) {
     return this.appService.html(email, name);
   }
+
+  @Get('reservation/findReservationUser/:id')
+  findReservationUser(@Param('id') paramComment: string) {
+    return this.appService.findReservationUser(paramComment);
+  }
+
 }

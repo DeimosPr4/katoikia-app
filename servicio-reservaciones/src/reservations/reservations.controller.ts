@@ -50,4 +50,11 @@ export class ReservationsController {
     let community_id =  reservation['community_id'];
     return this.reservationsService.removeIdCommunity(community_id);
   }
+
+  @MessagePattern({ cmd: 'findReservationUser' })
+  findReservationUser(@Payload() id: string) {
+    let _id = id['id'];
+    return this.reservationsService.findReservationUser(_id);
+
+  }
 }

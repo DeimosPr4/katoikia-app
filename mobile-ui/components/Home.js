@@ -8,7 +8,10 @@ export default function Home() {
   const { user } = useContext(UserContext)
   const [isRequesting, setIsRequesting] = useState(false);
   const [comments, setComments] = useState([]);
-
+  const user_type=user.user_type;
+  //const user_type="4";
+  const community_id=user.community_id;
+  //const community_id="1";
   useEffect(() => {
 
     console.log(user);
@@ -17,17 +20,27 @@ export default function Home() {
       setIsRequesting(true);
 
       try {
-        const jsonResponse = await fetch(`${API.BASE_URL}/post/allComments`, {
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+        if(user_type=="4"){
+          const jsonResponse = await fetch(`${API.BASE_URL}/post/findPostCommunity/`+`${community_id}`, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          const response = await jsonResponse.json();
+          setComments(response.message);
 
-        const response = await jsonResponse.json();
-        // console.log(response);
-
-        setComments(response.message);
+        }else{
+          const jsonResponse = await fetch(`${API.BASE_URL}/post/allPosts`, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+  
+          const response = await jsonResponse.json();
+          setComments(response.message);
+        }
 
       } catch (error) {
 
@@ -55,8 +68,8 @@ export default function Home() {
           comments.map(item => (
             <CommentCard
               key={item._id}
-              comment={item.comment}
-              date={item.date_entry}
+              post={item.post}
+              //date={date}
             />
           ))
         }

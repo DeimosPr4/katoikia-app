@@ -94,12 +94,7 @@ export class AppService {
     last_name: string,
     email: string,
     phone: number,
-    password: string,
-    user_type: string,
-    status: string,
-    date_entry: Date,
     community_id: string,
-    number_house: string,
   ) {
     const pattern = { cmd: 'updateUser' };
     const payload = {
@@ -109,12 +104,7 @@ export class AppService {
       last_name: last_name,
       email: email,
       phone: phone,
-      password: password,
-      user_type: user_type,
-      status: status,
-      date_entry: date_entry,
       community_id: community_id,
-      number_house: number_house,
     };
     return this.clientUserApp
       .send<string>(pattern, payload)
@@ -368,6 +358,7 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
+
   //GET parameter from API
   findCommunityAdmin(community_id: string) {
     const pattern = { cmd: 'findCommunityAdmin' };
@@ -596,11 +587,13 @@ export class AppService {
     tenant_id: string,
     community_id: string,
     date_entry: Date,
+    type_guest: string,
   ) {
     const pattern = { cmd: 'createGuest' };
     const payload = {
       name: name, last_name: last_name, dni: dni, number_plate: number_plate, phone: phone,
-      status: status, tenant_id: tenant_id, community_id: community_id, date_entry: date_entry
+      status: status,tenant_id:tenant_id, community_id:community_id,date_entry: date_entry,type_guest:type_guest
+
     };
     return this.clientGuestApp
       .send<string>(pattern, payload)
@@ -626,12 +619,30 @@ export class AppService {
   //GET parameter from API
   findGuestUser(paramGuestId: string) {
     const pattern = { cmd: 'findGuestUser' };
-    const payload = { di: paramGuestId };
+    const payload = { id: paramGuestId };
     return this.clientGuestApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
   }
 
+  findGuestCommunityr(paramGuestId: string) {
+    const pattern = { cmd: 'findGuestCommunity' };
+    const payload = { id: paramGuestId };
+    return this.clientGuestApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  updateGuest(_id: string
+    ) {
+    const pattern = { cmd: 'removeGuest' };
+    const payload = {
+      _id: _id
+    };
+    return this.clientGuestApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })))
+  }
   // ====================== RESERVATIONS ===============================
 
   //POST parameter from API
@@ -711,6 +722,14 @@ export class AppService {
   allPosts() {
     const pattern = { cmd: 'findAllPosts' };
     const payload = {};
+    return this.clientPostApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  findPostCommunity(paramGuestId: string) {
+    const pattern = { cmd: 'findPostCommunity' };
+    const payload = { id: paramGuestId };
     return this.clientPostApp
       .send<string>(pattern, payload)
       .pipe(map((message: string) => ({ message })));
@@ -814,8 +833,6 @@ export class AppService {
       .pipe(map((message: string) => ({ message })));
   }
 
-
-
   /* Function to generate combination of password */
   generatePassword() {
     var pass = '';
@@ -832,8 +849,6 @@ export class AppService {
     return pass;
   }
 
-
-
   async saveTenantNumHouse(community_id: string, number_house: string, tenant_id: string) {
 
     const pattern = { cmd: 'saveTenantNumHouse' }
@@ -844,6 +859,15 @@ export class AppService {
       .pipe(
         map((response: string) => ({ response }))
       )
+  }
+
+
+  findReservationUser(paramGuestId: string) {
+    const pattern = { cmd: 'findReservationUser' };
+    const payload = { id: paramGuestId };
+    return this.clientReservationApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
   }
 
 }

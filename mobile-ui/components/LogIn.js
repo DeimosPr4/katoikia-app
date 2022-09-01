@@ -9,7 +9,8 @@ import {
   Box,
   FormControl,
   Button,
-  Image
+  Image, 
+  ErrorMessage
 } from "native-base";
 import logo from "../assets/logo-katoikia.png";
 import { Entypo } from '@expo/vector-icons';
@@ -23,6 +24,7 @@ const baseURL = `${API.BASE_URL}/user/loginUser`;
 export default function LogIn({ navigation }) {
 
   const { addUser } = useContext(UserContext);
+  const [errors, setErrors] = useState({});
 
   const [credentials, setCredentials] = useState({
     email: "lalo@lalo.com",
@@ -31,10 +33,38 @@ export default function LogIn({ navigation }) {
 
   const onHandleChange = (name) => (value) => setCredentials(prev => ({ ...prev, [name]: value }))
 
+  const validate = async() => {
+      
+    if( credentials.email === "" && credentials.password === ""){
+      setErrors({ ...errors,
+        email: 'Debe ingresar un correo electrónico',
+        password: 'Debe ingresar una contraseña'
+      });
+      return false;
+    }else  if (credentials.password === "") {
+      setErrors({ ...errors,
+        password: 'Debe ingresar una contraseña'
+      });
+      return false;
+    } else if(credentials.email === ""){
+      setErrors({ ...errors,
+        email: 'Debe ingresar un correo electrónico'
+      });
+      return false;
+    }
+    
+    return true;
+  }
+
   const iniciarSesion = async () => {
+
+    const error = await validate(); 
+
+    console.log(error);
+
+   if (error) {
     try {
   
-      console.log(baseURL);
       await fetch(baseURL, {
         cache: 'no-cache', 
         method: 'POST', 
@@ -54,25 +84,38 @@ export default function LogIn({ navigation }) {
 
         // inqulino 4 y guarda 3
          const user = response.message
+
+         if(user !== null){
           if(user.user_type == '4'){
             addUser(user);
 
             navigation.navigate('Comunicados', {user})
           }else if(user.user_type == '3'){
             addUser(user);
+            // cambiar por ComunicadosGuarda luego
             navigation.navigate('Comunicados', {user})
           }
+         }else{
+          setErrors({ ...errors,
+            user: 'Debe ingresar credenciales válidos'
+          });
+         }
+          
       })
       
     } catch (error) {
       console.log("ERROR: " +error);
-    }
 
+    }
+    
+   }
+   
+   console.log(errors);
   }
 
   return (
 
-    <Center w="100%">
+    <Center w="100%" flex={1}>
       <Box safeArea p="2" py="8" w="90%" maxW="290">
 
         <Center>
@@ -106,55 +149,53 @@ export default function LogIn({ navigation }) {
         </Heading>
 
         <View style={styles.container}>
-          <VStack space={3} mt="5">
-            <FormControl isRequired >
+          <VStack width="90%" mx="3" maxW="300px" mb={10}>
+            <FormControl isRequired isInvalid={'email' in errors}>
               <FormControl.Label Text='bold'> Correo Electrónico </FormControl.Label>
 
               <View style={styles.viewSection}>
                 <Entypo name="email" size={20} color="grey" style={styles.iconStyle} />
-                <TextInput
+                <TextInput 
                   name='email'
                   type="text"
-                  style={styles.input}
+                  style={'email' in errors ? styles.errorMessage : styles.input}
                   value={credentials.email}
                   placeholder='Correo electrónico'
                   onChangeText={onHandleChange("email")} />
+                
               </View>
-
+              {'email' in errors && <FormControl.ErrorMessage  _text={{
+        fontSize: 'xs'
+      }}>Debe ingresar un correo electrónico</FormControl.ErrorMessage> }
             </FormControl>
-            <FormControl isRequired>
+
+            <FormControl isRequired isInvalid={'password' in errors}>
               <FormControl.Label Text='bold'> Contraseña </FormControl.Label>
               <View style={styles.viewSection}>
                 <MaterialCommunityIcons name="form-textbox-password" size={20} color="grey" style={styles.iconStyle} />
                 <TextInput
                   name='password'
                   type="password"
-                  style={styles.input}
+                  style={'password' in errors ? styles.errorMessage : styles.input}
                   value={credentials.password}
                   placeholder='Contraseña'
                   onChangeText={onHandleChange("password")} />
+                   
               </View>
-              <Link
-                _text={{
-                  fontSize: "xs",
-                  fontWeight: "500",
-                  color: "indigo.500",
-                  marginTop: "10"
-                }}
-                alignSelf="flex-end"
-                mt="1"
-                onPress={() => navigation.navigate('Password')}
-
-              >
-
-                Recuperar contraseña
-
-              </Link>
+              {'password' in errors && <FormControl.ErrorMessage _text={{
+        fontSize: 'xs'
+      }}
+      >Debe ingresar una contraseña</FormControl.ErrorMessage> }
+            
             </FormControl>
             <Button mt="2" backgroundColor="#D7A86E" onPress={iniciarSesion}
             >
               <Text>Continuar</Text>
             </Button>
+                      {/* {'user' in errors && <ErrorMessage _text={{
+                  fontSize: 'xs'
+                }}
+                >Debe ingresar credenciales válidos</ErrorMessage> } */}
 
           </VStack></View>
 
@@ -173,11 +214,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 10,
     paddingRight: 10,
-    paddingBottom: 10,
     paddingLeft: 0,
     marginTop: 50,
-    marginBottom: 10,
     borderRadius: 4
+  },
+  errorMessage: {
+    height: 40,
+    margin: 10,
+    borderWidth: 0.5,
+    padding: 5,
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingLeft: 0,
+    marginTop: 50,
+    borderRadius: 4, 
+    borderColor: '#be123c'
   },
 
   iconStyle: {
@@ -191,11 +243,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
-    marginBottom: 28
+    marginBottom: 50
   },
 
   container: {
+    marginBottom: 6
 
   }
 })

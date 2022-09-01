@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import {
-    Box, HStack,
+    Box,
     ScrollView,
     Text, 
     Stack, 
@@ -11,15 +11,14 @@ import PropTypes from 'prop-types';
 
 import React from 'react';
 
-export const ReservasCard = ({ date, startTime, endTime, status}) => {
-    const dateFormated = format(new Date(date), "dd LL yyyy")
+export const ReservasCard = ({ date, startTime, name}) => {
+
+
+    const dateFormated = date.toString().split("T")[0]
   
 
-    try {
-        
-    } catch (error) {
-        
-    }
+
+    console.log(dateFormated);
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}> 
@@ -38,39 +37,34 @@ export const ReservasCard = ({ date, startTime, endTime, status}) => {
         <Stack p="4" space={3}>
           <Stack space={2}>
 
-          <Badge backgroundColor={status === 1 ? 'tertiary.500' : 'danger.600'} _text={{
-                        color: "white"
-                    }} variant="solid" rounded="4">
-                        <Text bold={true} color='danger.50'> {status === 1 ? 'LIBRE' : 'RESERVADO'}</Text>
-                    </Badge>
-            <Heading size="md" ml="-1">
-              Reserva #1
+        
+            <Heading size="lg" ml="-1">
+             {name}
             </Heading>
-            <Text fontSize="xs" _light={{
-            color: "violet.500"
+            <Text fontSize="md" _light={{
+            color: "amber.600"
           }} _dark={{
             color: "violet.400"
           }} fontWeight="500" ml="-0.5" mt="-1">
              {dateFormated}
             </Text>
           </Stack>
-          <Text fontWeight="400">
+          <Text fontSize="md" fontWeight="400">
             Hora de inicio: {startTime}
           </Text>
-          <Text fontWeight="400">
-            Hora de finalización: {endTime}
-          </Text>
+      
         
         </Stack>
+
+
       </Box>
     </Box>
         </ScrollView>
     )
 
 }
-ReservasCard.propTypes = {
-    date: PropTypes.string.isRequired,
-    startTime: PropTypes.string.isRequired,
-    endTime: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired
-}
+// ReservasCard.propTypes = {
+//     date: PropTypes.string.isRequired,
+//     startTime: PropTypes.string.isRequired,
+//     status: PropTypes.string.isRequired
+// }

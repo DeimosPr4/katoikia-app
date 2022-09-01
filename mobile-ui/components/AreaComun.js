@@ -12,18 +12,21 @@ import { UserContext } from "../context/UserContext";
 import { API } from "../environment/api";
 import {TimePicker} from 'react-native-simple-time-picker';
 import { View, StyleSheet } from "react-native";
+import { number } from "prop-types";
+import DateTimePicker from '@react-native-community/datetimepicker';
 export default function AreaComun({navigation}){
 
   const { user } = useContext(UserContext)
   const [service, setService] = useState("");
   const [areas, setAreas] = useState([])
   const [isRequesting, setIsRequesting] = useState(false);
+  const [time, setTime] = useState(new Date())
+  const idComunidad = user.community_id
+  const date = new Date(); 
+  const [mode, setMode] = useState('time');
 
-  const [selectedHours, setSelectedHours] = useState(0);
-  const [selectedMinutes, setSelectedMinutes] = useState(0);
-
-  const [endSelectedHours, setEndSelectedHours] = useState(0);
-  const [endSelectedMinutes, setEndSelectedMinutes] = useState(0);
+  const [startDate, setStartDate] = useState();
+  const [startTime, setStartTime] = useState()
 
     useEffect(() => {
 
@@ -33,7 +36,7 @@ export default function AreaComun({navigation}){
   
   
         try {
-          const jsonResponse = await fetch(`${API.BASE_URL}/commonArea/allCommonAreas`, {
+          const jsonResponse = await fetch(`${API.BASE_URL}/commonArea/findByCommunity/` + `${idComunidad}`, {
             method: "GET",
             headers: {
               'Content-Type': 'application/json'
@@ -41,7 +44,7 @@ export default function AreaComun({navigation}){
           })
   
           const response = await jsonResponse.json();
-          console.log(response.message);
+          // console.log(response.message);
   
           setAreas(response.message);
   
@@ -62,38 +65,58 @@ export default function AreaComun({navigation}){
 
     const postReserva = async() => {
 
+      // console.log(startDate.split('"')[1]);
+      // console.log(startTime.split('.')[0]);
+
+
       const data = {
         
-        "start_time": selectedHours + ":" +selectedMinutes,
-        "finish_time": endSelectedHours + ":" +endSelectedMinutes,
-        "date_entry": "",
+        "time": startTime.split('.')[0],
+        "date": startDate.split('"')[1],
         "user_id" : user._id, 
-        "common_area_id": service
+        "common_area_id": service._id,
+        "common_area_name": service.name, 
+        "community_id": service.community_id
       
       }
 
       console.log(data);
-      // try {
+      try {
 
-      //   const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
-      //     cache: 'no-cache', 
-      //     method: 'POST', 
-      //     body: JSON.stringify(data), 
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //     }
-      //   })
+        const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
+          cache: 'no-cache', 
+          method: 'POST', 
+          body: JSON.stringify(data), 
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
 
-      //   const response = await jsonResponse.json();
-      //   console.log(response.message);
+        const response = await jsonDataResponse.json();
+        console.log(response.message);
         
-      // } catch (error) {
-      //   console.log("ERROR:" + error);
-      // }
+      } catch (error) {
+        console.log("ERROR:" + error);
+      }
     }
     
 
-   
+    const onChangeStart = (event, selectedDate) => {
+
+      // console.log(selectedDate);
+
+      const dateString = JSON.stringify(selectedDate).toString().split("T") 
+
+      setStartDate(dateString[0])
+      setStartTime(dateString[1])
+
+      console.log(dateString);
+     
+      // console.log(Date.toString(selectedDate));
+      const currentDate = selectedDate || time;
+     
+      setTime(currentDate);
+    };
 
     return (
         <Center>
@@ -118,7 +141,7 @@ export default function AreaComun({navigation}){
       }} mt={1} onValueChange={itemValue => setService(itemValue)}>
 
         {areas.map(item => (
-          <Select.Item label={item.name} value={item.community_id} />
+          <Select.Item key={item._id} label={item.name} value={item} />
         ))}
           
         </Select>
@@ -126,36 +149,15 @@ export default function AreaComun({navigation}){
           <FormControl isRequired>
             <FormControl.Label>Hora de inicio</FormControl.Label>
             <View  >
-            <TimePicker 
-          selectedHours={selectedHours}
-          selectedMinutes={selectedMinutes}
-          onChange={(hours, minutes) => {
-            setSelectedHours(hours);
-            setSelectedMinutes(minutes);
-          }}/>
+            <DateTimePicker  minimumDate={date} mode="datetime" is24Hour value={time} onChange={onChangeStart}/>
             </View>
-          </FormControl>
-          <FormControl isRequired>
-            <FormControl.Label>Hora de finalización</FormControl.Label>
-            <View  >
-            <TimePicker 
-          selectedHours={selectedHours}
-          //initial Hourse value
-          selectedMinutes={selectedMinutes}
-          //initial Minutes value
-          onChange={(hours, minutes) => {
-            setEndSelectedHours(hours);
-            setEndSelectedMinutes(minutes);
-          }}/>
-            </View>
-           
           </FormControl>
          
         
-          <Button mt="2" backgroundColor="tertiary.600" onPress={()=> postReserva()}>
+          <Button mt="10" backgroundColor="tertiary.600" onPress={()=> postReserva()}>
             Reservar
           </Button>
-          <Button mt="6" colorScheme="error" onPress={() => navigation.navigate('Comunicados')}>
+          <Button mt="3" colorScheme="error" onPress={() => navigation.navigate('Mis Reservas')}>
             Cancelar
           </Button>
         </VStack>

@@ -1,8 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, useRef } from 'react';
 import Cookies from 'universal-cookie';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
+import { Toast } from 'primereact/toast'
 
 const baseUrl = 'http://localhost:4000/user/loginUser';
 const cookies = new Cookies();
@@ -20,6 +21,8 @@ class LogInUser extends Component {
       errorPassword: false,
       logged: null,
       showPwdResetDialog: false,
+      resetEmail: '',
+      errorResetEmail: false,
     };
   }
 
@@ -29,6 +32,12 @@ class LogInUser extends Component {
         ...this.state.form,
         [e.target.name]: e.target.value,
       },
+    });
+  };
+
+  handleResetEmailChange = async (event) => {
+    this.setState({
+      resetEmail: event.target.value,
     });
   };
 
@@ -54,9 +63,19 @@ class LogInUser extends Component {
         errorPassword: false,
       });
     }
-
     return error;
   };
+
+  validarResetEmail = (data) => {
+    let error = false;
+    if (data.email == '') {
+      this.setState({
+        errorResetEmail: true,
+      });
+      error = true;
+    }
+    return error;
+  }
 
   iniciarSesion = async () => {
     const data = {
@@ -124,20 +143,42 @@ class LogInUser extends Component {
     }
   };
 
+  sendResetRequest = (user) => {
+    if (user) {
+      fetch(`${passwordResetUrl}/${user._id}`, {
+        method: 'PUT',
+        cache: 'no-cache',
+        body: JSON.stringify(user),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((response) => {
+        if (response.status != 200)
+          console.log(`Ocurrió un error con el servicio: ${response.status}`);
+        else return response.json();
+      }).then((_response) => {
+          console.log('Se ha enviado un correo con la información para resetear la contraseña');
+      }).catch((error) => { console.log(error) })
+    }
+  };
+
   resetPassword = () => {
     const data = {
-      email: this.state.form.email,
+      email: this.state.resetEmail,
     };
-    const tenant = fetch('http://localhost:4000/user/allUsers',
-      { method: 'GET' })
-      .then((response) => response.json())
-      .then((response) => response.message)
-      .then((response) => {
-        response = response.filter((value) => value.email === data.email)
-      }).catch((error) => {
-        console.log(error);
-      });
-    console.log(tenant);
+    if (!this.validarResetEmail(data)) {
+      fetch('http://localhost:4000/user/allUsers',
+        { method: 'GET' })
+        .then((response) => response.json())
+        .then((response) => response.message)
+        .then((response) => {
+          response = response.find((value) => value.email === data.email)
+          this.sendResetRequest(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   pwdResetDialogFooter = (
@@ -152,7 +193,10 @@ class LogInUser extends Component {
         label='Cerrar'
         icon='pi pi-times'
         className='p-button-text'
-        onClick={() => this.props.showPwdResetDialog = false}
+        onClick={() => this.setState({
+          errorResetEmail: false,
+          showPwdResetDialog: false
+        })}
       />
     </>
   )
@@ -256,31 +300,44 @@ class LogInUser extends Component {
                 <Button
                   label="Restablecer Contraseña"
                   className="p-button-link"
-                  onClick={() => this.props.showPwdResetDialog = true}
+                  onClick={() => this.setState({ showPwdResetDialog: true })}
                 />
               </div>
             </div>
           </div>
         </div>
         <Dialog
-          visible={this.props.showPwdResetDialog}
+          visible={this.state.showPwdResetDialog}
           style={{ width: '50vw' }}
           header="Restablecer Contraseña"
           modal
           className="p-fluid"
           footer={this.pwdResetDialogFooter}
-          onHide={() => this.props.showPwdResetDialog = false}
+          onHide={() => this.setState({ showPwdResetDialog: true })}
         >
+          <div className="p-fluid formgrid grid">
+            <div className="field col-12 md:col-12">
+              <div className="p-0 col-12 md:col-12">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon p-button p-icon-input-khaki">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText
+                    type='email'
+                    style={{ width: '100%' }}
+                    placeholder='Correo electrónico'
+                    onChange={this.handleResetEmailChange}
+                    className={this.state.errorResetEmail ? 'p-invalid' : ''}
+                  />
+                </div>
+                {this.state.errorResetEmail && (
+                  <small className="p-invalid">
+                    Correo electrónico es requerido
+                  </small>)}
+              </div>
+            </div>
+          </div>
           <div className='flex align-items-center justify-content-center'>
-            <i
-              className='pi pi-exclamation-triangle mr-3'
-              style={{ fontSize: '2rem' }}
-            />
-            <InputText
-              type='email'
-              style={{ width: '100%' }}
-              placeholder='Correo electrónico'
-            />
           </div>
         </Dialog>
       </Fragment>

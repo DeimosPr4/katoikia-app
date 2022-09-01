@@ -608,7 +608,6 @@ const AreasComunes = () => {
         );
     };
 
-
     function compareTimesMinRequired(hour1, hour2) {
         var timeFormat1 = Number(hour1.replace(/[:]/g, ''));
         var timeFormat2 = Number(hour2.replace(/[:]/g, ''));
@@ -618,10 +617,6 @@ const AreasComunes = () => {
             return false;
         }
     }
-
-
-
-
 
     return (
         <div className="grid">

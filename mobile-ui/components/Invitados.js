@@ -27,7 +27,7 @@ export default function Invitados({navigation}) {
       setIsRequesting(true);
 
       try {
-        if(user_type=="4"){
+        if(user_type=="3"){
           const jsonResponse = await fetch(`${API.BASE_URL}/guest/findGuestCommunity/`+`${community_id}`, {
             method: "GET",
             headers: {
@@ -37,7 +37,7 @@ export default function Invitados({navigation}) {
   
           const response = await jsonResponse.json();
           setInvitados(response.message);
-        }else{
+        }else if(user_type=="4"){
           const jsonResponse = await fetch(`${API.BASE_URL}/guest/findGuestUser/`+`${id}`, {
             method: "GET",
             headers: {

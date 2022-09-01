@@ -56,7 +56,7 @@ function HomeTabGuarda({ route }) {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 0 ? 'home' : 'home-outline'} />} color="#D7A86E" size="md" />)}} onclick={() => setSelected(0)}
      />
-    <Tab.Screen  name="Mis Invitados" component={Invitados} initialParams={user} options={{headerStyle: {
+    <Tab.Screen  name="Lista De Invitados" component={Invitados} initialParams={user} options={{headerStyle: {
       backgroundColor: "#D7A86E"
     }, tabBarIcon: () => (<Icon mb="2" as={<MaterialCommunityIcons name={selected === 1 ? 'contacts' : 'contacts-outline'} />} color="#D7A86E" size="md" />)} } onclick={() => setSelected(1)}  /> 
     <Tab.Screen  name="Mi Perfil" component={Profile} initialParams={user} options={{headerStyle: {

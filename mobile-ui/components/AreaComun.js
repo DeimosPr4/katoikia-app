@@ -149,7 +149,7 @@ export default function AreaComun({navigation}){
           <FormControl isRequired>
             <FormControl.Label>Hora de inicio</FormControl.Label>
             <View  >
-            <DateTimePicker  minimumDate={date} mode="datetime" is24Hour value={time} onChange={onChangeStart}/>
+            <DateTimePicker  minimumDate={date} mode="datetime" is24Hour={true} value={time} onChange={onChangeStart}/>
             </View>
           </FormControl>
          

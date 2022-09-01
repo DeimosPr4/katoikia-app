@@ -117,9 +117,6 @@ export class UsersService {
   }
 
   async update(id: string, user: UserDocument) {
-    console.log(id)
-    console.log(user)
-
     return this.userModel.findOneAndUpdate({ _id: id }, {
       name: user['name'], last_name: user['last_name'],
       dni: user['dni'], email: user['email'], phone: user['phone']
@@ -193,7 +190,6 @@ export class UsersService {
         }
       });
     });
-
     return userReturn;
   }
 
@@ -211,19 +207,14 @@ export class UsersService {
     return this.userModel.find({ user_type: 2 }).exec();
   }
 
-
   //find inquilinos
   async findTenants(): Promise<User[]> {
     return this.userModel.find({ user_type: 3 }).exec();
   }
 
-
   //find inquilinos
   async findTenantsCommunity(pcommunity_id: string) {
     //let tenants = await this.findCommunityTenants(pcommunity_id);
-
-
-
     return await this.userModel.find({ community_id: pcommunity_id, user_type: 4 })
   }
 
@@ -349,5 +340,14 @@ export class UsersService {
     await this.userModel.updateMany({community_id: community_id, user_type:'3' }, {"$set":{"community_id": '', "status": '-1'} });
     return this.userModel.updateMany({ community_id: community_id, user_type: '4' }, { "$set": { "community_id": '', "status": '-1' }    });
   }
+
+
+  async changePassword(id: string, password: string) {
+    return this.userModel.findOneAndUpdate({ _id: id }, { password: password }, {
+      new: true,
+    });
+  }
+
+  
 }
 

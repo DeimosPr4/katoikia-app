@@ -314,7 +314,19 @@ export class AppController {
       number_house,
     );
   }
-  
+ 
+  @Put('user/changePassword/:id')
+  changePassword(
+    @Param('id') id: string,
+    @Body('password') password: string,
+  ) {
+
+    return this.appService.changePassword(
+      id,
+      password,
+    );
+  }
+
   // #==== API Communities
   @Post('community/createCommunity')
   createCommunity(
@@ -329,6 +341,33 @@ export class AppController {
     @Body('houses') houses: [],
   ) {
     return this.appService.createCommunity(
+      name,
+      province,
+      canton,
+      district,
+      num_houses,
+      phone,
+      status,
+      date_entry,
+      houses,
+    );
+  }
+
+  @Put('community/updateCommunity/:id')
+  updateCommunity(
+    @Param('id') id: string,
+    @Body('name') name: string,
+    @Body('province') province: string,
+    @Body('canton') canton: string,
+    @Body('district') district: string,
+    @Body('num_houses') num_houses: number,
+    @Body('phone') phone: string,
+    @Body('status') status: string,
+    @Body('date_entry') date_entry: Date,
+    @Body('houses') houses: [],
+  ) {
+    return this.appService.updateCommunity(
+      id,
       name,
       province,
       canton,

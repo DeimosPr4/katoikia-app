@@ -387,6 +387,16 @@ export class AppService {
   }
 
 
+  changePassword(id: string, password: string) {
+    const pattern = { cmd: 'changePassword' };
+    const payload = { id: id, password: password };
+    return this.clientUserApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  
+
   // ====================== COMMUNITIES ===============================
   changeStatusCommunity(pId: string, pStatus: string) {
     const pattern = { cmd: 'changeStatus' };
@@ -401,6 +411,25 @@ export class AppService {
     , num_houses: number, phone: string, status: string, date_entry: Date, houses: []) {
     const pattern = { cmd: 'createCommunity' };
     const payload = {
+      name: name,
+      province: province,
+      canton: canton,
+      district: district,
+      num_houses: num_houses,
+      phone: phone,
+      status: status,
+      date_entry: date_entry,
+      houses: houses,
+    };
+    return this.clientCommunityApp
+      .send<string>(pattern, payload)
+      .pipe(map((message: string) => ({ message })));
+  }
+
+  updateCommunity(id: string, name: string, province: string, canton: string, district: string, num_houses: number, phone: string, status: string, date_entry: Date, houses: unknown) {
+    const pattern = { cmd: 'updateCommunity' };
+    const payload = {
+      id: id,
       name: name,
       province: province,
       canton: canton,

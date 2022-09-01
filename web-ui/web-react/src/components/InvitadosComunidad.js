@@ -171,41 +171,35 @@ const InvitadosComunidad = () => {
             globalFilter={globalFilter}
             emptyMessageTemplate="No se encontraron invitados"
           >
-            <Column field="name" header="Nombre" sortable header={headerName} />
+            <Column field="name" sortable header={headerName} />
             <Column
               field="last_name"
-              header="Apellido"
               sortable
               header={headerLastName}
             />
-            <Column field="dni" header="DNI" sortable header={headerDNI} />
+            <Column field="dni"  sortable header={headerDNI} />
             <Column
               field="number_plate"
-              header="Placa"
               sortable
               header={headerPlate}
             />
             <Column
               field="telefono"
-              header="Teléfono"
               sortable
               header={headerPhone}
             />
             <Column
               field="email"
-              header="Email"
               sortable
               header={headerEmail}
             />
             <Column
               field="date_entry"
-              header="Fecha de registro"
               sortable
               header={headerName}
             />
             <Column
               field="tenant_name"
-              header="Inquilino"
               sortable
               header={headerTenant}
             />

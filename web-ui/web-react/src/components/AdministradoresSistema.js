@@ -164,6 +164,8 @@ const AdministradoresSistema = () => {
               function (response) {
                 _administrators.push(_admin);
                 setAdministrators(_administrators)
+                setFormAdminDialog(false)
+
               }
             )
             .catch(

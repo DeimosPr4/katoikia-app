@@ -281,6 +281,7 @@ const AdministradoresComunidad = () => {
                         toast.current.show({ severity: 'success', summary: 'Exito', detail: 'Administrador de Comunidad de vivienda Creada', life: 3000 });
 
                         setListaAdmins(_administrators);
+                        setAdminDialog(false)
 
                         setAdminCommunity(emptyAdminCommunity);
 
@@ -296,7 +297,6 @@ const AdministradoresComunidad = () => {
         } else {
             console.log(`Actualizando admnistrador de comunidad: ${_admin}`)
             _admin.community_id = communityId;
-            console.log(`Actualizando admnistrador de comunidad: ${_admin}`)
 
             fetch(`http://localhost:4000/user/updateAdminCommunity/${_admin._id}`, {
                 cache: 'no-cache',
@@ -320,7 +320,7 @@ const AdministradoresComunidad = () => {
 
                 listaAdmin();
                 setCommunityId('');
-
+                setAdminDialog(false)
                 setAdminCommunity(emptyAdminCommunity);
             })
         }

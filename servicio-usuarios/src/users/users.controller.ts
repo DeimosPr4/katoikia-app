@@ -84,7 +84,8 @@ export class UsersController {
   
   @MessagePattern({ cmd: 'updateAdminCommunity' })
   updateAdminCommunity(@Payload() user: UserDocument) {
-    return this.userService.update(user._id, user);
+    console.log(user)
+    return this.userService.updateAdminCommunity(user['_id'], user);
   }
 
   @MessagePattern({ cmd: 'updateTenant' })

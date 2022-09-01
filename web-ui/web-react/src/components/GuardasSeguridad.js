@@ -99,6 +99,8 @@ const GuardasSeguridad = () => {
           return response.json();
       }).then(() => {
         listaGuardasF();
+        setFormGuardDialog(false)
+        setGuarda(emptyGuarda)
       }).catch(
         err => console.log('Ocurrió un error con el fetch', err)
       );
@@ -123,6 +125,8 @@ const GuardasSeguridad = () => {
           detail: 'Guarda actualizado correctamente'
         });
         setGuarda(emptyGuarda);
+        setFormGuardDialog(false)
+
         listaGuardasF();
       })
     }

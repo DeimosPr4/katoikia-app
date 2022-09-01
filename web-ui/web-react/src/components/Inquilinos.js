@@ -157,6 +157,8 @@ const Inquilinos = () => {
             setTenants(_tenants)
             setTenant(emptyTenant)
             setHouseNumber('')
+            setTenantDialog(false)
+
           })
           .catch((error) => console.log(`Ocurrió un error: ${error}`))
       } else setSubmitted(true)
@@ -195,6 +197,8 @@ const Inquilinos = () => {
         tenantsList()
         setTenant(emptyTenant)
         setHouseNumber('')
+        setTenantDialog(false)
+
       })
     }
   }

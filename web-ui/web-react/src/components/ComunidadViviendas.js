@@ -93,7 +93,7 @@ const Communities = () => {
 
   async function fillCantons() {
     const resJson = await getCantons();
-    const cantones = await resJson.filter(function(i, n) {
+    const cantones = await resJson.filter((i, n) => {
       return i.parentCode === provinciaId;
     });
     setCantonsList(await cantones);
@@ -108,7 +108,7 @@ const Communities = () => {
 
   async function fillDistricts() {
     const resJson = await getDistricts();
-    const districts = await resJson.filter(function(i, n) {
+    const districts = await resJson.filter((i, n) => {
       return i.parentCode === cantonId;
     });
     setDistrictsList(await districts);
@@ -223,7 +223,7 @@ const Communities = () => {
           'Content-Type': 'application/json',
         },
       })
-        .then(function(response) {
+        .then((response) => {
           if (response.status != 201)
             console.log('Ocurrió un error con el servicio: ' + response.status);
           else return response.json();
@@ -344,12 +344,12 @@ const Communities = () => {
         'Content-Type': 'application/json',
       },
     })
-      .then(function(response) {
+      .then((response) => {
         if (response.status != 201)
           console.log('Ocurrió un error con el servicio: ' + response.status);
         else return response.json();
       })
-      .then(function(response) {
+      .then((response) => {
         setEditCommunityDialog(false);
         toast.current.show({
           severity: 'success',
@@ -369,12 +369,12 @@ const Communities = () => {
         'Content-Type': 'application/json',
       },
     })
-      .then(function(response) {
+      .then((response) => {
         if (response.status != 201)
           console.log('Ocurrió un error con el servicio: ' + response.status);
         else return response.json();
       })
-      .then(function(response) {
+      .then((response) => {
         let _community = communitiesList.filter(
           (val) => val._id !== community._id,
         );

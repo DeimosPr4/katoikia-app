@@ -32,7 +32,6 @@ const Communities = () => {
 
   const [communitiesList, setCommunitiesList] = useState([]);
   const [community, setCommunity] = useState(emptyCommunity);
-
   const [housesList, setHousesList] = useState([]);
   const [provincesList, setProvincesList] = useState([]);
   const [provinciaId, setProvinciaId] = useState(null);

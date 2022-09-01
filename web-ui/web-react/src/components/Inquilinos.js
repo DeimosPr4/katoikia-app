@@ -649,7 +649,6 @@ const Inquilinos = () => {
           <Toolbar
             className='mb-4'
             left={leftToolbarTemplate}
-            right={rightToolbarTemplate}
           ></Toolbar>
           <DataTable
             ref={dt}

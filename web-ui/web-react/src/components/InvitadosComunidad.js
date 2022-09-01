@@ -149,7 +149,6 @@ const InvitadosComunidad = () => {
           <Toolbar
             className="mb-4"
             left={leftToolbarTemplate}
-            right={rightToolbarTemplate}
           />
           <DataTable
             ref={tableRef}

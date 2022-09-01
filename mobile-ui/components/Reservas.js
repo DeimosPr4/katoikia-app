@@ -18,8 +18,8 @@ export default function Reservas({navigation}) {
   const { user } = useContext(UserContext)
   const [isRequesting, setIsRequesting] = useState(false);
   const [reservas, setReservas] = useState([]);
-  // const id = user._id;
-  const id = "6301df20dac7dcf76dcecade";
+  const id = user._id;
+  // const id = "6301df20dac7dcf76dcecade";
 
   console.log(user);
  
@@ -74,8 +74,8 @@ export default function Reservas({navigation}) {
           reservas.map(item => (
             <ReservasCard
               key={item._id}
-              date={item.date_entry}
-              startTime={item.start_time}
+              date={item.date}
+              startTime={item.time}
               status={item.status}
               name={item.common_area_name}
             />

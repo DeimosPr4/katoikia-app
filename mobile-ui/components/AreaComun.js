@@ -25,6 +25,9 @@ export default function AreaComun({navigation}){
   const date = new Date(); 
   const [mode, setMode] = useState('time');
 
+  const [startDate, setStartDate] = useState();
+  const [startTime, setStartTime] = useState()
+
     useEffect(() => {
 
       const onRequestReservasData = async () => {
@@ -62,43 +65,54 @@ export default function AreaComun({navigation}){
 
     const postReserva = async() => {
 
-      console.log(time);
+      // console.log(startDate.split('"')[1]);
+      // console.log(startTime.split('.')[0]);
 
-      // const data = {
+
+      const data = {
         
-      //   "start_time": 7  + ":" +0,
-      //   "finish_time": 10 + ":" +0,
-      //   "status": 1,
-      //   "date_entry": date,
-      //   "user_id" : user._id, 
-      //   "common_area_id": service._id,
-      //   "common_area_name": service.name, 
-      //   "community_id": service.community_id
+        "time": startTime.split('.')[0],
+        "date": startDate.split('"')[1],
+        "user_id" : user._id, 
+        "common_area_id": service._id,
+        "common_area_name": service.name, 
+        "community_id": service.community_id
       
-      // }
+      }
 
-      // console.log(data);
-      // try {
+      console.log(data);
+      try {
 
-      //   const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
-      //     cache: 'no-cache', 
-      //     method: 'POST', 
-      //     body: JSON.stringify(data), 
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //     }
-      //   })
+        const jsonDataResponse = await fetch(`${API.BASE_URL}/reservation/createReservation`, {
+          cache: 'no-cache', 
+          method: 'POST', 
+          body: JSON.stringify(data), 
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
 
-      //   const response = await jsonDataResponse.json();
-      //   console.log(response.message);
+        const response = await jsonDataResponse.json();
+        console.log(response.message);
         
-      // } catch (error) {
-      //   console.log("ERROR:" + error);
-      // }
+      } catch (error) {
+        console.log("ERROR:" + error);
+      }
     }
     
 
     const onChangeStart = (event, selectedDate) => {
+
+      // console.log(selectedDate);
+
+      const dateString = JSON.stringify(selectedDate).toString().split("T") 
+
+      setStartDate(dateString[0])
+      setStartTime(dateString[1])
+
+      console.log(dateString);
+     
+      // console.log(Date.toString(selectedDate));
       const currentDate = selectedDate || time;
      
       setTime(currentDate);
@@ -135,7 +149,7 @@ export default function AreaComun({navigation}){
           <FormControl isRequired>
             <FormControl.Label>Hora de inicio</FormControl.Label>
             <View  >
-            <DateTimePicker  minimumDate={date} mode="datetime" is24Hour value={time} onChangeStart={onChangeStart}/>
+            <DateTimePicker  minimumDate={date} mode="datetime" is24Hour value={time} onChange={onChangeStart}/>
             </View>
           </FormControl>
          

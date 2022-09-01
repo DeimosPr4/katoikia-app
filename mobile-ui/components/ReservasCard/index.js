@@ -11,15 +11,14 @@ import PropTypes from 'prop-types';
 
 import React from 'react';
 
-export const ReservasCard = ({ date, startTime, endTime, status, name}) => {
-    const dateFormated = format(new Date(date), "dd LL yyyy")
+export const ReservasCard = ({ date, startTime, name}) => {
+
+
+    const dateFormated = date.toString().split("T")[0]
   
 
-    try {
-        
-    } catch (error) {
-        
-    }
+
+    console.log(dateFormated);
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}> 
@@ -43,7 +42,7 @@ export const ReservasCard = ({ date, startTime, endTime, status, name}) => {
              {name}
             </Heading>
             <Text fontSize="md" _light={{
-            color: "success.600"
+            color: "amber.600"
           }} _dark={{
             color: "violet.400"
           }} fontWeight="500" ml="-0.5" mt="-1">
@@ -64,8 +63,8 @@ export const ReservasCard = ({ date, startTime, endTime, status, name}) => {
     )
 
 }
-ReservasCard.propTypes = {
-    date: PropTypes.string.isRequired,
-    startTime: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired
-}
+// ReservasCard.propTypes = {
+//     date: PropTypes.string.isRequired,
+//     startTime: PropTypes.string.isRequired,
+//     status: PropTypes.string.isRequired
+// }

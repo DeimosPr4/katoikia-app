@@ -46,6 +46,7 @@ const GuardasSeguridad = () => {
   const [changeStatusGuardDialog, setChangeStatusGuardDialog] = useState(false);
   const [guardDialog, setGuardDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [formGuardDialog, setFormGuardDialog] = useState(false);
 
 
   async function listaGuardasF() {
@@ -179,7 +180,7 @@ const GuardasSeguridad = () => {
         console.log(`Ocurrió un error con el servicio: ${response.status}`);
       else
         return response.json();
-    }).then(function() {
+    }).then(function () {
       let _guarda = listaGuardas.filter(val => val._id !== guarda._id);
       setListaGuardas(_guarda);
       setDeleteGuardaDialog(false);
@@ -251,13 +252,29 @@ const GuardasSeguridad = () => {
 
   const editGuard = (guard) => {
     setGuarda(guard);
-    console.log(guard);
+    setFormGuardDialog(true)
     setSaveButtonTitle("Actualizar");
   }
 
   const cancelEdit = () => {
     setGuarda(emptyGuarda);
     setSaveButtonTitle("Registrar");
+    setFormGuardDialog(false)
+
+  }
+
+
+  const openNewGuard = () => {
+    setGuarda(emptyGuarda);
+    setFormGuardDialog(true)
+    setSubmitted(false);
+  };
+
+  const hideFormGuardDialog = () => {
+    setSubmitted(false);
+    setFormGuardDialog(false)
+    setGuarda(emptyGuarda);
+    setSaveButtonTitle('Registrar');
   }
 
   const actionsGuard = (rowData) => {
@@ -300,6 +317,12 @@ const GuardasSeguridad = () => {
     return (
       <React.Fragment>
         <div className="my-2">
+        <Button
+            label="Agregar Guarda"
+            icon="pi pi-plus"
+            className="p-button-primary mr-2"
+            onClick={openNewGuard}
+          />
           <Button label="Eliminar"
             icon="pi pi-trash"
             className="p-button-danger"
@@ -372,6 +395,22 @@ const GuardasSeguridad = () => {
     </>
   );
 
+  const formGuardDialogFooter = (
+    <>
+      <Button
+        label={`${saveButtonTitle}`}
+        icon="pi pi-check"
+        className="p-button-primary"
+        onClick={registrarGuarda}
+      />
+      <Button
+        label="Cerrar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideFormGuardDialog}
+      />
+    </>
+  );
 
   const headerName = (
     <>
@@ -472,7 +511,7 @@ const GuardasSeguridad = () => {
               body={statusBodyTemplate}
               style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px', wordBreak: 'break-word' }}>
             </Column>
-            <Column style={{ flexGrow: 1, flexBasis: '80px', minWidth: '80px' }} body={actionsGuard}></Column>
+            <Column style={{ flexGrow: 1, flexBasis: '160px', minWidth: '160px' }} body={actionsGuard}></Column>
           </DataTable>
           <Dialog
             visible={guardDialog}
@@ -484,30 +523,22 @@ const GuardasSeguridad = () => {
             onHide={hideGuardDialog}>
             <div className='container text-center'>
               <div className='row my-4'>
-                <div className=" col-4 md:col-4">
-                  <p>Nombre</p>
-                  <div className="p-0 col-2  md:col-2" style={{ margin: '0 auto' }}>
-                    <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-user icon-khaki"></i>
-                      <p>{guarda.name}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className=" col-4 md:col-4">
-                  <p>Apellido(s)</p>
-                  <div className="p-0 col-6  md:col-6" style={{ margin: '0 auto' }}>
-                    <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-user icon-khaki"></i>
-                      <p>{guarda.last_name}</p>
-                    </div>
+                <div className=" col-6 md:col-6">
 
+                  <i className="pi pi-user icon-khaki"></i>
+                  <p><strong>Nombre Completo</strong></p>
+                  <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
+                    <div className="p-inputgroup align-items-center justify-content-evenly">
+                      <p>{guarda.name + ' ' + guarda.last_name}</p>
+                    </div>
                   </div>
                 </div>
-                <div className=" col-4 col-md-4 md:col-4">
-                  <p>Identificación</p>
-                  <div className="p-0 col-10 md:col-10" style={{ margin: '0 auto' }}>
+
+                <div className=" col-6 col-md-6 md:col-6">
+                  <i className="pi pi-id-card icon-khaki"></i>
+                  <p><strong>Identificación</strong></p>
+                  <div className="p-0 col-12 md:col-12" style={{ margin: '0 auto' }}>
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-id-card icon-khaki"></i>
                       <p>{guarda.dni}</p>
                     </div>
 
@@ -517,21 +548,22 @@ const GuardasSeguridad = () => {
               <div className='row my-5 justify-content-center'>
               </div>
               <div className='row my-5 justify-content-center'>
-                <div className=" col-4 md:col-4">
-                  <p>Teléfono</p>
-                  <div className="p-0 col-10 md:col-10">
+                <div className=" col-6 md:col-6">
+                <i className="pi pi-phone icon-khaki"></i>
+                  <p><strong>Teléfono</strong></p>
+                  <div className="p-0 col-12 md:col-12">
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-phone icon-khaki"></i>
                       <p>{guarda.phone}</p>
                     </div>
 
                   </div>
                 </div>
                 <div className=" col-6 md:col-6">
-                  <p>Correo Electrónico</p>
-                  <div className="p-0 col-10  md:col-10" style={{ margin: '0 auto' }}>
+                <i className="pi pi-envelope icon-khaki"></i>
+
+                  <p><strong>Correo Electrónico</strong></p>
+                  <div className="p-0 col-12  md:col-12" style={{ margin: '0 auto' }}>
                     <div className="p-inputgroup align-items-center justify-content-evenly">
-                      <i className="pi pi-envelope icon-khaki"></i>
                       <p>{guarda.email}</p>
                     </div>
 
@@ -573,12 +605,15 @@ const GuardasSeguridad = () => {
               )}
             </div>
           </Dialog>
-        </div>
-      </div>
-      <div className="col-12">
-        <div className="card">
-          <h5>Registro de un Guarda de Seguridad</h5>
-          <div className="p-fluid formgrid grid">
+          <Dialog
+            visible={formGuardDialog}
+            style={{ width: '750px' }}
+            header='Mantenimiento de Guarda de Seguridad'
+            modal
+            footer={formGuardDialogFooter}
+            onHide={hideFormGuardDialog}
+          >
+            <div className="p-fluid formgrid grid">
             <div className="field col-12 md:col-6">
               <label htmlFor="name">Nombre</label>
               <div className="p-0 col-12 md:col-12">
@@ -641,25 +676,12 @@ const GuardasSeguridad = () => {
                   && <small className="p-invalid">Número de teléfono es requerido.</small>}
               </div>
             </div>
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-              width: "100%"
-            }}>
-              <Button
-                label={`${saveButtonTitle}`}
-                onClick={registrarGuarda}
-              />
-              {saveButtonTitle === 'Actualizar' && (
-                <Button
-                  label="Cancel"
-                  onClick={cancelEdit}
-                  className="p-button-danger" />)}
-            </div>
+           
           </div>
+          </Dialog>
         </div>
       </div>
+     
     </div>
   );
 };
